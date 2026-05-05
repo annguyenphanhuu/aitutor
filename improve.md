@@ -121,15 +121,26 @@ Khi có câu hỏi, quy trình Retrieval diễn ra như sau:
 
 ---
 
-## V. Các Bước Triển Khai (Action Plan)
+## V. Các Bước Triển Khai Chi Tiết (Action Plan Dành Cho Coding Agent)
+
+Để một Coding Agent có thể đọc và tự động triển khai chính xác, dưới đây là file map và các thay đổi code cụ thể cần thực hiện:
 
 - [ ] **Bước 1: Thanh lọc Dữ liệu VectorDB**
-  - Xóa collection `exams` trong ChromaDB. Review tập `theory` để đảm bảo sạch sẽ.
-- [ ] **Bước 2: Xây dựng `formulas.json` & Metadata**
-  - Khởi tạo file `formulas.json`.
-  - Migrate database câu hỏi: đổi trường `skill_id` thành `skill_ids` (array), bổ sung `formula_ids` (array).
-- [ ] **Bước 3: Nâng cấp Knowledge Tracing (BKT)**
-  - Cập nhật logic BKT: Thay vì trace 1 kỹ năng, vòng lặp BKT sẽ nhận JSON từ Assessor Agent (`skills_assessed`) để cập nhật Master Score riêng rẽ cho TỪNG skill trong mảng `skill_ids`.
-- [ ] **Bước 4: Viết lại custom RAG & Prompts**
-  - Xóa bỏ `search_exams`. Viết hàm `get_formulas_by_ids(formula_ids)`.
-  - Cập nhật System Prompts của Teacher Agent và Assessor Agent để truyền vào mảng formulas và theory.
+  - **File:** `app/rag/knowledge_base.py` (hoặc các scripts khởi tạo ChromaDB).
+  - **Action:** Xóa bỏ hoàn toàn hàm `search_exams` và các logic liên quan. Chỉ giữ lại hàm `search_theory`. Đảm bảo không còn bất kỳ collection `exams` nào được gọi.
+
+- [ ] **Bước 2: Cập nhật Schema Metadata của Database**
+  - **File:** `app/db/models.py` (và các file Pydantic Schemas liên quan).
+  - **Action:** Sửa đổi cấu trúc của bảng/entity `Question`. Xóa bỏ trường chuỗi tĩnh `skill_id: str`, thay thế bằng `skill_ids: list[str]`. Bổ sung thêm trường mới `formula_ids: list[str]`. Chỉnh sửa lại các hàm mock data hoặc insert DB để khớp với Schema mới này.
+
+- [ ] **Bước 3: Nâng cấp Logic Knowledge Tracing (BKT)**
+  - **File:** `app/knowledge_tracing/bkt.py` (hoặc module tương đương).
+  - **Action:** Sửa đổi hàm `update_mastery(...)`. Thay vì chỉ nhận 1 biến `skill_id` đơn lẻ, hàm cần được refactor để nhận một JSON object `skills_assessed` (trả về từ Assessor Agent). Hàm sẽ lặp (loop) qua từng skill trong đó để tính toán và cập nhật xác suất thành thạo $P(L)$ độc lập.
+
+- [ ] **Bước 4: Cập nhật RAG Pipeline & Hàm Lookup Công Thức**
+  - **File:** `app/rag/knowledge_base.py` (hoặc tạo file mới `app/rag/formula_registry.py`).
+  - **Action:** Viết thêm hàm `get_formulas_by_ids(formula_ids: list[str]) -> list[dict]`. Hàm này sẽ đọc file `data/formulas.json`, tìm kiếm các ID tương ứng và trả về nguyên block content (LaTeX và điều kiện). Đảm bảo lookup nhanh dạng O(1) hoặc cache in-memory.
+
+- [ ] **Bước 5: Cập nhật System Prompt cho Các Agent**
+  - **File:** `app/agents/teacher_agent.py` và `app/agents/assessor_agent.py`.
+  - **Action:** Ghi đè biến `SYSTEM_PROMPT` theo cấu trúc đã đề cập ở Mục III. Cập nhật hàm `invoke()` hoặc `run()` của Agent để nhận thêm tham số list (`formulas_list`, `skill_names_list`) và format chúng thành chuỗi Markdown gọn gàng trước khi tiêm vào Prompt Context.
