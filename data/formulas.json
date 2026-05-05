@@ -1,0 +1,58 @@
+[
+  {
+    "id": "formula_log_product",
+    "content": "**Công thức tích Logarit:**\n$$\\log_b(x \\cdot y) = \\log_b(x) + \\log_b(y)$$\n*Điều kiện:* $x > 0, y > 0, b > 0, b \\neq 1$",
+    "metadata": {
+      "chapter": "Hàm số Lũy thừa, Mũ và Logarit",
+      "type": "formula"
+    }
+  },
+  {
+    "id": "formula_log_quotient",
+    "content": "**Công thức thương Logarit:**\n$$\\log_b\\left(\\frac{x}{y}\\right) = \\log_b(x) - \\log_b(y)$$\n*Điều kiện:* $x > 0, y > 0, b > 0, b \\neq 1$",
+    "metadata": {
+      "chapter": "Hàm số Lũy thừa, Mũ và Logarit",
+      "type": "formula"
+    }
+  },
+  {
+    "id": "formula_log_power",
+    "content": "**Công thức lũy thừa Logarit:**\n$$\\log_b(x^p) = p \\cdot \\log_b(x)$$\n*Điều kiện:* $x > 0, b > 0, b \\neq 1$",
+    "metadata": {
+      "chapter": "Hàm số Lũy thừa, Mũ và Logarit",
+      "type": "formula"
+    }
+  },
+  {
+    "id": "formula_log_base_change",
+    "content": "**Công thức đổi cơ số Logarit:**\n$$\\log_b(x) = \\frac{\\log_c(x)}{\\log_c(b)}$$\n*Điều kiện:* $x > 0, b > 0, b \\neq 1, c > 0, c \\neq 1$",
+    "metadata": {
+      "chapter": "Hàm số Lũy thừa, Mũ và Logarit",
+      "type": "formula"
+    }
+  },
+  {
+    "id": "formula_trig_pythagorean",
+    "content": "**Đẳng thức lượng giác cơ bản (Pythagoras):**\n$$\\sin^2(x) + \\cos^2(x) = 1$$\n*Điều kiện:* Mọi $x \\in \\mathbb{R}$",
+    "metadata": {
+      "chapter": "Lượng giác",
+      "type": "formula"
+    }
+  },
+  {
+    "id": "formula_trig_double_sin",
+    "content": "**Công thức nhân đôi hàm Sin:**\n$$\\sin(2x) = 2\\sin(x)\\cos(x)$$\n*Điều kiện:* Mọi $x \\in \\mathbb{R}$",
+    "metadata": {
+      "chapter": "Lượng giác",
+      "type": "formula"
+    }
+  },
+  {
+    "id": "formula_trig_double_cos",
+    "content": "**Công thức nhân đôi hàm Cosin:**\n$$\\cos(2x) = \\cos^2(x) - \\sin^2(x) = 2\\cos^2(x) - 1 = 1 - 2\\sin^2(x)$$\n*Điều kiện:* Mọi $x \\in \\mathbb{R}$",
+    "metadata": {
+      "chapter": "Lượng giác",
+      "type": "formula"
+    }
+  }
+]
