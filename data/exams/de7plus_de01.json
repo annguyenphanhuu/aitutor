@@ -1,0 +1,398 @@
+[
+  {
+    "id": "exam_de7plus_de01_p1_q01",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đồ thị như hình. Điểm cực tiểu của hàm số đã cho là:\n\nA. $-1$\nB. $1$\nC. $2$\nD. $-4$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 1,
+      "difficulty_part": 1,
+      "skill_id": "derivative_applications",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q01.png"
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nDựa vào đồ thị, tại $x = 1$ hàm số đạt giá trị nhỏ nhất cục bộ ($f'(x)$ đổi dấu từ âm sang dương) $\\rightarrow$ điểm cực tiểu là $x = 1$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q02",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đồ thị như hình. Đường thẳng nào sau đây là đường tiệm cận ngang của đồ thị hàm số đã cho?\n\nA. $x = 1$\nB. $x = -1$\nC. $y = 1$\nD. $y = -1$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 2,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q02.png"
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nDựa vào đồ thị hàm số, khi $x$ tiến ra vô cực, đồ thị hàm số tiến sát về đường thẳng nằm ngang $y = -1$. Vậy đường tiệm cận ngang là $y = -1$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q03",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ là một nguyên hàm của hàm số $y = x^3$. Phát biểu nào sau đây là đúng?\n\nA. $f(x) = \\frac{x^4}{4} + C$\nB. $f(x) = 3x^2$\nC. $f(x) = 4x^3$\nD. $f(x) = \\frac{x^4}{4}$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 3,
+      "difficulty_part": 1,
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nTa có: $f(x) = \\int x^3 dx = \\frac{x^4}{4} + C$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q04",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, phương trình nào sau đây là phương trình tổng quát của mặt phẳng?\n\nA. $2x + y^2 + z + 1 = 0$\nB. $x^2 + y + z + 2 = 0$\nC. $2x + y + z + 3 = 0$\nD. $2x + y + z^2 + 4 = 0$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 4,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nPhương trình tổng quát của mặt phẳng có dạng $Ax + By + Cz + D = 0$ (với $A^2 + B^2 + C^2 > 0$), trong đó $x, y, z$ đều là bậc nhất. Ta loại các đáp án A, B, D vì trong phương trình có bậc hai của $x, y$ hoặc $z$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q05",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, phương trình nào sau đây là phương trình chính tắc của đường thẳng?\n\nA. $\\frac{x-2}{3} = \\frac{y-1}{z} = \\frac{z-5}{4}$\nB. $\\frac{x-9}{7} = \\frac{y-8}{-1} = \\frac{z-6}{-2}$\nC. $\\frac{x-6}{3} = \\frac{y-3}{4} = \\frac{z-5}{z}$\nD. $\\frac{x-1}{y} = \\frac{y-2}{5} = \\frac{z-3}{4}$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 5,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "HÌNH HỌC KHÔNG GIAN",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nPhương trình chính tắc của đường thẳng đi qua điểm $M(x_0; y_0; z_0)$ và có vectơ chỉ phương $\\vec{u} = (a; b; c)$ (với $a, b, c \\neq 0$) có dạng:\n$$\\frac{x-x_0}{a} = \\frac{y-y_0}{b} = \\frac{z-z_0}{c}$$\nTa loại các đáp án A, C, D vì có biến số $y, z$ ở mẫu thức. Chỉ có đáp án B đúng dạng phương trình chính tắc với các mẫu số là các hằng số khác 0."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q06",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, phương trình nào sau đây là phương trình mặt cầu?\n\nA. $(x^2-8)^2 + (y-12)^2 + (z-24)^2 = 9^2$\nB. $(x-9)^2 + (y^2-10)^2 + (z-11)^2 = 12^2$\nC. $(x-13)^2 + (y-24)^2 - (z-36)^2 = 7^2$\nD. $(x-1)^2 + (y-2)^2 + (z-3)^2 = 5^2$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 6,
+      "difficulty_part": 1,
+      "skill_id": "geometry_sphere",
+      "chapter": "HÌNH HỌC KHÔNG GIAN",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nPhương trình mặt cầu tâm $I(a; b; c)$ bán kính $R$ có dạng: $(x-a)^2 + (y-b)^2 + (z-c)^2 = R^2$.\n- Loại đáp án A và B vì có $x^2$ hoặc $y^2$ nằm trong bình phương, sau khi khai triển sẽ xuất hiện bậc 4.\n- Loại đáp án C vì sau khi khai triển, hệ số của $x^2, y^2, z^2$ không bằng nhau (hệ số của $z^2$ bị âm).\n- Đáp án D đúng dạng phương trình mặt cầu với tâm $I(1; 2; 3)$ và bán kính $R = 5$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q07",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nCho hai biến cố A và B. Xác suất của biến cố A với điều kiện biến cố B đã xảy ra được gọi là xác suất của A với điều kiện B, kí hiệu là $P(A|B)$. Phát biểu nào sau đây là đúng?\n\nA. Nếu $P(A) > 0$ thì $P(A|B) = \\frac{P(A \\cap B)}{P(A)}$.\nB. Nếu $P(B) > 0$ thì $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$.\nC. Nếu $P(A \\cap B) > 0$ thì $P(A|B) = \\frac{P(A)}{P(A \\cap B)}$.\nD. Nếu $P(A \\cap B) > 0$ thì $P(A|B) = \\frac{P(B)}{P(A \\cap B)}$.",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 7,
+      "difficulty_part": 1,
+      "skill_id": "probability_basic",
+      "chapter": "TỔ HỢP – XÁC SUẤT",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTheo định nghĩa xác suất có điều kiện, xác suất của biến cố A với điều kiện biến cố B đã xảy ra được tính bởi công thức: \n$$P(A|B) = \\frac{P(A \\cap B)}{P(B)}$$\nĐiều kiện để công thức này có nghĩa là biến cố B phải có khả năng xảy ra, tức là $P(B) > 0$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q08",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nXét mẫu số liệu ghép nhóm cho bởi bảng 1:\n\n| Nhóm | $[a_1; a_2)$ | $[a_2; a_3)$ | ... | $[a_m; a_{m+1})$ |\n| :--- | :--- | :--- | :--- | :--- |\n| Tần số | $n_1$ | $n_2$ | ... | $n_m$ |\n\nKhoảng biến thiên của mẫu số liệu ghép nhóm đó bằng:\n\nA. $a_{m+1} - a_1$.\nB. $a_{m+1} - a_m$.\nC. $n_m - n_1$.\nD. $n - n_m$.",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 8,
+      "difficulty_part": 1,
+      "skill_id": "statistics_descriptive",
+      "chapter": "THỐNG KÊ",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nTheo định nghĩa: khoảng biến thiên của mẫu số liệu ghép nhóm là hiệu số giữa đầu mút phải của nhóm cuối cùng và đầu mút trái của nhóm đầu tiên có chứa dữ liệu của mẫu số liệu. Trong bảng trên, đầu mút trái của nhóm đầu tiên là $a_1$ và đầu mút phải của nhóm cuối cùng là $a_{m+1}$. Do đó khoảng biến thiên bằng $a_{m+1} - a_1$."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q09",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nXét mẫu số liệu ghép nhóm có tứ phân vị thứ nhất, tứ phân vị thứ hai, tứ phân vị thứ ba lần lượt là $Q_1, Q_2, Q_3$. Khoảng tứ phân vị của mẫu số liệu ghép nhóm đó bằng:\n\nA. $Q_2 - Q_1$.\nB. $Q_3 - Q_2$.\nC. $Q_3 - Q_1$.\nD. $Q_3 - 2Q_2 + Q_1$.",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 9,
+      "difficulty_part": 1,
+      "skill_id": "statistics_descriptive",
+      "chapter": "THỐNG KÊ",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTheo định nghĩa, khoảng tứ phân vị của mẫu số liệu ghép nhóm (kí hiệu là $\\Delta_Q$) được tính bằng hiệu giữa tứ phân vị thứ ba ($Q_3$) và tứ phân vị thứ nhất ($Q_1$):\n$$\\Delta_Q = Q_3 - Q_1$$\nLưu ý: Trong hình có sự nhầm lẫn ở phần chữ highlight (Chọn D), tuy nhiên dựa trên công thức toán học và nội dung lời giải đi kèm ($Q_3 - Q_1$), đáp án chính xác phải là C."
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q10",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ liên tục và không âm trên đoạn $[a; b]$ có đồ thị như hình vẽ. Hình phẳng $(H)$ giới hạn bởi đồ thị hàm số $y = f(x)$, trục hoành và hai đường thẳng $x = a, x = b$ quay quanh trục $Ox$ tạo thành khối tròn xoay có thể tích bằng:\n\nA. $V = \\pi \\int_{b}^{a} [f(x)]^2 dx$.\nB. $V = \\int_{a}^{b} |f(x)| dx$.\nC. $V = \\int_{a}^{b} [f(x)]^2 dx$.\nD. $V = \\pi \\int_{a}^{b} [f(x)]^2 dx$.",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 10,
+      "difficulty_part": 1,
+      "skill_id": "integral_applications",
+      "chapter": "NGUYÊN HÀM VÀ TÍCH PHÂN",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q10.png"
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nThể tích khối tròn xoay được tạo thành khi quay hình phẳng giới hạn bởi đồ thị hàm số $y = f(x)$, trục hoành và hai đường thẳng $x = a, x = b$ quanh trục $Ox$ được tính theo công thức:\n$$V = \\pi \\int_{a}^{b} [f(x)]^2 dx$$"
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q11",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nXét mẫu số liệu ghép nhóm có phương sai bằng 16. Độ lệch chuẩn của mẫu số liệu bằng:\n\nA. 4.\nB. 8.\nC. 256.\nD. 32.",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 11,
+      "difficulty_part": 1,
+      "skill_id": "statistics_inference",
+      "chapter": "THỐNG KÊ",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q11.png"
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nĐộ lệch chuẩn ($\\sigma$) của mẫu số liệu được tính bằng căn bậc hai của phương sai ($S^2$).\nTheo đề bài, phương sai $S^2 = 16$. Ta có:\n$$\\sigma = \\sqrt{S^2} = \\sqrt{16} = 4$$"
+  },
+  {
+    "id": "exam_de7plus_de01_p1_q12",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nChỉ số hay độ pH của một dung dịch được tính theo công thức $pH = -\\log[H^+]$ với $[H^+]$ là nồng độ ion hydrogen. Độ $pH$ của loại sữa có $[H^+] = 10^{-6,8}$ là bao nhiêu?\n\nA. -6,8.\nB. 68.\nC. 6,8.\nD. 0,68.",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 12,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "ĐẠO HÀM",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nThay nồng độ $[H^+] = 10^{-6,8}$ vào công thức đề bài cho, ta có:\n$$pH = -\\log(10^{-6,8})$$\nSử dụng tính chất $\\log_{a}(a^b) = b$, ta được:\n$$pH = -(-6,8) = 6,8$$"
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q13",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nTrong không gian tọa độ Oxyz, cho hai đường thẳng:\n$$\\Delta_1: \\frac{x-1}{2} = \\frac{y-2}{1} = \\frac{z-3}{-2}$$\nvà\n$$\\Delta_2: \\frac{x-4}{-1} = \\frac{y-5}{-2} = \\frac{z-6}{2}$$\n\nKhi đó:\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Vectơ có tọa độ (1;2;3) là một vectơ chỉ phương của $\\Delta_1$. | | |\n| (b) Vectơ có tọa độ (4;5;6) là một vectơ chỉ phương của $\\Delta_2$. | | |\n| (c) Côsin góc giữa hai vectơ $\\vec{u_1} = (2;1;-2)$ và $\\vec{u_2} = (-1;-2;2)$ bằng $-\\frac{8}{9}$. | | |\n| (d) Góc giữa hai đường thẳng $\\Delta_1$ và $\\Delta_2$ (làm tròn kết quả đến hàng đơn vị của độ) bằng 132°. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 13,
+      "difficulty_part": 2,
+      "skill_id": "geometry_line_plane",
+      "chapter": "HÌNH HỌC KHÔNG GIAN",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-F,c-T,d-F",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN:\n(a) SAI\n(b) SAI\n(c) ĐÚNG\n(d) SAI\n\nGIẢI THÍCH:\n(a) $\\Delta_1$ có vectơ chỉ phương là $\\vec{u_1} = (2;1;-2)$. Do $\\frac{2}{1} \\neq \\frac{1}{2} \\neq \\frac{-2}{3}$ nên vectơ có tọa độ $(1;2;3)$ không cùng phương $\\vec{u_1} = (2;1;-2)$. Vậy vectơ có tọa độ $(1;2;3)$ không là một vectơ chỉ phương của $\\Delta_1$. → Chọn SAI.\n\n(b) $\\Delta_2$ có vectơ chỉ phương là $\\vec{u_2} = (-1;-2;2)$. Do $\\frac{-1}{4} \\neq \\frac{-2}{5} \\neq \\frac{2}{6}$ nên vectơ có tọa độ $(4;5;6)$ không cùng phương $\\vec{u_2} = (-1;-2;2)$. Vậy vectơ có tọa độ $(4;5;6)$ không là một vectơ chỉ phương của $\\Delta_2$. → Chọn SAI.\n\n(c) Côsin góc giữa hai vectơ $\\vec{u_1} = (2;1;-2)$ và $\\vec{u_2} = (-1;-2;2)$ bằng:\n$$\\cos(\\vec{u_1};\\vec{u_2}) = \\frac{\\vec{u_1} \\cdot \\vec{u_2}}{|\\vec{u_1}| \\cdot |\\vec{u_2}|} = \\frac{2 \\cdot (-1) + 1 \\cdot (-2) + (-2) \\cdot 2}{\\sqrt{2^2+1^2+(-2)^2} \\cdot \\sqrt{(-1)^2+(-2)^2+2^2}} = \\frac{-8}{9}$$\n→ Chọn ĐÚNG.\n\n(d) Góc giữa hai đường thẳng $\\Delta_1$ và $\\Delta_2$ bằng:\n$$\\cos(\\Delta_1, \\Delta_2) = |\\cos(\\vec{u_1};\\vec{u_2})| = \\frac{8}{9}$$\nDo đó góc giữa hai đường thẳng $\\Delta_1$ và $\\Delta_2$ gần bằng $27°15'57,76''$ (khoảng 27°), không phải 132°. → Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q14",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = x^3 - 3x^2 + 2$. Khi đó:\n\na) Đạo hàm của hàm số đã cho là: $y' = 3x^2 - 6x$.\nb) Bảng biến thiên của hàm số đã cho là:\n\n| $x$ | $-\\infty$ | | $0$ | | $2$ | | $+\\infty$ |\n|---|---|---|---|---|---|---|---|\n| $y'$ | | $-$ | $0$ | $+$ | $0$ | $-$ | |\n| $y$ | $+\\infty$ | $\\searrow$ | $-2$ | $\\nearrow$ | $2$ | $\\searrow$ | $-\\infty$ |\n\n[Xem hình: q14_1.png]\nc) Hàm số đã cho đồng biến trên khoảng $(0; 2)$, nghịch biến trên các khoảng $(-\\infty; 0) \\cup (2; +\\infty)$.\nd) Đồ thị của hàm số đã cho là: [Xem hình: q14_2.png]",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 14,
+      "difficulty_part": 2,
+      "skill_id": "derivative_applications",
+      "chapter": "ĐẠO HÀM",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-F,c-F,d-F",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q14_1.png,data/exams/images/de7plus_de01/q14_2.png"
+    },
+    "answer": "ĐÁP ÁN: a-T,b-F,c-F,d-F\n\nGIẢI THÍCH:\n(a) Đạo hàm: $y' = (x^3 - 3x^2 + 2)' = 3x^2 - 6x$. Đúng theo công thức đạo hàm. → Chọn ĐÚNG.\n\n(b) Cho $y' = 0$: $3x^2 - 6x = 0 \\Leftrightarrow 3x(x-2) = 0 \\Leftrightarrow x = 0$ (khi đó $y = 2$) hoặc $x = 2$ (khi đó $y = -2$).\nBảng biến thiên ĐÚNG phải là:\n| $x$ | $-\\infty$ | | $0$ | | $2$ | | $+\\infty$ |\n|---|---|---|---|---|---|---|---|\n| $y'$ | | $+$ | $0$ | $-$ | $0$ | $+$ | |\n| $y$ | $-\\infty$ | $\\nearrow$ | $2$ | $\\searrow$ | $-2$ | $\\nearrow$ | $+\\infty$ |\n\nBảng biến thiên trong đề sai ở dấu của $y'$ và giá trị cực trị bị đảo ngược. → Chọn SAI.\n\n(c) Dựa vào bảng biến thiên đúng: hàm số nghịch biến trên $(0; 2)$ và đồng biến trên $(-\\infty; 0) \\cup (2; +\\infty)$. Đề bài nói ngược lại. → Chọn SAI.\n\n(d) Đồ thị trong đề thể hiện hàm số có cực đại tại $x = 2$ với $y = 2$ và cực tiểu gần $x = 0$, nhưng thực tế cực đại tại $x = 0$ ($y = 2$) và cực tiểu tại $x = 2$ ($y = -2$). Đồ thị đề cho bị đảo vị trí cực trị. → Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q15",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nCâu 15. Một kho hàng có 85% sản phẩm loại I và 15% sản phẩm loại II, trong đó có 1% sản phẩm loại I bị hỏng, 4% sản phẩm loại II bị hỏng. Các sản phẩm có kích thước và hình dạng như nhau. Một khách hàng chọn ngẫu nhiên 1 sản phẩm. Xét các biến cố:\nA: “Khách hàng chọn được sản phẩm loại I”\nB: “Khách hàng chọn được sản phẩm không bị hỏng”.\n\nKhi đó:\n\na) $P(A)=0,85$\nb) $P(B|A)=0,99$\nc) $P(B)=0,9855$\nd) $P(A|B)=0,95$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 15,
+      "difficulty_part": 2,
+      "skill_id": "probability_basic",
+      "chapter": "TỔ HỢP – XÁC SUẤT",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-T,d-F",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: a-T,b-T,c-T,d-F\n\nGIẢI THÍCH:\n(a) Khách hàng chọn ngẫu nhiên 1 sản phẩm nên $P(A)$ chính là tỷ lệ sản phẩm loại I trong kho, tức $85\\% = 0,85$. Mệnh đề đúng.\n\n(b) Trong số sản phẩm loại I, tỷ lệ bị hỏng là $1\\%$, nên tỷ lệ không bị hỏng là $99\\% = 0,99$. Mệnh đề đúng.\n\n(c) Sử dụng công thức xác suất toàn phần với các giá trị đã tính ở (a) và (b), ta được $P(B)=0,9855$. Mệnh đề đúng.\n\n(d) Áp dụng công thức Bayes, kết quả thu được khoảng $0,854 \\neq 0,95$. Mệnh đề sai."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q16",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nCâu 16. Một xưởng máy sử dụng một loại linh kiện được sản xuất từ hai cơ sở I và II. Số linh kiện do cơ sở I sản xuất chiếm 61%, số linh kiện do cơ sở II sản xuất chiếm 39%. Tỉ lệ linh kiện đạt tiêu chuẩn của cơ sở I, cơ sở II lần lượt là 93%, 82%. Kiểm tra ngẫu nhiên 1 linh kiện ở xưởng máy. Xét các biến cố:\nA₁: \"Linh kiện được kiểm tra do cơ sở I sản xuất\";\nA₂: \"Linh kiện được kiểm tra do cơ sở II sản xuất\";\nB: \"Linh kiện được kiểm tra đạt tiêu chuẩn\".\n\nKhi đó:\n\na) $P(A_1)=0,39$\nb) $P(B|A_2)=0,82$\nc) $P(B)=0,8871$\nd) $P(A_1|B)=0,55$",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 16,
+      "difficulty_part": 2,
+      "skill_id": "probability_basic",
+      "chapter": "TỔ HỢP – XÁC SUẤT",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-T,c-T,d-F",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: a-F,b-T,c-T,d-F\n\nGIẢI THÍCH:\n(a) Tỷ lệ linh kiện do cơ sở I sản xuất là 61%, nên $P(A_1)=0,61 \\neq 0,39$. Mệnh đề sai.\n\n(b) Tỷ lệ linh kiện đạt tiêu chuẩn của cơ sở II là 82%, nên $P(B|A_2)=0,82$. Mệnh đề đúng.\n\n(c) Sử dụng công thức xác suất toàn phần với $P(A_1)=0,61$, $P(B|A_1)=0,93$, $P(A_2)=0,39$, $P(B|A_2)=0,82$ ta được $P(B)=0,8871$. Mệnh đề đúng.\n\n(d) Áp dụng công thức Bayes, kết quả thu được khoảng $0,64 \\neq 0,55$. Mệnh đề sai."
+  },
+  {
+    "id": "exam_de7plus_de01_p3_q17",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 17 [Phần C - Trả lời ngắn]:\n\nCho các số $a,b,c,d$ khác 0 thỏa mãn $ad - bc \\neq 0$. Tổng số đường tiệm cận ngang và đường tiệm cận đứng của đồ thị hàm số $y = \\dfrac{ax + b}{cx + d}$ là bao nhiêu?",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 17,
+      "difficulty_part": 3,
+      "skill_id": "function_survey",
+      "chapter": "ĐẠO HÀM",
+      "type": "exam_short_answer",
+      "correct_answer": "2",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 2\n\nGIẢI THÍCH:\nĐồ thị hàm số $y = \\dfrac{ax + b}{cx + d}$ có\n+ đường tiệm cận đứng là $x = -\\dfrac{d}{c}$ và\n+ đường tiệm cận ngang là $y = \\dfrac{a}{c}$.\n\nVậy tổng số đường tiệm cận ngang và đường tiệm cận đứng của đồ thị hàm số $y = \\dfrac{ax+b}{cx+d}$ là 2."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q18",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 18 [Phần 2 - Trả lời ngắn]:\n\nTrong không gian Oxyz, cho điểm $A(0;2;-4)$ và đường thẳng $d_1: \\dfrac{x-2}{1} = \\dfrac{y-1}{-1} = \\dfrac{z+1}{2}$. Gọi $H$ là hình chiếu của $A$ trên đường thẳng $d_1$. Đường thẳng $AH$ có một vectơ chỉ phương là $\\vec{u} = (a;b;c)$ với $a,b,c \\in \\mathbb{Z}$. Khi đó $2a-b+c$ bằng",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 18,
+      "difficulty_part": 2,
+      "skill_id": "geometry_line_plane",
+      "chapter": "HÌNH HỌC KHÔNG GIAN",
+      "type": "exam_short_answer",
+      "correct_answer": "1",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 1\n\nGIẢI THÍCH:\nTa có phương trình tham số của $d_1$ là:\n\\[\n\\begin{cases}\n x = 2 + t \\\\\n y = 1 - t \\\\\n z = -1 + 2t\n\\end{cases}\n\\]\nĐường thẳng $d_1$ có một vectơ chỉ phương là $\\vec{u_1} = (1;-1;2)$.\n\nĐiểm $H \\in d_1$ nên $H(2+t;1-t;-1+2t) \\Rightarrow \\overrightarrow{AH} = (2+t; -1-t; 3+2t)$.\n\nVì $H$ là hình chiếu của $A$ trên đường thẳng $d_1$ nên $\\overrightarrow{AH} \\perp \\vec{u_1}$ hay $\\overrightarrow{AH} \\cdot \\vec{u_1} = 0$:\n\\[(2+t)\\cdot1 + (-1-t)\\cdot(-1) + (3+2t)\\cdot2 = 0 \\Leftrightarrow 6t + 9 = 0 \\Leftrightarrow t = -\\dfrac{3}{2}\\]\n\nKhi đó $\\overrightarrow{AH} = \\left(\\dfrac{1}{2}; \\dfrac{1}{2}; 0\\right)$.\n\nVì $a,b,c \\in \\mathbb{Z}$ nên đường thẳng $AH$ có một vectơ chỉ phương là $2\\overrightarrow{AH} = (1;1;0)$.\nVậy $2a - b + c = 2\\cdot1 - 1 + 0 = 1$."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q19",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 19 [Phần 2 - Trả lời ngắn]:\n\nBạn Hải nhận thiết kế logo hình con mắt (phần được tô đậm) cho một cơ sở y tế. Logo là hình phẳng giới hạn bởi hai parabol $y = f(x)$ và $y = g(x)$ như hình (đơn vị trên mỗi trục tọa độ là decimét). \nBạn Hải cần tính diện tích của logo để báo giá cho cơ sở y tế đó trước khi ký hợp đồng. Diện tích của logo là bao nhiêu decimét vuông (làm tròn kết quả đến hàng phần chục).\n\n[Xem hình: q19_1.png]",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 19,
+      "difficulty_part": 2,
+      "skill_id": "integral_applications",
+      "chapter": "NGUYÊN HÀM VÀ TÍCH PHÂN",
+      "type": "exam_short_answer",
+      "correct_answer": "9,8",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q19_1.png"
+    },
+    "answer": "ĐÁP ÁN: 9,8\n\nGIẢI THÍCH:\n» Đặt $f(x) = ax^2 + bx + c$, $(a > 0)$. \n\nVì đồ thị hàm số $y = f(x)$ nhận Oy làm trục đối xứng nên $-\\dfrac{b}{2a} = 0 \\Rightarrow b = 0$. \n\nVà đồ thị đi qua điểm có tọa độ $(0;-1)$ và $(2;0)$ ta có: $\\begin{cases} c = -1 \\\\ 4a + c = 0 \\end{cases} \\Rightarrow \\begin{cases} a = \\dfrac{1}{4} \\\\ c = -1 \\end{cases}$. \n\nVậy $f(x) = \\dfrac{1}{4}x^2 - 1$.\n\n» Đặt $g(x) = ax^2 + bx + c$, $(a < 0)$. \n\nVì đồ thị hàm số $y = g(x)$ nhận Oy làm trục đối xứng nên $-\\dfrac{b}{2a} = 0 \\Rightarrow b = 0$. \n\nLại có đồ thị đi qua điểm có tọa độ $(0;2)$ và $(2;1)$ ta có: $\\begin{cases} c = 2 \\\\ 4a + c = 1 \\end{cases} \\Rightarrow \\begin{cases} a = -\\dfrac{1}{4} \\\\ c = 2 \\end{cases}$. \n\nVậy $g(x) = -\\dfrac{1}{4}x^2 + 2$.\n\n» Phương trình hoành độ giao điểm của đồ thị hàm số $y = f(x)$ và $y = g(x)$ là\n\\[\n\\dfrac{1}{4}x^2 - 1 = -\\dfrac{1}{4}x^2 + 2 \\Leftrightarrow \\dfrac{1}{2}x^2 = 3 \\Leftrightarrow x = \\pm \\sqrt{6}\n\\]\n\n» Khi đó, diện tích logo là:\n\\[\nS = \\int_{-\\sqrt{6}}^{\\sqrt{6}} \\left[ \\left(-\\dfrac{1}{4}x^2 + 2\\right) - \\left(\\dfrac{1}{4}x^2 - 1\\right) \\right] dx = \\int_{-\\sqrt{6}}^{\\sqrt{6}} \\left(3 - \\dfrac{1}{2}x^2 \\right) dx = \\left[ 3x - \\dfrac{1}{6}x^3 \\right]_{-\\sqrt{6}}^{\\sqrt{6}} = 4\\sqrt{6} \\approx 9,8\\ (dm^2).\n\n[Xem hình: q19_2.png]"
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q20",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 20 [Phần 2 - Trả lời ngắn]:\n\nCho một tấm nhôm có dạng hình vuông cạnh $3dm$. Bác Tùng cắt ở bốn góc bốn hình vuông cùng có độ dài cạnh bằng $x\\ (dm)$, rồi gập tấm nhôm lại như hình vẽ để được một cái hộp có dạng hình hộp chữ nhật không có nắp. Gọi $V$ là thể tích của khối hộp đó tính theo $x\\ (dm)$. Giá trị lớn nhất của $V$ là bao nhiêu decimet khối?\n\n[Xem hình: q20_1.png]",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 20,
+      "difficulty_part": 2,
+      "skill_id": "derivative_applications",
+      "chapter": "ĐẠO HÀM",
+      "type": "exam_short_answer",
+      "correct_answer": "2",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q20_1.png"
+    },
+    "answer": "ĐÁP ÁN: 2\n\nGIẢI THÍCH:\nĐiều kiện: $0 < x < \\dfrac{3}{2}$.\n\nĐộ dài cạnh đáy của cái hộp là $3 - 2x$.\nChiều cao của cái hộp là $x$.\n\nThể tích của cái hộp là: $V = (3-2x)^2 x = (9 - 12x + 4x^2)x = 4x^3 - 12x^2 + 9x$.\n\n$V' = 12x^2 - 24x + 9$; $V' = 0 \\Leftrightarrow 12x^2 - 24x + 9 = 0 \\Leftrightarrow \\begin{cases} x = \\dfrac{3}{2} \\\\ x = \\dfrac{1}{2} \\end{cases}$\n\n[Xem hình: q20_2.png]\n\nTừ bảng biến thiên, ta thấy $V$ đạt giá trị lớn nhất tại $x = \\dfrac{1}{2}$.\n\n$V\\left(\\dfrac{1}{2}\\right) = 4\\left(\\dfrac{1}{8}\\right) - 12\\left(\\dfrac{1}{4}\\right) + 9\\left(\\dfrac{1}{2}\\right) = \\dfrac{1}{2} - 3 + \\dfrac{9}{2} = 2\\ (dm^3)$."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q21",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 21 [Phần 2 - Trả lời ngắn]:\n\nMột công ty dược phẩm giới thiệu một dụng cụ để kiểm tra sớm bệnh sốt xuất huyết. Về báo cáo kiểm định chất lượng của sản phẩm, họ cho biết như sau: Số người được thử là 8000, trong số đó có 1200 người đã bị nhiễm bệnh sốt xuất huyết và 6800 người không bị nhiễm bệnh sốt xuất huyết. Nhưng khi kiểm tra lại bằng dụng cụ của công ty, trong 1200 người đã bị nhiễm bệnh sốt xuất huyết, có 70% số người cho kết quả dương tính, còn lại cho kết quả âm tính. Trong 6800 người không bị nhiễm bệnh sốt xuất huyết, có 5% số người đó cho kết quả dương tính, còn lại cho kết quả âm tính. Xác suất mà một bệnh nhân với kết quả kiểm tra dương tính là bị nhiễm bệnh sốt xuất huyết bằng bao nhiêu? (viết kết quả dưới dạng số thập phân và làm tròn đến hàng phần trăm).",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 21,
+      "difficulty_part": 2,
+      "skill_id": "probability_basic",
+      "chapter": "TỔ HỢP – XÁC SUẤT",
+      "type": "exam_short_answer",
+      "correct_answer": "0,71",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q21_1.png,data/exams/images/de7plus_de01/q21_2.png,data/exams/images/de7plus_de01/q21_3.png"
+    },
+    "answer": "ĐÁP ÁN: 0,71\n\nGIẢI THÍCH:\n» Khi kiểm tra lại, trong 1200 người đã bị nhiễm sốt xuất huyết có 70% số người cho kết quả dương tính nên ta có: $1200 \\times 70\\% = 840$ (người).\n\nKhi đó, số người bị nhiễm sốt xuất huyết cho kết quả âm tính trong 1200 người đó là: $1200 - 840 = 360$ (người).\n\n» Khi kiểm tra lại, trong 6800 người không bị nhiễm bệnh sốt xuất huyết, có 5% số người cho kết quả dương tính nên ta có: $6800 \\times 5\\% = 340$ (người).\n\nKhi đó, số người không bị nhiễm sốt xuất huyết cho kết quả âm tính trong 6800 người đó là: $6800 - 340 = 6460$ (người).\n\nTừ đó, ta có bảng sau:\n\n| | Số người nhiễm bệnh | Số người không nhiễm bệnh | Tổng số |\n|---|---|---|---|\n| Dương tính | 840 | 340 | 1180 |\n| Âm tính | 360 | 6460 | 6820 |\n\n» Xét các biến cố sau:\n\n$A_1$: \"Người được chọn ra trong số những người thử nghiệm là bị nhiễm bệnh sốt xuất huyết\";\n\n$A_2$: \"Người được chọn ra trong số những người thử nghiệm cho kết quả dương tính (khi kiểm tra lại)\";\n\nTa có:\n\\[\nP(A_2) = \\dfrac{1180}{8000} = \\dfrac{59}{400}; \\quad P(A_1 \\cap A_2) = \\dfrac{840}{8000} = \\dfrac{21}{200}.\n\\]\n\nKhi đó xác suất mà một bệnh nhân với kết quả kiểm tra dương tính là bị nhiễm bệnh sốt xuất huyết nghĩa là cần tính $P(A_1|A_2)$.\n\nVậy:\n\\[\nP(A_1|A_2) = \\dfrac{P(A_1 \\cap A_2)}{P(A_2)} = \\dfrac{21/200}{59/400} = \\dfrac{21}{200} \\times \\dfrac{400}{59} = \\dfrac{42}{59} \\approx 0,71."
+  },
+  {
+    "id": "exam_de7plus_de01_p2_q22",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 22 [Phần 2 - Trả lời ngắn]:\n\nMột chiếc hộp có 80 viên bi, trong đó có 50 viên bi màu đỏ và 30 viên bi màu vàng; các viên bi có kích thước và khối lượng như nhau. Sau khi kiểm tra, người ta thấy 60% số viên bi màu đỏ có đánh số và 50% số viên bi màu vàng có đánh số, những viên bi còn lại không đánh số. Lấy ra ngẫu nhiên một viên bi trong hộp. Xác suất để viên bi được lấy ra có đánh số là bao nhiêu? (kết quả làm tròn đến hàng phần trăm).",
+    "metadata": {
+      "exam_id": "de7plus_de01",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 1)",
+      "question_number": 22,
+      "difficulty_part": 2,
+      "skill_id": "probability_basic",
+      "chapter": "TỔ HỢP – XÁC SUẤT",
+      "type": "exam_short_answer",
+      "correct_answer": "0,56",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de01/q22.png"
+    },
+    "answer": "ĐÁP ÁN: 0,56\n\nGIẢI THÍCH:\nGọi $A$: \"viên bi được lấy ra có đánh số\"\n\nvà $B$: \"viên bi được lấy ra có màu đỏ\", suy ra $\\overline{B}$ là biến cố \"viên bi được lấy ra có màu vàng\".\n\nLúc này ta đi tính $P(A)$ theo công thức: $P(A) = P(B).P(A|B) + P(\\overline{B}).P(A|\\overline{B})$\n\nTa có:\n\\[\nP(B) = \\dfrac{50}{80} = \\dfrac{5}{8}, \\quad P(\\overline{B}) = \\dfrac{30}{80} = \\dfrac{3}{8},\n\\]\n\\[\nP(A|B) = 60\\% = \\dfrac{3}{5}, \\quad P(A|\\overline{B}) = 100\\% - 50\\% = \\dfrac{1}{2}.\n\\]\n\nVậy \n\\[\nP(A) = P(B).P(A|B) + P(\\overline{B}).P(A|\\overline{B}) = \\dfrac{5}{8} \\cdot \\dfrac{3}{5} + \\dfrac{3}{8} \\cdot \\dfrac{1}{2} = \\dfrac{3}{8} + \\dfrac{3}{16} = \\dfrac{6}{16} + \\dfrac{3}{16} = \\dfrac{9}{16} = 0,5625 \\approx 0,56."
+  }
+]

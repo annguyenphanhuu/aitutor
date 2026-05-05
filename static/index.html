@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor — Gia sư Toán 12</title>
+    <meta name="description" content="Gia sư AI thông minh cho Toán lớp 12">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+        onload="window._katexReady = true"></script>
+    <!-- marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- Plotly.js for charts -->
+    <script src="https://cdn.plot.ly/plotly-2.35.0.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <!-- Login Modal -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-card">
+            <div class="login-icon">🎓</div>
+            <h2 class="login-title">AI Tutor</h2>
+            <p class="login-subtitle">Gia sư Toán 12 thông minh</p>
+            <div class="login-form">
+                <input type="text" id="login-username" class="login-input"
+                    placeholder="Nhập tên đăng nhập..." maxlength="50"
+                    onkeydown="if(event.key==='Enter')doLogin()">
+                <button class="login-btn" id="login-btn" onclick="doLogin()">
+                    Bắt đầu học 🚀
+                </button>
+                <p class="login-error" id="login-error" style="display:none"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Logo + New Chat -->
+            <div class="sidebar-top">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">🧮</div>
+                    <span class="sidebar-logo-text">AI Tutor</span>
+                </div>
+                <button class="new-chat-btn" onclick="newConversation()" title="Tạo chat mới">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+            </div>
+
+            <!-- Session List — scrollable, takes available space -->
+            <div class="sidebar-sessions">
+                <div class="sidebar-section-label" style="display: flex; justify-content: space-between; align-items: center;">
+                    Lịch sử chat
+                    <button class="clear-all-btn" onclick="clearAllSessions()" title="Xóa tất cả lịch sử chat" style="background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="session-list" id="session-list">
+                    <!-- Sessions loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Quick Actions — fixed at bottom above footer -->
+            <div class="sidebar-quick-actions">
+                <div class="sidebar-section-label">Chức năng</div>
+                <button class="sidebar-action-btn" onclick="showQuizPanel()">
+                    <span class="sidebar-action-icon">📝</span>
+                    <span>Làm quiz</span>
+                </button>
+                <button class="sidebar-action-btn" onclick="startDiagnostic()">
+                    <span class="sidebar-action-icon">🔍</span>
+                    <span>Chẩn đoán năng lực</span>
+                </button>
+                <button class="sidebar-action-btn" onclick="showExamSelector()">
+                    <span class="sidebar-action-icon">📄</span>
+                    <span>Làm đề thi</span>
+                </button>
+                <button class="sidebar-action-btn" onclick="startReview()">
+                    <span class="sidebar-action-icon">📖</span>
+                    <span>Ôn tập hôm nay</span>
+                </button>
+                <a class="sidebar-action-btn" href="/dashboard">
+                    <span class="sidebar-action-icon">📊</span>
+                    <span>Dashboard tiến độ</span>
+                </a>
+            </div>
+
+            <!-- Bottom user info -->
+            <div class="sidebar-footer" id="sidebar-footer" style="display:none">
+                <div class="sidebar-user-info" id="sidebar-user-info">
+                    <div class="sidebar-user-avatar">👤</div>
+                    <span class="sidebar-user-name" id="sidebar-user-name"></span>
+                </div>
+                <button class="sidebar-logout-btn" onclick="doLogout()" title="Đăng xuất">↪</button>
+            </div>
+        </aside>
+
+        <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-icon">🧮</div>
+                <div>
+                    <h1 class="logo-text">AI Tutor</h1>
+                    <p class="logo-sub">Toán lớp 12</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="btn-diagnostic" onclick="startDiagnostic()"
+                    title="Test chẩn đoán năng lực">
+                    🔍 Chẩn đoán
+                </button>
+                <button class="header-btn header-btn-exam" id="btn-exam" onclick="showExamSelector()"
+                    title="Làm đề thi có sẵn">
+                    📄 Làm đề
+                </button>
+                <button class="header-btn" id="btn-quiz-start" onclick="showQuizPanel()" title="Làm bài kiểm tra">
+                    📝 Làm quiz
+                </button>
+                <button class="header-btn" id="btn-review" onclick="startReview()" title="Ôn tập chống quên">
+                    📖 Ôn tập
+                </button>
+                <a class="header-btn" href="/dashboard" title="Xem tiến độ">
+                    📊 Dashboard
+                </a>
+                <div class="user-badge" id="user-badge" style="display:none">
+                    <span class="user-badge-name" id="user-badge-name"></span>
+                    <button class="user-logout-btn" onclick="doLogout()" title="Đổi tài khoản">↪</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quiz Panel (hidden by default) -->
+        <div class="quiz-panel" id="quiz-panel" style="display:none">
+            <div class="quiz-panel-header">
+                <h2 id="quiz-title">📝 Bài Kiểm Tra</h2>
+                <button class="quiz-close-btn" onclick="closeQuizPanel()">✕</button>
+            </div>
+            <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+            </div>
+            <div class="quiz-score-bar" id="quiz-score-bar">
+                <span id="quiz-score-text">Câu 0/0</span>
+                <span id="quiz-correct-text">✅ 0 đúng</span>
+            </div>
+            <div class="quiz-question-area" id="quiz-question-area">
+                <!-- Quiz questions rendered here -->
+            </div>
+            <div class="quiz-result-area" id="quiz-result-area" style="display:none">
+                <!-- Quiz results rendered here -->
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-messages" id="chat-messages">
+            <div class="welcome-message" id="welcome-msg">
+                <div class="welcome-icon">🎓</div>
+                <h2>Chào mừng đến AI Tutor!</h2>
+                <p>Hỏi bất kỳ câu hỏi Toán 12 nào — mình sẽ giải thích chi tiết cho bạn.</p>
+                <div class="suggestion-chips">
+                    <button class="chip" onclick="sendSuggestion('Giải thích tính đơn điệu của hàm số')">📖 Tính đơn
+                        điệu</button>
+                    <button class="chip" onclick="sendSuggestion('Cách tìm cực trị hàm số bậc 3?')">📈 Cực trị hàm
+                        số</button>
+                    <button class="chip" onclick="sendSuggestion('Vẽ đồ thị hàm số y = x^3 - 3x + 1')">📐 Vẽ đồ
+                        thị</button>
+                    <button class="chip" onclick="sendSuggestion('Cho bài tập về đạo hàm mức dễ')">✏️ Bài tập đạo
+                        hàm</button>
+                    <button class="chip" onclick="startDiagnostic()">🔍 Test chẩn đoán</button>
+                    <button class="chip" onclick="showExamSelector()">📄 Làm đề thi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Selector Modal -->
+        <div class="modal-overlay" id="skill-modal" style="display:none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📝 Chọn chuyên đề kiểm tra</h3>
+                    <button class="modal-close" onclick="closeSkillModal()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="skill-grid" id="skill-grid">
+                        <!-- Skills loaded dynamically -->
+                    </div>
+                    <div class="difficulty-selector">
+                        <label>Độ khó:</label>
+                        <div class="difficulty-options">
+                            <button class="diff-btn adaptive active" data-diff="0" onclick="selectDifficulty(0)">🎯 Tự động</button>
+                            <button class="diff-btn" data-diff="1" onclick="selectDifficulty(1)">Dễ</button>
+                            <button class="diff-btn" data-diff="2" onclick="selectDifficulty(2)">Trung bình</button>
+                            <button class="diff-btn" data-diff="3" onclick="selectDifficulty(3)">Khó</button>
+                        </div>
+                        <div class="adaptive-hint" id="adaptive-hint">
+                            <span class="adaptive-badge">🤖 Adaptive</span>
+                            Hệ thống tự chọn độ khó phù hợp dựa trên năng lực của em
+                        </div>
+                    </div>
+                    <div class="exam-format-selector">
+                        <label class="exam-format-label">
+                            <input type="checkbox" id="exam-format-cb">
+                            <span>📋 Cấu trúc THPT QG</span>
+                            <span class="exam-format-hint">(Phần 1: Trắc nghiệm + Phần 2: Đúng/Sai + Phần 3: Trả lời
+                                ngắn)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-submit-btn" id="modal-submit-btn" onclick="generateQuiz()" disabled>
+                        Bắt đầu kiểm tra
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Selector Modal -->
+        <div class="modal-overlay" id="exam-modal" style="display:none">
+            <div class="modal-content exam-modal-content">
+                <div class="modal-header">
+                    <h3>📄 Chọn đề thi</h3>
+                    <button class="modal-close" onclick="closeExamModal()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="exam-list" id="exam-list">
+                        <!-- Exams loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input-area">
+            <!-- Image preview strip -->
+            <div class="image-previews" id="image-previews"></div>
+
+            <div class="input-wrapper">
+                <!-- Hidden file input -->
+                <input type="file" id="file-input" accept="image/*" multiple style="display:none"
+                    onchange="handleFileSelect(event)">
+
+                <!-- Attach button -->
+                <button class="attach-btn" id="btn-attach" title="Đính kèm ảnh"
+                    onclick="document.getElementById('file-input').click()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                    </svg>
+                </button>
+
+                <textarea id="chat-input" placeholder="Nhập câu hỏi Toán 12... (hoặc dán ảnh)" rows="1"
+                    onkeydown="handleInputKey(event)"></textarea>
+
+                <button class="send-btn" id="btn-send" onclick="sendMessage()" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        </div>
+    </div> <!-- .app-wrapper -->
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

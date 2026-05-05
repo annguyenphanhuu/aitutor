@@ -1,0 +1,154 @@
+[
+  {
+    "id": "theory_1",
+    "content": "Các bước tìm điểm cực trị của hàm số $f(x)$\n\n- Bước 1: Tìm tập xác định của hàm số $f(x)$.\n- Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại.\n- Bước 3: Lập bảng biến thiên của hàm số.\n- Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số.",
+    "metadata": {
+      "chapter": "Hàm số",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_2",
+    "content": "Các bước tìm giá trị lớn nhất và giá trị nhỏ nhất của hàm số $f(x)$ trên đoạn $[a; b]$:\n\n- Bước 1: Tìm các điểm $x_1, x_2, \\ldots, x_n \\in (a; b)$ tại đó $f'(x)$ bằng 0 hoặc không tồn tại.\n- Bước 2: Tính $f(x_1), f(x_2), \\ldots, f(x_n), f(a)$ và $f(b)$.\n- Bước 3: Tìm số lớn nhất $M$ và số nhỏ nhất $m$ trong các số trên. Ta có:\n$$M = \\max_{[a;b]} f(x), \\quad m = \\min_{[a;b]} f(x).$$",
+    "metadata": {
+      "chapter": "Hàm số",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_3",
+    "content": "**1. Đường tiệm cận ngang**\n\nĐường thẳng $y = y_0$ gọi là tiệm cận ngang của đồ thị hàm số $y = f(x)$ nếu $\\lim_{x \\to +\\infty} f(x) = y_0$ hoặc $\\lim_{x \\to -\\infty} f(x) = y_0$.\n\n**2. Đường tiệm cận đứng**\n\nĐường thẳng $x = x_0$ gọi là tiệm cận đứng của đồ thị hàm số $y = f(x)$ nếu ít nhất một trong các điều kiện sau được thỏa mãn:\n$$\\lim_{x \\to x_0^+} f(x) = +\\infty, \\quad \\lim_{x \\to x_0^-} f(x) = -\\infty, \\quad \\lim_{x \\to x_0^+} f(x) = -\\infty, \\quad \\lim_{x \\to x_0^-} f(x) = +\\infty.$$\n\n**3. Đường tiệm cận xiên**\n\nĐường thẳng $y = ax + b$ ($a \\neq 0$) gọi là tiệm cận xiên của đồ thị hàm số $y = f(x)$ nếu $\\lim_{x \\to +\\infty} [f(x) - (ax + b)] = 0$ hoặc $\\lim_{x \\to -\\infty} [f(x) - (ax + b)] = 0$.",
+    "metadata": {
+      "chapter": "Hàm số",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_4",
+    "content": "**Tích vô hướng của hai vectơ trong không gian**\n\nTrong không gian, cho hai vectơ $\\vec{a}, \\vec{b}$ đều khác $\\vec{0}$. Tích vô hướng của $\\vec{a}$ và $\\vec{b}$ là một số, kí hiệu $\\vec{a} \\cdot \\vec{b}$, được xác định bởi:\n$$\\vec{a} \\cdot \\vec{b} = |\\vec{a}| \\cdot |\\vec{b}| \\cdot \\cos(\\vec{a}, \\vec{b}).$$\n\n**Chú ý:**\n- Quy ước: nếu $\\vec{a} = \\vec{0}$ hoặc $\\vec{b} = \\vec{0}$ thì $\\vec{a} \\cdot \\vec{b} = 0$.\n- $\\vec{a} \\perp \\vec{b} \\Leftrightarrow \\vec{a} \\cdot \\vec{b} = 0$.\n- Với mọi vectơ $\\vec{a}$, ta có $\\vec{a}^2 = |\\vec{a}|^2$.\n- Nếu $\\vec{a}, \\vec{b}$ khác $\\vec{0}$ thì $\\cos(\\vec{a}, \\vec{b}) = \\dfrac{\\vec{a} \\cdot \\vec{b}}{|\\vec{a}| \\cdot |\\vec{b}|}$.",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_5",
+    "content": "**Biểu thức tọa độ của tích vô hướng trong không gian**\n\nTrong không gian $Oxyz$, tích vô hướng của hai vectơ $\\vec{a} = (x; y; z)$ và $\\vec{b} = (x'; y'; z')$ được xác định bởi:\n$$\\vec{a} \\cdot \\vec{b} = xx' + yy' + zz'.$$\n\n**Nhận xét:**\n- $\\vec{a} \\perp \\vec{b} \\Leftrightarrow xx' + yy' + zz' = 0$.\n- Nếu $\\vec{a} = (x; y; z)$ thì $|\\vec{a}| = \\sqrt{\\vec{a} \\cdot \\vec{a}} = \\sqrt{x^2 + y^2 + z^2}$.\n- Nếu $\\vec{a} = (x; y; z)$ và $\\vec{b} = (x'; y'; z')$ đều khác $\\vec{0}$ thì:\n$$\\cos(\\vec{a}, \\vec{b}) = \\frac{\\vec{a} \\cdot \\vec{b}}{|\\vec{a}| \\cdot |\\vec{b}|} = \\frac{xx' + yy' + zz'}{\\sqrt{x^2 + y^2 + z^2} \\cdot \\sqrt{x'^2 + y'^2 + z'^2}}.$$\n\n**Chú ý:** Nếu $A(x_A; y_A; z_A)$ và $B(x_B; y_B; z_B)$ thì:\n$$AB = |\\overrightarrow{AB}| = \\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2 + (z_B - z_A)^2}.$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_6",
+    "content": "**Nguyên hàm của hàm số lũy thừa:**\n$$\\int x^\\alpha \\, dx = \\frac{x^{\\alpha+1}}{\\alpha+1} + C \\quad (\\alpha \\neq -1).$$\n$$\\int \\frac{1}{x} \\, dx = \\ln|x| + C.$$\n\n**Nguyên hàm của hàm số lượng giác:**\n$$\\int \\cos x \\, dx = \\sin x + C; \\quad \\int \\sin x \\, dx = -\\cos x + C;$$\n$$\\int \\frac{1}{\\cos^2 x} \\, dx = \\tan x + C; \\quad \\int \\frac{1}{\\sin^2 x} \\, dx = -\\cot x + C.$$\n\n**Nguyên hàm của hàm số mũ:**\n$$\\int e^x \\, dx = e^x + C; \\quad \\int a^x \\, dx = \\frac{a^x}{\\ln a} + C \\quad (0 < a \\neq 1).$$",
+    "metadata": {
+      "chapter": "Nguyên hàm - Tích phân",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_7",
+    "content": "**Tính chất của tích phân:**\n\n1. $\\displaystyle\\int_a^b k f(x) \\, dx = k \\int_a^b f(x) \\, dx$ ($k$ là hằng số).\n2. $\\displaystyle\\int_a^b [f(x) + g(x)] \\, dx = \\int_a^b f(x) \\, dx + \\int_a^b g(x) \\, dx$.\n3. $\\displaystyle\\int_a^b [f(x) - g(x)] \\, dx = \\int_a^b f(x) \\, dx - \\int_a^b g(x) \\, dx$.\n4. $\\displaystyle\\int_a^b f(x) \\, dx = \\int_a^c f(x) \\, dx + \\int_c^b f(x) \\, dx$ ($a < c < b$).",
+    "metadata": {
+      "chapter": "Nguyên hàm - Tích phân",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_8",
+    "content": "**Ứng dụng tích phân để tính diện tích hình phẳng**\n\n**Hình phẳng giới hạn bởi một đồ thị hàm số, trục hoành và hai đường thẳng $x = a$, $x = b$:**\n\nDiện tích $S$ của hình phẳng giới hạn bởi đồ thị $f(x)$ liên tục, trục hoành và hai đường thẳng $x = a$, $x = b$ ($a < b$) được tính bằng:\n$$S = \\int_a^b |f(x)| \\, dx.$$\n\n**Hình phẳng giới hạn bởi hai đồ thị hàm số và hai đường thẳng $x = a$, $x = b$:**\n\nDiện tích $S$ của hình phẳng giới hạn bởi đồ thị hai hàm số $f(x)$, $g(x)$ liên tục trên $[a; b]$ và hai đường thẳng $x = a$, $x = b$ được tính bằng:\n$$S = \\int_a^b |f(x) - g(x)| \\, dx.$$",
+    "metadata": {
+      "chapter": "Nguyên hàm - Tích phân",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_9",
+    "content": "**Ứng dụng tích phân để tính thể tích vật thể**\n\n**Tính thể tích vật thể:**\n\nCho một vật thể trong không gian $Oxyz$. Gọi $B$ là phần vật thể giới hạn bởi hai mặt phẳng vuông góc với trục $Ox$ tại các điểm có hoành độ $x = a$ và $x = b$. Một mặt phẳng vuông góc với $Ox$ tại điểm $x$ cắt vật thể theo mặt cắt có diện tích $S(x)$ liên tục trên $[a; b]$. Khi đó thể tích $V$ của phần vật thể $B$ là:\n$$V = \\int_a^b S(x) \\, dx.$$\n\n**Tính thể tích khối tròn xoay:**\n\nCho hàm số $f(x)$ liên tục, không âm trên $[a; b]$. Khi quay hình phẳng giới hạn bởi đồ thị $y = f(x)$, trục hoành và hai đường thẳng $x = a$, $x = b$ xung quanh trục hoành, ta được một khối tròn xoay. Cắt khối tròn xoay bởi mặt phẳng vuông góc với $Ox$ tại $x \\in [a; b]$ được hình tròn bán kính $f(x)$. Thể tích khối tròn xoay là:\n$$V = \\pi \\int_a^b f^2(x) \\, dx.$$",
+    "metadata": {
+      "chapter": "Nguyên hàm - Tích phân",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_10",
+    "content": "**Phương trình tổng quát của mặt phẳng**\n\nTrong không gian $Oxyz$, mỗi mặt phẳng đều có phương trình dạng:\n$$Ax + By + Cz + D = 0,$$\ntrong đó $A, B, C$ không đồng thời bằng 0, được gọi là phương trình tổng quát của mặt phẳng đó.",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_11",
+    "content": "**Khoảng cách từ một điểm đến một mặt phẳng**\n\nTrong không gian $Oxyz$, khoảng cách từ điểm $M(x_0; y_0; z_0)$ đến mặt phẳng $(P): Ax + By + Cz + D = 0$ là:\n$$d(M, (P)) = \\frac{|Ax_0 + By_0 + Cz_0 + D|}{\\sqrt{A^2 + B^2 + C^2}}.$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_12",
+    "content": "**Phương trình tham số của đường thẳng**\n\nTrong không gian $Oxyz$, cho đường thẳng $\\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\\vec{u} = (a; b; c)$. Hệ phương trình tham số của $\\Delta$ là:\n$$\\begin{cases} x = x_0 + at \\\\ y = y_0 + bt \\\\ z = z_0 + ct \\end{cases} \\quad (t \\in \\mathbb{R}).$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_13",
+    "content": "**Phương trình chính tắc của đường thẳng**\n\nTrong không gian $Oxyz$, cho đường thẳng $\\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\\vec{u} = (a; b; c)$ với $a, b, c \\neq 0$. Phương trình chính tắc của $\\Delta$ là:\n$$\\frac{x - x_0}{a} = \\frac{y - y_0}{b} = \\frac{z - z_0}{c}.$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_14",
+    "content": "**Vị trí tương đối giữa hai đường thẳng**\n\nTrong không gian $Oxyz$, cho hai đường thẳng $\\Delta_1, \\Delta_2$ lần lượt đi qua $A_1(x_1; y_1; z_1)$, $A_2(x_2; y_2; z_2)$ và có vectơ chỉ phương $\\vec{u_1} = (a_1; b_1; c_1)$, $\\vec{u_2} = (a_2; b_2; c_2)$. Khi đó:\n\n- $\\Delta_1 \\parallel \\Delta_2 \\Leftrightarrow \\vec{u_1}$ cùng phương $\\vec{u_2}$ và $A_1 \\notin \\Delta_2$.\n- $\\Delta_1 \\equiv \\Delta_2 \\Leftrightarrow \\vec{u_1}$ cùng phương $\\vec{u_2}$ và $A_1 \\in \\Delta_2$.\n- $\\Delta_1$ và $\\Delta_2$ cắt nhau $\\Leftrightarrow [\\vec{u_1}, \\vec{u_2}] \\neq \\vec{0}$ và $\\overrightarrow{A_1A_2} \\cdot [\\vec{u_1}, \\vec{u_2}] = 0$.\n- $\\Delta_1$ và $\\Delta_2$ chéo nhau $\\Leftrightarrow \\overrightarrow{A_1A_2} \\cdot [\\vec{u_1}, \\vec{u_2}] \\neq 0$.",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_15",
+    "content": "**Công thức tính góc giữa đường thẳng và mặt phẳng**\n\nTrong không gian $Oxyz$, cho đường thẳng $\\Delta$ có vectơ chỉ phương $\\vec{u} = (a; b; c)$ và mặt phẳng $(P)$ có vectơ pháp tuyến $\\vec{n} = (A; B; C)$. Khi đó:\n$$\\sin(\\Delta, (P)) = |\\cos(\\vec{u}, \\vec{n})| = \\frac{|aA + bB + cC|}{\\sqrt{a^2 + b^2 + c^2} \\cdot \\sqrt{A^2 + B^2 + C^2}}.$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_16",
+    "content": "**Công thức tính góc giữa hai mặt phẳng**\n\nTrong không gian $Oxyz$, cho hai mặt phẳng $(P)$, $(Q)$ có vectơ pháp tuyến lần lượt là $\\vec{n} = (A; B; C)$, $\\vec{n'} = (A'; B'; C')$. Góc giữa $(P)$ và $(Q)$, kí hiệu $((P), (Q))$, được tính theo công thức:\n$$\\cos((P), (Q)) = |\\cos(\\vec{n}, \\vec{n'})| = \\frac{|AA' + BB' + CC'|}{\\sqrt{A^2 + B^2 + C^2} \\cdot \\sqrt{A'^2 + B'^2 + C'^2}}.$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_17",
+    "content": "**Phương trình mặt cầu**\n\nTrong không gian $Oxyz$, mặt cầu $(S)$ tâm $I(a; b; c)$ bán kính $R$ có phương trình:\n$$(x - a)^2 + (y - b)^2 + (z - c)^2 = R^2.$$",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_18",
+    "content": "**Xác suất có điều kiện**\n\n**Khái niệm:** Cho hai biến cố $A$ và $B$. Xác suất của biến cố $A$ khi biết biến cố $B$ đã xảy ra được gọi là xác suất của $A$ với điều kiện $B$, kí hiệu $P(A \\mid B)$.\n\n**Công thức tính xác suất có điều kiện:** Cho hai biến cố $A$ và $B$ bất kì, với $P(B) > 0$. Khi đó:\n$$P(A \\mid B) = \\frac{P(AB)}{P(B)}.$$\n\n**Công thức nhân xác suất:** Với hai biến cố $A$ và $B$ bất kì, ta có:\n$$P(AB) = P(B) \\cdot P(A \\mid B).$$",
+    "metadata": {
+      "chapter": "Xác suất",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_19",
+    "content": "**Công thức xác suất toàn phần và công thức Bayes**\n\n**Công thức xác suất toàn phần:** Cho hai biến cố $A$ và $B$. Khi đó:\n$$P(B) = P(A) \\cdot P(B \\mid A) + P(\\bar{A}) \\cdot P(B \\mid \\bar{A}).$$\nMột phương pháp mô tả trực quan công thức xác suất toàn phần là dùng sơ đồ hình cây.\n\n**Công thức Bayes:** Cho $A$ và $B$ là hai biến cố, với $P(B) > 0$. Khi đó:\n$$P(A \\mid B) = \\frac{P(A) \\cdot P(B \\mid A)}{P(A) \\cdot P(B \\mid A) + P(\\bar{A}) \\cdot P(B \\mid \\bar{A})} = \\frac{P(A) \\cdot P(B \\mid A)}{P(B)}.$$",
+    "metadata": {
+      "chapter": "Xác suất",
+      "type": "theory"
+    }
+  }
+]

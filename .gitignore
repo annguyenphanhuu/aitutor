@@ -1,0 +1,71 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Local databases and vector stores
+*.db
+*.sqlite
+*.sqlite3
+data/tutor.db
+data/chroma_db/
+test_chroma_db/
+
+# Generated evaluation artifacts
+data/ragas*_dataset.json
+data/ragas*_report.json
+data/*math_judge*_report.json
+data/*combined*_report.json
+data/new_batch.json
+data/reflection_history.json
+data/evaluation/*_samples.json
+data/evaluation/*_report.json
+data/evaluation/*_detailed_report.json
+
+# Local logs, coverage, and build outputs
+*.log
+logs/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Frontend dependencies and generated bundles
+node_modules/
+.parcel-cache/
+.vite/
+coverage/
+
+# IDE and OS files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+#.md
+detailed_analysis.md
+project_analysis.md

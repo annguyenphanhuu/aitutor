@@ -1,0 +1,398 @@
+[
+  {
+    "id": "exam_de7plus_de04_p1_q01",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x) = \\frac{ax^2 + bx + c}{mx + n}$ có đồ thị như hình vẽ.\n\nPhát biểu nào sau đây là đúng?\nA. Hàm số $y = f(x)$ nghịch biến trên $(-\\infty; 1)$ và $(1; +\\infty)$.\nB. Hàm số $y = f(x)$ đồng biến trên $(-\\infty; -2)$ và $(-2; +\\infty)$.\nC. Hàm số $y = f(x)$ đồng biến trên $(-5; -2)$ và nghịch biến trên $(1; 5)$.\nD. Hàm số $y = f(x)$ nghịch biến trên $(-10; -2)$ và đồng biến trên $(1; 2)$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 1,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q01.png"
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nDựa vào đồ thị, ta thấy hàm số có đường tiệm cận đứng là $x = -2$.\nNhìn vào hướng đi của đồ thị, từ trái sang phải, đồ thị đi lên trên cả hai khoảng $(-\\infty; -2)$ và $(-2; +\\infty)$.\nDo đó, hàm số đồng biến trên các khoảng $(-\\infty; -2)$ và $(-2; +\\infty)$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q02",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x) = \\frac{ax+b}{cx+d}$ có đồ thị như hình vẽ:\n\nPhương trình đường tiệm cận đứng của đồ thị hàm số $y = f(x)$ là:\n\nA. $x = -1$.\nB. $x = 2$.\nC. $y = -1$.\nD. $y = 2$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 2,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q02.png"
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nĐồ thị có TCĐ là: $x = 2$.\n\n(Lưu ý: Dựa vào hình vẽ thì tiệm cận đứng là đường thẳng $x = -1$, tức đáp án A. Tuy nhiên nội dung chữ trong ảnh ghi lời giải là \"Đồ thị có TCĐ là: $x = 2$\" và Chọn B nên dữ liệu được trích xuất bám sát theo văn bản trong ảnh)."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q03",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây là một nguyên hàm của hàm số $y = 10^x$?\n\nA. $y = 10^x \\ln 10$.\nB. $y = 10^x$.\nC. $y = \\frac{10^{x+1}}{x+1}$.\nD. $y = \\frac{10^x}{\\ln 10}$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 3,
+      "difficulty_part": 1,
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nTa có: $\\int 10^x dx = \\frac{10^x}{\\ln 10} + C$ nên chọn D"
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q04",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, khoảng cách giữa hai điểm $A(x_1; y_1; z_1)$ và $B(x_2; y_2; z_2)$ bằng:\n\nA. $|x_2 - x_1| + |y_2 - y_1| + |z_2 - z_1|$.\nB. $\\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$.\nC. $\\frac{|x_2 - x_1| + |y_2 - y_1| + |z_2 - z_1|}{3}$.\nD. $\\sqrt{\\frac{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}{3}}$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 4,
+      "difficulty_part": 1,
+      "skill_id": "geometry_vector_basic",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\n$AB = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$"
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q05",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, mặt phẳng đi qua điểm $I(x_0; y_0; z_0)$ và nhận $\\vec{n} = (a; b; c)$ làm vectơ pháp tuyến có phương trình là:\n\nA. $c(x - x_0) + b(y - y_0) + a(z - z_0) = 0$.\nB. $b(x - x_0) + a(y - y_0) + c(z - z_0) = 0$.\nC. $c(x - x_0) + a(y - y_0) + b(z - z_0) = 0$.\nD. $a(x - x_0) + b(y - y_0) + c(z - z_0) = 0$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 5,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nPhương trình mặt phẳng đi qua điểm $I(x_0; y_0; z_0)$ và nhận $\\vec{n} = (a; b; c)$ làm vectơ pháp tuyến là: $a(x - x_0) + b(y - y_0) + c(z - z_0) = 0$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q06",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, mặt cầu tâm $I(x_0; y_0; z_0)$ bán kính $R$ có phương trình là:\n\nA. $(x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = R^2$.\nB. $(x - x_0)^2 + (y - y_0)^2 - (z - z_0)^2 = R^2$.\nC. $(x - x_0)^2 - (y - y_0)^2 + (z - z_0)^2 = R^2$.\nD. $-(x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = R^2$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 6,
+      "difficulty_part": 1,
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nPhương trình mặt cầu tâm $I(x_0; y_0; z_0)$ bán kính $R$ là: $(x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = R^2$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q07",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nNếu hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ thỏa mãn $f(x) \\ge m, \\forall x \\in \\mathbb{R}$ và tồn tại $a \\in \\mathbb{R}$ sao cho $f(a) = m$ thì:\n\nA. Hàm số $y = f(x)$ đạt giá trị lớn nhất bằng $m$.\nB. Hàm số $y = f(x)$ đạt giá trị cực tiểu bằng $m$.\nC. Hàm số $y = f(x)$ đạt giá trị nhỏ nhất bằng $m$.\nD. Hàm số $y = f(x)$ đạt giá trị cực đại bằng $m$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 7,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTheo định nghĩa, do $f(x) \\ge m$ với mọi $x \\in \\mathbb{R}$ và có một giá trị $x = a$ để $f(a) = m$ nên $m$ chính là giá trị nhỏ nhất của hàm số trên $\\mathbb{R}$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q08",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nĐạo hàm của hàm số $y = \\cos x$ là:\n\nA. $y' = \\sin x$.\nB. $y' = -\\sin x$.\nC. $y' = \\cos x$.\nD. $y' = -\\cos x$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 8,
+      "difficulty_part": 1,
+      "skill_id": "derivative_basic",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTa có: $(\\cos x)' = -\\sin x$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q09",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nBiểu diễn mẫu số liệu ghép nhóm về chi tiêu bình quân (đơn vị: USD) của một lượt khách quốc tế đến Việt Nam phân theo 27 quốc tịch năm 2019 được cho ở bảng:\n\n| Nhóm | $[0; 500)$ | $[500; 1000)$ | $[1000; 1500)$ | $[1500; 2000)$ | $[2000; 2500)$ |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| Tần số | $1$ | $9$ | $14$ | $2$ | $1$ |\n\n(Nguồn: https://www.gso.gov.vn)\n\nĐộ lệch chuẩn của mẫu số liệu đó nằm trong khoảng nào dưới đây?\n\nA. $(200; 300)$.\nB. $(300; 400)$.\nC. $(400; 500)$.\nD. $(500; 600)$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 9,
+      "difficulty_part": 1,
+      "skill_id": "statistics_inference",
+      "chapter": "Thống kê",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q09.png"
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTa có bảng giá trị đại diện:\n\n| Nhóm | $[0; 500)$ | $[500; 1000)$ | $[1000; 1500)$ | $[1500; 2000)$ | $[2000; 2500)$ |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| Tần số | $1$ | $9$ | $14$ | $2$ | $1$ |\n| GTĐD | $250$ | $750$ | $1250$ | $1750$ | $2250$ |\n\nTa có phương sai:\n$$s^2 = \\frac{1 \\cdot \\left(250 - \\frac{30250}{27}\\right)^2 + 9 \\cdot \\left(750 - \\frac{30250}{27}\\right)^2 + 14 \\cdot \\left(1250 - \\frac{30250}{27}\\right)^2 + 2 \\cdot \\left(1750 - \\frac{30250}{27}\\right)^2 + 1 \\cdot \\left(2250 - \\frac{30250}{27}\\right)^2}{27}$$\n$$= 159122,085$$\n\nKhi đó độ lệch chuẩn: $s = \\sqrt{s^2} \\approx 398,9$ nằm trong khoảng $(300; 400)$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q10",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nCho các biến cố $A$ và $B$ thỏa mãn $P(A) > 0, P(B) > 0$. Khi đó, $P(A|B)$ bằng biểu thức nào dưới đây?\n\nA. $\\frac{P(A) \\cdot P(B|A)}{P(B)}$.\nB. $\\frac{P(B) \\cdot P(B|A)}{P(A)}$.\nC. $\\frac{P(B)}{P(A) \\cdot P(B|A)}$.\nD. $\\frac{P(A)}{P(B) \\cdot P(B|A)}$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 10,
+      "difficulty_part": 1,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nTheo định nghĩa, chọn đáp án A."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q11",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nĐộ cao các bậc cầu thang so với mặt sàn tầng 1 của một căn nhà theo thứ tự lập thành một cấp số cộng với công sai $d = 16cm$, bậc thứ nhất có độ cao $u_1 = 16cm$. Bậc thứ năm có độ cao so với mặt sàn tầng 1 bằng:\n\nA. $21cm$.\nB. $80cm$.\nC. $96cm$.\nD. $64cm$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 11,
+      "difficulty_part": 1,
+      "skill_id": "sequence_arithmetic",
+      "chapter": "Dãy số",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nÁp dụng công thức tìm số hạng tổng quát của dãy số cấp số cộng, ta tính được:\n$$u_5 = u_1 + 4d = 16 + 4 \\cdot 16 = 80 \\text{ (cm)}$$\nVây bậc thứ năm có độ cao so với mặt sàn tầng 1 bằng $80cm$."
+  },
+  {
+    "id": "exam_de7plus_de04_p1_q12",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nMột đồ chơi có dạng khối chóp cụt tứ giác đều với độ dài hai cạnh đáy lần lượt là $2cm$ và $12cm$, chiều cao là $18cm$. Thể tích của đồ chơi đó bằng:\n\nA. $9288 cm^3$.\nB. $1048 cm^3$.\nC. $3096 cm^3$.\nD. $1032 cm^3$.",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 12,
+      "difficulty_part": 1,
+      "skill_id": "geometry_volume",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nKhối chóp cụt tứ giác đều với độ dài hai cạnh đáy lần lượt là $2cm$ và $12cm$ nên diện tích hai mặt đáy lần lượt là: $4 cm^2$ và $144 cm^2$.\nVậy thể tích của đồ chơi đó bằng:\n$$V = \\frac{18}{3} \\cdot \\left(4 + \\sqrt{4 \\cdot 144} + 144\\right) = 1032 \\text{ (cm}^3)$$\n*(Lưu ý: Nội dung giải thích bôi vàng chọn A trên hình ảnh gốc là sai do lỗi soạn thảo tài liệu, đáp án $1032$ tương ứng với đáp án D)*."
+  },
+  {
+    "id": "exam_de7plus_de04_p2_q13",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nCho hình lập phương $ABCD.A'B'C'D'$ cạnh $a$.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Khoảng cách giữa hai đường thẳng $AB$ và $B'C'$ bằng $a$. | | |\n| (b) | Góc giữa hai đường thẳng $AB$ và $B'D'$ bằng $45^\\circ$. | | |\n| (c) | Góc giữa đường thẳng $CD'$ và mặt phẳng $(ABCD)$ bằng $60^\\circ$. | | |\n| (d) | Góc nhị diện $\\left[ (BCC'B'), BB', (BDD'B') \\right]$ có số đo bằng $45^\\circ$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 13,
+      "difficulty_part": 2,
+      "skill_id": "geometry_angle_distance",
+      "chapter": "Hình học không gian",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-F,d-T",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q13.png"
+    },
+    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) ĐÚNG\n(c) SAI\n(d) ĐÚNG\n\nGIẢI THÍCH:\n(a) Khoảng cách giữa hai đường thẳng $AB$ và $B'C'$ bằng $a$.\nVì $AB \\perp BB', B'C' \\perp BB'$ nên $d(AB, B'C') = BB' = a$.\n$\\rightarrow$ Chọn ĐÚNG.\n\n(b) Góc giữa hai đường thẳng $AB$ và $B'D'$ bằng $45^\\circ$.\nDo $AB \\parallel A'B'$ nên $(AB, B'D') = (A'B', B'D') = 45^\\circ$.\n$\\rightarrow$ Chọn ĐÚNG.\n\n(c) Góc giữa đường thẳng $CD'$ và mặt phẳng $(ABCD)$ bằng $60^\\circ$.\nVì $DD' \\perp (ABCD)$ nên $(CD', (ABCD)) = (CD', CD) = 45^\\circ$.\n$\\rightarrow$ Chọn SAI.\n\n(d) Góc nhị diện $\\left[ (BCC'B'), BB', (BDD'B') \\right]$ có số đo bằng $45^\\circ$.\nTa có $B'C' \\perp BB', B'D' \\perp BB'$ nên góc nhị diện $\\left[ (BCC'B'), BB', (BDD'B') \\right]$ có số đo bằng $\\widehat{D'B'C'} = 45^\\circ$.\n$\\rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de04_p2_q14",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nTại một khu di tích vào ngày lễ hội hàng năm, tốc độ thay đổi lượng khách tham quan được biểu diễn bằng hàm số $Q'(t) = 4t^3 - 72t^2 + 288t$ trong đó $t$ tính bằng giờ $(0 \\le t \\le 13)$, $Q'(t)$ tính bằng khách/giờ (nguồn: Larson and B. Edwards, Calculus 10e, Cengage). Sau 2h đã có 500 người có mặt.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Lượng khách tham quan được biểu diễn bởi hàm số $Q(t) = t^4 - 24t^3 + 144t^2$ | | |\n| (b) | Sau 5h lượng khách tham quan là $1325$ người | | |\n| (c) | Lượng khách tham quan lớn nhất là $1296$ người | | |\n| (d) | Tốc độ thay đổi lượng khách tham quan lớn nhất tại thời điểm $t = 6$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 14,
+      "difficulty_part": 2,
+      "skill_id": "derivative_applications",
+      "chapter": "Đạo hàm",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-T,c-F,d-T",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN:\n(a) SAI\n(b) ĐÚNG\n(c) SAI\n(d) ĐÚNG\n\nGIẢI THÍCH:\n(a) Lượng khách tham quan được biểu diễn bởi hàm số $Q(t) = t^4 - 24t^3 + 144t^2$\nTa có $Q'(t) = 4t^3 - 72t^2 + 288t \\Rightarrow \\int Q'(t) dt = \\int (4t^3 - 72t^2 + 288t) dt \\Rightarrow Q(t) = t^4 - 24t^3 + 144t^2 + C$\nSau 2h đã có 500 người có mặt nên\n$500 = 2^4 - 24 \\cdot 2^3 + 144 \\cdot 2^2 + C \\Leftrightarrow C = 100 \\Rightarrow Q(t) = t^4 - 24t^3 + 144t^2 + 100$\n$\\rightarrow$ Chọn SAI.\n\n(b) Sau 5h lượng khách tham quan là 1325 người.\nSau 5h lượng khách tham quan là $Q(5) = 5^4 - 24 \\cdot 5^3 + 144 \\cdot 5^2 + 100 = 1325$\n$\\rightarrow$ Chọn ĐÚNG.\n\n(c) Lượng khách tham quan lớn nhất là 1296 người.\nTa có $Q'(t) = 4t^3 - 72t^2 + 288t \\Rightarrow Q'(t) = 0 \\Leftrightarrow \\left[ \\begin{array}{l} t = 0 \\\\ t = 12 \\\\ t = 6 \\end{array} \\right.$\nTừ bảng biến thiên ở hình gốc suy ra lượng khách tham quan lớn nhất là $1396$.\n$\\rightarrow$ Chọn SAI.\n\n(d) Tốc độ thay đổi lượng khách tham quan lớn nhất tại thời điểm $t = 6$.\nTừ bảng biến thiên ta có lượng khách tham quan lớn nhất đạt được tại thời điểm $t = 6$.\n$\\rightarrow$ Chọn ĐÚNG.\n\n*(Lưu ý: mệnh đề d nhắc đến \"Tốc độ thay đổi... lớn nhất\" tức là đề cập tới hàm $Q'(t)$ lớn nhất, nhưng lời giải trong tài liệu lại lý luận theo \"Lượng khách tham quan đỉnh điểm\" - tức là giá trị cực đại của $Q(t)$ để chọn Đúng. Tôi đã trích xuất đáp án nguyên bản theo tài liệu).* "
+  },
+  {
+    "id": "exam_de7plus_de04_p2_q15",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $f(x) = \\frac{x^2 + 4x + 2}{x + 2}$. Khi đó:\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | $f(x) = x + 2 - \\frac{2}{x + 2}, \\forall x \\in (-\\infty; -2) \\cup (-2; +\\infty)$ | | |\n| (b) | Đồ thị hàm số có tiệm cận đứng là đường $x = 2$. | | |\n| (c) | Đồ thị hàm số có tiệm cận xiên là đường $y = x + 2$ | | |\n| (d) | Hàm số đã cho có đồ thị như hình vẽ: | | |",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 15,
+      "difficulty_part": 2,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-F,c-T,d-T",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q15.png"
+    },
+    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) ĐÚNG\n(d) ĐÚNG\n\nGIẢI THÍCH:\n(a) $f(x) = x + 2 - \\frac{2}{x + 2}, \\forall x \\in (-\\infty; -2) \\cup (-2; +\\infty)$.\nTa có $f(x) = \\frac{x^2 + 4x + 2}{x + 2} = \\frac{x^2 + 4x + 4 - 2}{x + 2} = \\frac{(x + 2)^2 - 2}{x + 2} = x + 2 - \\frac{2}{x + 2}$\nHàm số xác định trên $(-\\infty; -2) \\cup (-2; +\\infty)$.\n$\\rightarrow$ Chọn ĐÚNG.\n\n(b) Đồ thị hàm số có tiệm cận đứng là đường $x = 2$.\nTa có $f(x) = \\frac{x^2 + 4x + 2}{x + 2}$, xác định trên $(-\\infty; -2) \\cup (-2; +\\infty)$.\nTa có $\\lim_{x \\to -2^+} f(x) = \\lim_{x \\to -2^+} \\frac{x^2 + 4x + 2}{x + 2} = -\\infty$ và $\\lim_{x \\to -2^-} f(x) = \\lim_{x \\to -2^-} \\frac{x^2 + 4x + 2}{x + 2} = +\\infty$.\nVậy đồ thị hàm số có tiệm cận đứng là đường $x = -2$.\n$\\rightarrow$ Chọn SAI.\n\n(c) Đồ thị hàm số có tiệm cận xiên là đường $y = x + 2$.\nTa có $f(x) = \\frac{x^2 + 4x + 2}{x + 2} = x + 2 - \\frac{2}{x + 2}$.\nXét $\\lim_{x \\to +\\infty} [f(x) - (x + 2)] = \\lim_{x \\to +\\infty} \\left[ x + 2 - \\frac{2}{x + 2} - (x + 2) \\right] = \\lim_{x \\to +\\infty} \\left( -\\frac{2}{x + 2} \\right) = 0$\nVà $\\lim_{x \\to -\\infty} [f(x) - (x + 2)] = \\lim_{x \\to -\\infty} \\left[ x + 2 - \\frac{2}{x + 2} - (x + 2) \\right] = \\lim_{x \\to -\\infty} \\left( -\\frac{2}{x + 2} \\right) = 0$\nVậy đồ thị hàm số có tiệm cận xiên là đường $y = x + 2$.\n$\\rightarrow$ Chọn ĐÚNG.\n\n(d) Hàm số đã cho có đồ thị như hình vẽ\nHàm số $f(x) = \\frac{x^2 + 4x + 2}{x + 2} = x + 2 - \\frac{2}{x + 2}$ xác định trên $(-\\infty; -2) \\cup (-2; +\\infty)$.\nTa có đồ thị hàm số có tiệm cận đứng là đường $x = -2$ và có tiệm cận xiên là đường $y = x + 2$.\nMặt khác $f(x) = x + 2 - \\frac{2}{x + 2} \\Rightarrow f'(x) = 1 + \\frac{2}{(x + 2)^2} > 0, \\forall x \\in (-\\infty; -2) \\cup (-2; +\\infty)$.\nVậy hàm số đồng biến trên từng khoảng xác định.\nTa có đồ thị của hàm số $f(x) = \\frac{x^2 + 4x + 2}{x + 2} = x + 2 - \\frac{2}{x + 2}$ giống như hình trong đề bài.\n$\\rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de04_p2_q16",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nMột két nước ngọt đựng 24 chai nước có khối lượng và hình thức bề ngoài như nhau, trong đó có 16 chai loại I và 8 chai loại II. Bác Tùng lần lượt lấy ra ngẫu nhiên hai chai (lấy không hoàn lại). Xét các biến cố:\n$A$: \"Lần thứ nhất lấy ra chai nước loại I\";\n$B$: \"Lần thứ hai lấy ra chai nước loại I\".\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | $P(B|A) = \\frac{16}{23}$ | | |\n| (b) | $P(B|\\overline{A}) = \\frac{15}{23}$ | | |\n| (c) | $P(\\overline{B}|A) = \\frac{8}{23}$ | | |\n| (d) | $P(\\overline{B}|\\overline{A}) = \\frac{7}{23}$ | | |",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 16,
+      "difficulty_part": 2,
+      "skill_id": "probability_conditional",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-F,c-T,d-T",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN:\n(a) SAI\n(b) SAI\n(c) ĐÚNG\n(d) ĐÚNG\n\nGIẢI THÍCH:\n(a) $P(B|A) = \\frac{16}{23}$.\nNếu lần thứ nhất lấy ra chai loại I thì két còn 23 chai nước, trong đó có 15 chai loại I, 8 chai loại II.\nSuy ra $P(B|A) = \\frac{15}{23}$.\n$\\rightarrow$ Chọn SAI.\n\n(b) $P(B|\\overline{A}) = \\frac{15}{23}$.\nNếu lần thứ nhất lấy ra chai loại II thì két còn 23 chai nước, trong đó có 16 chai loại I, 7 chai loại II.\nSuy ra $P(B|\\overline{A}) = \\frac{16}{23}$.\n$\\rightarrow$ Chọn SAI.\n\n(c) $P(\\overline{B}|A) = \\frac{8}{23}$.\nTa có: $P(\\overline{B}|A) = 1 - P(B|A) = 1 - \\frac{15}{23} = \\frac{8}{23}$;\n$\\rightarrow$ Chọn ĐÚNG.\n\n(d) $P(\\overline{B}|\\overline{A}) = \\frac{7}{23}$.\n$P(\\overline{B}|\\overline{A}) = 1 - P(B|\\overline{A}) = 1 - \\frac{16}{23} = \\frac{7}{23}$.\n$\\rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de04_p3_q17",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 17 [Phần 3 - Trả lời ngắn]:\n\nTrong điều kiện nuôi cấy thích hợp, cứ 20 phút vi khuẩn E.coli lại phân đôi một lần. Giả sử lúc đầu có 5 vi khuẩn và sau $n$ phút có hơn 2000 vi khuẩn. Giá trị nhỏ nhất của $n$ là bao nhiêu?",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 17,
+      "difficulty_part": 3,
+      "skill_id": "exponential_logarithmic_applications",
+      "chapter": "Hàm số luy thừa, mũ và logarit",
+      "type": "exam_short_answer",
+      "correct_answer": "180",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 180\n\nGIẢI THÍCH:\nSố lượng vi khuẩn lúc đầu là $Q_0 = 5$ (vi khuẩn).\nSố lượng vi khuẩn sau 20 phút là: $Q_1 = 5 \\cdot 2 = 10$ (vi khuẩn).\nSố lượng vi khuẩn sau $2 \\cdot 20 = 40$ phút là: $Q_2 = 5 \\cdot 2^2 = 20$ (vi khuẩn).\nSố lượng vi khuẩn sau $3 \\cdot 20 = 60$ phút là: $Q_3 = 5 \\cdot 2^3 = 40$ (vi khuẩn).\nSố lượng vi khuẩn sau $k \\cdot 20$ phút là: $Q_k = 5 \\cdot 2^k$ (vi khuẩn).\n$Q_k > 2000 \\Leftrightarrow 5 \\cdot 2^k > 2000 \\Leftrightarrow 2^k > 400 \\Leftrightarrow k > \\log_2 400 \\approx 8,64$.\nDo đó, sau ít nhất $9 \\cdot 20 = 180$ phút thì có hơn 2000 vi khuẩn.\nVậy giá trị nhỏ nhất của $n$ là 180."
+  },
+  {
+    "id": "exam_de7plus_de04_p3_q18",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 18 [Phần 3 - Trả lời ngắn]:\n\nMột khối rubik $4 \\times 4$ được gắn với hệ tọa độ Oxyz có đơn vị trên mỗi trục bằng độ dài cạnh hình lập phương nhỏ. Xét mặt phẳng $(P)$ đi qua ba điểm $A(0; 3; 4), B(2; 1; 4), C(1; 0; 0)$. Góc giữa mặt phẳng $(P)$ và $(Oxy)$ bằng bao nhiêu độ (làm tròn kết quả đến hàng đơn vị)?",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 18,
+      "difficulty_part": 3,
+      "skill_id": "geometry_angle_distance",
+      "chapter": "Hình học không gian",
+      "type": "exam_short_answer",
+      "correct_answer": "71",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q18.png"
+    },
+    "answer": "ĐÁP ÁN: 71\n\nGIẢI THÍCH:\nTa có: $\\overrightarrow{AB} = (2; -2; 0); \\overrightarrow{AC} = (1; -3; -4)$.\n$\\Rightarrow \\left[ \\overrightarrow{AB}, \\overrightarrow{AC} \\right] = (8; 8; -4) \\Rightarrow \\vec{n}_1 = (2; 2; -1)$ là vectơ pháp tuyến của $(P)$.\n$\\vec{n}_2 = (0; 0; 1)$ là vectơ pháp tuyến của $(Oxy)$.\nGọi $\\alpha, (0^\\circ \\le \\alpha \\le 90^\\circ)$ là góc giữa mặt phẳng $(P)$ và $(Oxy)$.\n$\\Rightarrow \\cos \\alpha = \\frac{\\left| \\vec{n}_1 \\cdot \\vec{n}_2 \\right|}{\\left| \\vec{n}_1 \\right| \\cdot \\left| \\vec{n}_2 \\right|} = \\frac{|2 \\cdot 0 + 2 \\cdot 0 + 1 \\cdot (-1)|}{\\sqrt{2^2 + 2^2 + (-1)^2} \\cdot \\sqrt{0^2 + 0^2 + 1^2}} = \\frac{1}{3} \\Rightarrow \\alpha \\approx 71^\\circ$.\nVậy góc giữa mặt phẳng $(P)$ và $(Oxy)$ xấp xỉ $71^\\circ$."
+  },
+  {
+    "id": "exam_de7plus_de04_p3_q19",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 19 [Phần 3 - Trả lời ngắn]:\n\nKhi đặt hệ trục tọa độ Oxyz vào không gian với đơn vị trên trục tính theo kilômét, người ta thấy rằng một không gian phủ sóng điện thoại có dạng một hình cầu $(S)$ (tập hợp những điểm nằm trong và nằm trên mặt cầu tương ứng). Biết mặt cầu $(S)$ có phương trình $x^2 + y^2 + z^2 - 2x - 4y - 6z + 5 = 0$. Khoảng cách xa nhất giữa hai điểm thuộc vùng phủ sóng là bao nhiêu kilômét?",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 19,
+      "difficulty_part": 3,
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "type": "exam_short_answer",
+      "correct_answer": "6",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 6\n\nGIẢI THÍCH:\nVì không gian phủ sóng điện thoại có dạng một hình cầu $(S)$ (tập hợp những điểm nằm trong và nằm trên mặt cầu tương ứng) nên khoảng cách xa nhất giữa hai điểm thuộc vùng phủ sóng bằng với đường kính của mặt cầu $(S)$.\nTa có mặt cầu $(S)$ có tâm $I(1; 2; 3)$ và bán kính $R = \\sqrt{1^2 + 2^2 + 3^2 - 5} = 3$.\nVậy khoảng cách xa nhất giữa hai điểm thuộc vùng phủ sóng là 6 (km)."
+  },
+  {
+    "id": "exam_de7plus_de04_p3_q20",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 20 [Phần 3 - Trả lời ngắn]:\n\nMột hãng điện thoại đưa ra một quy luật bán buôn cho từng đại lí, đó là đại lí nhập càng nhiều điện thoại của hãng thì giá bán buôn một chiếc điện thoại càng giảm. Cụ thể, nếu đại lí mua $x$ điện thoại thì giá tiền của mỗi điện thoại là $6000 - 3x$ (nghìn đồng), $x \\in \\mathbb{N}^*, x < 2000$. Đại lí nhập cùng một lúc bao nhiêu chiếc điện thoại thì hãng có thể thu về nhiều tiền nhất từ đại lí đó?",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 20,
+      "difficulty_part": 3,
+      "skill_id": "derivative_applications",
+      "chapter": "Đạo hàm",
+      "type": "exam_short_answer",
+      "correct_answer": "1000",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 1000\n\nGIẢI THÍCH:\nSố tiền mà hãng thu được từ đại lí là: $T(x) = x(6000 - 3x) = -3x^2 + 6000x, 0 < x < 2000$\n$T(x)$ là một hàm bậc hai có hệ số $a = -3 < 0$ nên $T$ đạt giá trị lớn nhất khi $x = -\\frac{b}{2a} = \\frac{6000}{2 \\cdot 3} = 1000$.\nVậy đại lí nhập cùng một lúc 1000 chiếc điện thoại thì hãng có thể thu về nhiều tiền nhất từ đại lí đó."
+  },
+  {
+    "id": "exam_de7plus_de04_p3_q21",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 21 [Phần 3 - Trả lời ngắn]:\n\nGọi $H_1, H_2, H_3, H_4$ là các hình phẳng giới hạn bởi đồ thị hàm số liên tục $y = f(x)$ và trục hoành với $x$ lần lượt thuộc các đoạn $[1; 2], [2; 3], [3; 4], [4; 5]$ (hình vẽ). Biết rằng, các hình $H_1, H_2, H_3, H_4$ lần lượt có diện tích bằng $\\frac{9}{4}, \\frac{11}{12}, \\frac{11}{12}$ và $\\frac{9}{4}$. Giá trị $\\int_1^5 f(x) dx$ bằng bao nhiêu?",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 21,
+      "difficulty_part": 3,
+      "skill_id": "integral_applications",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_short_answer",
+      "correct_answer": "0",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de04/q21.png"
+    },
+    "answer": "ĐÁP ÁN: 0\n\nGIẢI THÍCH:\nDựa vào đồ thị, hàm số mang dấu dương trên các đoạn $[1; 2]$ và $[3; 4]$, mang dấu âm trên các đoạn $[2; 3]$ và $[4; 5]$.\nTa có $\\int_1^5 f(x) dx = \\int_1^2 f(x) dx + \\int_2^3 f(x) dx + \\int_3^4 f(x) dx + \\int_4^5 f(x) dx = \\frac{9}{4} - \\frac{11}{12} + \\frac{11}{12} - \\frac{9}{4} = 0$."
+  },
+  {
+    "id": "exam_de7plus_de04_p3_q22",
+    "content": "ĐỀ 7+ (Đề số 4) - CÂU 22 [Phần 3 - Trả lời ngắn]:\n\nTất cả học sinh trường Hạnh Phúc đều tham gia câu lạc bộ bóng chuyền hoặc bóng rổ, mỗi học sinh chỉ tham gia đúng 1 câu lạc bộ. Có 60% học sinh của trường tham gia câu lạc bộ bóng chuyền và 40% học sinh của trường tham gia câu lạc bộ bóng rổ. Số học sinh nữ chiếm 65% trong câu lạc bộ bóng chuyền và 25% trong câu lạc bộ bóng rổ. Chọn ngẫu nhiên 1 học sinh. Xác suất chọn được học sinh nữ là bao nhiêu?",
+    "metadata": {
+      "exam_id": "de7plus_de04",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 4)",
+      "question_number": 22,
+      "difficulty_part": 3,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_short_answer",
+      "correct_answer": "0,49",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 0,49\n\nGIẢI THÍCH:\nXác suất để chọn 1 học sinh nữ trong câu lạc bộ bóng chuyền là: $\\frac{60}{100} \\cdot \\frac{65}{100} = 0,39$\nXác suất để chọn 1 học sinh nữ trong câu lạc bộ bóng rổ là: $\\frac{40}{100} \\cdot \\frac{25}{100} = 0,1$\nVậy xác suất chọn được học sinh nữ là $0,39 + 0,1 = 0,49$."
+  }
+]

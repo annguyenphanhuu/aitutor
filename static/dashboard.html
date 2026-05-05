@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — AI Tutor</title>
+    <meta name="description" content="Theo dõi tiến độ học tập Toán 12">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.35.0.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="dashboard-app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <a href="/" class="logo-link">
+                    <div class="logo-icon">🧮</div>
+                    <div>
+                        <h1 class="logo-text">AI Tutor</h1>
+                        <p class="logo-sub">Dashboard</p>
+                    </div>
+                </a>
+            </div>
+            <div class="header-actions">
+                <a class="header-btn" href="/">💬 Chat</a>
+            </div>
+        </header>
+
+        <!-- Dashboard Body -->
+        <main class="dashboard-main">
+            <!-- Top Stats Row -->
+            <div class="stats-row" id="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="stat-overall">0%</div>
+                    <div class="stat-label">Mastery Tổng</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-value" id="stat-skills">0/20</div>
+                    <div class="stat-label">Kỹ năng đã luyện</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📖</div>
+                    <div class="stat-value" id="stat-due">0</div>
+                    <div class="stat-label">Cần ôn tập</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-value" id="stat-interactions">0</div>
+                    <div class="stat-label">Câu hỏi đã hỏi</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="dashboard-grid">
+                <!-- Radar Chart -->
+                <div class="dashboard-card">
+                    <h3 class="card-title">📐 Năng Lực Theo Chương</h3>
+                    <div id="chart-radar" class="dashboard-chart"></div>
+                </div>
+
+                <!-- Skill Tree -->
+                <div class="dashboard-card wide">
+                    <h3 class="card-title">🌳 Cây Kỹ Năng</h3>
+                    <div id="skill-tree" class="skill-tree-container"></div>
+                </div>
+            </div>
+
+            <!-- Insights + Recent Activity Row -->
+            <div class="dashboard-grid">
+                <!-- Insights -->
+                <div class="dashboard-card">
+                    <h3 class="card-title">💡 Insights</h3>
+                    <div id="insights-list" class="insights-list">
+                        <p class="loading-text">Đang tải...</p>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card">
+                    <h3 class="card-title">🕐 Hoạt Động Gần Đây</h3>
+                    <div id="recent-activity" class="recent-activity-list">
+                        <p class="loading-text">Đang tải...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/dashboard.js"></script>
+</body>
+
+</html>
