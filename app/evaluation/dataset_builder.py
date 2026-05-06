@@ -134,22 +134,51 @@ def retrieve_contexts(
 ) -> list[str]:
     """Retrieve context chunks for a question using the live RAG pipeline.
 
-    Uses Soft Boosting (skill_id + chapter) to mirror the actual
-    GraphRAGRetriever behaviour used by the TeacherAgent.
-
-    Note: retrieval is always text-only (the image does not contribute here).
-    The image is only passed to the *generation* step.
+    Uses QueryExpander (LLM) to infer relevant chapters/skills from the
+    question text, then applies a light soft boost. Metadata from exam JSON
+    (skill_id, chapter) is NOT used for retrieval — only for evaluation.
     """
     try:
         kb = get_knowledge_base()
-        results = kb.search_all(
-            question,
-            k=k,
-            alpha=0.55,
-            boost_skill_id=skill_id,
-            boost_chapter=chapter,
-        )
-        return [r["content"] for r in results]
+
+        from app.rag.reranker import get_reranker
+        from app.rag.query_expander import expand_question
+
+        reranker = get_reranker()
+        pool_k = settings.RERANKER_CANDIDATE_K if settings.RERANKER_ENABLED else k * 2
+
+        # Step 1: Query Expansion
+        expansion = expand_question(question)
+
+        # Step 2: Hybrid search (no metadata filter)
+        candidates = kb.search_theory(question, k=pool_k, alpha=0.55)
+
+        # Step 3: Light soft boost from expansion
+        SKILL_BOOST   = 0.06
+        CHAPTER_BOOST = 0.04
+        expanded_skills   = {s.lower() for s in expansion.skill_ids}
+        expanded_chapters = {c.lower() for c in expansion.chapters}
+
+        for r in candidates:
+            bonus = 0.0
+            meta  = r.get("metadata", {})
+            chunk_skill   = str(meta.get("skill_id", "")).lower().strip()
+            chunk_chapter = str(meta.get("chapter",  "")).lower().strip()
+
+            if chunk_skill and chunk_skill in expanded_skills:
+                bonus += SKILL_BOOST
+            if chunk_chapter and any(
+                chunk_chapter in exp_ch or exp_ch in chunk_chapter
+                for exp_ch in expanded_chapters
+            ):
+                bonus += CHAPTER_BOOST
+
+            if bonus > 0:
+                r["hybrid_score"] = min(r.get("hybrid_score", 0) + bonus, 1.0)
+
+        # Step 4: Rerank
+        ranked = reranker.rerank(question, candidates, k=k)
+        return [r["content"] for r in ranked]
     except Exception as e:
         logger.warning("RAG retrieval failed for question: %s", e)
         return []
@@ -174,7 +203,7 @@ async def generate_answer(
         One of exam_mcq / exam_true_false / exam_short_answer.
     model : str, optional
         Override the LLM model name.  When an image is provided and this is
-        None, we automatically switch to settings.VISION_LLM_MODEL (gpt-4o).
+        None, we automatically switch to settings.VISION_LLM_MODEL (default: gpt-5.4).
     image_path : str, optional
         Relative path to an image file (e.g. "data/exams/images/…/q01.png").
         When provided and the file exists, the question is sent as a

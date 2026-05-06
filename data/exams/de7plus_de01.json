@@ -1,7 +1,7 @@
 [
   {
     "id": "exam_de7plus_de01_p1_q01",
-    "content": "ĐỀ 7+ (Đề số 1) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đồ thị như hình. Điểm cực tiểu của hàm số đã cho là:\n\nA. $-1$\nB. $1$\nC. $2$\nD. $-4$",
+    "content": "ĐỀ 7+ (Đề số 1) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đồ thị như hình. Hoành độ của điểm cực tiểu của hàm số đã cho là:\n\nA. $-1$\nB. $1$\nC. $2$\nD. $-4$",
     "metadata": {
       "exam_id": "de7plus_de01",
       "year": 2025,
@@ -15,7 +15,7 @@
       "has_image": true,
       "image_path": "data/exams/images/de7plus_de01/q01.png"
     },
-    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nDựa vào đồ thị, tại $x = 1$ hàm số đạt giá trị nhỏ nhất cục bộ ($f'(x)$ đổi dấu từ âm sang dương) $\\rightarrow$ điểm cực tiểu là $x = 1$."
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nDựa vào đồ thị, tại $x = 1$ hàm số đạt giá trị nhỏ nhất cục bộ ($f'(x)$ đổi dấu từ âm sang dương) $\\rightarrow$ điểm cực tiểu có hoành độ $x = 1$."
   },
   {
     "id": "exam_de7plus_de01_p1_q02",

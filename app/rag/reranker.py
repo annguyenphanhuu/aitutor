@@ -7,10 +7,9 @@ Pipeline:
         ↓
     Sort by cross-encoder score → top-k=5
 
-Model: cross-encoder/ms-marco-MiniLM-L-6-v2
-    - Offline, ~68MB
-    - Hỗ trợ tốt tiếng Việt (multilingual BERT core)
-    - Latency: ~20ms/batch trên CPU
+Model: cross-encoder/mmarco-mMiniLMv2-L12-H384-v1
+    - Multilingual (hỗ trợ tiếng Việt)
+    - ~450MB, latency ~30ms/batch trên CPU
 
 Fallback: nếu sentence-transformers chưa cài hoặc RERANKER_ENABLED=False
     → trả lại candidates theo hybrid_score gốc (không thay đổi behavior).
@@ -53,7 +52,7 @@ class Reranker:
 
         try:
             from sentence_transformers import CrossEncoder  # noqa: PLC0415
-            model_name = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+            model_name = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
             logger.info("📦 Loading CrossEncoder model: %s", model_name)
             self._model = CrossEncoder(model_name, max_length=512)
             self._model_loaded = True

@@ -1,20 +1,24 @@
 """
-RAGAS Evaluator — chạy các metrics RAGAS trên dataset đã build.
+RAGAS Evaluator — chỉ chạy RAG RETRIEVAL metrics.
 
-Metrics được đo:
-  • context_precision    — Ngữ cảnh retrieve có thực sự cần thiết không?
-  • context_recall       — Ngữ cảnh có bao phủ đủ ground truth không?
-  • faithfulness         — Câu trả lời có dựa trên context không?
-  • answer_relevancy     — Câu trả lời có liên quan đến câu hỏi không?
-  • answer_correctness   — Câu trả lời có đúng so với ground truth không? (semantic + factual)
+⚠️  Lưu ý thiết kế:
+  RAGAS được dùng THUẦN TÚY để monitor chất lượng retrieval.
+  Các metrics generation (faithfulness, answer_relevancy, answer_correctness)
+  đã bị loại bỏ vì không phù hợp với:
+    - Câu hỏi có hình ảnh/đồ thị (Vision) → faithfulness luôn = 0
+    - MCQ format tiếng Việt → answer_relevancy bị nhiễu bởi các lựa chọn A/B/C/D
+  Thay thế bằng LLMExaminer và judge_visual_reasoning trong math_judge.py.
+
+Metrics được đo (2):
+  • context_precision    — (RAGAS) Ngữ cảnh retrieve có thực sự cần thiết không?
+  • math_context_coverage — (Custom) Ngữ cảnh có cung cấp đủ PHƯƠNG PHÁP/CÔNG CỤ
+                            để giải bài không? (thay thế context_recall gốc vốn
+                            chỉ đo fact-matching, không phù hợp bài Toán)
 
 Docs: https://docs.ragas.io/en/stable/concepts/metrics/
 
 Usage:
-    # Quick: chỉ chạy trên dataset đã có
     python -m app.evaluation.ragas_evaluator --dataset data/ragas_dataset.json
-
-    # Build dataset mới rồi evaluate
     python -m app.evaluation.ragas_evaluator --build --limit 20
 """
 
@@ -37,13 +41,7 @@ def _import_ragas():
     """Import RAGAS components — raises ImportError với hướng dẫn nếu chưa cài."""
     try:
         from ragas import evaluate, EvaluationDataset, SingleTurnSample
-        from ragas.metrics import (
-            LLMContextPrecisionWithReference,
-            LLMContextRecall,
-            Faithfulness,
-            AnswerRelevancy,
-            AnswerCorrectness,
-        )
+        from ragas.metrics import LLMContextPrecisionWithReference
         from ragas.llms import LangchainLLMWrapper
         from ragas.embeddings import LangchainEmbeddingsWrapper
         from langchain_openai import ChatOpenAI, OpenAIEmbeddings
@@ -52,11 +50,9 @@ def _import_ragas():
             "EvaluationDataset": EvaluationDataset,
             "SingleTurnSample":  SingleTurnSample,
             "metrics": {
+                # context_recall bị loại bỏ — thay bằng math_context_coverage
+                # (xem app/evaluation/math_context_coverage.py)
                 "context_precision": LLMContextPrecisionWithReference(),
-                "context_recall":    LLMContextRecall(),
-                "faithfulness":      Faithfulness(),
-                "answer_relevancy":  AnswerRelevancy(),
-                "answer_correctness": AnswerCorrectness(),
             },
             "ChatOpenAI":       ChatOpenAI,
             "OpenAIEmbeddings": OpenAIEmbeddings,
@@ -88,18 +84,18 @@ class RAGASEvaluator:
     def __init__(
         self,
         metrics: Optional[list[str]] = None,
-        model:           str = "gpt-4o-mini",   # Dùng mini để tiết kiệm chi phí judge
+        model:           str = "gpt-4o-mini",
         embedding_model: str = "text-embedding-3-small",
     ):
         from app.config import get_settings
         self.settings = get_settings()
 
+        # Default metrics:
+        #   context_precision    — RAGAS built-in
+        #   math_context_coverage — Custom (thay thế context_recall)
         self.requested_metrics = metrics or [
             "context_precision",
-            "context_recall",
-            "faithfulness",
-            "answer_relevancy",
-            "answer_correctness",
+            "math_context_coverage",
         ]
         self.judge_model      = model
         self.embedding_model  = embedding_model
@@ -127,12 +123,16 @@ class RAGASEvaluator:
             )
         )
 
-        # Set judge LLM/embedding cho từng metric
+        # Set judge LLM/embedding cho từng RAGAS built-in metric
+        # math_context_coverage là custom — không xử lý ở đây
+        _RAGAS_BUILTIN = {"context_precision"}
         selected_metrics = []
         for name in self.requested_metrics:
+            if name not in _RAGAS_BUILTIN:
+                continue  # custom metrics handled separately
             metric = r["metrics"].get(name)
             if metric is None:
-                logger.warning("Unknown metric: %s — skipped", name)
+                logger.warning("Unknown RAGAS metric: %s — skipped", name)
                 continue
             metric.llm = judge_llm
             if hasattr(metric, "embeddings"):
@@ -144,6 +144,7 @@ class RAGASEvaluator:
             "EvaluationDataset": r["EvaluationDataset"],
             "SingleTurnSample":  r["SingleTurnSample"],
             "selected_metrics":  selected_metrics,
+            "_judge_llm":        judge_llm,  # expose để custom metrics dùng
         }
         return self._ragas
 
@@ -174,14 +175,28 @@ class RAGASEvaluator:
 
         return r["EvaluationDataset"](samples=ragas_samples)
 
+    def _run_math_coverage(self, samples: list[dict]) -> list[dict]:
+        """
+        Chạy MathContextCoverage (custom metric) trên toàn bộ samples.
+        Trả về list of {math_context_coverage: float, math_context_coverage_reason: str}.
+        """
+        from app.evaluation.math_context_coverage import MathContextCoverage
+        r = self._setup_ragas()
+
+        # Reuse cùng judge LLM đã được setup
+        judge_llm = r.get("_judge_llm")
+        metric = MathContextCoverage(llm=judge_llm)
+        return metric.score_batch(samples)
+
     def run(self, samples: list[dict]) -> dict:
         """
         Run RAGAS evaluation on samples.
+        Merge kết quả RAGAS built-in + custom MathContextCoverage.
 
         Returns
         -------
         dict
-            Summary của tất cả metrics + per-sample scores.
+            RAGAS result object (có thêm attribute _custom_scores).
         """
         r = self._setup_ragas()
 
@@ -197,6 +212,13 @@ class RAGASEvaluator:
             dataset=dataset,
             metrics=metrics,
         )
+
+        # Chạy custom metric nếu được yêu cầu
+        if "math_context_coverage" in self.requested_metrics:
+            custom_scores = self._run_math_coverage(samples)
+            result._custom_scores = custom_scores  # attach để run_and_report dùng
+        else:
+            result._custom_scores = []
 
         return result
 
@@ -222,7 +244,7 @@ class RAGASEvaluator:
         """
         result = self.run(samples)
 
-        # Lấy score trung bình
+        # ── RAGAS built-in scores ──────────────────────────────────────────────
         summary_scores = {}
         try:
             df = result.to_pandas()
@@ -230,10 +252,26 @@ class RAGASEvaluator:
                 if col not in ("user_input", "retrieved_contexts", "response", "reference"):
                     summary_scores[col] = round(float(df[col].mean(skipna=True)), 4)
         except Exception:
-            # Fallback nếu result không có to_pandas
             summary_scores = dict(result)
 
-        # Tạo per-skill breakdown nếu có metadata
+        # ── Custom MathContextCoverage scores ─────────────────────────────────
+        custom_list = getattr(result, "_custom_scores", [])
+        if custom_list:
+            import statistics
+            cov_scores = [r.get("math_context_coverage") for r in custom_list
+                          if r.get("math_context_coverage") is not None]
+            if cov_scores:
+                summary_scores["math_context_coverage"] = round(
+                    statistics.mean(cov_scores), 4
+                )
+            # Lưu per-sample reasons để debug
+            coverage_reasons = [
+                r.get("math_context_coverage_reason", "") for r in custom_list
+            ]
+        else:
+            coverage_reasons = []
+
+        # ── Per-skill breakdown ────────────────────────────────────────────────
         skill_breakdown = {}
         try:
             df = result.to_pandas()
@@ -241,38 +279,46 @@ class RAGASEvaluator:
             df["skill_id"] = [m.get("skill_id", "unknown") for m in metas]
             df["chapter"]  = [m.get("chapter",  "unknown") for m in metas]
 
-            metric_cols = [c for c in df.columns if c in self.requested_metrics]
+            ragas_metric_cols = [c for c in df.columns
+                                  if c in self.requested_metrics
+                                  and c != "math_context_coverage"]
             for skill, grp in df.groupby("skill_id"):
                 skill_breakdown[skill] = {
                     col: round(float(grp[col].mean(skipna=True)), 4)
-                    for col in metric_cols
+                    for col in ragas_metric_cols
                     if col in grp.columns
                 }
         except Exception as e:
             logger.debug("Skill breakdown failed: %s", e)
 
+        thresholds = {
+            "context_precision":     0.70,
+            "math_context_coverage": 0.65,
+        }
+
         report = {
-            "timestamp":       datetime.now().isoformat(),
-            "n_samples":       len(samples),
-            "judge_model":     self.judge_model,
-            "metrics_run":     self.requested_metrics,
-            "summary_scores":  summary_scores,
-            "skill_breakdown": skill_breakdown,
-            "thresholds": {
-                "context_precision":  0.70,
-                "context_recall":     0.65,
-                "faithfulness":       0.80,
-                "answer_relevancy":   0.75,
-                "answer_correctness": 0.70,
-            },
+            "timestamp":        datetime.now().isoformat(),
+            "n_samples":        len(samples),
+            "judge_model":      self.judge_model,
+            "metrics_run":      self.requested_metrics,
+            "summary_scores":   summary_scores,
+            "coverage_reasons": coverage_reasons,
+            "skill_breakdown":  skill_breakdown,
+            "thresholds":       thresholds,
             "pass_fail": {
                 name: (
                     "✅ PASS"
-                    if summary_scores.get(name, 0) >= 0.70
+                    if summary_scores.get(name, 0) >= thresholds.get(name, 0.70)
                     else "❌ FAIL"
                 )
                 for name in self.requested_metrics
+                if name in summary_scores
             },
+            "note": (
+                "RAGAS đo context_precision (built-in). "
+                "math_context_coverage (custom) đo mức độ context hỗ trợ phương pháp giải. "
+                "Generation metrics được đo bằng LLMExaminer trong math_judge.py."
+            ),
         }
 
         # Save

@@ -71,6 +71,57 @@ Lời giải AI: {response}
 Chỉ trả lời đúng 1 số trong [0.0, 1.0]. Ví dụ: 0.75
 """
 
+# ── LLM-as-Examiner prompt (4-criterion rubric) ─────────────────────────────
+
+EXAMINER_PROMPT = """\
+Bạn là giáo viên Toán 12 Việt Nam đang chấm bài gia sư AI.
+Đánh giá theo 4 tiêu chí sau, mỗi tiêu chí cho điểm từ 0.0 đến 1.0:
+
+1. ACCURACY (Kết quả đúng): Đáp án cuối có đúng với đáp án chuẩn không?
+   1.0=hoàn toàn đúng | 0.5=đúng một phần | 0.0=sai hoặc không có
+
+2. METHOD (Phương pháp): Cách giải có đúng với lý thuyết Toán 12 không?
+   1.0=phương pháp hoàn toàn đúng | 0.5=đúng hướng nhưng có sai sót nhỏ | 0.0=sai phương pháp
+
+3. STEPS (Trình bày): Các bước giải có đầy đủ, logic, dễ theo không?
+   1.0=rõ ràng đầy đủ | 0.75=thiếu 1-2 bước nhỏ | 0.5=quá tóm tắt | 0.25=rời rạc | 0.0=không có
+
+4. KNOWLEDGE_USE (Vận dụng lý thuyết): Có nêu/áp dụng đúng định lý/công thức liên quan không?
+   1.0=trích dẫn và áp dụng đúng | 0.5=áp dụng nhưng không nêu rõ | 0.0=không vận dụng
+
+Câu hỏi:
+{question}
+
+Đáp án chuẩn:
+{ground_truth}
+
+Câu trả lời AI:
+{response}
+
+Trả về JSON hợp lệ duy nhất (không thêm markdown, không giải thích):
+{{"accuracy": <0-1>, "method": <0-1>, "steps": <0-1>, "knowledge_use": <0-1>, "comment": "<nhận xét ngắn>"}}
+"""
+
+# ── Visual reasoning judge prompt ────────────────────────────────────────────
+
+VISUAL_REASONING_PROMPT = """\
+Bạn là giáo viên Toán 12 đang đánh giá khả năng đọc đồ thị/hình vẽ của gia sư AI.
+
+Câu hỏi yêu cầu đọc đồ thị/hình vẽ:
+{question}
+
+Đáp án chuẩn: {ground_truth}
+Câu trả lời AI: {response}
+
+Đánh giá xem AI có:
+1. Đọc đúng tọa độ/giá trị từ hình không?
+2. Xác định đúng đặc điểm cần tìm (cực trị, tiệm cận, giao điểm...) không?
+3. Lý luận dựa trên hình ảnh có nhất quán không?
+
+Chỉ trả lời đúng 1 số trong [0.0, 1.0]:
+1.0=đọc hình chính xác và lý luận đúng | 0.5=đọc hình có sai sót nhỏ | 0.0=không đọc được hình
+"""
+
 
 
 # ── Low-level judge functions (no LLM) ────────────────────────────────────────
@@ -453,3 +504,191 @@ def print_math_report(report: dict) -> None:
     for name, verdict in report["pass_fail"].items():
         print(f"  {verdict}  {name}")
     print("=" * 60 + "\n")
+
+
+# ── LLM-as-Examiner ─────────────────────────────────────────────────────────
+
+async def judge_examiner(
+    question: str,
+    response: str,
+    ground_truth: str,
+    model: str = "gpt-4o-mini",
+    api_key: Optional[str] = None,
+) -> dict:
+    """
+    Đánh giá câu trả lời theo rubric 4 chiều của giáo viên Toán 12.
+
+    Returns dict:
+        {
+          "accuracy": 0-1,       # Kết quả đúng
+          "method": 0-1,         # Phương pháp giải đúng
+          "steps": 0-1,          # Trình bày rõ ràng, đầy đủ bước
+          "knowledge_use": 0-1,  # Vận dụng lý thuyết
+          "comment": "...",      # Nhận xét ngắn
+          "weighted_score": 0-1, # Tổng hợp có trọng số
+          "error": None | str,
+        }
+    Trọng số: accuracy=0.40, method=0.30, steps=0.20, knowledge_use=0.10
+    """
+    WEIGHTS = {"accuracy": 0.40, "method": 0.30, "steps": 0.20, "knowledge_use": 0.10}
+    default = {k: 0.5 for k in WEIGHTS}
+    default.update({"comment": "", "weighted_score": 0.5, "error": None})
+
+    try:
+        from langchain_openai import ChatOpenAI
+        from langchain.schema import HumanMessage
+        from app.config import get_settings
+
+        settings = get_settings()
+        llm = ChatOpenAI(
+            model=model,
+            api_key=api_key or settings.OPENAI_API_KEY,
+            temperature=0.0,
+        )
+
+        prompt = EXAMINER_PROMPT.format(
+            question=question[:1200],
+            ground_truth=ground_truth[:500],
+            response=response[:1000],
+        )
+
+        result = await llm.ainvoke([HumanMessage(content=prompt)])
+        text = result.content.strip()
+
+        # Tách JSON khỏi markdown nếu có
+        json_match = re.search(r"\{.*\}", text, re.DOTALL)
+        if not json_match:
+            raise ValueError(f"Không tìm thấy JSON trong response: {text[:200]}")
+
+        parsed = json.loads(json_match.group())
+
+        scores = {
+            k: max(0.0, min(1.0, float(parsed.get(k, 0.5))))
+            for k in WEIGHTS
+        }
+        weighted = sum(scores[k] * w for k, w in WEIGHTS.items())
+
+        return {
+            **scores,
+            "comment":        parsed.get("comment", ""),
+            "weighted_score": round(weighted, 4),
+            "error":          None,
+        }
+
+    except Exception as e:
+        logger.warning("LLMExaminer failed: %s", e)
+        default["error"] = str(e)
+        return default
+
+
+async def judge_visual_reasoning(
+    question: str,
+    response: str,
+    ground_truth: str,
+    model: str = "gpt-4o-mini",
+    api_key: Optional[str] = None,
+) -> float:
+    """
+    Đánh giá khả năng đọc đồ thị/hình vẽ của AI (0.0–1.0).
+    Chỉ gọi khi has_image=True. Thay thế RAGAS faithfulness cho Vision questions.
+    Returns 0.5 khi lỗi.
+    """
+    try:
+        from langchain_openai import ChatOpenAI
+        from langchain.schema import HumanMessage
+        from app.config import get_settings
+
+        settings = get_settings()
+        llm = ChatOpenAI(
+            model=model,
+            api_key=api_key or settings.OPENAI_API_KEY,
+            temperature=0.0,
+        )
+
+        prompt = VISUAL_REASONING_PROMPT.format(
+            question=question[:1000],
+            ground_truth=ground_truth[:300],
+            response=response[:800],
+        )
+
+        result = await llm.ainvoke([HumanMessage(content=prompt)])
+        text = result.content.strip()
+        m = re.search(r"\d+\.?\d*", text)
+        if m:
+            return max(0.0, min(1.0, float(m.group())))
+
+    except Exception as e:
+        logger.warning("Visual reasoning judge failed: %s", e)
+
+    return 0.5
+
+
+async def judge_retrieval_quality(
+    question: str,
+    contexts: list[str],
+    ground_truth: str,
+    model: str = "gpt-4o-mini",
+    api_key: Optional[str] = None,
+) -> dict:
+    """
+    Đánh giá chất lượng RAG retrieval mà không cần RAGAS.
+    Dùng LLM để đánh giá:
+      - relevance: context có liên quan đến câu hỏi không?
+      - coverage: context có đủ thông tin để trả lời không?
+
+    Returns {"relevance": 0-1, "coverage": 0-1, "error": None|str}
+    """
+    RETRIEVAL_PROMPT = """\
+Bạn là chuyên gia đánh giá hệ thống RAG cho Toán 12.
+
+Câu hỏi: {question}
+Đáp án chuẩn: {ground_truth}
+
+Các đoạn tài liệu được truy xuất:
+{contexts}
+
+Đánh giá 2 tiêu chí (trả về JSON, không giải thích thêm):
+1. relevance (0-1): Tài liệu có liên quan đến câu hỏi không?
+   1.0=rất liên quan | 0.5=có liên quan một phần | 0.0=không liên quan
+2. coverage (0-1): Tài liệu có đủ thông tin để trả lời đúng không?
+   1.0=đủ | 0.5=một phần | 0.0=thiếu hoàn toàn
+
+{{"relevance": <0-1>, "coverage": <0-1>}}"""
+
+    default = {"relevance": 0.5, "coverage": 0.5, "error": None}
+    try:
+        from langchain_openai import ChatOpenAI
+        from langchain.schema import HumanMessage
+        from app.config import get_settings
+
+        settings = get_settings()
+        llm = ChatOpenAI(
+            model=model,
+            api_key=api_key or settings.OPENAI_API_KEY,
+            temperature=0.0,
+        )
+
+        ctx_text = "\n---\n".join(
+            f"[{i+1}] {c[:400]}" for i, c in enumerate(contexts[:5])
+        )
+        prompt = RETRIEVAL_PROMPT.format(
+            question=question[:800],
+            ground_truth=ground_truth[:300],
+            contexts=ctx_text,
+        )
+
+        result = await llm.ainvoke([HumanMessage(content=prompt)])
+        text = result.content.strip()
+        json_match = re.search(r"\{.*\}", text, re.DOTALL)
+        if json_match:
+            parsed = json.loads(json_match.group())
+            return {
+                "relevance": max(0.0, min(1.0, float(parsed.get("relevance", 0.5)))),
+                "coverage":  max(0.0, min(1.0, float(parsed.get("coverage",  0.5)))),
+                "error":     None,
+            }
+    except Exception as e:
+        logger.warning("Retrieval quality judge failed: %s", e)
+        default["error"] = str(e)
+
+    return default

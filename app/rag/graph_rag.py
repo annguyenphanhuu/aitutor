@@ -93,26 +93,52 @@ class GraphRAGRetriever:
         """
         masteries = masteries or {}
 
-        # ── Lấy thông tin chapter từ Skill Graph để dùng cho Soft Boost ───
-        boost_chapter: Optional[str] = None
-        if skill_id and skill_id in SKILLS:
-            boost_chapter = SKILLS[skill_id].get("chapter")
+        # ── Step 1: Primary retrieval with QueryExpander + soft boost ──
+        from app.rag.query_expander import expand_question
+        from app.rag.reranker import get_reranker
+        from app.config import get_settings as _get_settings
 
-        # ── Step 1: Primary retrieval với Soft Boosting ────────────────
-        main_results = self.kb.search_all(
-            query,
-            k=self.k,
-            alpha=self.alpha,
-            boost_skill_id=skill_id,
-            boost_chapter=boost_chapter,
-        )
+        _settings = _get_settings()
+        reranker = get_reranker()
+        pool_k = _settings.RERANKER_CANDIDATE_K if _settings.RERANKER_ENABLED else self.k * 2
 
-        # ── Debug log: đếm bao nhiêu docs được boost ────────────────────
+        # QueryExpander infers chapters/skills from question content
+        expansion = expand_question(query)
+
+        candidates = self.kb.search_theory(query, k=pool_k, alpha=self.alpha)
+
+        # Light soft boost from expansion
+        SKILL_BOOST   = 0.06
+        CHAPTER_BOOST = 0.04
+        expanded_skills   = {s.lower() for s in expansion.skill_ids}
+        expanded_chapters = {c.lower() for c in expansion.chapters}
+
+        for r in candidates:
+            bonus = 0.0
+            meta  = r.get("metadata", {})
+            chunk_skill   = str(meta.get("skill_id", "")).lower().strip()
+            chunk_chapter = str(meta.get("chapter",  "")).lower().strip()
+
+            if chunk_skill and chunk_skill in expanded_skills:
+                bonus += SKILL_BOOST
+            if chunk_chapter and any(
+                chunk_chapter in exp_ch or exp_ch in chunk_chapter
+                for exp_ch in expanded_chapters
+            ):
+                bonus += CHAPTER_BOOST
+
+            if bonus > 0:
+                r["hybrid_score"] = min(r.get("hybrid_score", 0) + bonus, 1.0)
+                r["_boosted"] = True
+
+        main_results = reranker.rerank(query, candidates, k=self.k)
+
+        # Debug log: count boosted docs
         n_boosted = sum(1 for r in main_results if r.get("_boosted"))
         if n_boosted:
             logger.debug(
-                "🚀 Soft Boost: skill=%s chapter=%s → %d/%d docs boosted",
-                skill_id, boost_chapter, n_boosted, len(main_results),
+                "Soft Boost: %d/%d docs boosted (via QueryExpander)",
+                n_boosted, len(main_results),
             )
 
         main_docs = [
