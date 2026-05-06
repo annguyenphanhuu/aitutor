@@ -154,38 +154,48 @@ class TestFormatAssessment:
 
 class TestExtractAndVisualize:
 
-    def test_y_equals_expression(self, orchestrator):
+    @pytest.mark.asyncio
+    async def test_y_equals_expression(self, orchestrator):
         """Should extract 'x^2 - 3x + 1' from 'y = x^2 - 3x + 1'."""
         orchestrator.visualizer = MagicMock()
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
-        result = orchestrator._extract_and_visualize("y = x^2 - 3x + 1")
-        orchestrator.visualizer.generate_function_plot.assert_called()
+        with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="x**2 - 3*x + 1"):
+            result = await orchestrator._extract_and_visualize("y = x^2 - 3x + 1")
+            orchestrator.visualizer.generate_function_plot.assert_called_with("x**2 - 3*x + 1")
 
-    def test_f_x_equals_expression(self, orchestrator):
+    @pytest.mark.asyncio
+    async def test_f_x_equals_expression(self, orchestrator):
         orchestrator.visualizer = MagicMock()
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
-        result = orchestrator._extract_and_visualize("f(x) = sin(x)")
-        orchestrator.visualizer.generate_function_plot.assert_called()
+        with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="sin(x)"):
+            result = await orchestrator._extract_and_visualize("f(x) = sin(x)")
+            orchestrator.visualizer.generate_function_plot.assert_called_with("sin(x)")
 
-    def test_do_thi_prefix(self, orchestrator):
+    @pytest.mark.asyncio
+    async def test_do_thi_prefix(self, orchestrator):
         orchestrator.visualizer = MagicMock()
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
-        result = orchestrator._extract_and_visualize("đồ thị x^3 - 3x")
-        orchestrator.visualizer.generate_function_plot.assert_called()
+        with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="x**3 - 3*x"):
+            result = await orchestrator._extract_and_visualize("đồ thị x^3 - 3x")
+            orchestrator.visualizer.generate_function_plot.assert_called_with("x**3 - 3*x")
 
-    def test_ve_prefix(self, orchestrator):
+    @pytest.mark.asyncio
+    async def test_ve_prefix(self, orchestrator):
         orchestrator.visualizer = MagicMock()
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
-        result = orchestrator._extract_and_visualize("vẽ đồ thị hàm số x^2")
-        orchestrator.visualizer.generate_function_plot.assert_called()
+        with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="x**2"):
+            result = await orchestrator._extract_and_visualize("vẽ đồ thị hàm số x^2")
+            orchestrator.visualizer.generate_function_plot.assert_called_with("x**2")
 
-    def test_fallback_full_message(self, orchestrator):
+    @pytest.mark.asyncio
+    async def test_fallback_full_message(self, orchestrator):
         orchestrator.visualizer = MagicMock()
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "error"}
 
-        result = orchestrator._extract_and_visualize("something random")
-        orchestrator.visualizer.generate_function_plot.assert_called()
+        with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="something random"):
+            result = await orchestrator._extract_and_visualize("something random")
+            orchestrator.visualizer.generate_function_plot.assert_called_with("something random")

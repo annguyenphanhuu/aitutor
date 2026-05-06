@@ -1,0 +1,479 @@
+{
+  "timestamp": "2026-05-05T17:34:32.952480",
+  "n_samples": 48,
+  "judge_model": "gpt-4o-mini",
+  "skip_explanation": true,
+  "summary_scores": {
+    "mcq_accuracy": 0.875,
+    "overall_accuracy": 0.875
+  },
+  "type_breakdown": {
+    "exam_mcq": 0.875
+  },
+  "skill_breakdown": {
+    "derivative_applications": 0.0,
+    "function_survey": 0.6364,
+    "primitive_basic": 1.0,
+    "geometry_line_plane": 1.0,
+    "geometry_sphere": 1.0,
+    "probability_basic": 1.0,
+    "statistics_descriptive": 1.0,
+    "integral_applications": 1.0,
+    "statistics_inference": 1.0,
+    "integral_application": 0.0,
+    "statistics_variance": 1.0,
+    "integral_properties": 1.0,
+    "geometry_vector_basic": 1.0,
+    "derivative_basic": 1.0,
+    "sequence_arithmetic": 1.0,
+    "geometry_volume": 1.0,
+    "primitive_properties": 1.0,
+    "logarithmic_inequality": 1.0,
+    "statistics_variance_standard_deviation": 1.0,
+    "derivative_tangent_equation": 1.0
+  },
+  "thresholds": {
+    "mcq_accuracy": 0.85,
+    "true_false_accuracy": 0.75,
+    "short_answer_accuracy": 0.7,
+    "step_clarity": 0.7
+  },
+  "pass_fail": {
+    "mcq_accuracy": "✅ PASS",
+    "overall_accuracy": "✅ PASS"
+  },
+  "per_sample": [
+    {
+      "id": "exam_de7plus_de01_p1_q01",
+      "skill_id": "derivative_applications",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 0.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q02",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q03",
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q04",
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q05",
+      "skill_id": "geometry_line_plane",
+      "chapter": "HÌNH HỌC KHÔNG GIAN",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q06",
+      "skill_id": "geometry_sphere",
+      "chapter": "HÌNH HỌC KHÔNG GIAN",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q07",
+      "skill_id": "probability_basic",
+      "chapter": "TỔ HỢP – XÁC SUẤT",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q08",
+      "skill_id": "statistics_descriptive",
+      "chapter": "THỐNG KÊ",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q09",
+      "skill_id": "statistics_descriptive",
+      "chapter": "THỐNG KÊ",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q10",
+      "skill_id": "integral_applications",
+      "chapter": "NGUYÊN HÀM VÀ TÍCH PHÂN",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q11",
+      "skill_id": "statistics_inference",
+      "chapter": "THỐNG KÊ",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de01_p1_q12",
+      "skill_id": "function_survey",
+      "chapter": "ĐẠO HÀM",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q01",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 0.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q02",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q03",
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q04",
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q05",
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q06",
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q07",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q08",
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q09",
+      "skill_id": "integral_application",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 0.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q10",
+      "skill_id": "statistics_variance",
+      "chapter": "Thống kê",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q11",
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de03_p1_q12",
+      "skill_id": "integral_properties",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q01",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 0.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q02",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 0.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q03",
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q04",
+      "skill_id": "geometry_vector_basic",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q05",
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q06",
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q07",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q08",
+      "skill_id": "derivative_basic",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q09",
+      "skill_id": "statistics_inference",
+      "chapter": "Thống kê",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q10",
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q11",
+      "skill_id": "sequence_arithmetic",
+      "chapter": "Dãy số",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de04_p1_q12",
+      "skill_id": "geometry_volume",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q01",
+      "skill_id": "function_survey",
+      "chapter": "Hàm số lượng giác và phương trình lượng giác",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q02",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 0.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q03",
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q04",
+      "skill_id": "primitive_properties",
+      "chapter": "Nguyên hàm và Tích phân",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q05",
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q06",
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q07",
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q08",
+      "skill_id": "geometry_vector_basic",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "D",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q09",
+      "skill_id": "logarithmic_inequality",
+      "chapter": "Hàm số luy thừa, mũ và logarit",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q10",
+      "skill_id": "geometry_vector_basic",
+      "chapter": "Hình học không gian",
+      "question_type": "exam_mcq",
+      "correct_answer": "B",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q11",
+      "skill_id": "statistics_variance_standard_deviation",
+      "chapter": "Thống kê",
+      "question_type": "exam_mcq",
+      "correct_answer": "A",
+      "accuracy": 1.0,
+      "step_clarity": null
+    },
+    {
+      "id": "exam_de7plus_de05_p1_q12",
+      "skill_id": "derivative_tangent_equation",
+      "chapter": "Đạo hàm",
+      "question_type": "exam_mcq",
+      "correct_answer": "C",
+      "accuracy": 1.0,
+      "step_clarity": null
+    }
+  ]
+}

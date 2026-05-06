@@ -37,12 +37,15 @@ CLASSIFIER_PROMPT = """Phân loại ý định của học sinh thành một tro
 - "visualize": Muốn xem đồ thị, biểu đồ, hình ảnh toán học (ví dụ: "vẽ đồ thị", "đồ thị hàm số", "minh họa hình học")
 - "off_topic": Câu hỏi/yêu cầu KHÔNG liên quan đến Toán học (ví dụ: tư vấn tình cảm, hỏi thời tiết, chuyện phiếm, chào hỏi đơn thuần, yêu cầu làm việc khác ngoài Toán)
 
-Đồng thời xác định kỹ năng Toán 12 liên quan (skill_id).
+Đồng thời xác định các kỹ năng Toán 12 liên quan (skill_ids) và công thức liên quan (formula_ids).
 Danh sách skill_id:
 {skills_list}
 
+Danh sách formula_id:
+{formulas_list}
+
 Trả về JSON:
-{{"intent": "explain|answer|assess|plan|quiz|review|diagnostic|visualize|off_topic", "skill_id": "skill_id_hoặc_null", "is_answer_submission": true/false}}
+{{"intent": "explain|answer|assess|plan|quiz|review|diagnostic|visualize|off_topic", "skill_id": "skill_id_chinh_hoac_null", "skill_ids": ["skill_id_1"], "formula_ids": ["formula_id_1"], "is_answer_submission": true/false}}
 
 CHỈ TRẢ VỀ JSON.
 """
@@ -72,7 +75,20 @@ class Orchestrator:
         skills_list = "\n".join(
             [f"- {k}: {v['name']} ({v['chapter']})" for k, v in SKILLS.items()]
         )
-        prompt = CLASSIFIER_PROMPT.format(skills_list=skills_list)
+        try:
+            from app.rag.formula_registry import list_formulas
+
+            formulas_list = "\n".join(
+                f"- {formula['id']}: {formula.get('metadata', {}).get('chapter', '')}"
+                for formula in list_formulas()
+            )
+        except Exception:
+            formulas_list = ""
+
+        prompt = CLASSIFIER_PROMPT.format(
+            skills_list=skills_list,
+            formulas_list=formulas_list,
+        )
 
         # ── Langfuse generation span ───────────────────────────────────────
         gen = new_generation(
@@ -107,7 +123,20 @@ class Orchestrator:
                 content = content.rsplit("```", 1)[0]
             result = json.loads(content)
         except (json.JSONDecodeError, IndexError):
-            result = {"intent": "explain", "skill_id": None, "is_answer_submission": False}
+            result = {
+                "intent": "explain",
+                "skill_id": None,
+                "skill_ids": [],
+                "formula_ids": [],
+                "is_answer_submission": False,
+            }
+
+        skill_ids = result.get("skill_ids") or []
+        if not skill_ids and result.get("skill_id"):
+            skill_ids = [result["skill_id"]]
+        result["skill_ids"] = skill_ids
+        result["skill_id"] = result.get("skill_id") or (skill_ids[0] if skill_ids else None)
+        result["formula_ids"] = result.get("formula_ids") or []
 
         # ── Kết thúc generation span ──────────────────────────────────────
         end_generation(
@@ -138,6 +167,14 @@ class Orchestrator:
         classification = await self.classify_intent(message)
         intent = classification.get("intent", "explain")
         skill_id = classification.get("skill_id")
+        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
+        formula_ids = classification.get("formula_ids") or []
+        if not skill_id and skill_ids:
+            skill_id = skill_ids[0]
+        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
+        formula_ids = classification.get("formula_ids") or []
+        if not skill_id and skill_ids:
+            skill_id = skill_ids[0]
 
         # Step 2: Get mastery info
         masteries = await get_all_masteries(db, user_id)
@@ -267,6 +304,8 @@ class Orchestrator:
                 prerequisite_gaps=prereq_gaps,
                 chat_history=chat_history,
                 skill_id=skill_id,
+                skill_ids=skill_ids,
+                formula_ids=formula_ids,
                 masteries=masteries,
                 p_mastery=current_mastery,
             )
@@ -275,6 +314,8 @@ class Orchestrator:
             return {
                 "response": response_text,
                 "skill_id": skill_id,
+                "skill_ids": skill_ids,
+                "formula_ids": formula_ids,
                 "skill_name": skill_info.get("name"),
                 "mastery_level": round(current_mastery, 3),
                 "mode_used": "answer",
@@ -291,19 +332,29 @@ class Orchestrator:
             assessment = await self.assessor.assess(
                 question=original_question,
                 student_answer=message,
+                skill_ids=skill_ids,
+                formula_ids=formula_ids,
             )
 
             # Update mastery based on correctness
             new_mastery = current_mastery
-            if skill_id:
-                new_mastery = await update_mastery(
-                    db, skill_id, assessment["is_correct"], user_id
-                )
+            assessed = assessment.get("skills_assessed") or {
+                sid: {"passed": assessment["is_correct"]}
+                for sid in skill_ids
+            }
+            if assessed:
+                mastery_updates = await update_mastery(db, assessed, user_id=user_id)
+                if isinstance(mastery_updates, dict):
+                    new_mastery = mastery_updates.get(skill_id, current_mastery)
+                else:
+                    new_mastery = mastery_updates
 
             skill_info = SKILLS.get(skill_id, {})
             return {
                 "response": self._format_assessment(assessment),
                 "skill_id": skill_id,
+                "skill_ids": skill_ids,
+                "formula_ids": formula_ids,
                 "skill_name": skill_info.get("name"),
                 "mastery_level": round(new_mastery, 3),
                 "mode_used": "assess",
@@ -330,6 +381,8 @@ class Orchestrator:
                 prerequisite_gaps=prereq_gaps,
                 chat_history=chat_history,
                 skill_id=skill_id,
+                skill_ids=skill_ids,
+                formula_ids=formula_ids,
                 masteries=masteries,
                 p_mastery=current_mastery,
             )
@@ -338,6 +391,8 @@ class Orchestrator:
             return {
                 "response": response_text,
                 "skill_id": skill_id,
+                "skill_ids": skill_ids,
+                "formula_ids": formula_ids,
                 "skill_name": skill_info.get("name"),
                 "mastery_level": round(current_mastery, 3),
                 "mode_used": mode,
@@ -373,6 +428,10 @@ class Orchestrator:
         classification = await self.classify_intent(combined_for_classify)
         intent = classification.get("intent", "explain")
         skill_id = classification.get("skill_id")
+        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
+        formula_ids = classification.get("formula_ids") or []
+        if not skill_id and skill_ids:
+            skill_id = skill_ids[0]
 
         # Step 2: Get mastery
         masteries = await get_all_masteries(db, user_id)
@@ -398,6 +457,8 @@ class Orchestrator:
             prerequisite_gaps=prereq_gaps,
             chat_history=chat_history,
             skill_id=skill_id,
+            skill_ids=skill_ids,
+            formula_ids=formula_ids,
             masteries=masteries,
             p_mastery=current_mastery,
         )
@@ -406,6 +467,8 @@ class Orchestrator:
         return {
             "response": response_text,
             "skill_id": skill_id,
+            "skill_ids": skill_ids,
+            "formula_ids": formula_ids,
             "skill_name": skill_info.get("name"),
             "mastery_level": round(current_mastery, 3),
             "mode_used": f"hybrid_vision_{mode}",
@@ -449,6 +512,8 @@ class Orchestrator:
         yield _json.dumps({
             "type": "meta",
             "skill_id": skill_id,
+            "skill_ids": skill_ids,
+            "formula_ids": formula_ids,
             "skill_name": skill_info.get("name"),
             "mastery_level": round(current_mastery, 3),
             "mode_used": mode,
@@ -487,6 +552,8 @@ class Orchestrator:
                 prerequisite_gaps=prereq_gaps,
                 chat_history=chat_history,
                 skill_id=skill_id,
+                skill_ids=skill_ids,
+                formula_ids=formula_ids,
                 masteries=masteries,
                 p_mastery=current_mastery,
             ):

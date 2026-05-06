@@ -25,12 +25,42 @@ from app.agents.agentic_teacher import AgenticTeacherMixin, _normalize_messages
 from app.utils.cost_tracker import log_from_response
 from app.utils.image_loader import build_multimodal_content, has_images
 from app.knowledge_tracing.skill_graph import SKILLS
+from app.rag.formula_registry import get_formulas_by_ids
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
 # Maximum number of history messages to include in context
 MAX_HISTORY_MESSAGES = 10
+
+
+def _normalize_skill_ids(
+    skill_id: Optional[str] = None,
+    skill_ids: Optional[list[str]] = None,
+) -> list[str]:
+    normalized: list[str] = []
+    for sid in skill_ids or []:
+        if sid and sid not in normalized:
+            normalized.append(sid)
+    if skill_id and skill_id not in normalized:
+        normalized.insert(0, skill_id)
+    return normalized
+
+
+def _format_skill_names(skill_ids: list[str]) -> str:
+    if not skill_ids:
+        return "chua xac dinh"
+    return ", ".join(
+        f"{SKILLS.get(skill_id, {}).get('name', skill_id)} ({skill_id})"
+        for skill_id in skill_ids
+    )
+
+
+def _format_formulas(formula_ids: Optional[list[str]]) -> str:
+    formulas = get_formulas_by_ids(formula_ids or [])
+    if not formulas:
+        return "Khong co cong thuc trong tam duoc gan metadata."
+    return "\n\n".join(formula.get("content", "") for formula in formulas)
 
 
 TEACHER_SYSTEM_PROMPT_SOCRATIC = """Bạn là một gia sư Toán 12 giỏi, theo phương pháp Socratic.
@@ -72,6 +102,12 @@ duyệt), tuy nhiên có thể KHÔNG LIÊN QUAN trực tiếp đến câu hỏi
 
 TÀI LIỆU THAM KHẢO (nội dung chính xác, mức độ liên quan cần đánh giá):
 {context}
+
+KỸ NĂNG LIÊN QUAN: {skill_names_list}
+
+CÔNG THỨC TRỌNG TÂM:
+{formulas_list}
+*Lưu ý: luôn nhắc học sinh kiểm tra điều kiện xác định trước khi áp dụng công thức.*
 
 MỨC ĐỘ THÀNH THẠO CỦA HỌC SINH VỚI KỸ NĂNG NÀY: {mastery_level}
 {prerequisite_gaps}
@@ -115,6 +151,12 @@ duyệt), tuy nhiên có thể KHÔNG LIÊN QUAN trực tiếp đến câu hỏi
 TÀI LIỆU THAM KHẢO (nội dung chính xác, mức độ liên quan cần đánh giá):
 {context}
 
+KỸ NĂNG LIÊN QUAN: {skill_names_list}
+
+CÔNG THỨC TRỌNG TÂM:
+{formulas_list}
+*Lưu ý: luôn nhắc học sinh kiểm tra điều kiện xác định trước khi áp dụng công thức.*
+
 MỨC ĐỘ THÀNH THẠO: {mastery_level}
 {few_shot_block}
 """
@@ -157,6 +199,12 @@ duyệt), tuy nhiên có thể KHÔNG LIÊN QUAN trực tiếp đến câu hỏi
 TÀI LIỆU THAM KHẢO (nội dung chính xác, mức độ liên quan cần đánh giá):
 {context}
 
+KỸ NĂNG LIÊN QUAN: {skill_names_list}
+
+CÔNG THỨC TRỌNG TÂM:
+{formulas_list}
+*Lưu ý: luôn nhắc học sinh kiểm tra điều kiện xác định trước khi áp dụng công thức.*
+
 MỨC ĐỘ THÀNH THẠO: {mastery_level}
 {few_shot_block}
 """
@@ -198,6 +246,8 @@ class TeacherAgent(AgenticTeacherMixin):
         prerequisite_gaps: Optional[list[dict]] = None,
         chat_history: Optional[list[dict]] = None,
         skill_id: Optional[str] = None,
+        skill_ids: Optional[list[str]] = None,
+        formula_ids: Optional[list[str]] = None,
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
     ) -> str:
@@ -216,6 +266,9 @@ class TeacherAgent(AgenticTeacherMixin):
             masteries=masteries or {},
         )
         context = rag_result.build_context_text()
+        normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
+        skill_names_list = _format_skill_names(normalized_skill_ids)
+        formulas_list = _format_formulas(formula_ids)
         graph_gap_warning = rag_result.build_gap_warning()
 
         # ── Step 2: Dynamic Few-Shot ──────────────────────────────
@@ -234,18 +287,24 @@ class TeacherAgent(AgenticTeacherMixin):
         if mode == "exam":
             system_prompt = TEACHER_SYSTEM_PROMPT_EXAM.format(
                 context=context,
+                skill_names_list=skill_names_list,
+                formulas_list=formulas_list,
                 mastery_level=mastery_level,
                 few_shot_block=few_shot_block,
             )
         elif mode == "answer":
             system_prompt = TEACHER_SYSTEM_PROMPT_ANSWER.format(
                 context=context,
+                skill_names_list=skill_names_list,
+                formulas_list=formulas_list,
                 mastery_level=mastery_level,
                 few_shot_block=few_shot_block,
             )
         else:
             system_prompt = TEACHER_SYSTEM_PROMPT_SOCRATIC.format(
                 context=context,
+                skill_names_list=skill_names_list,
+                formulas_list=formulas_list,
                 mastery_level=mastery_level,
                 prerequisite_gaps=gaps_text,
                 few_shot_block=few_shot_block,
@@ -341,6 +400,8 @@ class TeacherAgent(AgenticTeacherMixin):
         prerequisite_gaps: Optional[list[dict]] = None,
         chat_history: Optional[list[dict]] = None,
         skill_id: Optional[str] = None,
+        skill_ids: Optional[list[str]] = None,
+        formula_ids: Optional[list[str]] = None,
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
     ):
@@ -358,6 +419,9 @@ class TeacherAgent(AgenticTeacherMixin):
             masteries=masteries or {},
         )
         context = rag_result.build_context_text()
+        normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
+        skill_names_list = _format_skill_names(normalized_skill_ids)
+        formulas_list = _format_formulas(formula_ids)
         graph_gap_warning = rag_result.build_gap_warning()
 
         # ── Step 2: Dynamic Few-Shot ─────────────────────────────────
@@ -374,14 +438,17 @@ class TeacherAgent(AgenticTeacherMixin):
         if mode == "exam":
             system_prompt = TEACHER_SYSTEM_PROMPT_EXAM.format(
                 context=context, mastery_level=mastery_level, few_shot_block=few_shot_block,
+                skill_names_list=skill_names_list, formulas_list=formulas_list,
             )
         elif mode == "answer":
             system_prompt = TEACHER_SYSTEM_PROMPT_ANSWER.format(
                 context=context, mastery_level=mastery_level, few_shot_block=few_shot_block,
+                skill_names_list=skill_names_list, formulas_list=formulas_list,
             )
         else:
             system_prompt = TEACHER_SYSTEM_PROMPT_SOCRATIC.format(
                 context=context, mastery_level=mastery_level,
+                skill_names_list=skill_names_list, formulas_list=formulas_list,
                 prerequisite_gaps=gaps_text or "", few_shot_block=few_shot_block,
             )
 
@@ -423,6 +490,8 @@ class TeacherAgent(AgenticTeacherMixin):
         prerequisite_gaps: Optional[list[dict]] = None,
         chat_history: Optional[list[dict]] = None,
         skill_id: Optional[str] = None,
+        skill_ids: Optional[list[str]] = None,
+        formula_ids: Optional[list[str]] = None,
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
     ) -> str:
@@ -441,6 +510,9 @@ class TeacherAgent(AgenticTeacherMixin):
             masteries=masteries or {},
         )
         context = rag_result.build_context_text()
+        normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
+        skill_names_list = _format_skill_names(normalized_skill_ids)
+        formulas_list = _format_formulas(formula_ids)
 
         # ── Dynamic Few-Shot ───────────────────────────────────────────
         skill_info = SKILLS.get(skill_id, {}) if skill_id else {}
@@ -457,18 +529,24 @@ class TeacherAgent(AgenticTeacherMixin):
         if mode == "exam":
             system_prompt = TEACHER_SYSTEM_PROMPT_EXAM.format(
                 context=context,
+                skill_names_list=skill_names_list,
+                formulas_list=formulas_list,
                 mastery_level=mastery_level,
                 few_shot_block=few_shot_block,
             )
         elif mode == "answer":
             system_prompt = TEACHER_SYSTEM_PROMPT_ANSWER.format(
                 context=context,
+                skill_names_list=skill_names_list,
+                formulas_list=formulas_list,
                 mastery_level=mastery_level,
                 few_shot_block=few_shot_block,
             )
         else:
             system_prompt = TEACHER_SYSTEM_PROMPT_SOCRATIC.format(
                 context=context,
+                skill_names_list=skill_names_list,
+                formulas_list=formulas_list,
                 mastery_level=mastery_level,
                 prerequisite_gaps=gaps_text,
                 few_shot_block=few_shot_block,

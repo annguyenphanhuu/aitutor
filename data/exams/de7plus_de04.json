@@ -29,11 +29,11 @@
       "skill_id": "function_survey",
       "chapter": "Đạo hàm",
       "type": "exam_mcq",
-      "correct_answer": "B",
+      "correct_answer": "A",
       "has_image": true,
       "image_path": "data/exams/images/de7plus_de04/q02.png"
     },
-    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nĐồ thị có TCĐ là: $x = 2$.\n\n(Lưu ý: Dựa vào hình vẽ thì tiệm cận đứng là đường thẳng $x = -1$, tức đáp án A. Tuy nhiên nội dung chữ trong ảnh ghi lời giải là \"Đồ thị có TCĐ là: $x = 2$\" và Chọn B nên dữ liệu được trích xuất bám sát theo văn bản trong ảnh)."
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nDựa vào hình vẽ, ta thấy đồ thị có tiệm cận đứng là đường thẳng $x = -1$."
   },
   {
     "id": "exam_de7plus_de04_p1_q03",

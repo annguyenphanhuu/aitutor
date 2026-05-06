@@ -34,19 +34,102 @@ async def get_or_create_mastery(db: AsyncSession, skill_id: str, user_id: int = 
     return mastery
 
 
-async def update_mastery(db: AsyncSession, skill_id: str, is_correct: bool, user_id: int = 1) -> float:
-    """Update the mastery probability after a student response."""
-    mastery = await get_or_create_mastery(db, skill_id, user_id)
+def _coerce_skills_assessed(
+    skill_or_assessment,
+    is_correct: bool | None = None,
+) -> dict[str, bool]:
+    """Normalize legacy and multi-skill assessment shapes.
 
-    # Apply BKT update
-    new_p = bkt.update(mastery.p_mastery, is_correct)
-    mastery.p_mastery = new_p
-    mastery.total_attempts += 1
-    if is_correct:
-        mastery.correct_attempts += 1
+    Accepted inputs:
+      - "skill_id", is_correct
+      - {"skill_id": {"passed": bool, ...}}
+      - {"skills_assessed": {"skill_id": {"passed": bool, ...}}}
+      - [{"skill_id": "...", "is_correct": bool}, ...]
+    """
+    if isinstance(skill_or_assessment, str):
+        return {skill_or_assessment: bool(is_correct)} if skill_or_assessment else {}
+
+    if isinstance(skill_or_assessment, dict):
+        raw = skill_or_assessment.get("skills_assessed", skill_or_assessment)
+        if not isinstance(raw, dict):
+            return {}
+
+        normalized: dict[str, bool] = {}
+        for skill_id, value in raw.items():
+            if not skill_id:
+                continue
+            if isinstance(value, bool):
+                normalized[str(skill_id)] = value
+            elif isinstance(value, dict):
+                passed = value.get("passed")
+                if passed is None:
+                    passed = value.get("is_correct")
+                if passed is None:
+                    passed = value.get("correct")
+                normalized[str(skill_id)] = bool(passed)
+            else:
+                normalized[str(skill_id)] = bool(value)
+        return normalized
+
+    if isinstance(skill_or_assessment, list):
+        normalized: dict[str, bool] = {}
+        for item in skill_or_assessment:
+            if not isinstance(item, dict):
+                continue
+            skill_id = item.get("skill_id")
+            if not skill_id:
+                continue
+            passed = item.get("passed")
+            if passed is None:
+                passed = item.get("is_correct")
+            if passed is None:
+                passed = item.get("correct")
+            normalized[str(skill_id)] = bool(passed)
+        return normalized
+
+    return {}
+
+
+async def update_mastery(
+    db: AsyncSession,
+    skill_or_assessment,
+    is_correct: bool | None = None,
+    user_id: int = 1,
+) -> float | dict[str, float]:
+    """Update BKT mastery after a response.
+
+    Legacy single-skill calls return ``float``. Multi-skill assessment calls
+    return ``{skill_id: new_p_mastery}``.
+    """
+    skills_assessed = _coerce_skills_assessed(skill_or_assessment, is_correct)
+    if not skills_assessed:
+        return {} if not isinstance(skill_or_assessment, str) else bkt.p_init
+
+    updated: dict[str, float] = {}
+    for skill_id, passed in skills_assessed.items():
+        mastery = await get_or_create_mastery(db, skill_id, user_id)
+        new_p = bkt.update(mastery.p_mastery, passed)
+        mastery.p_mastery = new_p
+        mastery.total_attempts += 1
+        if passed:
+            mastery.correct_attempts += 1
+        updated[skill_id] = new_p
 
     await db.flush()
-    return new_p
+
+    if isinstance(skill_or_assessment, str):
+        return updated.get(skill_or_assessment, bkt.p_init)
+    return updated
+
+
+async def update_masteries_from_assessment(
+    db: AsyncSession,
+    skills_assessed: dict,
+    user_id: int = 1,
+) -> dict[str, float]:
+    """Explicit multi-skill BKT update helper for assessor JSON output."""
+    result = await update_mastery(db, skills_assessed, user_id=user_id)
+    return result if isinstance(result, dict) else {}
 
 
 async def get_all_masteries(db: AsyncSession, user_id: int = 1) -> dict[str, float]:
@@ -125,7 +208,9 @@ async def batch_update_mastery_from_exam(
     Performs a single DB flush at the end for efficiency.
 
     Args:
-        exam_items: list of { "skill_id": str, "is_correct": bool }
+        exam_items: list of { "skill_id": str, "is_correct": bool } or
+                    { "skill_ids": [str], "is_correct": bool } or
+                    { "skills_assessed": {...} }
         user_id:    the student's user ID
 
     Returns:
@@ -136,6 +221,18 @@ async def batch_update_mastery_from_exam(
     # Group answers by skill_id, preserving order of occurrence
     skill_answers: dict[str, list[bool]] = defaultdict(list)
     for item in exam_items:
+        assessed = _coerce_skills_assessed(item.get("skills_assessed", {}))
+        if assessed:
+            for sid, passed in assessed.items():
+                skill_answers[sid].append(passed)
+            continue
+
+        if item.get("skill_ids"):
+            for sid in item.get("skill_ids") or []:
+                if sid:
+                    skill_answers[sid].append(bool(item.get("is_correct", False)))
+            continue
+
         sid = item.get("skill_id")
         if sid:
             skill_answers[sid].append(bool(item.get("is_correct", False)))

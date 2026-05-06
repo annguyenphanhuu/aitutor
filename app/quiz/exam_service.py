@@ -141,6 +141,8 @@ def _parse_question_for_student(q: dict) -> dict:
         "difficulty_part": meta.get("difficulty_part", 1),
         "chapter": meta.get("chapter", ""),
         "skill_id": meta.get("skill_id", ""),
+        "skill_ids": meta.get("skill_ids") or ([meta.get("skill_id")] if meta.get("skill_id") else []),
+        "formula_ids": meta.get("formula_ids") or [],
         "has_image": meta.get("has_image", False),
         "image_path": image_path_str,
     }
@@ -465,6 +467,8 @@ def grade_exam(exam_id: str, answers: dict) -> dict | None:
             "difficulty_part": meta.get("difficulty_part", 1),
             "chapter": meta.get("chapter", ""),
             "skill_id": meta.get("skill_id", ""),
+            "skill_ids": meta.get("skill_ids") or ([meta.get("skill_id")] if meta.get("skill_id") else []),
+            "formula_ids": meta.get("formula_ids") or [],
             "correct_answer": correct,
             "explanation": explanation,
         }

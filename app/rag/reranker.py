@@ -83,7 +83,7 @@ class Reranker:
             The student's search query.
         candidates : list[dict]
             Each dict must have 'content' and 'hybrid_score' keys.
-            (Output của knowledge_base.search_all / search_theory / search_exams)
+            (Output cua knowledge_base.search_all / search_theory)
         k : int | None
             Number of top results to return.
             Defaults to settings.RERANKER_TOP_K.

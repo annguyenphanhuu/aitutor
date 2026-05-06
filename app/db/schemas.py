@@ -1,6 +1,6 @@
 """Pydantic schemas for API requests and responses."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
 
@@ -15,11 +15,13 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
     skill_id: Optional[str] = None
+    skill_ids: list[str] = Field(default_factory=list)
     skill_name: Optional[str] = None
     mastery_level: Optional[float] = None
     mode_used: str = "socratic"
     visualization: Optional[dict] = None  # Plotly/Desmos data if present
     session_id: Optional[int] = None      # conversation session ID
+    formula_ids: list[str] = Field(default_factory=list)
 
 
 # ── Assessment ───────────────────────────────────────────
@@ -35,6 +37,9 @@ class AssessmentResponse(BaseModel):
     feedback: str
     correct_solution: str
     skill_id: Optional[str] = None
+    skill_ids: list[str] = Field(default_factory=list)
+    skills_assessed: dict = Field(default_factory=dict)
+    formula_ids: list[str] = Field(default_factory=list)
     new_mastery: Optional[float] = None
 
 
@@ -71,6 +76,8 @@ class DashboardResponse(BaseModel):
 # ── Quiz ─────────────────────────────────────────────
 class QuizGenerateRequest(BaseModel):
     skill_id: str
+    skill_ids: Optional[list[str]] = None
+    formula_ids: list[str] = Field(default_factory=list)
     difficulty: int = 1         # 1-easy, 2-medium, 3-hard
     count: int = 5              # number of questions
     exam_format: bool = False   # True = THPT QG mixed format
@@ -83,6 +90,8 @@ class QuizQuestionOut(BaseModel):
     choices: Optional[list[str]] = None   # MCQ only
     statements: Optional[list[dict]] = None  # True/False only: [{text, ...}]
     skill_id: str
+    skill_ids: list[str] = Field(default_factory=list)
+    formula_ids: list[str] = Field(default_factory=list)
     difficulty: int
     points: float = 0.25
 
@@ -180,8 +189,9 @@ class ReviewDueResponse(BaseModel):
 
 class ReviewSubmitRequest(BaseModel):
     card_id: int
-    question_id: int
-    selected_index: int
+    question_id: Optional[int] = None
+    selected_index: Optional[int] = None
+    quality: Optional[int] = None
 
 
 # ── Exam Practice ─────────────────────────────────────────
@@ -234,6 +244,8 @@ class ChatMessageOut(BaseModel):
     role: str
     content: str
     skill_id: Optional[str] = None
+    skill_ids: list[str] = Field(default_factory=list)
+    formula_ids: list[str] = Field(default_factory=list)
     timestamp: Optional[datetime] = None
 
     class Config:

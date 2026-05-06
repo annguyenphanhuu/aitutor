@@ -42,6 +42,8 @@ class InteractionLog(Base):
     answer = Column(Text, nullable=True)
     agent_response = Column(Text, nullable=True)
     skill_id = Column(String(50), nullable=True)
+    skill_ids = Column(JSON, nullable=True)       # list of assessed or targeted skills
+    formula_ids = Column(JSON, nullable=True)     # list of formula registry ids used
     is_correct = Column(Boolean, nullable=True)
     error_type = Column(String(50), nullable=True)  # calculation, conceptual, procedural
     response_mode = Column(String(20), default="socratic")  # socratic, exam
@@ -78,6 +80,8 @@ class ChatMessage(Base):
     role = Column(String(20), nullable=False)         # "user" | "assistant"
     content = Column(Text, nullable=False)
     skill_id = Column(String(50), nullable=True)
+    skill_ids = Column(JSON, nullable=True)
+    formula_ids = Column(JSON, nullable=True)
     mode_used = Column(String(20), nullable=True)
     timestamp = Column(DateTime, default=datetime.utcnow)
 
@@ -88,6 +92,8 @@ class QuizQuestion(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     skill_id = Column(String(50), nullable=False)
+    skill_ids = Column(JSON, nullable=True)           # list of required skills
+    formula_ids = Column(JSON, nullable=True)         # list of formula registry ids
     difficulty = Column(Integer, default=1)           # 1-easy, 2-medium, 3-hard
     question_type = Column(String(20), default="mcq") # mcq | true_false | short_answer
     question_latex = Column(Text, nullable=False)      # LaTeX formatted question

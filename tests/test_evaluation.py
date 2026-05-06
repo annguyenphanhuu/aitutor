@@ -609,8 +609,8 @@ class TestReflectionIntegration:
         mock_response.content = "[]"
         mock_response.usage   = MagicMock(prompt_tokens=10, completion_tokens=5)
 
-        engine.llm = MagicMock()
-        engine.llm.ainvoke = AsyncMock(return_value=mock_response)
+        engine.extractor_llm = MagicMock()
+        engine.extractor_llm.ainvoke = AsyncMock(return_value=mock_response)
 
         # Mock cost tracker để tránh format error với MagicMock
         with patch("app.agents.reflection.log_from_response"):
@@ -646,10 +646,10 @@ class TestReflectionIntegration:
         correction_response.content = "Bài giải đã được sửa: 2+2=4."
         correction_response.usage = MagicMock(prompt_tokens=20, completion_tokens=10)
 
+        engine.extractor_llm = MagicMock()
+        engine.extractor_llm.ainvoke = AsyncMock(return_value=extraction_response)
         engine.llm = MagicMock()
-        engine.llm.ainvoke = AsyncMock(
-            side_effect=[extraction_response, correction_response]
-        )
+        engine.llm.ainvoke = AsyncMock(return_value=correction_response)
 
         with patch("app.agents.reflection.log_from_response"), \
              patch("app.agents.reflection.MATH_TOOLS", {
@@ -676,8 +676,8 @@ class TestReflectionIntegration:
         mock_response.content = "[]"
         mock_response.usage   = MagicMock(prompt_tokens=5, completion_tokens=2)
 
-        engine.llm = MagicMock()
-        engine.llm.ainvoke = AsyncMock(return_value=mock_response)
+        engine.extractor_llm = MagicMock()
+        engine.extractor_llm.ainvoke = AsyncMock(return_value=mock_response)
 
         with patch("app.agents.reflection.log_from_response"):
             result = await engine.reflect(

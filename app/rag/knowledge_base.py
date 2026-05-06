@@ -1,18 +1,20 @@
-"""RAG Knowledge Base with ChromaDB and Hybrid Search.
+"""Theory-only RAG knowledge base backed by ChromaDB and BM25.
 
-Two-collection architecture:
-  - math_theory  : lý thuyết Toán 12 (định nghĩa, công thức, tính chất)
-  - math_exams   : câu hỏi từ đề thi thật (THPT QG, ĐGNL, …) kèm đáp án
+The vector store intentionally contains only curriculum theory. Exam questions
+remain available to quiz/evaluation services as JSON files, but they are not
+embedded or retrieved for tutoring prompts.
 """
 
-import chromadb
-from chromadb.config import Settings as ChromaSettings
-from chromadb.api.types import EmbeddingFunction, Documents, Embeddings
-from rank_bm25 import BM25Okapi
-from typing import Optional
+from __future__ import annotations
+
 import json
-import os
 import re
+from typing import Optional
+
+import chromadb
+from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
+from chromadb.config import Settings as ChromaSettings
+from rank_bm25 import BM25Okapi
 
 from app.config import get_settings
 
@@ -20,15 +22,13 @@ settings = get_settings()
 
 
 class OpenAIV1EmbeddingFunction(EmbeddingFunction):
-    """
-    Custom ChromaDB EmbeddingFunction compatible with openai>=1.0.0.
-    ChromaDB's built-in OpenAIEmbeddingFunction still uses the old API (openai.Embedding).
-    """
+    """ChromaDB embedding function compatible with openai>=1.0.0."""
 
     def __init__(self, api_key: str, model_name: str = "text-embedding-3-small"):
         from openai import OpenAI
+
         self._client = OpenAI(api_key=api_key)
-        self._model  = model_name
+        self._model = model_name
 
     def __call__(self, input: Documents) -> Embeddings:  # noqa: A002
         response = self._client.embeddings.create(
@@ -37,18 +37,12 @@ class OpenAIV1EmbeddingFunction(EmbeddingFunction):
         )
         return [item.embedding for item in response.data]
 
-# ── Valid data types ──────────────────────────────────────
+
 VALID_THEORY_TYPES = {"theory"}
-VALID_EXAM_TYPES   = {"exam_mcq", "exam_true_false", "exam_short_answer"}
-ALL_VALID_TYPES    = VALID_THEORY_TYPES | VALID_EXAM_TYPES
 
 
 class KnowledgeBase:
-    """
-    Manages two separate ChromaDB collections + BM25 indexes:
-      • math_theory  — lý thuyết SGK
-      • math_exams   — câu hỏi đề thi thật
-    """
+    """Manages the single theory collection and its in-memory BM25 index."""
 
     def __init__(self):
         self.chroma_client = chromadb.PersistentClient(
@@ -61,107 +55,76 @@ class KnowledgeBase:
             model_name=settings.EMBEDDING_MODEL,
         )
 
-        # ── Collection 1: Lý thuyết ──────────────────────
         self.theory_collection = self.chroma_client.get_or_create_collection(
             name="math_theory",
             metadata={"hnsw:space": "cosine"},
             embedding_function=self._embedding_fn,
         )
 
-        # ── Collection 2: Đề thi ─────────────────────────
-        self.exam_collection = self.chroma_client.get_or_create_collection(
-            name="math_exams",
-            metadata={"hnsw:space": "cosine"},
-            embedding_function=self._embedding_fn,
-        )
-
-        # BM25 indexes (rebuilt on each ingest call)
         self._theory_bm25: Optional[BM25Okapi] = None
         self._theory_store: list[dict] = []
 
-        self._exam_bm25: Optional[BM25Okapi] = None
-        self._exam_store: list[dict] = []
+    def ingest_theory(self, documents: list[dict]) -> None:
+        """Ingest theory documents into the math_theory collection."""
+        theory_docs = [
+            doc for doc in documents
+            if doc.get("metadata", {}).get("type", "theory") in VALID_THEORY_TYPES
+        ]
+        self._ingest(theory_docs, self.theory_collection, "_theory")
 
-    # ── Ingest ───────────────────────────────────────────
-
-    def ingest_theory(self, documents: list[dict]):
-        """
-        Ingest lý thuyết vào collection math_theory.
-        Each doc: {"id": str, "content": str, "metadata": {"type": "theory", ...}}
-        """
-        self._ingest(documents, self.theory_collection, "_theory")
-
-    def ingest_exams(self, documents: list[dict]):
-        """
-        Ingest câu hỏi đề thi vào collection math_exams.
-        Each doc: {"id": str, "content": str, "metadata": {"type": "exam_mcq"|..., ...}}
-        """
-        self._ingest(documents, self.exam_collection, "_exam")
-
-    def _ingest(self, documents: list[dict], collection, store_attr_prefix: str):
+    def _ingest(self, documents: list[dict], collection, store_attr_prefix: str) -> None:
         if not documents:
             return
 
-        ids       = [doc["id"]                    for doc in documents]
-        contents  = [doc["content"]               for doc in documents]
-        metadatas = [doc.get("metadata", {})      for doc in documents]
+        normalized_docs = []
+        for doc in documents:
+            normalized_docs.append({
+                **doc,
+                "metadata": self._sanitize_metadata(doc.get("metadata", {})),
+            })
 
-        # Upsert vào ChromaDB
+        ids = [doc["id"] for doc in normalized_docs]
+        contents = [doc["content"] for doc in normalized_docs]
+        metadatas = [doc.get("metadata", {}) for doc in normalized_docs]
+
         collection.upsert(ids=ids, documents=contents, metadatas=metadatas)
 
-        # Build BM25
-        tokenized = [self._tokenize(c) for c in contents]
-        bm25      = BM25Okapi(tokenized)
+        tokenized = [self._tokenize(content) for content in contents]
+        bm25 = BM25Okapi(tokenized)
 
-        setattr(self, f"{store_attr_prefix}_store", documents)
-        setattr(self, f"{store_attr_prefix}_bm25",  bm25)
+        setattr(self, f"{store_attr_prefix}_store", normalized_docs)
+        setattr(self, f"{store_attr_prefix}_bm25", bm25)
 
-    # ── Search ───────────────────────────────────────────
-
-    def search_theory(self, query: str, k: int = 5, alpha: float = 0.6) -> list[dict]:
-        """Hybrid search trong collection lý thuyết."""
-        return self._hybrid_search(
-            query, k, alpha,
-            collection=self.theory_collection,
-            bm25=self._theory_bm25,
-            doc_store=self._theory_store,
-        )
-
-    def search_exams(
+    def search_theory(
         self,
         query: str,
         k: int = 5,
-        alpha: float = 0.5,
-        year: Optional[int] = None,
-        exam_source: Optional[str] = None,
-        difficulty_part: Optional[int] = None,
-        skill_id: Optional[str] = None,
-        question_type: Optional[str] = None,
+        alpha: float = 0.6,
+        skill_ids: Optional[list[str]] = None,
+        chapter: Optional[str] = None,
     ) -> list[dict]:
-        """
-        Hybrid search trong collection đề thi với filter tùy chọn.
+        """Hybrid search over theory only.
 
-        Filters (ChromaDB where clause):
-          year            — lọc theo năm (vd: 2024)
-          exam_source     — lọc theo nguồn (vd: "THPT Quốc gia")
-          difficulty_part — lọc theo phần (1=MCQ, 2=TF, 3=SA)
-          skill_id        — lọc theo kỹ năng
-          question_type   — lọc theo loại câu ("exam_mcq", "exam_true_false", …)
+        ``skill_ids`` and ``chapter`` are optional metadata filters. They are
+        applied uniformly to vector and BM25 candidates.
         """
-        where: dict = {}
-        if year            is not None: where["year"]            = year
-        if exam_source     is not None: where["exam_source"]     = exam_source
-        if difficulty_part is not None: where["difficulty_part"] = difficulty_part
-        if skill_id        is not None: where["skill_id"]        = skill_id
-        if question_type   is not None: where["type"]            = question_type
-
-        return self._hybrid_search(
-            query, k, alpha,
-            collection=self.exam_collection,
-            bm25=self._exam_bm25,
-            doc_store=self._exam_store,
-            where=where or None,
+        where = self._build_simple_where(skill_ids=skill_ids, chapter=chapter)
+        results = self._hybrid_search(
+            query=query,
+            k=k,
+            alpha=alpha,
+            collection=self.theory_collection,
+            bm25=self._theory_bm25,
+            doc_store=self._theory_store,
+            where=where,
         )
+
+        if skill_ids or chapter:
+            results = [
+                r for r in results
+                if self._matches_metadata_filter(r.get("metadata", {}), skill_ids, chapter)
+            ]
+        return results[:k]
 
     def search_all(
         self,
@@ -169,53 +132,35 @@ class KnowledgeBase:
         k: int = 5,
         alpha: float = 0.55,
         boost_skill_id: Optional[str] = None,
-        boost_chapter:  Optional[str] = None,
-        skill_boost:    float = 0.15,
-        chapter_boost:  float = 0.10,
+        boost_chapter: Optional[str] = None,
+        skill_boost: float = 0.15,
+        chapter_boost: float = 0.10,
     ) -> list[dict]:
-        """
-        Tìm kiếm gộp cả lý thuyết lẫn đề thi, sau đó re-rank qua Cross-Encoder.
+        """Compatibility wrapper for the old unified search API.
 
-        Pipeline:
-          1. Hybrid search pool (k * CANDIDATE_MULTIPLIER docs)
-          2. Soft Boost theo skill_id / chapter
-          3. Cross-Encoder re-ranking → trả về top-k
-
-        Falls back to hybrid_score ordering nếu reranker không khả dụng.
+        The returned pool now contains theory documents only. Existing callers
+        can keep using ``search_all`` while the RAG layer avoids exam leakage.
         """
-        from app.rag.reranker import get_reranker  # lazy import tránh circular
+        from app.rag.reranker import get_reranker
+
         reranker = get_reranker()
-
-        # Pool size: lấy nhiều hơn để reranker có đủ ứng viên
         pool_k = settings.RERANKER_CANDIDATE_K if settings.RERANKER_ENABLED else k * 2
 
-        theory_results = self.search_theory(query, k=pool_k, alpha=alpha)
-        exam_results   = self.search_exams(query,  k=pool_k, alpha=alpha)
+        candidates = self.search_theory(query, k=pool_k, alpha=alpha)
+        self._apply_soft_boost(
+            candidates,
+            boost_skill_id=boost_skill_id,
+            boost_chapter=boost_chapter,
+            skill_boost=skill_boost,
+            chapter_boost=chapter_boost,
+        )
+        return reranker.rerank(query, candidates, k=k)
 
-        combined = theory_results + exam_results
+    def get_formulas_by_ids(self, formula_ids: list[str]) -> list[dict]:
+        """Return formula registry entries by id."""
+        from app.rag.formula_registry import get_formulas_by_ids
 
-        # ── Soft Boost ────────────────────────────────────────────────────────────
-        if boost_skill_id or boost_chapter:
-            boost_skill_id_lower   = (boost_skill_id  or "").lower().strip()
-            boost_chapter_lower    = (boost_chapter   or "").lower().strip()
-
-            for r in combined:
-                meta = r.get("metadata", {})
-                doc_skill   = str(meta.get("skill_id",  "")).lower().strip()
-                doc_chapter = str(meta.get("chapter",   "")).lower().strip()
-
-                bonus = 0.0
-                if boost_skill_id_lower and doc_skill == boost_skill_id_lower:
-                    bonus += skill_boost
-                if boost_chapter_lower and doc_chapter == boost_chapter_lower:
-                    bonus += chapter_boost
-
-                if bonus > 0:
-                    r["hybrid_score"] = min(r["hybrid_score"] + bonus, 1.0)
-                    r["_boosted"] = True   # debug flag
-
-        # ── Re-ranking (Cross-Encoder) ──────────────────────────────────────────
-        return reranker.rerank(query, combined, k=k)
+        return get_formulas_by_ids(formula_ids)
 
     def _hybrid_search(
         self,
@@ -227,13 +172,8 @@ class KnowledgeBase:
         doc_store: list[dict],
         where: Optional[dict] = None,
     ) -> list[dict]:
-        """
-        Kết hợp vector search (ChromaDB) + keyword search (BM25).
-        alpha=1 → thuần vector | alpha=0 → thuần BM25
-        """
         results: list[dict] = []
 
-        # ── Vector search ──────────────────────────────
         try:
             query_kwargs: dict = {
                 "query_texts": [query],
@@ -242,78 +182,177 @@ class KnowledgeBase:
             if where:
                 query_kwargs["where"] = where
 
-            vr = collection.query(**query_kwargs)
-            for i, doc_id in enumerate(vr["ids"][0]):
-                distance = vr["distances"][0][i] if vr.get("distances") else 0.0
-                score    = max(1.0 - distance, 0.0)
+            vector_results = collection.query(**query_kwargs)
+            for i, doc_id in enumerate(vector_results["ids"][0]):
+                distance = (
+                    vector_results["distances"][0][i]
+                    if vector_results.get("distances")
+                    else 0.0
+                )
+                score = max(1.0 - distance, 0.0)
                 results.append({
-                    "id":           doc_id,
-                    "content":      vr["documents"][0][i],
-                    "metadata":     vr["metadatas"][0][i] if vr.get("metadatas") else {},
+                    "id": doc_id,
+                    "content": vector_results["documents"][0][i],
+                    "metadata": (
+                        vector_results["metadatas"][0][i]
+                        if vector_results.get("metadatas")
+                        else {}
+                    ),
                     "vector_score": score,
-                    "bm25_score":   0.0,
+                    "bm25_score": 0.0,
                 })
         except Exception:
             pass
 
-        # ── BM25 keyword search ──────────────────────
         if bm25 and doc_store:
-            tokens     = self._tokenize(query)
+            tokens = self._tokenize(query)
             bm25_scores = bm25.get_scores(tokens)
-            max_bm25   = max(bm25_scores) if max(bm25_scores) > 0 else 1.0
+            max_bm25 = max(bm25_scores) if max(bm25_scores) > 0 else 1.0
 
             for i, score in enumerate(bm25_scores):
                 normalized = score / max_bm25
-                doc        = doc_store[i]
-                if where:
-                    meta = doc.get("metadata", {})
-                    if not all(meta.get(k) == v for k, v in where.items()):
-                        continue
+                doc = doc_store[i]
+                if where and not self._matches_simple_where(doc.get("metadata", {}), where):
+                    continue
+
                 existing = next((r for r in results if r["id"] == doc["id"]), None)
                 if existing:
                     existing["bm25_score"] = normalized
                 else:
                     results.append({
-                        "id":           doc["id"],
-                        "content":      doc["content"],
-                        "metadata":     doc.get("metadata", {}),
+                        "id": doc["id"],
+                        "content": doc["content"],
+                        "metadata": doc.get("metadata", {}),
                         "vector_score": 0.0,
-                        "bm25_score":   normalized,
+                        "bm25_score": normalized,
                     })
 
-        # ── Combine ───────────────────────────────────
-        for r in results:
-            r["hybrid_score"] = alpha * r["vector_score"] + (1 - alpha) * r["bm25_score"]
+        for result in results:
+            result["hybrid_score"] = (
+                alpha * result["vector_score"] + (1 - alpha) * result["bm25_score"]
+            )
 
         results.sort(key=lambda x: x["hybrid_score"], reverse=True)
         return results[:k]
 
-    # ── Utilities ────────────────────────────────────────
+    def _apply_soft_boost(
+        self,
+        results: list[dict],
+        boost_skill_id: Optional[str],
+        boost_chapter: Optional[str],
+        skill_boost: float,
+        chapter_boost: float,
+    ) -> None:
+        boost_skill = (boost_skill_id or "").lower().strip()
+        boost_chapter_norm = (boost_chapter or "").lower().strip()
+
+        if not boost_skill and not boost_chapter_norm:
+            return
+
+        for result in results:
+            meta = result.get("metadata", {})
+            bonus = 0.0
+
+            if boost_skill and boost_skill in self._metadata_skill_ids(meta):
+                bonus += skill_boost
+
+            doc_chapter = str(meta.get("chapter", "")).lower().strip()
+            if boost_chapter_norm and doc_chapter == boost_chapter_norm:
+                bonus += chapter_boost
+
+            if bonus > 0:
+                result["hybrid_score"] = min(result.get("hybrid_score", 0.0) + bonus, 1.0)
+                result["_boosted"] = True
+
+    def _build_simple_where(
+        self,
+        skill_ids: Optional[list[str]],
+        chapter: Optional[str],
+    ) -> Optional[dict]:
+        where: dict = {}
+        if skill_ids and len(skill_ids) == 1:
+            where["skill_id"] = skill_ids[0]
+        if chapter:
+            where["chapter"] = chapter
+        return where or None
+
+    def _matches_simple_where(self, metadata: dict, where: dict) -> bool:
+        return all(metadata.get(key) == value for key, value in where.items())
+
+    def _matches_metadata_filter(
+        self,
+        metadata: dict,
+        skill_ids: Optional[list[str]],
+        chapter: Optional[str],
+    ) -> bool:
+        if chapter and str(metadata.get("chapter", "")).strip() != chapter:
+            return False
+        if skill_ids:
+            wanted = {skill_id.lower().strip() for skill_id in skill_ids if skill_id}
+            if wanted and not (wanted & self._metadata_skill_ids(metadata)):
+                return False
+        return True
+
+    def _metadata_skill_ids(self, metadata: dict) -> set[str]:
+        raw_values = []
+        if metadata.get("skill_id"):
+            raw_values.append(metadata["skill_id"])
+        if metadata.get("skill_ids"):
+            raw_values.append(metadata["skill_ids"])
+
+        skill_ids: set[str] = set()
+        for raw in raw_values:
+            if isinstance(raw, list):
+                values = raw
+            elif isinstance(raw, str):
+                try:
+                    decoded = json.loads(raw)
+                    values = decoded if isinstance(decoded, list) else [raw]
+                except json.JSONDecodeError:
+                    values = [part.strip() for part in raw.split(",")]
+            else:
+                values = [raw]
+
+            for value in values:
+                value_str = str(value).lower().strip()
+                if value_str:
+                    skill_ids.add(value_str)
+        return skill_ids
+
+    def _sanitize_metadata(self, metadata: dict) -> dict:
+        sanitized = {}
+        for key, value in metadata.items():
+            if isinstance(value, bool):
+                sanitized[key] = int(value)
+            elif value is None:
+                sanitized[key] = ""
+            elif isinstance(value, (list, dict)):
+                sanitized[key] = json.dumps(value, ensure_ascii=False)
+            else:
+                sanitized[key] = value
+        return sanitized
 
     def _tokenize(self, text: str) -> list[str]:
-        """Vietnamese-aware tokenization."""
         text = text.lower()
-        text = re.sub(
-            r"[^\w\sàáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđ]",
-            " ", text,
-        )
+        text = re.sub(r"[^\w\s]", " ", text, flags=re.UNICODE)
         return text.split()
 
     def get_theory_count(self) -> int:
         return self.theory_collection.count()
 
     def get_exam_count(self) -> int:
-        return self.exam_collection.count()
+        """Compatibility metric: exams are no longer stored in vector DB."""
+        return 0
 
     def get_stats(self) -> dict:
+        theory_count = self.get_theory_count()
         return {
-            "theory_docs": self.get_theory_count(),
-            "exam_docs":   self.get_exam_count(),
-            "total":       self.get_theory_count() + self.get_exam_count(),
+            "theory_docs": theory_count,
+            "exam_docs": 0,
+            "total": theory_count,
         }
 
 
-# ── Singleton ─────────────────────────────────────────────
 _kb: Optional[KnowledgeBase] = None
 
 

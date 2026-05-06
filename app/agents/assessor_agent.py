@@ -1,79 +1,115 @@
-"""Assessor Agent — grades student answers and identifies errors."""
+"""Assessor Agent: grades student answers and reports per-skill feedback."""
 
-from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage
-from app.config import get_settings
-from app.utils.cost_tracker import log_from_response
+from __future__ import annotations
+
 import json
+
+from langchain.schema import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+
+from app.config import get_settings
+from app.knowledge_tracing.skill_graph import SKILLS
+from app.rag.formula_registry import get_formulas_by_ids
+from app.utils.cost_tracker import log_from_response
 
 settings = get_settings()
 
 
-ASSESSOR_SYSTEM_PROMPT = """Bạn là giám khảo chấm bài Toán 12.
-Nhiệm vụ: Đánh giá câu trả lời của học sinh.
+ASSESSOR_SYSTEM_PROMPT = """Ban la giam khao cham bai Toan 12.
 
-QUY TẮC:
-1. So sánh câu trả lời của học sinh với lời giải đúng.
-2. Xác định loại lỗi (nếu có):
-   - "calculation": Lỗi tính toán
-   - "conceptual": Hiểu sai khái niệm / công thức
-   - "procedural": Sai phương pháp giải
-   - "none": Đáp án đúng
-3. Đưa ra nhận xét cụ thể về lỗi.
-4. Cung cấp lời giải đúng.
+Bai toan yeu cau cac ky nang: {skill_names_list}
 
-BẮT BUỘC trả về JSON theo format:
+Cong thuc ap dung:
+{formulas_list}
+
+NHIEM VU:
+1. Kiem tra hoc sinh co ap dung dung cong thuc khong va co quen dieu kien xac dinh khong.
+2. Voi tung ky nang trong danh sach, xac dinh hoc sinh da lam dung hay sai o buoc nao.
+3. Cho diem tong the tu 0.0 den 1.0.
+
+Bat buoc tra ve JSON:
 {{
-    "is_correct": true/false,
-    "score": 0.0-1.0,
-    "error_type": "none" | "calculation" | "conceptual" | "procedural",
-    "feedback": "Nhận xét chi tiết bằng tiếng Việt",
-    "correct_solution": "Lời giải đúng đầy đủ"
+  "is_correct": true/false,
+  "score": 0.0-1.0,
+  "error_type": "none" | "calculation" | "conceptual" | "procedural",
+  "skills_assessed": {{
+    "skill_id": {{"passed": true/false, "feedback": "Nhan xet ngan"}}
+  }},
+  "feedback": "Nhan xet tong the bang tieng Viet",
+  "overall_feedback": "Nhan xet tong the bang tieng Viet",
+  "correct_solution": "Loi giai dung day du"
 }}
 
-CHỈ TRẢ VỀ JSON, KHÔNG CÓ TEXT KHÁC.
+CHI TRA VE JSON, KHONG THEM VAN BAN KHAC.
 """
+
+
+def _normalize_skill_ids(skill_ids: list[str] | None) -> list[str]:
+    normalized: list[str] = []
+    for skill_id in skill_ids or []:
+        if skill_id and skill_id not in normalized:
+            normalized.append(skill_id)
+    return normalized
+
+
+def _format_skill_names(skill_ids: list[str]) -> str:
+    if not skill_ids:
+        return "chua xac dinh"
+    return ", ".join(
+        f"{SKILLS.get(skill_id, {}).get('name', skill_id)} ({skill_id})"
+        for skill_id in skill_ids
+    )
+
+
+def _format_formulas(formula_ids: list[str] | None) -> str:
+    formulas = get_formulas_by_ids(formula_ids or [])
+    if not formulas:
+        return "Khong co cong thuc trong tam duoc gan metadata."
+    return "\n\n".join(formula.get("content", "") for formula in formulas)
 
 
 class AssessorAgent:
     """Agent that evaluates student answers."""
 
     def __init__(self):
-        # MINI: structured JSON output, no deep math reasoning needed
         self.llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,
             temperature=0.1,
         )
 
-    async def assess(self, question: str, student_answer: str) -> dict:
-        """
-        Evaluate a student's answer.
+    async def assess(
+        self,
+        question: str,
+        student_answer: str,
+        skill_ids: list[str] | None = None,
+        formula_ids: list[str] | None = None,
+    ) -> dict:
+        """Evaluate a student's answer with per-skill assessment JSON."""
+        skill_ids = _normalize_skill_ids(skill_ids)
+        system_prompt = ASSESSOR_SYSTEM_PROMPT.format(
+            skill_names_list=_format_skill_names(skill_ids),
+            formulas_list=_format_formulas(formula_ids),
+        )
 
-        Returns: dict with is_correct, score, error_type, feedback, correct_solution
-        """
-        prompt = f"""CÂU HỎI:
+        prompt = f"""CAU HOI:
 {question}
 
-CÂU TRẢ LỜI CỦA HỌC SINH:
+CAU TRA LOI CUA HOC SINH:
 {student_answer}
 
-Hãy chấm điểm và phân tích."""
+Hay cham diem va phan tich."""
 
         messages = [
-            SystemMessage(content=ASSESSOR_SYSTEM_PROMPT),
+            SystemMessage(content=system_prompt),
             HumanMessage(content=prompt),
         ]
 
         response = await self.llm.ainvoke(messages)
-
-        # ── cost log ──────────────────────────────────────────────────────────
         log_from_response(agent="Assessor", model=settings.LLM_MODEL_MINI, response=response)
 
         try:
-            # Parse JSON response
             content = response.content.strip()
-            # Remove markdown code fences if present
             if content.startswith("```"):
                 content = content.split("\n", 1)[1]
                 content = content.rsplit("```", 1)[0]
@@ -83,8 +119,24 @@ Hãy chấm điểm và phân tích."""
                 "is_correct": False,
                 "score": 0.0,
                 "error_type": "unknown",
+                "skills_assessed": {},
                 "feedback": response.content,
-                "correct_solution": "Không thể phân tích lời giải.",
+                "overall_feedback": response.content,
+                "correct_solution": "Khong the phan tich loi giai.",
             }
+
+        if "skills_assessed" not in result:
+            result["skills_assessed"] = {
+                skill_id: {
+                    "passed": bool(result.get("is_correct", False)),
+                    "feedback": result.get("feedback", ""),
+                }
+                for skill_id in skill_ids
+            }
+        result.setdefault("overall_feedback", result.get("feedback", ""))
+        result.setdefault("feedback", result.get("overall_feedback", ""))
+        result.setdefault("correct_solution", "")
+        result.setdefault("score", 1.0 if result.get("is_correct") else 0.0)
+        result.setdefault("error_type", "none" if result.get("is_correct") else "unknown")
 
         return result

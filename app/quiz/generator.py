@@ -67,6 +67,8 @@ class BaseQuizGenerator:
             "explanation": explanation,
             "difficulty": difficulty,
             "skill_id": skill_id,
+            "skill_ids": [skill_id],
+            "formula_ids": [],
             "sympy_expr": sympy_expr,
         }
 
@@ -90,6 +92,8 @@ class BaseQuizGenerator:
             "explanation": explanation,
             "difficulty": difficulty,
             "skill_id": skill_id,
+            "skill_ids": [skill_id],
+            "formula_ids": [],
             "sympy_expr": sympy_expr,
         }
 
@@ -115,6 +119,8 @@ class BaseQuizGenerator:
             "explanation": explanation,
             "difficulty": difficulty,
             "skill_id": skill_id,
+            "skill_ids": [skill_id],
+            "formula_ids": [],
             "sympy_expr": sympy_expr,
         }
 
@@ -758,6 +764,8 @@ def generate_questions(skill_id: str, difficulty: int = 1, count: int = 5,
                 q = gen.generate(difficulty)
                 q["question_type"] = "mcq"
             q["skill_id"] = skill_id
+            q["skill_ids"] = q.get("skill_ids") or [skill_id]
+            q["formula_ids"] = q.get("formula_ids") or []
             questions.append(q)
         except Exception as e:
             print(f"[GENERATOR] ERROR skill='{skill_id}' diff={difficulty}: {e}")

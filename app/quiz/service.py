@@ -88,8 +88,11 @@ async def create_quiz_session(
     # Save questions to DB
     db_questions = []
     for q in raw_questions:
+        q_skill_ids = q.get("skill_ids") or [q["skill_id"]]
         dbq = QuizQuestion(
             skill_id=q["skill_id"],
+            skill_ids=q_skill_ids,
+            formula_ids=q.get("formula_ids", []),
             difficulty=q["difficulty"],
             question_type=q.get("question_type", "mcq"),
             question_latex=q["question_latex"],
@@ -115,6 +118,8 @@ async def create_quiz_session(
             "is_correct": None,
             "points_earned": 0.0,
             "max_points": dbq.points,
+            "skill_ids": dbq.skill_ids or [dbq.skill_id],
+            "formula_ids": dbq.formula_ids or [],
         }
         for dbq in db_questions
     ]
@@ -141,6 +146,8 @@ async def create_quiz_session(
             "question_type": dbq.question_type,
             "question_latex": dbq.question_latex,
             "skill_id": dbq.skill_id,
+            "skill_ids": dbq.skill_ids or [dbq.skill_id],
+            "formula_ids": dbq.formula_ids or [],
             "difficulty": dbq.difficulty,
             "points": dbq.points,
         }
@@ -247,8 +254,21 @@ async def submit_quiz_answer(
 
     # Update mastery via BKT
     new_mastery = None
-    if question.skill_id:
-        new_mastery = await update_mastery(db, question.skill_id, is_correct, user_id)
+    q_skill_ids = question.skill_ids or ([question.skill_id] if question.skill_id else [])
+    if q_skill_ids:
+        mastery_updates = await update_mastery(
+            db,
+            {
+                skill_id: {"passed": is_correct}
+                for skill_id in q_skill_ids
+            },
+            user_id=user_id,
+        )
+        if isinstance(mastery_updates, dict):
+            primary_skill = q_skill_ids[0]
+            new_mastery = mastery_updates.get(primary_skill)
+        else:
+            new_mastery = mastery_updates
 
     await db.flush()
 
@@ -293,20 +313,21 @@ async def get_quiz_result(db: AsyncSession, session_id: int) -> dict:
         )
         question = qresult.scalar_one_or_none()
         if question:
-            sid = question.skill_id
-            if sid not in skill_stats:
-                skill_info = SKILLS.get(sid, {})
-                mastery_rec = await get_or_create_mastery(db, sid)
-                skill_stats[sid] = {
-                    "skill_id": sid,
-                    "skill_name": skill_info.get("name", sid),
-                    "correct": 0,
-                    "total": 0,
-                    "mastery": round(mastery_rec.p_mastery, 3),
-                }
-            skill_stats[sid]["total"] += 1
-            if q_info.get("is_correct"):
-                skill_stats[sid]["correct"] += 1
+            q_skill_ids = question.skill_ids or ([question.skill_id] if question.skill_id else [])
+            for sid in q_skill_ids:
+                if sid not in skill_stats:
+                    skill_info = SKILLS.get(sid, {})
+                    mastery_rec = await get_or_create_mastery(db, sid)
+                    skill_stats[sid] = {
+                        "skill_id": sid,
+                        "skill_name": skill_info.get("name", sid),
+                        "correct": 0,
+                        "total": 0,
+                        "mastery": round(mastery_rec.p_mastery, 3),
+                    }
+                skill_stats[sid]["total"] += 1
+                if q_info.get("is_correct"):
+                    skill_stats[sid]["correct"] += 1
 
     score_pct = (session.total_score / session.max_score * 100) if session.max_score else 0
 

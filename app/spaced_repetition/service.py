@@ -57,9 +57,12 @@ async def get_due_cards(db: AsyncSession, user_id: int = 1) -> list[dict]:
             continue
 
         q = qs[0]
+        q_skill_ids = q.get("skill_ids") or [q["skill_id"]]
         # Save question to DB
         dbq = QuizQuestion(
             skill_id=q["skill_id"],
+            skill_ids=q_skill_ids,
+            formula_ids=q.get("formula_ids", []),
             difficulty=q["difficulty"],
             question_latex=q["question_latex"],
             choices=q["choices"],
@@ -79,6 +82,8 @@ async def get_due_cards(db: AsyncSession, user_id: int = 1) -> list[dict]:
                 "question_latex": dbq.question_latex,
                 "choices": dbq.choices,
                 "skill_id": dbq.skill_id,
+                "skill_ids": dbq.skill_ids or [dbq.skill_id],
+                "formula_ids": dbq.formula_ids or [],
                 "difficulty": dbq.difficulty,
             },
             "days_overdue": max(days_overdue, 0),
