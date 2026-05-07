@@ -54,5 +54,148 @@
       "chapter": "Lượng giác",
       "type": "formula"
     }
+  },
+  {
+    "id": "integral_dx",
+    "content": "**Nguyên hàm của hằng số (dx):**\n$$\\int dx = x + C$$\n*Dạng hợp:* $\\int du = u + C$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_co_ban"
+    }
+  },
+  {
+    "id": "integral_power",
+    "content": "**Nguyên hàm lũy thừa:**\n$$\\int x^{\\alpha}\\,dx = \\frac{x^{\\alpha+1}}{\\alpha+1} + C \\quad (\\alpha \\neq -1)$$\n*Dạng hợp:* $\\int u^{\\alpha}\\,du = \\dfrac{u^{\\alpha+1}}{\\alpha+1} + C \\quad (\\alpha \\neq -1)$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_co_ban"
+    }
+  },
+  {
+    "id": "integral_1_over_x",
+    "content": "**Nguyên hàm của 1/x:**\n$$\\int \\frac{dx}{x} = \\ln|x| + C \\quad (x \\neq 0)$$\n*Dạng hợp:* $\\int \\dfrac{du}{u} = \\ln|u| + C \\quad (u = u(x) \\neq 0)$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_co_ban"
+    }
+  },
+  {
+    "id": "integral_exp_e",
+    "content": "**Nguyên hàm hàm mũ cơ số e:**\n$$\\int e^{x}\\,dx = e^{x} + C$$\n*Dạng hợp:* $\\int e^{u}\\,du = e^{u} + C$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_co_ban"
+    }
+  },
+  {
+    "id": "integral_exp_a",
+    "content": "**Nguyên hàm hàm mũ cơ số a:**\n$$\\int a^{x}\\,dx = \\frac{a^{x}}{\\ln a} + C \\quad (0 < a \\neq 1)$$\n*Dạng hợp:* $\\int a^{u}\\,du = \\dfrac{a^{u}}{\\ln a} + C \\quad (0 < a \\neq 1)$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_co_ban"
+    }
+  },
+  {
+    "id": "integral_cos",
+    "content": "**Nguyên hàm hàm cos:**\n$$\\int \\cos x\\,dx = \\sin x + C$$\n*Dạng hợp:* $\\int \\cos u\\,du = \\sin u + C$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_luong_giac"
+    }
+  },
+  {
+    "id": "integral_sin",
+    "content": "**Nguyên hàm hàm sin:**\n$$\\int \\sin x\\,dx = -\\cos x + C$$\n*Dạng hợp:* $\\int \\sin u\\,du = -\\cos u + C$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_luong_giac"
+    }
+  },
+  {
+    "id": "integral_1_over_cos2",
+    "content": "**Nguyên hàm của 1/cos²x (hàm tan):**\n$$\\int \\frac{dx}{\\cos^2 x} = \\int (1 + \\tan^2 x)\\,dx = \\tan x + C$$\n*Dạng hợp:* $\\int \\dfrac{du}{\\cos^2 u} = \\int (1 + \\tan^2 u)\\,du = \\tan u + C$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_luong_giac"
+    }
+  },
+  {
+    "id": "integral_1_over_sin2",
+    "content": "**Nguyên hàm của 1/sin²x (hàm cot):**\n$$\\int \\frac{dx}{\\sin^2 x} = \\int (1 + \\cot^2 x)\\,dx = -\\cot x + C$$\n*Dạng hợp:* $\\int \\dfrac{du}{\\sin^2 u} = \\int (1 + \\cot^2 u)\\,du = -\\cot u + C$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_luong_giac"
+    }
+  },
+  {
+    "id": "integral_1_over_2sqrtx",
+    "content": "**Nguyên hàm của 1/(2√x):**\n$$\\int \\frac{dx}{2\\sqrt{x}} = \\sqrt{x} + C \\quad (x > 0)$$\n*Dạng hợp:* $\\int \\dfrac{du}{2\\sqrt{u}} = \\sqrt{u} + C \\quad (u > 0)$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_co_ban"
+    }
+  },
+  {
+    "id": "integral_cos_ax_b",
+    "content": "**Nguyên hàm cos(ax+b):**\n$$\\int \\cos(ax+b)\\,dx = \\frac{1}{a}\\sin(ax+b) + C \\quad (a \\neq 0)$$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_luong_giac_hop"
+    }
+  },
+  {
+    "id": "integral_sin_ax_b",
+    "content": "**Nguyên hàm sin(ax+b):**\n$$\\int \\sin(ax+b)\\,dx = -\\frac{1}{a}\\cos(ax+b) + C \\quad (a \\neq 0)$$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_luong_giac_hop"
+    }
+  },
+  {
+    "id": "integral_1_over_ax_b",
+    "content": "**Nguyên hàm của 1/(ax+b):**\n$$\\int \\frac{dx}{ax+b} = \\frac{1}{a}\\ln|ax+b| + C \\quad (a \\neq 0)$$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_hop"
+    }
+  },
+  {
+    "id": "integral_exp_ax_b",
+    "content": "**Nguyên hàm e^(ax+b):**\n$$\\int e^{ax+b}\\,dx = \\frac{1}{a}e^{ax+b} + C \\quad (a \\neq 0)$$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_hop"
+    }
+  },
+  {
+    "id": "integral_1_over_sqrt_ax_b",
+    "content": "**Nguyên hàm của 1/√(ax+b):**\n$$\\int \\frac{dx}{\\sqrt{ax+b}} = \\frac{2}{a}\\sqrt{ax+b} + C \\quad (a \\neq 0)$$",
+    "metadata": {
+      "chapter": "Nguyên Hàm - Tích Phân",
+      "type": "formula",
+      "topic": "nguyen_ham_hop"
+    }
+  },
+  {
+    "id": "formula_log_basic",
+    "content": "**Định nghĩa và tính chất cơ bản của Logarit:**\n- Logarit thập phân: $\\log_{10} x$ thường được viết là $\\log x$ hoặc $\\lg x$.\n- Logarit tự nhiên: $\\log_e x$ được viết là $\\ln x$.\n- Tính chất cơ bản: $\\log_a a = 1$, $\\log_a 1 = 0$, $\\log_a a^\\alpha = \\alpha$ (với  > 0, a \\neq 1$).",
+    "metadata": {
+      "chapter": "Hàm số Lũy thừa, Mũ và Logarit",
+      "type": "formula"
+    }
   }
 ]

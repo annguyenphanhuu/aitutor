@@ -1,398 +1,398 @@
 [
-    {
-        "id": "exam_de7plus_de03_p1_q01",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số bậc ba $y = f(x)$ có đồ thị như hình vẽ. Toạ độ tâm đối xứng của đồ thị hàm số đã cho là:\n\nA. $(-1; 0)$.\nB. $(0; 1)$.\nC. $(-1; 1)$.\nD. $(1; -3)$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 1,
-            "difficulty_part": 1,
-            "skill_id": "function_survey",
-            "chapter": "Đạo hàm",
-            "type": "exam_mcq",
-            "correct_answer": "B",
-            "has_image": true,
-            "image_path": "data/exams/images/de7plus_de03/q01.png"
-        },
-        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTâm đối xứng là trung điểm đoạn thẳng nối hai điểm cực trị.\nDo đó tâm đối xứng của đồ thị hàm số chính là điểm uốn của đồ thị có tọa độ $(0; 1)$."
+  {
+    "id": "exam_de7plus_de03_p1_q01",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số bậc ba $y = f(x)$ có đồ thị như hình vẽ. Toạ độ tâm đối xứng của đồ thị hàm số đã cho là:\n\nA. $(-1; 0)$.\nB. $(0; 1)$.\nC. $(-1; 1)$.\nD. $(1; -3)$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 1,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de03/q01.png"
     },
-    {
-        "id": "exam_de7plus_de03_p1_q02",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = \\frac{ax^2 + bx + c}{mx + n}$ $(am \\neq 0)$ có đồ thị như hình vẽ. Phương trình đường tiệm cận xiên của đồ thị hàm số đã cho là:\n\nA. $y = 2x$.\nB. $y = -x$.\nC. $y = x$.\nD. $y = -2x$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 2,
-            "difficulty_part": 1,
-            "skill_id": "function_survey",
-            "chapter": "Đạo hàm",
-            "type": "exam_mcq",
-            "correct_answer": "C",
-            "has_image": true,
-            "image_path": "data/exams/images/de7plus_de03/q02.png"
-        },
-        "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTa thấy đường tiệm cận xiên của đồ thị hàm số đi qua 2 điểm $(-2; -2)$ và $(2; 2)$\nNên đường tiệm cận xiên của đồ thị hàm số có phương trình $y = x$."
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTâm đối xứng là trung điểm đoạn thẳng nối hai điểm cực trị.\nDo đó tâm đối xứng của đồ thị hàm số chính là điểm uốn của đồ thị có tọa độ $(0; 1)$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q02",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = \\frac{ax^2 + bx + c}{mx + n}$ $(am \\neq 0)$ có đồ thị như hình vẽ. Phương trình đường tiệm cận xiên của đồ thị hàm số đã cho là:\n\nA. $y = 2x$.\nB. $y = -x$.\nC. $y = x$.\nD. $y = -2x$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 2,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de03/q02.png"
     },
-    {
-        "id": "exam_de7plus_de03_p1_q03",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây là một nguyên hàm của hàm số $f(x) = 15^x$?\n\nA. $F_1(x) = 15^x$.\nB. $F_2(x) = 15^x \\ln 15$.\nC. $F_3(x) = \\frac{15^x}{\\log 15}$.\nD. $F_4(x) = \\frac{15^x}{\\ln 15}$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 3,
-            "difficulty_part": 1,
-            "skill_id": "primitive_basic",
-            "chapter": "Nguyên hàm và Tích phân",
-            "type": "exam_mcq",
-            "correct_answer": "D",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nVì $\\left(\\frac{15^x}{\\ln 15}\\right)' = \\frac{1}{\\ln 15} \\cdot 15^x \\cdot \\ln 15 = 15^x$.\nNên $F_4(x) = \\frac{15^x}{\\ln 15}$ là một nguyên hàm của hàm số $f(x) = 15^x$."
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTa thấy đường tiệm cận xiên của đồ thị hàm số đi qua 2 điểm $(-2; -2)$ và $(2; 2)$\nNên đường tiệm cận xiên của đồ thị hàm số có phương trình $y = x$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q03",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây là một nguyên hàm của hàm số $f(x) = 15^x$?\n\nA. $F_1(x) = 15^x$.\nB. $F_2(x) = 15^x \\ln 15$.\nC. $F_3(x) = \\frac{15^x}{\\log 15}$.\nD. $F_4(x) = \\frac{15^x}{\\ln 15}$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 3,
+      "difficulty_part": 1,
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q04",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, phương trình nào sau đây là phương trình tổng quát của mặt phẳng?\n\nA. $2x + 3y + z - 1 = 0$.\nB. $x^2 + y - z + 3 = 0$.\nC. $x - y^2 + 3z - 6 = 0$.\nD. $x + y + z^2 - 7 = 0$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 4,
-            "difficulty_part": 1,
-            "skill_id": "geometry_line_plane",
-            "chapter": "Hình học không gian",
-            "type": "exam_mcq",
-            "correct_answer": "A",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nPTTQ của mặt phẳng có dạng $Ax + By + Cz + D = 0$, với $A^2 + B^2 + C^2 \\neq 0$ nên ta chọn A."
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nVì $\\left(\\frac{15^x}{\\ln 15}\\right)' = \\frac{1}{\\ln 15} \\cdot 15^x \\cdot \\ln 15 = 15^x$.\nNên $F_4(x) = \\frac{15^x}{\\ln 15}$ là một nguyên hàm của hàm số $f(x) = 15^x$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q04",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, phương trình nào sau đây là phương trình tổng quát của mặt phẳng?\n\nA. $2x + 3y + z - 1 = 0$.\nB. $x^2 + y - z + 3 = 0$.\nC. $x - y^2 + 3z - 6 = 0$.\nD. $x + y + z^2 - 7 = 0$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 4,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q05",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, vectơ nào sau đây là vectơ chỉ phương của đường thẳng $\\Delta: \\begin{cases} x = -4 + 2t \\\\ y = 7 - 3t \\\\ z = 8 - 9t \\end{cases}$?\n\nA. $\\vec{u_1} = (4; 7; 8)$.\nB. $\\vec{u_2} = (-4; 7; 8)$.\nC. $\\vec{u_3} = (2; 3; 9)$.\nD. $\\vec{u_4} = (2; -3; -9)$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 5,
-            "difficulty_part": 1,
-            "skill_id": "geometry_line_plane",
-            "chapter": "Hình học không gian",
-            "type": "exam_mcq",
-            "correct_answer": "D",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nĐường thẳng ($\\Delta$): $\\begin{cases} x = -4 + 2t \\\\ y = 7 - 3t \\\\ z = 8 - 9t \\end{cases}$ có vectơ chỉ phương là $\\vec{u_4} = (2; -3; -9)$."
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nPTTQ của mặt phẳng có dạng $Ax + By + Cz + D = 0$, với $A^2 + B^2 + C^2 \\neq 0$ nên ta chọn A."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q05",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, vectơ nào sau đây là vectơ chỉ phương của đường thẳng $\\Delta: \\begin{cases} x = -4 + 2t \\\\ y = 7 - 3t \\\\ z = 8 - 9t \\end{cases}$?\n\nA. $\\vec{u_1} = (4; 7; 8)$.\nB. $\\vec{u_2} = (-4; 7; 8)$.\nC. $\\vec{u_3} = (2; 3; 9)$.\nD. $\\vec{u_4} = (2; -3; -9)$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 5,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q06",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$ cho mặt cầu: $(S): (x + 3)^2 + (y - 9)^2 + (z + 12)^2 = 5^2$. Bán kính của mặt cầu $(S)$ là:\n\nA. $5^4$.\nB. $5$.\nC. $\\sqrt{5}$.\nD. $25$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 6,
-            "difficulty_part": 1,
-            "skill_id": "geometry_sphere",
-            "chapter": "Hình học không gian",
-            "type": "exam_mcq",
-            "correct_answer": "B",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nMặt cầu $(S): (x + 3)^2 + (y - 9)^2 + (z + 12)^2 = 5^2$ có bán kính $R = 5$."
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nĐường thẳng ($\\Delta$): $\\begin{cases} x = -4 + 2t \\\\ y = 7 - 3t \\\\ z = 8 - 9t \\end{cases}$ có vectơ chỉ phương là $\\vec{u_4} = (2; -3; -9)$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q06",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$ cho mặt cầu: $(S): (x + 3)^2 + (y - 9)^2 + (z + 12)^2 = 5^2$. Bán kính của mặt cầu $(S)$ là:\n\nA. $5^4$.\nB. $5$.\nC. $\\sqrt{5}$.\nD. $25$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 6,
+      "difficulty_part": 1,
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q07",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nNếu hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ và thỏa mãn $f(x) < f(2)$, $\\forall x \\in (1; 3) \\setminus \\{2\\}$ thì\n\nA. $2$ là điểm cực tiểu của hàm số.\nB. $2$ là điểm cực đại của hàm số.\nC. Giá trị lớn nhất của hàm số bằng $f(2)$.\nD. Giá trị nhỏ nhất của hàm số bằng $f(2)$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 7,
-            "difficulty_part": 1,
-            "skill_id": "function_survey",
-            "chapter": "Đạo hàm",
-            "type": "exam_mcq",
-            "correct_answer": "B",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTheo định nghĩa điểm cực trị của hàm số, $2$ là điểm cực đại của hàm số."
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nMặt cầu $(S): (x + 3)^2 + (y - 9)^2 + (z + 12)^2 = 5^2$ có bán kính $R = 5$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q07",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nNếu hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ và thỏa mãn $f(x) < f(2)$, $\\forall x \\in (1; 3) \\setminus \\{2\\}$ thì\n\nA. $2$ là điểm cực tiểu của hàm số.\nB. $2$ là điểm cực đại của hàm số.\nC. Giá trị lớn nhất của hàm số bằng $f(2)$.\nD. Giá trị nhỏ nhất của hàm số bằng $f(2)$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 7,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q08",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nTích vô hướng của hai vectơ $\\vec{a}, \\vec{b}$ trong không gian được tính bằng:\n\nA. $|\\vec{a}|\\cdot|\\vec{b}|$.\nB. $|\\vec{a}|\\cdot|\\vec{b}|\\cdot\\sin(\\vec{a}; \\vec{b})$.\nC. $|\\vec{a}|\\cdot|\\vec{b}|\\cdot\\cos(\\vec{a}; \\vec{b})$.\nD. $|\\vec{a}|\\cdot|\\vec{b}|\\cdot(\\vec{a}; \\vec{b})$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 8,
-            "difficulty_part": 1,
-            "skill_id": "geometry_line_plane",
-            "chapter": "Hình học không gian",
-            "type": "exam_mcq",
-            "correct_answer": "C",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\n(Câu hỏi lý thuyết) Theo định nghĩa tích vô hướng của hai vectơ."
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTheo định nghĩa điểm cực trị của hàm số, $2$ là điểm cực đại của hàm số."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q08",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nTích vô hướng của hai vectơ $\\vec{a}, \\vec{b}$ trong không gian được tính bằng:\n\nA. $|\\vec{a}|\\cdot|\\vec{b}|$.\nB. $|\\vec{a}|\\cdot|\\vec{b}|\\cdot\\sin(\\vec{a}; \\vec{b})$.\nC. $|\\vec{a}|\\cdot|\\vec{b}|\\cdot\\cos(\\vec{a}; \\vec{b})$.\nD. $|\\vec{a}|\\cdot|\\vec{b}|\\cdot(\\vec{a}; \\vec{b})$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 8,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q09",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đồ thị như hình vẽ. Gọi $H$ là phần diện tích hình phẳng được tô màu. Thể tích của khối tròn xoay tạo thành khi cho hình phẳng $H$ quay quanh trục $Ox$ là:\n\nA. $V = \\pi\\int_{2}^{0} [f(x)]^2 dx$.\nB. $V = \\int_{2}^{0} [f(x)]^2 dx$.\nC. $V = \\int_{0}^{2} [f(x)]^2 dx$.\nD. $V = \\pi\\int_{0}^{2} [f(x)]^2 dx$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 9,
-            "difficulty_part": 1,
-            "skill_id": "integral_application",
-            "chapter": "Nguyên hàm và Tích phân",
-            "type": "exam_mcq",
-            "correct_answer": "D",
-            "has_image": true,
-            "image_path": "data/exams/images/de7plus_de03/q09.png"
-        },
-        "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\n(Câu hỏi lý thuyết) Theo công thức tính thể tích của khối tròn xoay."
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\n(Câu hỏi lý thuyết) Theo định nghĩa tích vô hướng của hai vectơ."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q09",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đồ thị như hình vẽ. Gọi $H$ là phần diện tích hình phẳng được tô màu. Thể tích của khối tròn xoay tạo thành khi cho hình phẳng $H$ quay quanh trục $Ox$ là:\n\nA. $V = \\pi\\int_{2}^{0} [f(x)]^2 dx$.\nB. $V = \\int_{2}^{0} [f(x)]^2 dx$.\nC. $V = \\int_{0}^{2} [f(x)]^2 dx$.\nD. $V = \\pi\\int_{0}^{2} [f(x)]^2 dx$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 9,
+      "difficulty_part": 1,
+      "skill_id": "integral_application",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de03/q09.png"
     },
-    {
-        "id": "exam_de7plus_de03_p1_q10",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nXét mẫu số liệu ghép nhóm cho bởi bảng dưới đây. Gọi $\\bar{x}$ là số trung bình cộng của mẫu số liệu ghép nhóm. Phương sai của mẫu số liệu ghép nhóm đó được tính bằng công thức nào dưới đây?\n\n| Nhóm | $[a_1; a_2)$ | $[a_2; a_3)$ | ... | $[a_m; a_{m+1})$ |\n| Giá trị đại diện | $x_1$ | $x_2$ | ... | $x_m$ | |\n| Tần số | $n_1$ | $n_2$ | ... | $n_m$ | $n$ |\n\nA. $s^2 = \\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{n}$.\nB. $s = \\sqrt{\\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{m}}$.\nC. $s = \\sqrt{\\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{n}}$.\nD. $s^2 = \\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{m}$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 10,
-            "difficulty_part": 1,
-            "skill_id": "statistics_variance",
-            "chapter": "Thống kê",
-            "type": "exam_mcq",
-            "correct_answer": "A",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\n(Câu hỏi lý thuyết) Phương sai của mẫu số liệu ghép nhóm là trung bình cộng của bình phương các độ lệch, được tính bằng tổng các $n_i(x_i - \\bar{x})^2$ chia cho tổng tần số $n$."
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\n(Câu hỏi lý thuyết) Theo công thức tính thể tích của khối tròn xoay."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q10",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nXét mẫu số liệu ghép nhóm cho bởi bảng dưới đây. Gọi $\\bar{x}$ là số trung bình cộng của mẫu số liệu ghép nhóm. Phương sai của mẫu số liệu ghép nhóm đó được tính bằng công thức nào dưới đây?\n\n| Nhóm | $[a_1; a_2)$ | $[a_2; a_3)$ | ... | $[a_m; a_{m+1})$ |\n| Giá trị đại diện | $x_1$ | $x_2$ | ... | $x_m$ | |\n| Tần số | $n_1$ | $n_2$ | ... | $n_m$ | $n$ |\n\nA. $s^2 = \\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{n}$.\nB. $s = \\sqrt{\\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{m}}$.\nC. $s = \\sqrt{\\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{n}}$.\nD. $s^2 = \\frac{n_1(x_1 - \\bar{x})^2 + n_2(x_2 - \\bar{x})^2 + ... + n_m(x_m - \\bar{x})^2}{m}$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 10,
+      "difficulty_part": 1,
+      "skill_id": "statistics_dispersion",
+      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q11",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian toạ độ $Oxyz$, mặt cầu $(S)$ có tâm $I(2; 1; -1)$ và đường kính bằng $6$ có phương trình là:\n\nA. $(x - 2)^2 + (y - 1)^2 + (z + 1)^2 = 36$.\nB. $(x - 2)^2 + (y - 1)^2 + (z + 1)^2 = 9$.\nC. $(x + 2)^2 + (y + 1)^2 + (z - 1)^2 = 9$.\nD. $(x + 2)^2 + (y + 1)^2 + (z - 1)^2 = 36$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 11,
-            "difficulty_part": 1,
-            "skill_id": "geometry_sphere",
-            "chapter": "Hình học không gian",
-            "type": "exam_mcq",
-            "correct_answer": "B",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nMặt cầu $(S)$ có tâm $I(2; 1; -1)$ và đường kính bằng $6$ nên bán kính $R = 3$, phương trình mặt cầu là $(x - 2)^2 + (y - 1)^2 + (z + 1)^2 = 9$."
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\n(Câu hỏi lý thuyết) Phương sai của mẫu số liệu ghép nhóm là trung bình cộng của bình phương các độ lệch, được tính bằng tổng các $n_i(x_i - \\bar{x})^2$ chia cho tổng tần số $n$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q11",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian toạ độ $Oxyz$, mặt cầu $(S)$ có tâm $I(2; 1; -1)$ và đường kính bằng $6$ có phương trình là:\n\nA. $(x - 2)^2 + (y - 1)^2 + (z + 1)^2 = 36$.\nB. $(x - 2)^2 + (y - 1)^2 + (z + 1)^2 = 9$.\nC. $(x + 2)^2 + (y + 1)^2 + (z - 1)^2 = 9$.\nD. $(x + 2)^2 + (y + 1)^2 + (z - 1)^2 = 36$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 11,
+      "difficulty_part": 1,
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p1_q12",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ thỏa mãn $\\int_0^2 f(x)dx = 4$, $\\int_1^2 f(x)dx = 3$. Giá trị của biểu thức $\\int_0^1 f(x)dx$ bằng:\n\nA. $7$.\nB. $1$.\nC. $12$.\nD. $0,75$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 12,
-            "difficulty_part": 1,
-            "skill_id": "integral_properties",
-            "chapter": "Nguyên hàm và Tích phân",
-            "type": "exam_mcq",
-            "correct_answer": "B",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTa có $\\int_0^2 f(x)dx = \\int_0^1 f(x)dx + \\int_1^2 f(x)dx$ nên $\\int_0^1 f(x)dx = \\int_0^2 f(x)dx - \\int_1^2 f(x)dx = 4 - 3 = 1$."
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nMặt cầu $(S)$ có tâm $I(2; 1; -1)$ và đường kính bằng $6$ nên bán kính $R = 3$, phương trình mặt cầu là $(x - 2)^2 + (y - 1)^2 + (z + 1)^2 = 9$."
+  },
+  {
+    "id": "exam_de7plus_de03_p1_q12",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ thỏa mãn $\\int_0^2 f(x)dx = 4$, $\\int_1^2 f(x)dx = 3$. Giá trị của biểu thức $\\int_0^1 f(x)dx$ bằng:\n\nA. $7$.\nB. $1$.\nC. $12$.\nD. $0,75$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 12,
+      "difficulty_part": 1,
+      "skill_id": "integral_properties",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p2_q13",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nTrong không gian toạ độ $Oxyz$, cho hai mặt phẳng $(P_1): 2x + y + 2z - 1 = 0$ và $(P_2): x - 2y - 2z - 7 = 0$. Khi đó:\n\na) Vectơ có tọa độ $(2; 2; 1)$ là một vectơ pháp tuyến của mặt phẳng $(P_1)$.\nb) Vectơ có tọa độ $(1; -2; -2)$ là một vectơ pháp tuyến của mặt phẳng $(P_2)$.\nc) Côsin của góc giữa hai vectơ $\\vec{n_1} = (2; 1; 2)$ và $\\vec{n_2} = (1; -2; -2)$ bằng $-\\frac{4}{9}$.\nd) Góc giữa hai mặt phẳng $(P_1)$ và $(P_2)$ bằng $116^\\circ$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 13,
-            "difficulty_part": 2,
-            "skill_id": "geometry_line_plane",
-            "chapter": "Hình học không gian",
-            "type": "exam_true_false",
-            "correct_answer": "a-F,b-T,c-T,d-F",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: a-F,b-T,c-T,d-F\n\nGIẢI THÍCH:\n(a) Một vecto pháp tuyến của mặt phẳng $(P_1)$ là $\\vec{n_1} = (2; 1; 2)$. Vậy mệnh đề (a) SAI.\n\n(b) Một vecto pháp tuyến của mặt phẳng $(P_2)$ là $\\vec{n_2} = (1; -2; -2)$. Vậy mệnh đề (b) ĐÚNG.\n\n(c) Côsin của góc giữa hai vectơ $\\vec{n_1} = (2; 1; 2)$ và $\\vec{n_2} = (1; -2; -2)$ bằng:\n$\\cos(\\vec{n_1}, \\vec{n_2}) = \\frac{2\\cdot1 + 1\\cdot(-2) + 2\\cdot(-2)}{\\sqrt{2^2 + 1^2 + 2^2} \\cdot \\sqrt{1^2 + (-2)^2 + (-2)^2}} = -\\frac{4}{9}$. Vậy mệnh đề (c) ĐÚNG.\n\n(d) Ta có: $\\cos((P_1), (P_2)) = |\\cos(\\vec{n_1}, \\vec{n_2})| = |-\\frac{4}{9}| = \\frac{4}{9}$ nên góc giữa $(P_1), (P_2)$ xấp xỉ $64^\\circ$. Vậy mệnh đề (d) SAI."
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTa có $\\int_0^2 f(x)dx = \\int_0^1 f(x)dx + \\int_1^2 f(x)dx$ nên $\\int_0^1 f(x)dx = \\int_0^2 f(x)dx - \\int_1^2 f(x)dx = 4 - 3 = 1$."
+  },
+  {
+    "id": "exam_de7plus_de03_p2_q13",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nTrong không gian toạ độ $Oxyz$, cho hai mặt phẳng $(P_1): 2x + y + 2z - 1 = 0$ và $(P_2): x - 2y - 2z - 7 = 0$. Khi đó:\n\na) Vectơ có tọa độ $(2; 2; 1)$ là một vectơ pháp tuyến của mặt phẳng $(P_1)$.\nb) Vectơ có tọa độ $(1; -2; -2)$ là một vectơ pháp tuyến của mặt phẳng $(P_2)$.\nc) Côsin của góc giữa hai vectơ $\\vec{n_1} = (2; 1; 2)$ và $\\vec{n_2} = (1; -2; -2)$ bằng $-\\frac{4}{9}$.\nd) Góc giữa hai mặt phẳng $(P_1)$ và $(P_2)$ bằng $116^\\circ$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 13,
+      "difficulty_part": 2,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-T,c-T,d-F",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p2_q14",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = \\frac{2x - 1}{x - 1}$. Khi đó:\n\na) Đạo hàm của hàm số đã cho là $y' = -\\frac{1}{(x - 1)^2}$.\nb) Đạo hàm của hàm số đã cho nhận giá trị âm với mọi $x \\neq 1$.\nc) Bảng biến thiên của hàm số đã cho là: [Xem hình: q14_1.png]\nd) Đồ thị hàm số đã cho như ở hình vẽ: [Xem hình: q14_2.png]",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 14,
-            "difficulty_part": 2,
-            "skill_id": "function_survey",
-            "chapter": "Đạo hàm",
-            "type": "exam_true_false",
-            "correct_answer": "a-T,b-T,c-F,d-T",
-            "has_image": true,
-            "image_path": "data/exams/images/de7plus_de03/q14_1.png,data/exams/images/de7plus_de03/q14_2.png"
-        },
-        "answer": "ĐÁP ÁN: a-T,b-T,c-F,d-T\n\nGIẢI THÍCH:\n(a) Ta có: $y' = \\frac{2(-1) - (-1)\\cdot1}{(x - 1)^2} = -\\frac{1}{(x - 1)^2}$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Ta có: $y' = -\\frac{1}{(x - 1)^2} < 0$, $\\forall x \\neq 1$. Nên đạo hàm của hàm số đã cho nhận giá trị âm với mọi $x \\neq 1$. $\\rightarrow$ Chọn ĐÚNG.\n\n(c) Bảng biến thiên của hàm số đã cho như hình dưới là sai vì hàm số không xác định tại $x = 1$ (thiếu dấu hai gạch || tại $x=1$). $\\rightarrow$ Chọn SAI.\n\n(d) Đồ thị hàm số $y = \\frac{2x - 1}{x - 1}$:\n- Hàm số nghịch biến trên khoảng $(-\\infty; 1)$ và $(1; +\\infty)$.\n- Có tiệm cận ngang là $y = 2$ và tiệm cận đứng là $x = 1$.\n- Giao điểm của đồ thị hàm số với trục tung là $(0; -1)$ wait ... không ở đây là $(0; 1)$.\n- Giao điểm của đồ thị hàm số với trục hoành là $(\\frac{1}{2}; 0)$.\n- Điểm $(2; 3)$ thuộc đồ thị hàm số.\nĐối chiếu với hình vẽ đề bài cung cấp, các thông số đều chính xác. $\\rightarrow$ Chọn ĐÚNG."
+    "answer": "ĐÁP ÁN: a-F,b-T,c-T,d-F\n\nGIẢI THÍCH:\n(a) Một vecto pháp tuyến của mặt phẳng $(P_1)$ là $\\vec{n_1} = (2; 1; 2)$. Vậy mệnh đề (a) SAI.\n\n(b) Một vecto pháp tuyến của mặt phẳng $(P_2)$ là $\\vec{n_2} = (1; -2; -2)$. Vậy mệnh đề (b) ĐÚNG.\n\n(c) Côsin của góc giữa hai vectơ $\\vec{n_1} = (2; 1; 2)$ và $\\vec{n_2} = (1; -2; -2)$ bằng:\n$\\cos(\\vec{n_1}, \\vec{n_2}) = \\frac{2\\cdot1 + 1\\cdot(-2) + 2\\cdot(-2)}{\\sqrt{2^2 + 1^2 + 2^2} \\cdot \\sqrt{1^2 + (-2)^2 + (-2)^2}} = -\\frac{4}{9}$. Vậy mệnh đề (c) ĐÚNG.\n\n(d) Ta có: $\\cos((P_1), (P_2)) = |\\cos(\\vec{n_1}, \\vec{n_2})| = |-\\frac{4}{9}| = \\frac{4}{9}$ nên góc giữa $(P_1), (P_2)$ xấp xỉ $64^\\circ$. Vậy mệnh đề (d) SAI."
+  },
+  {
+    "id": "exam_de7plus_de03_p2_q14",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = \\frac{2x - 1}{x - 1}$. Khi đó:\n\na) Đạo hàm của hàm số đã cho là $y' = -\\frac{1}{(x - 1)^2}$.\nb) Đạo hàm của hàm số đã cho nhận giá trị âm với mọi $x \\neq 1$.\nc) Bảng biến thiên của hàm số đã cho là: [Xem hình: q14_1.png]\nd) Đồ thị hàm số đã cho như ở hình vẽ: [Xem hình: q14_2.png]",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 14,
+      "difficulty_part": 2,
+      "skill_id": "function_survey",
+      "chapter": "Đạo hàm",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-F,d-T",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de03/q14_1.png,data/exams/images/de7plus_de03/q14_2.png"
     },
-    {
-        "id": "exam_de7plus_de03_p2_q15",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nMột ô tô đang chạy đều với vận tốc $x$ (m/s) thì người lái xe đạp phanh. Từ thời điểm đó, ô tô chuyển động chậm dần đều với vận tốc thay đổi theo hàm số $v = -5t + 20$ (m/s), trong đó $t$ là thời gian tính bằng giây kể từ lúc đạp phanh. Khi đó:\n\na) Khi xe dừng hẳn thì vận tốc bằng $0$ (m/s).\nb) Thời gian từ lúc người lái xe đạp phanh cho đến khi xe dừng hẳn là $5s$.\nc) $\\int (-5t + 20)dt = -\\frac{5t^2}{2} + 20t + C$.\nd) Quãng đường từ lúc đạp phanh cho đến khi xe dừng hẳn là $400m$.",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 15,
-            "difficulty_part": 2,
-            "skill_id": "integral_applications",
-            "chapter": "Nguyên hàm và Tích phân",
-            "type": "exam_true_false",
-            "correct_answer": "a-T,b-F,c-T,d-F",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: a-T,b-F,c-T,d-F\n\nGIẢI THÍCH:\n(a) Khi xe dừng hẳn thì vận tốc chuyển động của xe bằng $0$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Khi xe dừng hẳn thì $v = 0 \\Rightarrow -5t + 20 = 0 \\Leftrightarrow t = 4$ (s). Do đó thời gian đi từ lúc đạp phanh đến khi dừng hẳn là $4s$ chứ không phải $5s$. $\\rightarrow$ Chọn SAI.\n\n(c) Ta có $\\int (-5t + 20)dt = -\\frac{5t^2}{2} + 20t + C$. $\\rightarrow$ Chọn ĐÚNG.\n\n(d) Quãng đường xe đi được từ lúc đạp phanh là $S(t) = \\int (-5t + 20)dt = -\\frac{5t^2}{2} + 20t + C$.\nTại thời điểm bắt đầu đạp phanh ($t = 0$), quãng đường là $S(0) = 0 \\Rightarrow C = 0 \\Rightarrow S(t) = -\\frac{5t^2}{2} + 20t$.\nVậy quãng đường từ lúc đạp phanh đến khi xe dừng hẳn ($t = 4s$) là $S(4) = -5\\cdot\\frac{16}{2} + 20\\cdot4 = -40 + 80 = 40$ (m). Không phải $400m$. $\\rightarrow$ Chọn SAI."
+    "answer": "ĐÁP ÁN: a-T,b-T,c-F,d-T\n\nGIẢI THÍCH:\n(a) Ta có: $y' = \\frac{2(-1) - (-1)\\cdot1}{(x - 1)^2} = -\\frac{1}{(x - 1)^2}$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Ta có: $y' = -\\frac{1}{(x - 1)^2} < 0$, $\\forall x \\neq 1$. Nên đạo hàm của hàm số đã cho nhận giá trị âm với mọi $x \\neq 1$. $\\rightarrow$ Chọn ĐÚNG.\n\n(c) Bảng biến thiên của hàm số đã cho như hình dưới là sai vì hàm số không xác định tại $x = 1$ (thiếu dấu hai gạch || tại $x=1$). $\\rightarrow$ Chọn SAI.\n\n(d) Đồ thị hàm số $y = \\frac{2x - 1}{x - 1}$:\n- Hàm số nghịch biến trên khoảng $(-\\infty; 1)$ và $(1; +\\infty)$.\n- Có tiệm cận ngang là $y = 2$ và tiệm cận đứng là $x = 1$.\n- Giao điểm của đồ thị hàm số với trục tung là $(0; -1)$ wait ... không ở đây là $(0; 1)$.\n- Giao điểm của đồ thị hàm số với trục hoành là $(\\frac{1}{2}; 0)$.\n- Điểm $(2; 3)$ thuộc đồ thị hàm số.\nĐối chiếu với hình vẽ đề bài cung cấp, các thông số đều chính xác. $\\rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de03_p2_q15",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nMột ô tô đang chạy đều với vận tốc $x$ (m/s) thì người lái xe đạp phanh. Từ thời điểm đó, ô tô chuyển động chậm dần đều với vận tốc thay đổi theo hàm số $v = -5t + 20$ (m/s), trong đó $t$ là thời gian tính bằng giây kể từ lúc đạp phanh. Khi đó:\n\na) Khi xe dừng hẳn thì vận tốc bằng $0$ (m/s).\nb) Thời gian từ lúc người lái xe đạp phanh cho đến khi xe dừng hẳn là $5s$.\nc) $\\int (-5t + 20)dt = -\\frac{5t^2}{2} + 20t + C$.\nd) Quãng đường từ lúc đạp phanh cho đến khi xe dừng hẳn là $400m$.",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 15,
+      "difficulty_part": 2,
+      "skill_id": "integral_applications",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-F,c-T,d-F",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p2_q16",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nNăm 2001, cộng đồng châu Âu có làm một đợt kiểm tra rất rộng rãi các con bò để phát hiện những con bò bị bệnh bò điên. Người ta tiến hành một loại xét nghiệm và cho kết quả như sau: Khi con bò bị bệnh bò điên thì xác suất để ra phản ứng dương tính trong xét nghiệm là $70\\%$, còn khi con bò không bị bệnh thì xác suất để xảy ra phản ứng dương tính trong thí nghiệm đó là $10\\%$. Biết rằng tỉ lệ bò bị mắc bệnh bò điên ở Hà Lan là $1,3$ con trên $100.000$ con. Gọi $X$ là biến cố một con bò bị bệnh bò điên, $Y$ là biến cố một con bò phản ứng dương tính với xét nghiệm. Khi đó:\n\na) $P(X) = 13\\cdot 10^{-6}$\nb) $P(Y \\mid X) = 0,07$\nc) $P(Y \\mid \\overline{X}) = 0,1$\nd) $P(Y \\cap X) = 91\\cdot 10^{-8}$",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 16,
-            "difficulty_part": 2,
-            "skill_id": "probability_basic",
-            "chapter": "Tổ hợp - Xác suất",
-            "type": "exam_true_false",
-            "correct_answer": "a-T,b-F,c-T,d-F",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: a-T,b-F,c-T,d-F\n\nGIẢI THÍCH:\n(a) Tỉ lệ bò bị mắc bệnh bò điên là $1,3$ trên $100.000$ con nên $P(X) = \\frac{1,3}{100.000} = \\frac{13}{1.000.000} = 13\\cdot 10^{-6}$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Theo giả thiết, khi bò bị bệnh bò điên thì xác suất dương tính là $70\\%$, tức là $P(Y \\mid X) = 70\\% = 0,7$. Mệnh đề đưa ra là $0,07$. $\\rightarrow$ Chọn SAI.\n\n(c) Theo giả thiết, khi bò không bị bệnh thì xác suất dương tính là $10\\%$, tức là $P(Y \\mid \\overline{X}) = 10\\% = 0,1$. $\\rightarrow$ Chọn ĐÚNG.\n\n(d) Xác suất con bò bị bệnh và dương tính là: $P(Y \\cap X) = P(X)\\cdot P(Y \\mid X) = 13\\cdot 10^{-6} \\cdot 0,7 = 9,1\\cdot 10^{-6} = 91\\cdot 10^{-7}$. Mệnh đề d đưa ra kết quả là $91\\cdot 10^{-8}$. $\\rightarrow$ Chọn SAI."
+    "answer": "ĐÁP ÁN: a-T,b-F,c-T,d-F\n\nGIẢI THÍCH:\n(a) Khi xe dừng hẳn thì vận tốc chuyển động của xe bằng $0$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Khi xe dừng hẳn thì $v = 0 \\Rightarrow -5t + 20 = 0 \\Leftrightarrow t = 4$ (s). Do đó thời gian đi từ lúc đạp phanh đến khi dừng hẳn là $4s$ chứ không phải $5s$. $\\rightarrow$ Chọn SAI.\n\n(c) Ta có $\\int (-5t + 20)dt = -\\frac{5t^2}{2} + 20t + C$. $\\rightarrow$ Chọn ĐÚNG.\n\n(d) Quãng đường xe đi được từ lúc đạp phanh là $S(t) = \\int (-5t + 20)dt = -\\frac{5t^2}{2} + 20t + C$.\nTại thời điểm bắt đầu đạp phanh ($t = 0$), quãng đường là $S(0) = 0 \\Rightarrow C = 0 \\Rightarrow S(t) = -\\frac{5t^2}{2} + 20t$.\nVậy quãng đường từ lúc đạp phanh đến khi xe dừng hẳn ($t = 4s$) là $S(4) = -5\\cdot\\frac{16}{2} + 20\\cdot4 = -40 + 80 = 40$ (m). Không phải $400m$. $\\rightarrow$ Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de03_p2_q16",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nNăm 2001, cộng đồng châu Âu có làm một đợt kiểm tra rất rộng rãi các con bò để phát hiện những con bò bị bệnh bò điên. Người ta tiến hành một loại xét nghiệm và cho kết quả như sau: Khi con bò bị bệnh bò điên thì xác suất để ra phản ứng dương tính trong xét nghiệm là $70\\%$, còn khi con bò không bị bệnh thì xác suất để xảy ra phản ứng dương tính trong thí nghiệm đó là $10\\%$. Biết rằng tỉ lệ bò bị mắc bệnh bò điên ở Hà Lan là $1,3$ con trên $100.000$ con. Gọi $X$ là biến cố một con bò bị bệnh bò điên, $Y$ là biến cố một con bò phản ứng dương tính với xét nghiệm. Khi đó:\n\na) $P(X) = 13\\cdot 10^{-6}$\nb) $P(Y \\mid X) = 0,07$\nc) $P(Y \\mid \\overline{X}) = 0,1$\nd) $P(Y \\cap X) = 91\\cdot 10^{-8}$",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 16,
+      "difficulty_part": 2,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-F,c-T,d-F",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p3_q17",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 17 [Phần 3 - Trả lời ngắn]:\n\nGiả sử $\\int (0,1)^x dx = -\\frac{1}{\\ln a} \\cdot b^x + C$ với $a, b$ là các hằng số dương. Giá trị của biểu thức $\\frac{a}{b}$ bằng bao nhiêu?",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 17,
-            "difficulty_part": 3,
-            "skill_id": "primitive_basic",
-            "chapter": "Nguyên hàm và Tích phân",
-            "type": "exam_short_answer",
-            "correct_answer": "100",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: 100\n\nGIẢI THÍCH:\nTa có $\\int (0,1)^x dx = \\frac{(0,1)^x}{\\ln(0,1)} + C = \\frac{(0,1)^x}{\\ln(1/10)} + C = -\\frac{1}{\\ln 10} \\cdot (0,1)^x + C$.\nĐồng nhất hệ số với giả thiết là $-\\frac{1}{\\ln a} \\cdot b^x + C$, ta được $a = 10$ và $b = 0,1$.\nVậy giá trị của biểu thức $\\frac{a}{b} = \\frac{10}{0,1} = 100$."
+    "answer": "ĐÁP ÁN: a-T,b-F,c-T,d-F\n\nGIẢI THÍCH:\n(a) Tỉ lệ bò bị mắc bệnh bò điên là $1,3$ trên $100.000$ con nên $P(X) = \\frac{1,3}{100.000} = \\frac{13}{1.000.000} = 13\\cdot 10^{-6}$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Theo giả thiết, khi bò bị bệnh bò điên thì xác suất dương tính là $70\\%$, tức là $P(Y \\mid X) = 70\\% = 0,7$. Mệnh đề đưa ra là $0,07$. $\\rightarrow$ Chọn SAI.\n\n(c) Theo giả thiết, khi bò không bị bệnh thì xác suất dương tính là $10\\%$, tức là $P(Y \\mid \\overline{X}) = 10\\% = 0,1$. $\\rightarrow$ Chọn ĐÚNG.\n\n(d) Xác suất con bò bị bệnh và dương tính là: $P(Y \\cap X) = P(X)\\cdot P(Y \\mid X) = 13\\cdot 10^{-6} \\cdot 0,7 = 9,1\\cdot 10^{-6} = 91\\cdot 10^{-7}$. Mệnh đề d đưa ra kết quả là $91\\cdot 10^{-8}$. $\\rightarrow$ Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de03_p3_q17",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 17 [Phần 3 - Trả lời ngắn]:\n\nGiả sử $\\int (0,1)^x dx = -\\frac{1}{\\ln a} \\cdot b^x + C$ với $a, b$ là các hằng số dương. Giá trị của biểu thức $\\frac{a}{b}$ bằng bao nhiêu?",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 17,
+      "difficulty_part": 3,
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_short_answer",
+      "correct_answer": "100",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p3_q18",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 18 [Phần 3 - Trả lời ngắn]:\n\nGiả sử ở những giây đầu tiên, máy bay ở hình vẽ bay theo một đường thẳng tạo với mặt đất một góc $21^\\circ$ với vận tốc $240$ km/h.\n[Xem hình: q18.png]\nHình vẽ mô tả mặt đất là một mặt phẳng, máy bay từ vị trí $I$ đến vị trí $A$. Độ cao $AH$ của máy bay so với mặt đất sau khi máy bay rời khỏi mặt đất $3$ giây là bao nhiêu mét (làm tròn đến hàng đơn vị)?",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 18,
-            "difficulty_part": 3,
-            "skill_id": "geometry_practical",
-            "chapter": "Ứng dụng Hình học",
-            "type": "exam_short_answer",
-            "correct_answer": "72",
-            "has_image": true,
-            "image_path": "data/exams/images/de7plus_de03/q18.png"
-        },
-        "answer": "ĐÁP ÁN: 72\n\nGIẢI THÍCH:\nĐổi đơn vị vận tốc chuyển động của máy bay: $240$ (km/h) $= \\frac{240000}{3600}$ (m/s) $= \\frac{200}{3}$ (m/s).\nĐộ dài quãng đường máy bay di chuyển được sau $3$ giây từ vị trí $I$ đến $A$ là:\n$IA = 3 \\cdot \\frac{200}{3} = 200$ (m).\nVì $AH$ là độ cao của máy bay so với mặt đất nên tam giác $AIH$ vuông tại $H$. Do đó:\n$AH = IA \\cdot \\sin(AIH) = 200 \\cdot \\sin(21^\\circ) \\approx 71,67$ (m).\nLàm tròn đến hàng đơn vị ta được $72$ m."
+    "answer": "ĐÁP ÁN: 100\n\nGIẢI THÍCH:\nTa có $\\int (0,1)^x dx = \\frac{(0,1)^x}{\\ln(0,1)} + C = \\frac{(0,1)^x}{\\ln(1/10)} + C = -\\frac{1}{\\ln 10} \\cdot (0,1)^x + C$.\nĐồng nhất hệ số với giả thiết là $-\\frac{1}{\\ln a} \\cdot b^x + C$, ta được $a = 10$ và $b = 0,1$.\nVậy giá trị của biểu thức $\\frac{a}{b} = \\frac{10}{0,1} = 100$."
+  },
+  {
+    "id": "exam_de7plus_de03_p3_q18",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 18 [Phần 3 - Trả lời ngắn]:\n\nGiả sử ở những giây đầu tiên, máy bay ở hình vẽ bay theo một đường thẳng tạo với mặt đất một góc $21^\\circ$ với vận tốc $240$ km/h.\n[Xem hình: q18.png]\nHình vẽ mô tả mặt đất là một mặt phẳng, máy bay từ vị trí $I$ đến vị trí $A$. Độ cao $AH$ của máy bay so với mặt đất sau khi máy bay rời khỏi mặt đất $3$ giây là bao nhiêu mét (làm tròn đến hàng đơn vị)?",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 18,
+      "difficulty_part": 3,
+      "skill_id": "geometry_practical",
+      "chapter": "Ứng dụng Hình học",
+      "type": "exam_short_answer",
+      "correct_answer": "72",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de03/q18.png"
     },
-    {
-        "id": "exam_de7plus_de03_p3_q19",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 19 [Phần 3 - Trả lời ngắn]:\n\nMột doanh nghiệp hỗ trợ cho bốn người dân bị thất nghiệp ở một khu phố là $5$ triệu đồng/người với điều kiện như sau:\n- Người thất nghiệp của khu phố làm việc tạp vụ cho doanh nghiệp trong nhiều ngày liên tiếp.\n- Sau ngày đầu tiên, doanh nghiệp cho $110$ nghìn đồng/người.\n- Bắt đầu từ ngày thứ hai, mỗi ngày tăng thêm $20$ nghìn đồng/người so với ngày hôm trước.\nMỗi người thất nghiệp phải làm cho doanh nghiệp đó ít nhất bao nhiêu ngày để có được hơn $5$ triệu đồng (làm tròn kết quả đến hàng đơn vị)?",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 19,
-            "difficulty_part": 3,
-            "skill_id": "arithmetic_progression",
-            "chapter": "Dãy số - Cấp số cộng và Cấp số nhân",
-            "type": "exam_short_answer",
-            "correct_answer": "18",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: 18\n\nGIẢI THÍCH:\nGọi $u_n$ (nghìn đồng) là số tiền một người nhận được vào ngày thứ $n$.\nSuy ra $(u_n)$ lập thành một cấp số cộng có $u_1 = 110$ và công sai $d = 20$.\nGiả sử sau khi làm $k$ ngày ($k \\in \\mathbb{N}^*$), người đó nhận được hơn $5$ triệu đồng (tức là $5000$ nghìn đồng).\nKhi đó, tổng số tiền người đó nhận được là $S_k > 5000$\n$\\Leftrightarrow \\frac{k}{2} \\cdot [2u_1 + (k - 1)d] > 5000$\n$\\Leftrightarrow \\frac{k}{2} \\cdot [2\\cdot 110 + (k - 1)20] > 5000$\n$\\Leftrightarrow k^2 + 10k - 500 > 0$\n$\\Leftrightarrow k < -5 - 5\\sqrt{21} (\\approx -27,9)$ hoặc $k > -5 + 5\\sqrt{21} (\\approx 17,9)$.\nVì $k$ là số nguyên dương nên ta chọn $k \\geq 18$.\nVậy sau ít nhất $18$ ngày thì người đó nhận được hơn $5$ triệu đồng."
+    "answer": "ĐÁP ÁN: 72\n\nGIẢI THÍCH:\nĐổi đơn vị vận tốc chuyển động của máy bay: $240$ (km/h) $= \\frac{240000}{3600}$ (m/s) $= \\frac{200}{3}$ (m/s).\nĐộ dài quãng đường máy bay di chuyển được sau $3$ giây từ vị trí $I$ đến $A$ là:\n$IA = 3 \\cdot \\frac{200}{3} = 200$ (m).\nVì $AH$ là độ cao của máy bay so với mặt đất nên tam giác $AIH$ vuông tại $H$. Do đó:\n$AH = IA \\cdot \\sin(AIH) = 200 \\cdot \\sin(21^\\circ) \\approx 71,67$ (m).\nLàm tròn đến hàng đơn vị ta được $72$ m."
+  },
+  {
+    "id": "exam_de7plus_de03_p3_q19",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 19 [Phần 3 - Trả lời ngắn]:\n\nMột doanh nghiệp hỗ trợ cho bốn người dân bị thất nghiệp ở một khu phố là $5$ triệu đồng/người với điều kiện như sau:\n- Người thất nghiệp của khu phố làm việc tạp vụ cho doanh nghiệp trong nhiều ngày liên tiếp.\n- Sau ngày đầu tiên, doanh nghiệp cho $110$ nghìn đồng/người.\n- Bắt đầu từ ngày thứ hai, mỗi ngày tăng thêm $20$ nghìn đồng/người so với ngày hôm trước.\nMỗi người thất nghiệp phải làm cho doanh nghiệp đó ít nhất bao nhiêu ngày để có được hơn $5$ triệu đồng (làm tròn kết quả đến hàng đơn vị)?",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 19,
+      "difficulty_part": 3,
+      "skill_id": "arithmetic_progression",
+      "chapter": "Dãy số - Cấp số cộng và Cấp số nhân",
+      "type": "exam_short_answer",
+      "correct_answer": "18",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p3_q20",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 20 [Phần 3 - Trả lời ngắn]:\n\nBác Hà lập lại mật khẩu cho tài khoản thanh toán trực tuyến. Khi lập mật khẩu, hệ thống báo về số điện thoại của bác mã OTP là một dãy $4$ kí tự, mỗi kí tự là một chữ số, chữ số $0$ có thể đứng đầu. Xác suất của biến cố: Mã OTP là dãy kí tự $abcd$ với $a < b < c < d$ là bao nhiêu? (làm tròn kết quả đến hàng phần trăm)",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 20,
-            "difficulty_part": 3,
-            "skill_id": "probability_basic",
-            "chapter": "Tổ hợp - Xác suất",
-            "type": "exam_short_answer",
-            "correct_answer": "0,02",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: 0,02\n\nGIẢI THÍCH:\nMột cách ngẫu nhiên khi hệ thống cấp mã OTP là một dãy gồm $4$ kí tự tương ứng với một số có bốn chữ số lập từ tập $\\{0; 1; 2; ...; 9\\}$ có dạng $abcd$. Không gian mẫu: $n(\\Omega) = 10^4 = 10000$.\nGọi $A$: \"Mã OTP là dãy kí tự có dạng $abcd$ với $a < b < c < d$\".\nVới $4$ số bất kì được chọn từ tập hợp $10$ chữ số $\\{0; 1; 2; ...; 9\\}$, ta luôn có duy nhất một cách để sắp xếp $4$ số đó thỏa mãn yêu cầu $a < b < c < d$.\nDo đó số kết quả thuận lợi cho biến cố $A$ là số cách chọn ra $4$ chữ số từ $10$ chữ số, suy ra $n(A) = C_{10}^4 = 210$.\nVậy xác suất của biến cố $A$ là: $P(A) = \\frac{n(A)}{n(\\Omega)} = \\frac{210}{10000} = 0,021 \\approx 0,02$."
+    "answer": "ĐÁP ÁN: 18\n\nGIẢI THÍCH:\nGọi $u_n$ (nghìn đồng) là số tiền một người nhận được vào ngày thứ $n$.\nSuy ra $(u_n)$ lập thành một cấp số cộng có $u_1 = 110$ và công sai $d = 20$.\nGiả sử sau khi làm $k$ ngày ($k \\in \\mathbb{N}^*$), người đó nhận được hơn $5$ triệu đồng (tức là $5000$ nghìn đồng).\nKhi đó, tổng số tiền người đó nhận được là $S_k > 5000$\n$\\Leftrightarrow \\frac{k}{2} \\cdot [2u_1 + (k - 1)d] > 5000$\n$\\Leftrightarrow \\frac{k}{2} \\cdot [2\\cdot 110 + (k - 1)20] > 5000$\n$\\Leftrightarrow k^2 + 10k - 500 > 0$\n$\\Leftrightarrow k < -5 - 5\\sqrt{21} (\\approx -27,9)$ hoặc $k > -5 + 5\\sqrt{21} (\\approx 17,9)$.\nVì $k$ là số nguyên dương nên ta chọn $k \\geq 18$.\nVậy sau ít nhất $18$ ngày thì người đó nhận được hơn $5$ triệu đồng."
+  },
+  {
+    "id": "exam_de7plus_de03_p3_q20",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 20 [Phần 3 - Trả lời ngắn]:\n\nBác Hà lập lại mật khẩu cho tài khoản thanh toán trực tuyến. Khi lập mật khẩu, hệ thống báo về số điện thoại của bác mã OTP là một dãy $4$ kí tự, mỗi kí tự là một chữ số, chữ số $0$ có thể đứng đầu. Xác suất của biến cố: Mã OTP là dãy kí tự $abcd$ với $a < b < c < d$ là bao nhiêu? (làm tròn kết quả đến hàng phần trăm)",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 20,
+      "difficulty_part": 3,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_short_answer",
+      "correct_answer": "0,02",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p3_q21",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 21 [Phần 3 - Trả lời ngắn]:\n\nMột xí nghiệp mỗi ngày sản xuất ra $2000$ sản phẩm trong đó có $39$ sản phẩm lỗi. Lần lượt lấy ngẫu nhiên hai sản phẩm không hoàn trả lại để kiểm tra. Tính xác suất của các biến cố: Sản phẩm lấy ra lần thứ hai bị lỗi (làm tròn kết quả đến hàng phần trăm).",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 21,
-            "difficulty_part": 3,
-            "skill_id": "probability_basic",
-            "chapter": "Tổ hợp - Xác suất",
-            "type": "exam_short_answer",
-            "correct_answer": "0,02",
-            "has_image": false,
-            "image_path": ""
-        },
-        "answer": "ĐÁP ÁN: 0,02\n\nGIẢI THÍCH:\nGọi $A_1$: \"Sản phẩm lấy ra lần thứ I bị lỗi\" $\\Rightarrow P(A_1) = \\frac{39}{2000}; P(\\overline{A_1}) = \\frac{1961}{2000}$.\nGọi $A_2$: \"Sản phẩm lấy ra lần thứ II bị lỗi\".\n- Nếu lần I lấy ra bị lỗi thì còn $1999$ sản phẩm, trong đó có $38$ sản phẩm lỗi $\\Rightarrow P(A_2|A_1) = \\frac{38}{1999}$.\n- Nếu lần I lấy ra không bị lỗi thì còn $1999$ sản phẩm, trong đó nguyên $39$ sản phẩm lỗi $\\Rightarrow P(A_2|\\overline{A_1}) = \\frac{39}{1999}$.\nÁp dụng công thức xác suất toàn phần, xác suất để lần thứ hai bị lỗi là:\n$P(A_2) = P(A_2|A_1)\\cdot P(A_1) + P(A_2|\\overline{A_1})\\cdot P(\\overline{A_1})$\n$= \\frac{38}{1999} \\cdot \\frac{39}{2000} + \\frac{39}{1999} \\cdot \\frac{1961}{2000}$\n$= \\frac{39\\cdot(38 + 1961)}{2000\\cdot 1999}$\n$= \\frac{39\\cdot 1999}{2000\\cdot 1999} = \\frac{39}{2000} = 0,0195 \\approx 0,02$."
+    "answer": "ĐÁP ÁN: 0,02\n\nGIẢI THÍCH:\nMột cách ngẫu nhiên khi hệ thống cấp mã OTP là một dãy gồm $4$ kí tự tương ứng với một số có bốn chữ số lập từ tập $\\{0; 1; 2; ...; 9\\}$ có dạng $abcd$. Không gian mẫu: $n(\\Omega) = 10^4 = 10000$.\nGọi $A$: \"Mã OTP là dãy kí tự có dạng $abcd$ với $a < b < c < d$\".\nVới $4$ số bất kì được chọn từ tập hợp $10$ chữ số $\\{0; 1; 2; ...; 9\\}$, ta luôn có duy nhất một cách để sắp xếp $4$ số đó thỏa mãn yêu cầu $a < b < c < d$.\nDo đó số kết quả thuận lợi cho biến cố $A$ là số cách chọn ra $4$ chữ số từ $10$ chữ số, suy ra $n(A) = C_{10}^4 = 210$.\nVậy xác suất của biến cố $A$ là: $P(A) = \\frac{n(A)}{n(\\Omega)} = \\frac{210}{10000} = 0,021 \\approx 0,02$."
+  },
+  {
+    "id": "exam_de7plus_de03_p3_q21",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 21 [Phần 3 - Trả lời ngắn]:\n\nMột xí nghiệp mỗi ngày sản xuất ra $2000$ sản phẩm trong đó có $39$ sản phẩm lỗi. Lần lượt lấy ngẫu nhiên hai sản phẩm không hoàn trả lại để kiểm tra. Tính xác suất của các biến cố: Sản phẩm lấy ra lần thứ hai bị lỗi (làm tròn kết quả đến hàng phần trăm).",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 21,
+      "difficulty_part": 3,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_short_answer",
+      "correct_answer": "0,02",
+      "has_image": false,
+      "image_path": ""
     },
-    {
-        "id": "exam_de7plus_de03_p3_q22",
-        "content": "ĐỀ 7+ (Đề số 3) - CÂU 22 [Phần 3 - Trả lời ngắn]:\n\nTừ một tấm bìa mỏng hình vuông cạnh $6$ dm, bạn Hoa cắt bỏ bốn tam giác cân bằng nhau có cạnh đáy là cạnh của hình vuông ban đầu và đỉnh là đỉnh của một hình vuông nhỏ phía trong rồi gập lên, ghép lại tạo thành một khối chóp tứ giác đều (như hình vẽ).\n[Xem hình: q22.png]\nThể tích của khối chóp có giá trị lớn nhất bằng bao nhiêu decimét khối (làm tròn kết quả đến hàng phần mười)?",
-        "metadata": {
-            "exam_id": "de7plus_de03",
-            "year": 2025,
-            "exam_source": "Đề 7+ (Đề số 3)",
-            "question_number": 22,
-            "difficulty_part": 3,
-            "skill_id": "geometry_optimization",
-            "chapter": "Ứng dụng Đạo hàm - Khối đa diện",
-            "type": "exam_short_answer",
-            "correct_answer": "7,3",
-            "has_image": true,
-            "image_path": "data/exams/images/de7plus_de03/q22.png"
-        },
-        "answer": "ĐÁP ÁN: 7,3\n\nGIẢI THÍCH:\nGọi cạnh đáy của hình chóp tứ giác đều là $x$ (dm) với $0 < x < 6\\sqrt{2}$.\nXét trên mặt phẳng phân tích tấm bìa ban đầu, ta có kích thước đường cao mặt bên khối chóp chính là độ dài $AH = \\frac{AC - HK}{2} = 3\\sqrt{2} - \\frac{x}{2}$.\nĐường cao của hình chóp tứ giác đều là:\n$h = \\sqrt{AH^2 - OH^2} = \\sqrt{\\left(3\\sqrt{2} - \\frac{x}{2}\\right)^2 - \\left(\\frac{x}{2}\\right)^2} = \\sqrt{18 - 3\\sqrt{2}x}$.\nThể tích khối chóp là: $V(x) = \\frac{1}{3}x^2\\cdot h = \\frac{1}{3}x^2\\sqrt{18 - 3\\sqrt{2}x} = \\frac{1}{3}\\sqrt{x^4(18 - 3\\sqrt{2}x)}$.\nĐể tìm giá trị lớn nhất của $V$, ta tìm giá trị lớn nhất của hàm số $f(x) = x^4(18 - 3\\sqrt{2}x) = 18x^4 - 3\\sqrt{2}x^5$ trên $(0; 6\\sqrt{2})$.\nTa có: $f'(x) = 72x^3 - 15\\sqrt{2}x^4 = x^3(72 - 15\\sqrt{2}x)$.\n$f'(x) = 0 \\Leftrightarrow x = 0$ (loại) hoặc $x = \\frac{72}{15\\sqrt{2}} = \\frac{12\\sqrt{2}}{5}$.\nLập bảng biến thiên của $f(x)$, ta thấy hàm số đạt cực đại tại $x = \\frac{12\\sqrt{2}}{5}$.\nSuy ra $\\max f(x) = f\\left(\\frac{12\\sqrt{2}}{5}\\right) \\approx  477,75$.\nKhi đó, thể tích khối chóp có giá trị lớn nhất là: $V_{max} = \\frac{1}{3}\\sqrt{f\\left(\\frac{12\\sqrt{2}}{5}\\right)} \\approx 7,3$ $(dm^3)$."
-    }
+    "answer": "ĐÁP ÁN: 0,02\n\nGIẢI THÍCH:\nGọi $A_1$: \"Sản phẩm lấy ra lần thứ I bị lỗi\" $\\Rightarrow P(A_1) = \\frac{39}{2000}; P(\\overline{A_1}) = \\frac{1961}{2000}$.\nGọi $A_2$: \"Sản phẩm lấy ra lần thứ II bị lỗi\".\n- Nếu lần I lấy ra bị lỗi thì còn $1999$ sản phẩm, trong đó có $38$ sản phẩm lỗi $\\Rightarrow P(A_2|A_1) = \\frac{38}{1999}$.\n- Nếu lần I lấy ra không bị lỗi thì còn $1999$ sản phẩm, trong đó nguyên $39$ sản phẩm lỗi $\\Rightarrow P(A_2|\\overline{A_1}) = \\frac{39}{1999}$.\nÁp dụng công thức xác suất toàn phần, xác suất để lần thứ hai bị lỗi là:\n$P(A_2) = P(A_2|A_1)\\cdot P(A_1) + P(A_2|\\overline{A_1})\\cdot P(\\overline{A_1})$\n$= \\frac{38}{1999} \\cdot \\frac{39}{2000} + \\frac{39}{1999} \\cdot \\frac{1961}{2000}$\n$= \\frac{39\\cdot(38 + 1961)}{2000\\cdot 1999}$\n$= \\frac{39\\cdot 1999}{2000\\cdot 1999} = \\frac{39}{2000} = 0,0195 \\approx 0,02$."
+  },
+  {
+    "id": "exam_de7plus_de03_p3_q22",
+    "content": "ĐỀ 7+ (Đề số 3) - CÂU 22 [Phần 3 - Trả lời ngắn]:\n\nTừ một tấm bìa mỏng hình vuông cạnh $6$ dm, bạn Hoa cắt bỏ bốn tam giác cân bằng nhau có cạnh đáy là cạnh của hình vuông ban đầu và đỉnh là đỉnh của một hình vuông nhỏ phía trong rồi gập lên, ghép lại tạo thành một khối chóp tứ giác đều (như hình vẽ).\n[Xem hình: q22.png]\nThể tích của khối chóp có giá trị lớn nhất bằng bao nhiêu decimét khối (làm tròn kết quả đến hàng phần mười)?",
+    "metadata": {
+      "exam_id": "de7plus_de03",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 3)",
+      "question_number": 22,
+      "difficulty_part": 3,
+      "skill_id": "geometry_optimization",
+      "chapter": "Ứng dụng Đạo hàm - Khối đa diện",
+      "type": "exam_short_answer",
+      "correct_answer": "7,3",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de03/q22.png"
+    },
+    "answer": "ĐÁP ÁN: 7,3\n\nGIẢI THÍCH:\nGọi cạnh đáy của hình chóp tứ giác đều là $x$ (dm) với $0 < x < 6\\sqrt{2}$.\nXét trên mặt phẳng phân tích tấm bìa ban đầu, ta có kích thước đường cao mặt bên khối chóp chính là độ dài $AH = \\frac{AC - HK}{2} = 3\\sqrt{2} - \\frac{x}{2}$.\nĐường cao của hình chóp tứ giác đều là:\n$h = \\sqrt{AH^2 - OH^2} = \\sqrt{\\left(3\\sqrt{2} - \\frac{x}{2}\\right)^2 - \\left(\\frac{x}{2}\\right)^2} = \\sqrt{18 - 3\\sqrt{2}x}$.\nThể tích khối chóp là: $V(x) = \\frac{1}{3}x^2\\cdot h = \\frac{1}{3}x^2\\sqrt{18 - 3\\sqrt{2}x} = \\frac{1}{3}\\sqrt{x^4(18 - 3\\sqrt{2}x)}$.\nĐể tìm giá trị lớn nhất của $V$, ta tìm giá trị lớn nhất của hàm số $f(x) = x^4(18 - 3\\sqrt{2}x) = 18x^4 - 3\\sqrt{2}x^5$ trên $(0; 6\\sqrt{2})$.\nTa có: $f'(x) = 72x^3 - 15\\sqrt{2}x^4 = x^3(72 - 15\\sqrt{2}x)$.\n$f'(x) = 0 \\Leftrightarrow x = 0$ (loại) hoặc $x = \\frac{72}{15\\sqrt{2}} = \\frac{12\\sqrt{2}}{5}$.\nLập bảng biến thiên của $f(x)$, ta thấy hàm số đạt cực đại tại $x = \\frac{12\\sqrt{2}}{5}$.\nSuy ra $\\max f(x) = f\\left(\\frac{12\\sqrt{2}}{5}\\right) \\approx  477,75$.\nKhi đó, thể tích khối chóp có giá trị lớn nhất là: $V_{max} = \\frac{1}{3}\\sqrt{f\\left(\\frac{12\\sqrt{2}}{5}\\right)} \\approx 7,3$ $(dm^3)$."
+  }
 ]

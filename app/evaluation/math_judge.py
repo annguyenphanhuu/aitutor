@@ -129,11 +129,8 @@ Chỉ trả lời đúng 1 số trong [0.0, 1.0]:
 def judge_mcq_accuracy(response: str, correct_answer: str) -> float:
     """
     Extract lựa chọn A/B/C/D từ response và so sánh với đáp án đúng.
-
-    Xử lý các format phổ biến:
-      - "Chọn A", "Đáp án B", "**C**", "chọn c", "A."
-      - "Vậy đáp án là C"
-      - Bold: "**B. ...**"
+    Ưu tiên 1: Lấy đáp án trong thẻ <answer>X</answer>
+    Dự phòng: So sánh regex (có bỏ dấu tiếng Việt và chỉ quét đoạn đầu)
     Returns 1.0 nếu đúng, 0.0 nếu sai hoặc không tìm thấy lựa chọn.
     """
     if not correct_answer or not response:
@@ -143,20 +140,30 @@ def judge_mcq_accuracy(response: str, correct_answer: str) -> float:
     if correct not in {"A", "B", "C", "D"}:
         return 0.0
 
-    # Scan response for the answer choice
+    # Ưu tiên số 1: Tìm đúng thẻ <answer>X</answer>
+    m = re.search(r"<answer>\s*([ABCD])\s*</answer>", response, re.IGNORECASE)
+    if m:
+        return 1.0 if m.group(1).upper() == correct else 0.0
+
+    # Fallback cho định dạng cũ (giới hạn quét ở đoạn đầu để tránh bắt nhầm phần giải thích)
+    import unicodedata
+    def remove_vietnamese_accents(s: str) -> str:
+        s = unicodedata.normalize('NFD', s)
+        s = ''.join(c for c in s if unicodedata.category(c) != 'Mn')
+        return s.replace('đ', 'd').replace('Đ', 'D')
+    
+    head_text = remove_vietnamese_accents(response).upper()[:80]
+    
     patterns = [
-        r"\b(?:chọn|đáp án|answer|chọn đáp án)\s*[:.]?\s*\**([ABCD])\**",
+        r"\b(?:CHON|DAP AN|ANSWER)\s*[:.]?\s*\**([ABCD])\**",
         r"\*\*([ABCD])[.)]",
         r"^([ABCD])[.)\s]",
-        r"\b([ABCD])\b",
     ]
 
-    text = response.upper()
     for pat in patterns:
-        m = re.search(pat, text, re.IGNORECASE | re.MULTILINE)
-        if m:
-            found = m.group(1).upper()
-            return 1.0 if found == correct else 0.0
+        m_fallback = re.search(pat, head_text, re.MULTILINE)
+        if m_fallback:
+            return 1.0 if m_fallback.group(1) == correct else 0.0
 
     return 0.0
 

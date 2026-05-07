@@ -135,6 +135,12 @@ SKILLS = {
         "description": "Mẫu số liệu, tần số, tần suất, độ lệch chuẩn, ước lượng tham số",
         "prerequisites": ["statistics_descriptive"],
     },
+    "statistics_dispersion": {
+        "name": "Các số đặc trưng đo mức độ phân tán",
+        "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+        "description": "Độ lệch chuẩn, phương sai, các số đặc trưng đo mức độ phân tán",
+        "prerequisites": ["statistics_descriptive"],
+    },
 }
 
 

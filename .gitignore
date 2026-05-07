@@ -39,6 +39,7 @@ data/reflection_history.json
 data/evaluation/*_samples.json
 data/evaluation/*_report.json
 data/evaluation/*_detailed_report.json
+data/evaluation/*.jsonl
 
 # Local logs, coverage, and build outputs
 *.log

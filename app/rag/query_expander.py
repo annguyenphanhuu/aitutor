@@ -45,6 +45,7 @@ KNOWN_CHAPTERS: list[str] = [
     "Hàm số lượng giác và phương trình lượng giác",
     "Lượng giác",
     "Tổ hợp - Xác suất",
+    "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
 ]
 
 KNOWN_SKILL_IDS: list[str] = [
@@ -58,6 +59,7 @@ KNOWN_SKILL_IDS: list[str] = [
     "probability_basic",         # Xác suất có điều kiện, Bayes
     "statistics_descriptive",    # Thống kê mô tả: trung bình, phương sai
     "statistics_inference",      # Thống kê suy luận
+    "statistics_dispersion",     # Khoảng biến thiên, tứ phân vị, phương sai ghép nhóm
     "sequence_basic",            # Dãy số: cấp số cộng, nhân
     "logarithm_exponential",     # Hàm mũ, logarit
     "trig_graph",                # Đồ thị lượng giác

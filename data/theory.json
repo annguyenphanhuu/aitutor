@@ -150,5 +150,37 @@
       "chapter": "Xác suất",
       "type": "theory"
     }
+  },
+  {
+    "id": "theory_20",
+    "content": "Trong không gian Oxyz, mỗi mặt phẳng đều có phương trình dạng Ax + By + Cz + D = 0, trong đó A, B, C không đồng thời bằng 0, được gọi là phương trình tổng quát của mặt phẳng đó.",
+    "metadata": {
+      "chapter": "Hình học không gian",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_21",
+    "content": "**Khoảng biến thiên của mẫu số liệu ghép nhóm**\n\nCho mẫu số liệu ghép nhóm. Khoảng biến thiên của mẫu số liệu ghép nhóm, kí hiệu là $R$, là hiệu số giữa đầu mút phải của nhóm cuối cùng và đầu mút trái của nhóm đầu tiên:\n$$R = a_{m+1} - a_1.$$",
+    "metadata": {
+      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_22",
+    "content": "**Khoảng tứ phân vị của mẫu số liệu ghép nhóm**\n\nKhoảng tứ phân vị, kí hiệu là $\\Delta_Q$, là hiệu số giữa tứ phân vị thứ ba $Q_3$ và tứ phân vị thứ nhất $Q_1$ của mẫu số liệu ghép nhóm:\n$$\\Delta_Q = Q_3 - Q_1.$$",
+    "metadata": {
+      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+      "type": "theory"
+    }
+  },
+  {
+    "id": "theory_23",
+    "content": "**Phương sai và độ lệch chuẩn của mẫu số liệu ghép nhóm**\n\nPhương sai của mẫu số liệu ghép nhóm, kí hiệu là $s^2$, được tính bằng công thức:\n$$s^2 = \\frac{1}{n} \\sum_{i=1}^m n_i (x_i - \\bar{x})^2$$\ntrong đó $n$ là cỡ mẫu, $n_i$ là tần số nhóm $i$, $x_i$ là giá trị đại diện của nhóm $i$, $\\bar{x}$ là số trung bình của mẫu.\n\nĐộ lệch chuẩn, kí hiệu là $s$, là căn bậc hai số học của phương sai: $s = \\sqrt{s^2}$.",
+    "metadata": {
+      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+      "type": "theory"
+    }
   }
 ]

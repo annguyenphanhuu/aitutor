@@ -190,6 +190,21 @@ def retrieve_with_trace(
     # ── Step 2: Candidate retrieval ────────────────────────────────────────────
     candidates = kb.search_theory(question, k=pool_k, alpha=0.55)
 
+    # ── Step 2.5: Inject explicit formulas từ QueryExpansion ───────────────────
+    if not expansion.error and expansion.formula_ids:
+        explicit_formulas = kb.get_formulas_by_ids(expansion.formula_ids)
+        for f in explicit_formulas:
+            if not any(c.get("id") == f["id"] for c in candidates):
+                candidates.append({
+                    "id": f["id"],
+                    "content": f["content"],
+                    "metadata": f.get("metadata", {}),
+                    "hybrid_score": 1.0,  # Điểm tuyệt đối để đảm bảo được rerank
+                    "vector_score": 1.0,
+                    "bm25_score": 1.0,
+                    "_boosted": True
+                })
+
     # ── Step 3: Soft boost (nhẹ hơn) dựa trên QueryExpansion, không dùng metadata đề thi ──
     # Boost nhỏ (0.06/0.04) chỉ để điều chỉnh nhẹ ranking, không overwrite semantic score
     SKILL_BOOST   = 0.06
@@ -232,8 +247,8 @@ def build_system_prompt(context: str, question_type: str) -> str:
         )
     elif question_type == "exam_mcq":
         fmt = (
-            "\n\nQUAN TRONG: Bat dau cau tra loi bang 'Chon X.' "
-            "voi X la dap an dung (A, B, C hoac D), sau do giai thich ngan gon."
+            "\n\nQUAN TRONG: Ban PHAI dat dap an dung vao the <answer>X</answer> voi X la A, B, C hoac D. "
+            "Vi du: <answer>A</answer>. Sau do xuong dong va giai thich ngan gon."
         )
     elif question_type == "exam_short_answer":
         fmt = "\n\nQUAN TRONG: Ket thuc cau tra loi bang 'DAP AN: [gia tri so]'."
@@ -595,9 +610,11 @@ async def main(args):
     all_judges: list[dict] = []
 
     for idx, q in enumerate(questions, 1):
+        clean_q = clean_question_for_eval(q["question"])
+
         # ── Retrieve ──
         chunks, expansion = retrieve_with_trace(
-            q["question"], q["skill_id"], q["chapter"], k=args.k
+            clean_q, q["skill_id"], q["chapter"], k=args.k
         )
         context_text = "\n\n---\n\n".join(c["content"] for c in chunks) if chunks else "Khong tim thay tai lieu."
 
@@ -612,7 +629,7 @@ async def main(args):
 
         # ── Build sample for judges ──
         sample = {
-            "user_input":         q["question"],
+            "user_input":         clean_q,
             "retrieved_contexts": [c["content"] for c in chunks],
             "response":           response,
             "reference":          q["ground_truth"],
