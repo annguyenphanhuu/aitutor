@@ -56,6 +56,11 @@ class Settings(BaseSettings):
     S3_BUCKET: str = "aitutor-bucket-vn"
     S3_ENABLED: bool = False   # Bật qua .env: S3_ENABLED=true
 
+    # ── Exam Solver (OCR + Per-Question Pipeline) ───────────────────────
+    OCR_ENGINE: str = "cloud"        # "cloud" (GPT Vision) | "local" (GOT-OCR2.0)
+    MAX_EXAM_PAGES: int = 10         # Max PDF pages for exam solving
+    SOLVE_CONCURRENCY: int = 5       # Parallel question solving (semaphore)
+
     # ── Langfuse Observability ────────────────────────────────────────────
     LANGFUSE_ENABLED: bool = False
     LANGFUSE_PUBLIC_KEY: str = ""

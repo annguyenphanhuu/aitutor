@@ -40,6 +40,9 @@ from app.analytics.insights import get_insights
 from app.auth.service import login_or_register, get_current_user_id
 from app.guardrails.input_validator import validate_input
 from app.guardrails.rate_limiter import get_rate_limiter
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api", tags=["tutor"])
 
@@ -973,3 +976,156 @@ async def guardrails_config():
         "reranker_model": s.RERANKER_MODEL,
         "use_function_calling": s.USE_FUNCTION_CALLING,
     }
+
+
+# ── Exam Solver (OCR + Per-Question RAG Pipeline) ────────────────────────────
+
+@router.post("/exam-solver/solve")
+async def solve_exam(
+    file: UploadFile = File(...),
+    ocr_engine: str = Form(default="cloud"),
+    db: AsyncSession = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
+):
+    """Upload exam image/PDF → OCR → Split → Solve each question → Stream results.
+
+    SSE stream format:
+      data: {"type": "ocr", "message": "Đang OCR..."}
+      data: {"type": "split", "total": 40}
+      data: {"type": "progress", "current": 3, "total": 40, "question": "Câu 3"}
+      data: {"type": "solution", "question_number": "Câu 3", "solution": "..."}
+      data: {"type": "done", "result": {...}}
+      data: {"type": "error", "message": "..."}
+    """
+    # Validate file type
+    mime = file.content_type or ""
+    if mime.startswith("image/"):
+        file_type = "image"
+    elif mime == "application/pdf":
+        file_type = "pdf"
+    else:
+        raise HTTPException(400, "Chỉ hỗ trợ file ảnh hoặc PDF")
+
+    # Validate OCR engine
+    if ocr_engine not in ("cloud", "local"):
+        ocr_engine = "cloud"
+
+    file_bytes = await file.read()
+
+    # Validate file size (max 20MB)
+    if len(file_bytes) > 20 * 1024 * 1024:
+        raise HTTPException(400, "File quá lớn (tối đa 20MB)")
+
+    async def event_generator():
+        """SSE event generator — streams progress updates per question."""
+        from app.exam_solver.solver import ExamSolver, ExamSolverResult
+
+        try:
+            yield f"data: {json.dumps({'type': 'ocr', 'message': f'Đang OCR đề thi (engine: {ocr_engine})...'})}\n\n"
+
+            solver = ExamSolver(ocr_engine=ocr_engine)
+
+            # Progress tracking via list (mutable in closure)
+            progress_events: list[str] = []
+
+            def on_progress(current: int, total: int, question_num: str):
+                progress_events.append(
+                    json.dumps({
+                        "type": "progress",
+                        "current": current,
+                        "total": total,
+                        "question": question_num,
+                    })
+                )
+
+            result: ExamSolverResult = await solver.solve(
+                file_bytes=file_bytes,
+                file_type=file_type,
+                mime_type=mime,
+                user_id=user_id,
+                db=db,
+                on_progress=on_progress,
+            )
+
+            # Emit progress events that accumulated during solving
+            for evt in progress_events:
+                yield f"data: {evt}\n\n"
+
+            # Emit final result
+            result_dict = {
+                "type": "done",
+                "result": {
+                    "total_questions": result.total_questions,
+                    "questions": [
+                        {
+                            "question_number": s.question_number,
+                            "question_type": s.question_type,
+                            "content": s.content,
+                            "skill_id": s.skill_id,
+                            "skill_name": s.skill_name,
+                            "solution": s.solution,
+                            "error": s.error,
+                        }
+                        for s in result.solutions
+                    ],
+                    "report_markdown": result.report_markdown,
+                    "skill_stats": result.skill_stats,
+                    "raw_ocr": result.raw_ocr,
+                    "ocr_engine_used": result.ocr_engine_used,
+                    "elapsed_seconds": result.elapsed_seconds,
+                },
+            }
+            yield f"data: {json.dumps(result_dict, ensure_ascii=False)}\n\n"
+
+        except Exception as e:
+            import traceback
+            logger.error("Exam Solver error: %s\n%s", e, traceback.format_exc())
+            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
+    )
+
+
+@router.get("/exam-solver/ocr-engines")
+async def list_ocr_engines():
+    """List available OCR engines and their status."""
+    engines = [
+        {
+            "id": "cloud",
+            "name": "☁️ Cloud VLM (GPT Vision)",
+            "description": "Chính xác nhất — dùng GPT-4o-mini Vision. Tốn phí, cần internet.",
+            "available": True,
+            "recommended": True,
+        },
+    ]
+
+    # Check if GOT-OCR is available
+    try:
+        from app.ocr.got_ocr import get_got_ocr
+        got = get_got_ocr()
+        available = got.is_available
+        device = got.device_info
+        engines.append({
+            "id": "local",
+            "name": f"🖥️ Local OCR (GOT-OCR2.0)",
+            "description": f"Miễn phí, offline. Device: {device}.",
+            "available": available,
+            "recommended": False,
+        })
+    except Exception:
+        engines.append({
+            "id": "local",
+            "name": "🖥️ Local OCR (GOT-OCR2.0)",
+            "description": "Không khả dụng — cần cài torch và transformers.",
+            "available": False,
+            "recommended": False,
+        })
+
+    return {"engines": engines}
+

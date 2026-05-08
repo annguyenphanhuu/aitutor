@@ -90,6 +90,10 @@
                     <span class="sidebar-action-icon">📖</span>
                     <span>Ôn tập hôm nay</span>
                 </button>
+                <button class="sidebar-action-btn" onclick="showExamSolver()">
+                    <span class="sidebar-action-icon">🔬</span>
+                    <span>Giải đề thi (OCR)</span>
+                </button>
                 <a class="sidebar-action-btn" href="/dashboard">
                     <span class="sidebar-action-icon">📊</span>
                     <span>Dashboard tiến độ</span>
@@ -236,6 +240,52 @@
                         <!-- Exams loaded dynamically -->
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Exam Solver Panel -->
+        <div class="exam-solver-panel" id="exam-solver-panel" style="display:none">
+            <div class="exam-solver-header">
+                <h2>🔬 Giải Đề Thi (AI + OCR)</h2>
+                <button class="quiz-close-btn" onclick="closeExamSolver()">✕</button>
+            </div>
+
+            <!-- Upload Zone -->
+            <div class="exam-solver-upload" id="exam-solver-upload">
+                <!-- OCR Engine Toggle -->
+                <div class="ocr-toggle" id="ocr-toggle">
+                    <button class="ocr-option active" data-engine="cloud" onclick="selectOCREngine('cloud', this)">
+                        ☁️ Cloud (Chính xác nhất)
+                    </button>
+                    <button class="ocr-option" data-engine="local" onclick="selectOCREngine('local', this)">
+                        🖥️ Local (Miễn phí)
+                    </button>
+                </div>
+                <p class="ocr-hint" id="ocr-hint">GPT Vision — độ chính xác cao nhất cho công thức Toán</p>
+
+                <div class="upload-dropzone" id="exam-dropzone">
+                    <div class="upload-icon">📄</div>
+                    <p class="upload-main-text">Kéo thả ảnh hoặc PDF đề thi vào đây</p>
+                    <p class="upload-hint">hoặc click để chọn file (ảnh / PDF, tối đa 10 trang)</p>
+                    <input type="file" id="exam-file-input" accept="image/*,.pdf" style="display:none" onchange="handleExamFileSelect(event)" />
+                </div>
+            </div>
+
+            <!-- Progress Area -->
+            <div class="exam-solver-progress" id="exam-solver-progress" style="display:none">
+                <div class="exam-progress-status" id="exam-progress-status">
+                    <span class="progress-spinner"></span>
+                    <span id="exam-status-text">Đang OCR đề thi...</span>
+                </div>
+                <div class="exam-progress-bar">
+                    <div class="exam-progress-fill" id="exam-progress-fill" style="width:0%"></div>
+                </div>
+                <div class="exam-progress-detail" id="exam-progress-detail"></div>
+            </div>
+
+            <!-- Results Area -->
+            <div class="exam-solver-results" id="exam-solver-results" style="display:none">
+                <!-- Rendered markdown results -->
             </div>
         </div>
 

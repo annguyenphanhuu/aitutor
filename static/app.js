@@ -2035,3 +2035,272 @@ function closeImageLightbox() {
     setTimeout(() => lightbox.remove(), 200);
 }
 
+
+// ═══════════════════════════════════════════════════
+//  EXAM SOLVER (OCR + Per-Question RAG Pipeline)
+// ═══════════════════════════════════════════════════
+
+let examSolverState = {
+    selectedEngine: 'cloud',
+    isProcessing: false,
+};
+
+function showExamSolver() {
+    const panel = document.getElementById('exam-solver-panel');
+    panel.style.display = 'block';
+
+    // Hide other panels
+    const welcome = document.getElementById('welcome-msg');
+    if (welcome) welcome.style.display = 'none';
+    document.getElementById('quiz-panel').style.display = 'none';
+
+    // Reset to upload state
+    document.getElementById('exam-solver-upload').style.display = 'block';
+    document.getElementById('exam-solver-progress').style.display = 'none';
+    document.getElementById('exam-solver-results').style.display = 'none';
+
+    // Setup drag-drop
+    setupExamDropzone();
+}
+
+function closeExamSolver() {
+    document.getElementById('exam-solver-panel').style.display = 'none';
+}
+
+function selectOCREngine(engine, btn) {
+    examSolverState.selectedEngine = engine;
+    document.querySelectorAll('.ocr-option').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const hint = document.getElementById('ocr-hint');
+    if (engine === 'cloud') {
+        hint.textContent = 'GPT Vision — độ chính xác cao nhất cho công thức Toán';
+    } else {
+        hint.textContent = 'GOT-OCR2.0 local — miễn phí, offline (cần GPU để nhanh)';
+    }
+}
+
+function setupExamDropzone() {
+    const dropzone = document.getElementById('exam-dropzone');
+    if (!dropzone || dropzone._setupDone) return;
+    dropzone._setupDone = true;
+
+    // Click to select file
+    dropzone.addEventListener('click', () => {
+        document.getElementById('exam-file-input').click();
+    });
+
+    // Drag & drop
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('dragover');
+    });
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            processExamFile(files[0]);
+        }
+    });
+}
+
+function handleExamFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) processExamFile(file);
+}
+
+async function processExamFile(file) {
+    if (examSolverState.isProcessing) return;
+
+    // Validate
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
+    if (!validTypes.includes(file.type)) {
+        alert('Chỉ hỗ trợ file ảnh (JPEG, PNG, WebP) hoặc PDF');
+        return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+        alert('File quá lớn (tối đa 20MB)');
+        return;
+    }
+
+    examSolverState.isProcessing = true;
+
+    // Switch to progress view
+    document.getElementById('exam-solver-upload').style.display = 'none';
+    document.getElementById('exam-solver-progress').style.display = 'block';
+    document.getElementById('exam-solver-results').style.display = 'none';
+    document.getElementById('exam-progress-fill').style.width = '0%';
+    document.getElementById('exam-status-text').textContent = `Đang OCR đề thi (${examSolverState.selectedEngine})...`;
+    document.getElementById('exam-progress-detail').textContent = '';
+
+    // Build form data
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('ocr_engine', examSolverState.selectedEngine);
+
+    try {
+        const response = await fetch(`${API}/exam-solver/solve`, {
+            method: 'POST',
+            headers: {
+                'X-User-Id': localStorage.getItem('userId') || '1',
+            },
+            body: formData,
+        });
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+
+            for (const line of lines) {
+                if (!line.startsWith('data: ')) continue;
+                try {
+                    const data = JSON.parse(line.slice(6));
+                    handleExamSSEEvent(data);
+                } catch (e) { /* ignore parse errors */ }
+            }
+        }
+    } catch (e) {
+        document.getElementById('exam-status-text').textContent = `⚠️ Lỗi: ${e.message}`;
+        document.getElementById('exam-progress-fill').style.width = '0%';
+        document.getElementById('exam-progress-fill').style.background = '#f87171';
+    } finally {
+        examSolverState.isProcessing = false;
+    }
+}
+
+function handleExamSSEEvent(data) {
+    switch (data.type) {
+        case 'ocr':
+            document.getElementById('exam-status-text').textContent = data.message;
+            document.getElementById('exam-progress-fill').style.width = '5%';
+            break;
+
+        case 'progress':
+            const pct = ((data.current / data.total) * 100).toFixed(0);
+            document.getElementById('exam-progress-fill').style.width = `${pct}%`;
+            document.getElementById('exam-status-text').textContent =
+                `Đang giải ${data.question} (${data.current}/${data.total})`;
+            document.getElementById('exam-progress-detail').textContent =
+                `${data.current}/${data.total} câu đã giải`;
+            break;
+
+        case 'done':
+            document.getElementById('exam-progress-fill').style.width = '100%';
+            document.getElementById('exam-status-text').textContent = '✅ Hoàn thành!';
+            setTimeout(() => renderExamSolverResult(data.result), 500);
+            break;
+
+        case 'error':
+            document.getElementById('exam-status-text').textContent = `⚠️ Lỗi: ${data.message}`;
+            document.getElementById('exam-progress-fill').style.background = '#f87171';
+            break;
+    }
+}
+
+function renderExamSolverResult(result) {
+    document.getElementById('exam-solver-progress').style.display = 'none';
+    const resultsDiv = document.getElementById('exam-solver-results');
+    resultsDiv.style.display = 'block';
+
+    // Summary header
+    let html = `
+        <div class="exam-solver-summary">
+            <div class="exam-solver-summary-stats">
+                <div class="solver-stat">
+                    <span class="solver-stat-value">${result.total_questions}</span>
+                    <span class="solver-stat-label">Câu hỏi</span>
+                </div>
+                <div class="solver-stat">
+                    <span class="solver-stat-value">${result.elapsed_seconds.toFixed(1)}s</span>
+                    <span class="solver-stat-label">Thời gian</span>
+                </div>
+                <div class="solver-stat">
+                    <span class="solver-stat-value">${result.ocr_engine_used === 'cloud' ? '☁️' : '🖥️'}</span>
+                    <span class="solver-stat-label">${result.ocr_engine_used === 'cloud' ? 'Cloud OCR' : 'Local OCR'}</span>
+                </div>
+            </div>
+            <div class="exam-solver-actions">
+                <button class="solver-action-btn" onclick="toggleRawOCR()">📋 Xem OCR gốc</button>
+                <button class="solver-action-btn primary" onclick="resetExamSolver()">🔄 Giải đề khác</button>
+            </div>
+        </div>
+
+        <div class="exam-solver-raw-ocr" id="exam-solver-raw-ocr" style="display:none">
+            <h4>📋 OCR Text gốc:</h4>
+            <pre>${esc(result.raw_ocr)}</pre>
+        </div>
+    `;
+
+    // Per-question solutions
+    html += '<div class="exam-solver-questions">';
+    for (const q of result.questions) {
+        const skillBadge = q.skill_name
+            ? `<span class="solver-skill-badge">${esc(q.skill_name)}</span>`
+            : '';
+        const typeBadge = {
+            mcq: '📝 Trắc nghiệm',
+            true_false: '✅ Đúng/Sai',
+            short_answer: '✏️ Trả lời ngắn',
+            essay: '📄 Tự luận',
+        }[q.question_type] || q.question_type;
+
+        const errorClass = q.error ? 'has-error' : '';
+
+        html += `
+            <div class="solver-question-card ${errorClass}">
+                <div class="solver-q-header">
+                    <span class="solver-q-number">${esc(q.question_number)}</span>
+                    <span class="solver-q-type">${typeBadge}</span>
+                    ${skillBadge}
+                </div>
+                <details class="solver-q-problem" open>
+                    <summary>Đề bài</summary>
+                    <div class="solver-q-content" id="solver-q-${result.questions.indexOf(q)}">${formatText(q.content)}</div>
+                </details>
+                <div class="solver-q-solution">
+                    <h4>💡 Lời giải:</h4>
+                    <div class="solver-solution-content" id="solver-sol-${result.questions.indexOf(q)}">${formatText(q.solution)}</div>
+                </div>
+                ${q.error ? `<div class="solver-q-error">⚠️ ${esc(q.error)}</div>` : ''}
+            </div>
+        `;
+    }
+    html += '</div>';
+
+    resultsDiv.innerHTML = html;
+
+    // Render KaTeX in all question/solution elements
+    result.questions.forEach((_, i) => {
+        const qEl = document.getElementById(`solver-q-${i}`);
+        const sEl = document.getElementById(`solver-sol-${i}`);
+        if (qEl) renderKatex(qEl);
+        if (sEl) renderKatex(sEl);
+    });
+}
+
+function toggleRawOCR() {
+    const el = document.getElementById('exam-solver-raw-ocr');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function resetExamSolver() {
+    document.getElementById('exam-solver-upload').style.display = 'block';
+    document.getElementById('exam-solver-progress').style.display = 'none';
+    document.getElementById('exam-solver-results').style.display = 'none';
+    document.getElementById('exam-progress-fill').style.width = '0%';
+    document.getElementById('exam-progress-fill').style.background = '';
+    document.getElementById('exam-file-input').value = '';
+}
+

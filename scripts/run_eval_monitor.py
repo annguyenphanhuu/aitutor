@@ -180,7 +180,10 @@ def retrieve_with_trace(
 
     from app.config import get_settings
     settings = get_settings()
-    pool_k = settings.RERANKER_CANDIDATE_K if settings.RERANKER_ENABLED else k * 2
+    # Tăng pool_k: reranker chỉ có thể giữ lại docs nằm trong pool.
+    # Trước đây pool nhỏ có thể làm mất theory_18/19 sau khi soft boost chưa đủ mạnh.
+    raw_pool_k = settings.RERANKER_CANDIDATE_K if settings.RERANKER_ENABLED else k * 2
+    pool_k = max(raw_pool_k, k * 4)  # ít nhất 20 candidates khi k=5
 
     # ── Step 1: Query Expansion — LLM suy luận chapter/skill/formula ──────────
     expansion: QueryExpansion = expand_question(question)
@@ -188,7 +191,12 @@ def retrieve_with_trace(
         logger.warning("QueryExpander failed: %s — falling back to raw query", expansion.error)
 
     # ── Step 2: Candidate retrieval ────────────────────────────────────────────
-    candidates = kb.search_theory(question, k=pool_k, alpha=0.55)
+    # Query Rewriting: dùng rag_query (thuật ngữ học thuật) thay cho câu hỏi gốc.
+    # Lý do: Câu hỏi gốc dạng "bài toán thực tế" (kho hàng, nước chảy...)
+    # có vector embedding xa với lý thuyết toán học → retrieval kém chính xác.
+    # rag_query do LLM tạo ra chứa đúng thuật ngữ học thuật → vector gần hơn với KB.
+    search_query = expansion.rag_query if (not expansion.error and expansion.rag_query) else question
+    candidates = kb.search_theory(search_query, k=pool_k, alpha=0.55)
 
     # ── Step 2.5: Inject explicit formulas từ QueryExpansion ───────────────────
     if not expansion.error and expansion.formula_ids:
@@ -206,18 +214,24 @@ def retrieve_with_trace(
                 })
 
     # ── Step 3: Soft boost (nhẹ hơn) dựa trên QueryExpansion, không dùng metadata đề thi ──
-    # Boost nhỏ (0.06/0.04) chỉ để điều chỉnh nhẹ ranking, không overwrite semantic score
-    SKILL_BOOST   = 0.06
-    CHAPTER_BOOST = 0.04
+    # Soft boost mạnh hơn để đảm bảo docs đúng skill/chapter luôn vào top pool.
+    # Trước: 0.06/0.04 — quá nhẹ, CrossEncoder reranker có thể đảo ngược hoàn toàn.
+    # Sau: 0.12/0.07 — có tác động thực sự nhưng vẫn không overwrite semantic score.
+    SKILL_BOOST   = 0.12
+    CHAPTER_BOOST = 0.07
 
     expanded_skills   = {s.lower() for s in expansion.skill_ids}
-    expanded_chapters = {c.lower() for c in expansion.chapters}
+    # Normalize unicode dash variants (en-dash –, em-dash —) → hyphen
+    # ChromaDB lưu 'Tổ hợp – Xác suất' (U+2013) nhưng LLM trả về 'Tổ hợp - Xác suất' (U+002D)
+    def _norm_ch(s: str) -> str:
+        return s.replace("–", "-").replace("—", "-").lower().strip()
+    expanded_chapters = {_norm_ch(c) for c in expansion.chapters}
 
     for r in candidates:
         bonus = 0.0
         meta  = r.get("metadata", {})
         chunk_skill   = str(meta.get("skill_id", "")).lower().strip()
-        chunk_chapter = str(meta.get("chapter",  "")).lower().strip()
+        chunk_chapter = _norm_ch(str(meta.get("chapter",  "")))
 
         # Khớp với kết quả QueryExpander (không phải metadata đề thi)
         if chunk_skill and chunk_skill in expanded_skills:
@@ -251,7 +265,11 @@ def build_system_prompt(context: str, question_type: str) -> str:
             "Vi du: <answer>A</answer>. Sau do xuong dong va giai thich ngan gon."
         )
     elif question_type == "exam_short_answer":
-        fmt = "\n\nQUAN TRONG: Ket thuc cau tra loi bang 'DAP AN: [gia tri so]'."
+        fmt = (
+            "\n\nQUAN TRONG: Ket thuc cau tra loi bang 'DAP AN: [gia tri so]'."
+            " Neu ket qua la xac suat hoac phan tram, ghi duoi dang SO THAP PHAN (vi du: 0.56), "
+            "KHONG ghi duoi dang phan tram (vi du: KHONG ghi 56)."
+        )
     else:
         fmt = ""
 
@@ -367,9 +385,17 @@ async def judge_sample_async(sample: dict, judge_model: str) -> dict:
     else:
         acc = 0.0
 
-    # LLMExaminer (4-criterion rubric)
+    # LLMExaminer (4-criterion rubric):
+    # - accuracy is injected deterministically from MathJudge (never re-derived by LLM)
+    # - method/steps/knowledge_use are scored by the LLM
     examiner = await judge_examiner(
-        question=q_raw, response=resp, ground_truth=ref, model=judge_model,
+        question=q_raw,
+        response=resp,
+        ground_truth=ref,
+        model=judge_model,
+        correct_answer=correct,
+        question_type=qtype,
+        deterministic_accuracy=acc,  # inject MathJudge score — bypasses LLM accuracy
     )
 
     # Visual reasoning (chỉ khi có ảnh)

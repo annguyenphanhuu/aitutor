@@ -100,24 +100,32 @@ class GraphRAGRetriever:
 
         _settings = _get_settings()
         reranker = get_reranker()
-        pool_k = _settings.RERANKER_CANDIDATE_K if _settings.RERANKER_ENABLED else self.k * 2
+        raw_pool_k = _settings.RERANKER_CANDIDATE_K if _settings.RERANKER_ENABLED else self.k * 2
+        pool_k = max(raw_pool_k, self.k * 4)
 
         # QueryExpander infers chapters/skills from question content
         expansion = expand_question(query)
 
-        candidates = self.kb.search_theory(query, k=pool_k, alpha=self.alpha)
+        # Query Rewriting: dùng rag_query (thuật ngữ học thuật) thay cho câu hỏi gốc.
+        # Lý do: Câu hỏi gốc dạng bài toán thực tế có vector embedding xa với lý thuyết.
+        # rag_query có các thuật ngữ đúng hơn nên vector gần KB hơn.
+        search_query = expansion.rag_query if (not expansion.error and expansion.rag_query) else query
+        candidates = self.kb.search_theory(search_query, k=pool_k, alpha=self.alpha)
 
-        # Light soft boost from expansion
-        SKILL_BOOST   = 0.06
-        CHAPTER_BOOST = 0.04
+        # Soft boost đủ mạnh (0.12/0.07) để docs đúng skill/chapter luôn vào pool.
+        SKILL_BOOST   = 0.12
+        CHAPTER_BOOST = 0.07
         expanded_skills   = {s.lower() for s in expansion.skill_ids}
-        expanded_chapters = {c.lower() for c in expansion.chapters}
+        # Normalize unicode dash: ChromaDB có thể dùng en-dash (U+2013) nhưng LLM trả hyphen
+        def _norm_ch(s: str) -> str:
+            return s.replace("–", "-").replace("—", "-").lower().strip()
+        expanded_chapters = {_norm_ch(c) for c in expansion.chapters}
 
         for r in candidates:
             bonus = 0.0
             meta  = r.get("metadata", {})
             chunk_skill   = str(meta.get("skill_id", "")).lower().strip()
-            chunk_chapter = str(meta.get("chapter",  "")).lower().strip()
+            chunk_chapter = _norm_ch(str(meta.get("chapter",  "")))
 
             if chunk_skill and chunk_skill in expanded_skills:
                 bonus += SKILL_BOOST

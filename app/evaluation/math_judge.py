@@ -73,33 +73,31 @@ Chỉ trả lời đúng 1 số trong [0.0, 1.0]. Ví dụ: 0.75
 
 # ── LLM-as-Examiner prompt (4-criterion rubric) ─────────────────────────────
 
+# ── LLM-as-Examiner: 3-criterion prompt (accuracy is deterministic, not LLM) ──
 EXAMINER_PROMPT = """\
-Bạn là giáo viên Toán 12 Việt Nam đang chấm bài gia sư AI.
-Đánh giá theo 4 tiêu chí sau, mỗi tiêu chí cho điểm từ 0.0 đến 1.0:
+Bạn là giáo viên Toán 12 Việt Nam đang chấm phương pháp giải của gia sư AI.
+Lưu ý: Tiêu chí ACCURACY đã được chấm điểm tự động bởi hệ thống, bạn chỉ cần đánh giá 3 tiêu chí dưới đây:
 
-1. ACCURACY (Kết quả đúng): Đáp án cuối có đúng với đáp án chuẩn không?
-   1.0=hoàn toàn đúng | 0.5=đúng một phần | 0.0=sai hoặc không có
-
-2. METHOD (Phương pháp): Cách giải có đúng với lý thuyết Toán 12 không?
+1. METHOD (Phương pháp): Cách giải có đúng với lý thuyết Toán 12 không?
    1.0=phương pháp hoàn toàn đúng | 0.5=đúng hướng nhưng có sai sót nhỏ | 0.0=sai phương pháp
 
-3. STEPS (Trình bày): Các bước giải có đầy đủ, logic, dễ theo không?
+2. STEPS (Trình bày): Các bước giải có đầy đủ, logic, dễ theo không?
    1.0=rõ ràng đầy đủ | 0.75=thiếu 1-2 bước nhỏ | 0.5=quá tóm tắt | 0.25=rời rạc | 0.0=không có
 
-4. KNOWLEDGE_USE (Vận dụng lý thuyết): Có nêu/áp dụng đúng định lý/công thức liên quan không?
+3. KNOWLEDGE_USE (Vận dụng lý thuyết): Có nêu/áp dụng đúng định lý/công thức liên quan không?
    1.0=trích dẫn và áp dụng đúng | 0.5=áp dụng nhưng không nêu rõ | 0.0=không vận dụng
 
 Câu hỏi:
 {question}
 
-Đáp án chuẩn:
+Đáp án chuẩn (tham khảo cho METHOD/STEPS):
 {ground_truth}
 
 Câu trả lời AI:
 {response}
 
 Trả về JSON hợp lệ duy nhất (không thêm markdown, không giải thích):
-{{"accuracy": <0-1>, "method": <0-1>, "steps": <0-1>, "knowledge_use": <0-1>, "comment": "<nhận xét ngắn>"}}
+{{"method": <0-1>, "steps": <0-1>, "knowledge_use": <0-1>, "comment": "<nhận xét ngắn về phương pháp và trình bày>"}}
 """
 
 # ── Visual reasoning judge prompt ────────────────────────────────────────────
@@ -250,7 +248,16 @@ def judge_short_answer_accuracy(response: str, correct_answer: str) -> float:
     ref_num  = extract_number(correct_answer)
     resp_num = extract_number(response)
     if ref_num is not None and resp_num is not None:
-        return 1.0 if abs(ref_num - resp_num) < 0.01 else 0.0
+        if abs(ref_num - resp_num) < 0.01:
+            return 1.0
+        # Kiểm tra tương đương % ↔ decimal:
+        # VD: đáp án "0,56" (decimal) nhưng model trả "56" (phần trăm) → vẫn đúng.
+        # Áp dụng khi ref nằm trong [0,1] và resp = ref × 100 (hoặc ngược lại).
+        if 0.0 <= ref_num <= 1.0 and abs(ref_num * 100 - resp_num) < 0.1:
+            return 1.0
+        if 0.0 <= resp_num <= 1.0 and abs(resp_num * 100 - ref_num) < 0.1:
+            return 1.0
+        return 0.0
 
     # Fallback: string exact match
     return 1.0 if normalize_str(response) == normalize_str(correct_answer) else 0.0
@@ -515,27 +522,70 @@ def print_math_report(report: dict) -> None:
 
 # ── LLM-as-Examiner ─────────────────────────────────────────────────────────
 
+def _build_examiner_ground_truth(
+    correct_answer: str,
+    ground_truth: str,
+    question_type: str,
+) -> str:
+    """
+    Đặt đáp án chính xác (correct_answer) lên đầu để LLM examiner
+    không bị nhầm lẫn bởi phong cách trình bày khi chấm ACCURACY.
+
+    Với câu T/F: thêm chú thích rõ ràng về format a-T/F.
+    """
+    if not correct_answer:
+        return ground_truth[:500]
+
+    if question_type == "exam_true_false":
+        header = (
+            f"ĐÁP ÁN CHÍNH XÁC (dùng để chấm ACCURACY): {correct_answer}\n"
+            f"(Format: a/b/c/d — T=Đúng, F=Sai. Đúng hoàn toàn khi khớp cả 4 mệnh đề.)\n\n"
+            f"Lời giải tham khảo (chỉ dùng cho METHOD/STEPS/KNOWLEDGE_USE):\n"
+        )
+    elif question_type == "exam_mcq":
+        header = (
+            f"ĐÁP ÁN CHÍNH XÁC (dùng để chấm ACCURACY): {correct_answer}\n\n"
+            f"Lời giải tham khảo:\n"
+        )
+    else:
+        header = f"ĐÁP ÁN CHÍNH XÁC: {correct_answer}\n\nLời giải:\n"
+
+    return header + ground_truth[:400]
+
+
+def _safe_response_for_examiner(response: str) -> str:
+    """
+    Truncate response nhưng LUÔN giữ lại phần cuối (chứa KET QUA).
+    Tránh cắt mất dòng đáp án cuối cùng.
+    """
+    MAX = 2200
+    if len(response) <= MAX:
+        return response
+    head = response[:MAX - 300]
+    tail = response[-300:]   # Phần cuối chứa KET QUA / đáp án
+    return head + "\n...[nội dung giữa đã rút gọn]...\n" + tail
+
+
 async def judge_examiner(
     question: str,
     response: str,
     ground_truth: str,
     model: str = "gpt-4o-mini",
     api_key: Optional[str] = None,
+    correct_answer: str = "",
+    question_type: str = "",
+    deterministic_accuracy: Optional[float] = None,
 ) -> dict:
     """
     Đánh giá câu trả lời theo rubric 4 chiều của giáo viên Toán 12.
 
-    Returns dict:
-        {
-          "accuracy": 0-1,       # Kết quả đúng
-          "method": 0-1,         # Phương pháp giải đúng
-          "steps": 0-1,          # Trình bày rõ ràng, đầy đủ bước
-          "knowledge_use": 0-1,  # Vận dụng lý thuyết
-          "comment": "...",      # Nhận xét ngắn
-          "weighted_score": 0-1, # Tổng hợp có trọng số
-          "error": None | str,
-        }
-    Trọng số: accuracy=0.40, method=0.30, steps=0.20, knowledge_use=0.10
+    Kiến trúc mới:
+    - accuracy     → được inject từ MathJudge (deterministic), KHÔNG dùng LLM
+    - method       → LLM judge
+    - steps        → LLM judge
+    - knowledge_use → LLM judge
+
+    Trẍng số: accuracy=0.40, method=0.30, steps=0.20, knowledge_use=0.10
     """
     WEIGHTS = {"accuracy": 0.40, "method": 0.30, "steps": 0.20, "knowledge_use": 0.10}
     default = {k: 0.5 for k in WEIGHTS}
@@ -553,10 +603,27 @@ async def judge_examiner(
             temperature=0.0,
         )
 
-        prompt = EXAMINER_PROMPT.format(
+        examiner_gt = _build_examiner_ground_truth(
+            correct_answer=correct_answer,
+            ground_truth=ground_truth,
+            question_type=question_type,
+        )
+
+        # Nếu có deterministic_accuracy, thêm thông tin vào đầu prompt
+        # giúp LLM examiner không đánh giá thấp METHOD khi kết quả đã được xác nhận đúng.
+        acc_note = ""
+        if deterministic_accuracy is not None:
+            if deterministic_accuracy >= 1.0:
+                acc_note = "[HỆ THỐNG XÁC NHẬN: Đáp án cuối cùng ĐÚNG HOÀN TOÀN — chấm METHOD/STEPS/KNOWLEDGE_USE dựa trên lập luận, không nghi ngờ kết quả.]\n\n"
+            elif deterministic_accuracy >= 0.5:
+                acc_note = f"[HỆ THỐNG XÁC NHẬN: Đáp án đúng một phần ({deterministic_accuracy:.0%}) — đánh giá METHOD/STEPS/KNOWLEDGE_USE dựa trên quy trình.]\n\n"
+            else:
+                acc_note = "[HỆ THỐNG XÁC NHẬN: Đáp án sai — tập trung đánh giá METHOD/STEPS/KNOWLEDGE_USE dựa trên quy trình suy luận.]\n\n"
+
+        prompt = acc_note + EXAMINER_PROMPT.format(
             question=question[:1200],
-            ground_truth=ground_truth[:500],
-            response=response[:1000],
+            ground_truth=examiner_gt,
+            response=_safe_response_for_examiner(response),
         )
 
         result = await llm.ainvoke([HumanMessage(content=prompt)])
@@ -569,10 +636,20 @@ async def judge_examiner(
 
         parsed = json.loads(json_match.group())
 
+        # LLM chỉ chấm 3 tiêu chí METHOD / STEPS / KNOWLEDGE_USE
+        llm_criteria = ["method", "steps", "knowledge_use"]
         scores = {
             k: max(0.0, min(1.0, float(parsed.get(k, 0.5))))
-            for k in WEIGHTS
+            for k in llm_criteria
         }
+
+        # ACCURACY: dùng deterministic score nếu có, fallback sang LLM
+        if deterministic_accuracy is not None:
+            scores["accuracy"] = float(deterministic_accuracy)
+        else:
+            raw_acc = parsed.get("accuracy")
+            scores["accuracy"] = max(0.0, min(1.0, float(raw_acc))) if raw_acc is not None else 0.5
+
         weighted = sum(scores[k] * w for k, w in WEIGHTS.items())
 
         return {

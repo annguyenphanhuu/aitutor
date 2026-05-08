@@ -96,6 +96,7 @@ TRẢ VỀ JSON theo đúng format:
   "chapters": ["<chapter_name>", ...],
   "skill_ids": ["<skill_id>", ...],
   "formula_ids": ["<formula_id>", ...],
+  "rag_query": "<câu truy vấn học thuật ngắn gọn để tìm kiếm lý thuyết liên quan, dùng THUẬT NGỮ TOÁN HỌC thay vì ngôn ngữ bài toán. VD: 'xác suất có điều kiện Bayes công thức xác suất toàn phần' thay vì 'kho hàng sản phẩm hỏng'>",
   "reasoning": "<1 câu giải thích ngắn gọn tại sao chọn những mục này>"
 }}
 """
@@ -109,6 +110,11 @@ class QueryExpansion:
     chapters:    list[str] = field(default_factory=list)
     skill_ids:   list[str] = field(default_factory=list)
     formula_ids: list[str] = field(default_factory=list)
+    # Query Rewriting: LLM viết lại bài toán thực tế → ngôn ngữ học thuật.
+    # Dùng làm vector search query thay cho câu hỏi gốc.
+    # VD input:  "Một kho hàng 85% loại I, 1% bị hỏng..."
+    # VD output: "xác suất có điều kiện Bayes xác suất toàn phần biến cố"
+    rag_query:   str = ""     # empty → fallback sang question gốc
     reasoning:   str = ""
     raw_response: str = ""    # để debug
     error:        Optional[str] = None
@@ -189,10 +195,14 @@ class QueryExpander:
             if str(f).strip() in formula_whitelist
         ]
 
+        # Lấy rag_query do LLM tạo ra — bỏ qua nếu rỗng / không có
+        rag_query = str(raw.get("rag_query", "")).strip()
+
         return QueryExpansion(
             chapters=list(dict.fromkeys(valid_chapters)),   # dedup, giữ thứ tự
             skill_ids=list(dict.fromkeys(valid_skills)),
             formula_ids=list(dict.fromkeys(valid_formulas)),
+            rag_query=rag_query,
             reasoning=raw.get("reasoning", ""),
         )
 

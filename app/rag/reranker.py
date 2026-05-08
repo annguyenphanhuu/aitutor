@@ -113,15 +113,43 @@ class Reranker:
             for cand, score in zip(candidates, scores):
                 cand["rerank_score"] = float(score)
 
-            ranked = sorted(candidates, key=lambda x: x["rerank_score"], reverse=True)
+            # ── Hybrid Final Score ──
+            # NGUYÊN NHÂN CHUYỂN ĐỔI: 
+            # CrossEncoder đánh giá độ tương đồng dựa nhiều vào từ vựng bề mặt (lexical overlap).
+            # Với các câu hỏi toán ứng dụng thực tế (VD: "Một kho hàng có 85% sản phẩm..."),
+            # bề mặt câu hỏi không chứa các từ khóa học thuật ("xác suất", "Bayes").
+            # Điều này khiến CrossEncoder đánh giá rất thấp các tài liệu lý thuyết chuẩn xác
+            # và tự động đẩy các tài liệu không liên quan (nhưng có trùng từ vựng ngẫu nhiên) lên trên.
+            # 
+            # GIẢI PHÁP: Pha trộn điểm Rerank (đã chuẩn hóa) và Hybrid Score (đã chứa Soft Boost).
+            # Điều này giữ được sức mạnh hiểu ngữ cảnh của CrossEncoder nhưng không làm mất đi
+            # trọng số định hướng từ Query Expander (Soft Boost).
+            
+            # Normalize rerank_score to [0, 1]
+            rs_values = [c["rerank_score"] for c in candidates]
+            rs_min, rs_max = min(rs_values), max(rs_values)
+            rs_range = rs_max - rs_min if rs_max != rs_min else 1.0
+
+            RERANK_WEIGHT = 0.3
+            HYBRID_WEIGHT = 0.7
+
+            for cand in candidates:
+                rs_norm = (cand["rerank_score"] - rs_min) / rs_range
+                cand["final_score"] = (
+                    RERANK_WEIGHT * rs_norm + 
+                    HYBRID_WEIGHT * cand.get("hybrid_score", 0.0)
+                )
+
+            ranked = sorted(candidates, key=lambda x: x["final_score"], reverse=True)
             top = ranked[:top_k]
 
             logger.debug(
-                "🔍 Reranker: %d candidates → top-%d (score range: %.3f–%.3f)",
+                "🔍 Reranker (hybrid final): %d candidates → top-%d "
+                "(rerank range: %.3f–%.3f, weight=%.1f/%.1f)",
                 len(candidates),
                 top_k,
-                top[-1]["rerank_score"] if top else 0,
-                top[0]["rerank_score"] if top else 0,
+                rs_min, rs_max,
+                RERANK_WEIGHT, HYBRID_WEIGHT,
             )
             return top
 

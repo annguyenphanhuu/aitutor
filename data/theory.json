@@ -140,6 +140,7 @@
     "content": "**Xác suất có điều kiện**\n\n**Khái niệm:** Cho hai biến cố $A$ và $B$. Xác suất của biến cố $A$ khi biết biến cố $B$ đã xảy ra được gọi là xác suất của $A$ với điều kiện $B$, kí hiệu $P(A \\mid B)$.\n\n**Công thức tính xác suất có điều kiện:** Cho hai biến cố $A$ và $B$ bất kì, với $P(B) > 0$. Khi đó:\n$$P(A \\mid B) = \\frac{P(AB)}{P(B)}.$$\n\n**Công thức nhân xác suất:** Với hai biến cố $A$ và $B$ bất kì, ta có:\n$$P(AB) = P(B) \\cdot P(A \\mid B).$$",
     "metadata": {
       "chapter": "Xác suất",
+      "skill_id": "probability_basic",
       "type": "theory"
     }
   },
@@ -148,6 +149,7 @@
     "content": "**Công thức xác suất toàn phần và công thức Bayes**\n\n**Công thức xác suất toàn phần:** Cho hai biến cố $A$ và $B$. Khi đó:\n$$P(B) = P(A) \\cdot P(B \\mid A) + P(\\bar{A}) \\cdot P(B \\mid \\bar{A}).$$\nMột phương pháp mô tả trực quan công thức xác suất toàn phần là dùng sơ đồ hình cây.\n\n**Công thức Bayes:** Cho $A$ và $B$ là hai biến cố, với $P(B) > 0$. Khi đó:\n$$P(A \\mid B) = \\frac{P(A) \\cdot P(B \\mid A)}{P(A) \\cdot P(B \\mid A) + P(\\bar{A}) \\cdot P(B \\mid \\bar{A})} = \\frac{P(A) \\cdot P(B \\mid A)}{P(B)}.$$",
     "metadata": {
       "chapter": "Xác suất",
+      "skill_id": "probability_basic",
       "type": "theory"
     }
   },

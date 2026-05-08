@@ -267,3 +267,25 @@ class ConversationSessionOut(BaseModel):
 class ConversationHistoryResponse(BaseModel):
     session: ConversationSessionOut
     messages: list[ChatMessageOut]
+
+
+# ── Exam Solver ──────────────────────────────────────────────
+class ExamSolverQuestionOut(BaseModel):
+    question_number: str
+    question_type: str          # mcq, true_false, short_answer, essay
+    content: str
+    skill_id: Optional[str] = None
+    skill_name: Optional[str] = None
+    solution: str
+    error: Optional[str] = None
+
+
+class ExamSolverResultOut(BaseModel):
+    total_questions: int
+    questions: list[ExamSolverQuestionOut] = Field(default_factory=list)
+    report_markdown: str = ""
+    skill_stats: dict = Field(default_factory=dict)
+    raw_ocr: str = ""
+    ocr_engine_used: str = "cloud"
+    elapsed_seconds: float = 0.0
+

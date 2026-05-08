@@ -250,6 +250,8 @@ async def generate_answer(
     elif question_type == "exam_short_answer":
         format_instruction = (
             "\n\nQUAN TRONG: Ket thuc cau tra loi bang 'DAP AN: [gia tri so]'."
+            " Neu ket qua la xac suat hoac phan tram, ghi duoi dang SO THAP PHAN (vi du: 0.56),"
+            " KHONG ghi duoi dang phan tram (vi du: KHONG ghi 56)."
         )
     else:
         format_instruction = ""
