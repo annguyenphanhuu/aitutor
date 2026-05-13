@@ -1,0 +1,210 @@
+{
+  "pdf": "41158149ae5a40ec9e7635e4ea4eb815.pdf",
+  "engine": "cloud",
+  "page_texts": [
+    "SỞ GD & ĐT NGHỆ AN  \nLIÊN TRƯỜNG THPT ANH SƠN,  \nĐÔ LƯƠNG, THANH CHƯƠNG,  \nYÊN THÀNH, ...  \n\nĐỀ THI THỬ TỐT NGHIỆP THPT  \nLẦN 1, NĂM HỌC 2025-2026  \nMÔN: TOÁN  \n\nThời gian làm bài: 90 phút (không kể thời gian phát đề)\n\nHọ và tên: ............................................................    Số báo danh: ......    Mã đề 0121\n\nPHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn. Thí sinh trả lời từ câu 1 đến câu 12. Mỗi câu hỏi thí sinh chỉ chọn một phương án.\n\nCâu 1. Trong không gian $Oxyz$ cho $\\vec{a}=\\vec{i}-2\\vec{j}+3\\vec{k}$. Tọa độ của $\\vec{a}$ là  \nA. $(1;-2;3)$  \nB. $(3;-2;1)$  \nC. $(-1;2;3)$  \nD. $(-1;2;-3)$\n\nCâu 2. Giá trị nhỏ nhất của hàm số $y=x^{4}-2x^{2}+3$ trên đoạn $[0;2]$ bằng  \nA. $2$  \nB. $-2$  \nC. $4$  \nD. $3$\n\nCâu 3. Trong không gian $Oxyz$, cho hai vectơ $\\vec{u}=(1;2;-2)$ và $\\vec{v}=(2;-2;3)$. Tọa độ của vectơ $\\vec{u}-\\vec{v}$ là  \nA. $(-5;4;-1)$  \nB. $(1;-4;5)$  \nC. $(3;0;1)$  \nD. $(-1;4;-5)$\n\nCâu 4. Cho cấp số nhân $(u_n)$ có $u_2=2$, $u_3=6$. Khi đó số hạng thứ 4 của cấp số nhân đó là:  \nA. $u_4=18$  \nB. $u_4=-18$  \nC. $u_4=72$  \nD. $u_4=12$\n\nCâu 5. Cho hình hộp chữ nhật $ABCD.A'B'C'D'$ vecto nào sau đây bằng véc tơ $\\overrightarrow{AB}$  \nA. $\\overrightarrow{B'A'}$  \nB. $\\overrightarrow{D'C'}$  \nC. $\\overrightarrow{CD}$  \nD. $\\overrightarrow{BC}$\n\nCâu 6. Cho hàm số $y=f(x)$ liên tục trên $\\mathbb{R}$ và có bảng biến thiên được như sau:\n\n$x$: $-\\infty \\quad -2 \\quad 1 \\quad +\\infty$  \n$f'(x)$: $-\\quad 0 \\quad +\\quad 0 \\quad -$  \n$f(x)$: $+\\infty \\searrow -2 \\nearrow 3 \\searrow -\\infty$\n\nHàm số $y=f(x)$ đồng biến trên khoảng nào sau đây?  \nA. $(1;+\\infty)$  \nB. $(-2;1)$  \nC. $(-2;3)$  \nD. $(-\\infty;-2)$\n\nCâu 7. Cho hàm số $y=f(x)$ xác định trên $\\mathbb{R}\\setminus\\{-1\\}$ liên tục trên mỗi khoảng xác định và có bảng biến thiên như hình:\n\n$x$: $-\\infty \\quad -1 \\quad 1 \\quad +\\infty$  \n$f'(x)$: $+\\quad \\| \\quad +\\quad 0 \\quad -$  \n$y$: $2 \\nearrow 4 \\;|\\; -\\infty \\nearrow 3 \\searrow -1$\n\nHỏi đồ thị hàm số có bao nhiêu đường tiệm cận ngang  \nA. $0$  \nB. $2$  \nC. $1$  \nD. $3$\n\nCâu 8. Phương trình $\\cos x=1$ có các nghiệm là:",
+    "A. $x = k2\\pi$ với $k \\in \\mathbb{Z}$\n\nB. $x = \\frac{\\pi}{2} + k2\\pi$ và $x = -\\frac{\\pi}{2} + k2\\pi$ với $k \\in \\mathbb{Z}$\n\nC. $x = \\pi + k2\\pi$ với $k \\in \\mathbb{Z}$\n\nD. $x = \\frac{\\pi}{2} + k2\\pi$ với $k \\in \\mathbb{Z}$\n\nCâu 9. Hàm số nào dưới đây có đồ thị là đường cong như hình vẽ\n\nA. $y = -x^{4} + 3x + 1$\n\nB. $y = x^{3} - 3x + 1$\n\nC. $y = -x^{2} + 3x + 1$\n\nD. $y = -x^{3} + 3x + 1$\n\nCâu 10. Cho hàm số $y = f(x)$ có bảng biến thiên sau:\n\n$x$: $-\\infty,\\ -3,\\ -2,\\ 1,\\ +\\infty$\n\n$y'$: $-$, $0$, $+$, $\\|$, $+$, $0$, $-$\n\n$y$: $+\\infty \\searrow 5 \\nearrow +\\infty \\ \\| \\ -\\infty \\nearrow 0 \\searrow -\\infty$\n\nGiá trị cực đại của hàm số $y = f(x)$ là:\n\nA. 1.  \nB. 5.  \nC. 0.  \nD. -3.\n\nCâu 11. Phương trình $\\log_{2}(3x-1)=3$ có nghiệm là:\n\nA. $x=\\frac{7}{3}$\n\nB. $x=\\frac{8}{3}$\n\nC. $x=3$\n\nD. $x=\\frac{10}{3}$\n\nCâu 12. Bảng điểm bài kiểm tra môn Toán của lớp 10A được cho ở bảng sau\n\nĐiểm: $[0;2)$, $[2;4)$, $[4;6)$, $[6;8)$, $[8;10)$\n\nSố học sinh: $0,\\ 2,\\ 10,\\ 18,\\ 10$\n\nSố trung vị của mẫu số liệu trên thuộc khoảng nào trong các nhóm dưới đây?\n\nA. $[6;8)$  \nB. $[8;10)$  \nC. $[4;6)$  \nD. $[2;4)$\n\nPHẦN II. Câu trắc nghiệm đúng sai. Thí sinh trả lời từ câu 1 đến câu 4. Trong mỗi ý a), b), c), d) ở mỗi câu, thí sinh chọn đúng hoặc sai.\n\nCâu 1. Trang trại nhà ông A chuyên sản xuất các loại thực phẩm cho nhà hàng của ông B. Hai ông thỏa thuận rằng, hằng ngày ông A cung cấp cho B số lượng thực phẩm theo đơn đặt hàng của B (tối đa 100 kg thực phẩm). Nếu số lượng đặt hàng là $x$ kg thực phẩm thì giá bán cho mỗi kg được biểu diễn bởi công thức:\n\n$P(x)=30-\\frac{1}{1000}x^{2}$ (ngàn đồng). Chi phí để ông A sản xuất $x$ kg sản phẩm là $C(x)=200+15x$ (ngàn đồng). Khi đó\n\na) Chi phí sản xuất 100kg thực phẩm là 350 ngàn đồng\n\nb) Số tiền thu được khi bán 100 kg thực phẩm cho nhà hàng ông B là 200 ngàn đồng\n\nc) Lợi nhuận ông A thu được khi bán $x$ kg, $x \\in (0;100)$, thực phẩm cho ông B là $L(x)=xP(x)-C(x)$\n\nd) Lợi nhuận lớn nhất mà ông A có được trong 1 ngày là 507 ngàn đồng (làm tròn đến hàng đơn vị)\n\nCâu 2. Cho hàm số $y=f(x)=\\frac{ax+b}{cx-1}$ (với $a,b,c$ là các số thực) có đồ thị được cho ở hình",
+    "a) Đồ thị hàm số có một đường tiệm cận đứng $x=1$ và một đường tiệm cận ngang $y=-1$\n\nb) Giá trị của $a+2b-3c=5$\n\nc) Đạo hàm của $f'(x)<0$ với mọi số $x\\in \\mathbb{R}\\setminus\\{1\\}$\n\nd) $M, N$ là hai điểm thuộc hai nhánh khác nhau của đồ thị. Khi đó $MN$ ngắn nhất bằng $\\sqrt{10}$\n\n**Câu 3.** Cho hàm số $y=f(x)=ax^3+bx^2+cx+d$ có bảng biến thiên được cho như bảng sau\n\n$x:\\ -\\infty\\ \\ \\ 0\\ \\ \\ 3\\ \\ \\ +\\infty$\n\n$f'(x):\\ +\\ \\ 0\\ \\ -\\ \\ 0\\ \\ +$\n\n$f(x):\\ -\\infty\\ \\nearrow\\ 2\\ \\searrow\\ -4\\ \\nearrow\\ +\\infty$\n\na) $f(2025)>f(2026)$\n\nb) Hàm số đạt cực đại tại $x=3$\n\nc) Giá trị lớn nhất của hàm số trên $(-\\infty;3]$ bằng $0$\n\nd) Trong bốn hệ số $a,b,c,d$ chỉ có hệ số $b$ nhận giá trị âm\n\n**Câu 4.** Trong không gian $Oxyz$, cho hình lăng trụ $ABCA'B'C'$ có đáy là tam giác đều cạnh bằng $6$, cạnh bên có độ dài bằng $5$. Gốc tọa độ $O$ là trung điểm cạnh $AC$, các điểm $B, C, A'$ theo thứ tự thuộc các tia $Ox, Oy, Oz$ như hình\n\na) Gọi $M$ là trung điểm $BC$, $E$ là trung điểm $A'B'$ khi đó tọa độ $\\overrightarrow{ME}=(0;0;-4)$\n\nb) Tọa độ điểm $B(3\\sqrt{3};0;0)$\n\nc) $\\cos(\\overrightarrow{A'B},\\overrightarrow{BC})>0$\n\nd) Khoảng cách giữa hai đường thẳng $ME$ với $AA'$ bằng $\\frac{3\\sqrt{3}}{2}$\n\n**PHẦN III. Câu trắc nghiệm trả lời ngắn.** Thí sinh trả lời từ câu 1 đến câu 6.\n\n**Câu 1.** Bạn Tiến làm một bài kiểm tra gồm 20 câu hỏi trắc nghiệm nhiều lựa chọn. Mỗi câu hỏi có 4 phương án trả lời và chỉ có một phương án đúng, trả lời đúng mỗi câu được 0,5 điểm. Bạn ấy đã làm đúng 15 câu, trong những câu còn lại có 2 câu bạn ấy đã loại được một phương án sai. Do quá sát giờ nộp bài nên bạn",
+    "ấy đã trả lời bằng cách chọn ngẫu nhiên. Tính xác suất để bạn Tiến được 9 điểm. (làm tròn đến hàng phần trăm).\n\n**Câu 2.** Trong không gian $Oxyz$, mắt một người quan sát đặt tại điểm $M(1;2;3)$ và vật cần quan sát đặt tại điểm $N(3;6;-12)$. Một tấm bìa cứng có dạng hình tròn tâm tại gốc tọa độ, bán kính $R=2$ thuộc mặt phẳng $(Oxy)$ bắt đầu xuất phát đi thẳng theo hướng vectơ $\\vec{j}=(0;1;0)$ với tốc độ không đổi $v=5\\,(cm/s)$. Tính khoảng thời gian mà trong quá trình di chuyển tấm bìa đã che khuất tầm nhìn của người quan sát. làm tròn kết quả đến hàng phần trăm. (lấy đơn vị trên mỗi trục tọa độ là 1cm).\n\nN\n\nM\n\n**Câu 3.** Khảo sát thời gian sử dụng điện thoại trong một ngày của mỗi học sinh trong lớp học có 42 học sinh thu được mẫu số liệu ghép nhóm sau\n\n| Thời gian (phút) | [0;20) | [20;40) | [40;60) | [60;80) | [80;100) |\n|---|---:|---:|---:|---:|---:|\n| Số học sinh | 7 | a | b | 6 | 3 |\n\nBiết thời gian sử dụng điện thoại trung bình của lớp trên là 40 phút. Hỏi lớp học trên có nhiều nhất bao nhiêu bạn có thời gian sử dụng điện thoại dưới mức trung bình của lớp.\n\n**Câu 4.** Tổng giá trị lớn nhất và nhỏ nhất của hàm số $y=(x^{2}+x+1)e^{-x}$ trên đoạn $[-1;0]$ (làm tròn đến hàng phần chục)\n\n**Câu 5.** Người ta bơm xăng vào bình xăng của một chiếc xe ô tô. Biết thể tích $V$ (lít) của xăng được bơm vào bình phụ thuộc theo thời gian $t$ (phút) được cho bởi công thức $V(t)=\\frac{35}{4}(3t-t^{2}+t^{3})+4$ với $0\\le t\\le 1$ . Gọi $V'(t)$ là tốc độ bơm của xăng vào bình. Xác định thể tích (lít) của xăng trong bình tại thời điểm mà tốc độ bơm đạt nhỏ nhất (làm tròn đến hàng phần chục).\n\n**Câu 6.** Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình vuông có cạnh bằng 4. Mặt bên $SAB$ là tam giác đều và $SCD$ là tam giác vuông cân tại đỉnh $S$. Tính thể tích của khối chóp $S.ABCD$ (làm tròn đến hàng phần trăm)\n\n----- HẾT -----",
+    "Đề câu | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 1a | 1b | 1c | 1d | 2a | 2b | 2c | 2d | 3a | 3b | 3c | 3d | 4a | 4b | 4c | 4d | 1 | 2 | 3\n\n0000 | A | A | A | A | A | A | A | A | A | A | A | A | D | S | S | D | S | S | S | D | D | S | D | D | D | D | S | S | 3,7 | 0,57? | 0,12\n0101 | D | B | D | A | C | C | B | A | A | C | D | A | S | D | S | S | S | S | D | D | S | S | S | D | D | S | S | D | 0,57? | 0,12 | 9,24\n0103 | A | C | A | D | B | D | C | C | B | D | D | C | D | S | S | D | S | S | S | D | S | D | S | S | S | D | D | 9,24 | 26 | 3,7\n0105 | B | D | D | C | D | B | B | B | A | D | C | D | S | D | S | D | D | S | S | S | S | S | D | S | D | S | D | 3,7 | 9,24 | 0,12\n0107 | A | A | A | D | C | A | A | C | C | D | A | B | S | S | D | S | D | S | S | D | D | S | S | D | S | S | D | 0,57? | 26 | 3,7\n0109 | B | C | A | D | A | D | A | B | C | B | A | C | S | S | D | S | S | S | D | D | S | S | S | D | S | S | D | 9,24 | 26 | 0,12\n0111 | D | D | C | B | B | C | A | D | D | B | B | A | D | S | S | D | S | S | S | D | S | D | S | S | D | S | D | 0,57? | 12,1 | 26\n0113 | D | B | B | A | A | C | A | C | D | D | B | B | S | D | S | S | S | D | D | S | S | S | D | S | D | S | D | 26 | 0,12 | 3,7\n0115 | C | A | C | B | B | B | C | C | A | B | D | D | S | S | D | D | S | S | S | S | S | D | S | D | S | S | D | 12,1 | 26 | 3,7\n0117 | B | A | D | B | A | A | C | C | D | B | D | C | S | S | D | D | S | S | S | D | D | S | S | D | S | S | D | 0,12 | 0,57? | 26\n0119 | C | B | B | B | A | A | A | C | A | D | B | D | S | S | S | D | S | D | S | S | S | S | D | D | S | S | D | 12,1 | 0,57? | 3,7\n0121 | A | A | D | A | B | B | B | A | D | C | C | A | S | S | D | D | D | S | S | S | S | S | D | S | D | S | D | 0,12 | 0,57? | 26\n0123 | D | D | C | A | B | C | A | A | B | A | B | A | S | S | D | S | S | S | D | D | S | S | S | D | S | D | S | 9,24 | 3,7 | 0,12",
+    "| 4 | 5 | 6 |\n|---|---|---|\n| 9,24 | 26 | 12,1 |\n| 3,7 | 12,1 | 26 |\n| 0,12 | 0,57? | 12,1 |\n| 26 | 0,57? | 12,1 |\n| 0,12 | 12,1 | 9,24 |\n| 12,1 | 3,7 | 0,57? |\n| 3,7 | 0,12 | 9,24 |\n| 9,24 | 0,57? | 12,1 |\n| 9,24 | 0,12 | 0,57? |\n| 9,24 | 3,7 | 12,1 |\n| 26 | 0,12 | 9,24 |\n| 3,7 | 12,1 | 9,24 |\n| 0,57? | 12,1 | 26 |",
+    "Đề/câu | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 1a | 1b | 1c | 1d | 2a | 2b | 2c | 2d | 3a | 3b | 3c | 3d | 4a | 4b | 4c | 4d | 1\n\n0000 | A | A | A | A | A | A | A | A | A | A | A | A | D | D | S | D | D | S | S | S | D | D | S | D | S | D | S | D | 8,4  \n0102 | C | A | B | C | A | B | B | D | B | D | B | D | D | D | S | D | D | S | S | S | S | S | D | D | S | D | D | D | 0,57  \n0104 | D | D | D | B | D | D | B | C | B | D | C | D | D | S | S | D | D | D | S | D | S | D | D | D | S | S | D | S | 0,26  \n0106 | D | D | A | A | B | B | D | A | C | D | A | C | S | D | S | D | D | S | D | D | D | D | S | D | S | D | S | S | 0,26  \n0108 | D | C | C | B | B | D | C | A | A | D | D | A | D | S | D | D | D | D | S | D | S | S | D | S | D | S | S | D | 0,26  \n0110 | B | B | B | D | C | B | B | C | C | C | A | D | D | S | S | S | D | S | S | D | D | D | S | D | D | D | S | D | 0,57  \n0112 | A | B | A | C | A | D | C | C | B | D | A | C | D | S | S | S | D | S | S | D | D | S | D | D | D | D | S | D | 0,26  \n0114 | D | D | C | D | B | A | A | A | B | C | C | B | D | S | S | D | D | S | D | D | D | D | S | D | S | D | S | S | 0,26  \n0116 | D | B | B | B | C | A | B | A | B | C | D | B | D | D | S | D | S | D | D | D | S | S | D | S | S | D | S | D | 0,26  \n0118 | B | C | B | B | A | A | D | D | D | D | D | D | D | S | S | S | D | S | S | D | S | D | D | D | D | D | S | D | 29,9  \n0120 | D | A | A | C | C | B | C | B | B | C | A | D | D | S | S | S | S | S | D | D | D | S | D | D | D | D | S | D | 16  \n0122 | C | C | D | A | D | C | B | A | C | B | D | B | S | D | S | D | D | S | D | D | D | D | S | D | D | S | S | S | 0,57  \n0124 | D | D | D | C | D | D | D | B | A | C | D | C | S | D | S | S | S | S | D | D | S | D | D | D | D | D | S | D | 0,57",
+    "2 3 4 5 6\n\n0,57 0,26 31,2 16 29,9  \n29,9 8,4 0,26 31,2 16  \n16 29,9 0,57 8,4 31,2  \n29,9 0,57 31,2 16 8,4  \n29,9 0,57 31,2 8,4 16  \n16 0,26 31,2 29,9 8,4  \n8,4 31,2 0,57 16 29,9  \n16 0,57 31,2 29,9 8,4  \n29,9 16 31,2 0,57 8,4  \n0,57 31,2 0,26 16 8,4  \n31,2 29,9 0,57 0,26 8,4  \n16 29,9 0,26 31,2 8,4  \n29,9 16 31,2 8,4 0,26"
+  ],
+  "questions": [
+    {
+      "question_number": "Câu 1",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trong không gian $Oxyz$ cho $\\vec{a}=\\vec{i}-2\\vec{j}+3\\vec{k}$. Tọa độ của $\\vec{a}$ là\nA. $(1;-2;3)$\nB. $(3;-2;1)$\nC. $(-1;2;3)$\nD. $(-1;2;-3)$"
+    },
+    {
+      "question_number": "Câu 2",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Giá trị nhỏ nhất của hàm số $y=x^{4}-2x^{2}+3$ trên đoạn $[0;2]$ bằng\nA. $2$\nB. $-2$\nC. $4$\nD. $3$"
+    },
+    {
+      "question_number": "Câu 3",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trong không gian $Oxyz$, cho hai vectơ $\\vec{u}=(1;2;-2)$ và $\\vec{v}=(2;-2;3)$. Tọa độ của vectơ $\\vec{u}-\\vec{v}$ là\nA. $(-5;4;-1)$\nB. $(1;-4;5)$\nC. $(3;0;1)$\nD. $(-1;4;-5)$"
+    },
+    {
+      "question_number": "Câu 4",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Cho cấp số nhân $(u_n)$ có $u_2=2$, $u_3=6$. Khi đó số hạng thứ 4 của cấp số nhân đó là:\nA. $u_4=18$\nB. $u_4=-18$\nC. $u_4=72$\nD. $u_4=12$"
+    },
+    {
+      "question_number": "Câu 5",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Cho hình hộp chữ nhật $ABCD.A'B'C'D'$ véc tơ nào sau đây bằng véc tơ $\\overrightarrow{AB}$\nA. $\\overrightarrow{B'A'}$\nB. $\\overrightarrow{D'C'}$\nC. $\\overrightarrow{CD}$\nD. $\\overrightarrow{BC}$"
+    },
+    {
+      "question_number": "Câu 6",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số $y=f(x)$ với các mốc $x=-\\infty,-2,1,+\\infty$, $f'(x)$ âm trên $(-\\infty,-2)$, dương trên $(-2,1)$, âm trên $(1,+\\infty)$; $f(x)$ giảm xuống $-2$, rồi tăng lên $3$, rồi giảm xuống $-\\infty$.",
+      "figure_pages": [
+        1
+      ],
+      "content": "Cho hàm số $y=f(x)$ liên tục trên $\\mathbb{R}$ và có bảng biến thiên được như sau:\n\n$x$: $-\\infty \\quad -2 \\quad 1 \\quad +\\infty$\n$f'(x)$: $-\\quad 0 \\quad +\\quad 0 \\quad -$\n$f(x)$: $+\\infty \\searrow -2 \\nearrow 3 \\searrow -\\infty$\n\nHàm số $y=f(x)$ đồng biến trên khoảng nào sau đây?\nA. $(1;+\\infty)$\nB. $(-2;1)$\nC. $(-2;3)$\nD. $(-\\infty;-2)$"
+    },
+    {
+      "question_number": "Câu 7",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số xác định trên $\\mathbb{R}\\setminus\\{-1\\}$, có tiệm cận đứng tại $x=-1$, các giới hạn ở vô cực cho thấy đồ thị tiến tới $y=2$ khi $x\\to-\\infty$ và $y=-1$ khi $x\\to+\\infty$.",
+      "figure_pages": [
+        1
+      ],
+      "content": "Cho hàm số $y=f(x)$ xác định trên $\\mathbb{R}\\setminus\\{-1\\}$ liên tục trên mỗi khoảng xác định và có bảng biến thiên như hình:\n\n$x$: $-\\infty \\quad -1 \\quad 1 \\quad +\\infty$\n$f'(x)$: $+\\quad \\| \\quad +\\quad 0 \\quad -$\n$y$: $2 \\nearrow 4 \\;|\\; -\\infty \\nearrow 3 \\searrow -1$\n\nHỏi đồ thị hàm số có bao nhiêu đường tiệm cận ngang\nA. $0$\nB. $2$\nC. $1$\nD. $3$"
+    },
+    {
+      "question_number": "Câu 8",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Phương trình $\\cos x=1$ có các nghiệm là:\nA. $x = k2\\pi$ với $k \\in \\mathbb{Z}$\nB. $x = \\frac{\\pi}{2} + k2\\pi$ và $x = -\\frac{\\pi}{2} + k2\\pi$ với $k \\in \\mathbb{Z}$\nC. $x = \\pi + k2\\pi$ với $k \\in \\mathbb{Z}$\nD. $x = \\frac{\\pi}{2} + k2\\pi$ với $k \\in \\mathbb{Z}$"
+    },
+    {
+      "question_number": "Câu 9",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Đồ thị một hàm số dạng đường cong trong mặt phẳng tọa độ, dùng để nhận biết hàm số tương ứng trong các phương án.",
+      "figure_pages": [
+        2
+      ],
+      "content": "Hàm số nào dưới đây có đồ thị là đường cong như hình vẽ\nA. $y = -x^{4} + 3x + 1$\nB. $y = x^{3} - 3x + 1$\nC. $y = -x^{2} + 3x + 1$\nD. $y = -x^{3} + 3x + 1$"
+    },
+    {
+      "question_number": "Câu 10",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số với các mốc $x=-\\infty,-3,-2,1,+\\infty$, có cực đại tại $x=-3$ với giá trị $5$ và cực tiểu tại $x=1$ với giá trị $0$.",
+      "figure_pages": [
+        2
+      ],
+      "content": "Cho hàm số $y = f(x)$ có bảng biến thiên sau:\n\n$x$: $-\\infty,\\ -3,\\ -2,\\ 1,\\ +\\infty$\n\n$y'$: $-$, $0$, $+$, $\\|$, $+$, $0$, $-$\n\n$y$: $+\\infty \\searrow 5 \\nearrow +\\infty \\ \\| \\ -\\infty \\nearrow 0 \\searrow -\\infty$\n\nGiá trị cực đại của hàm số $y = f(x)$ là:\n\nA. 1.\nB. 5.\nC. 0.\nD. -3."
+    },
+    {
+      "question_number": "Câu 11",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Phương trình $\\log_{2}(3x-1)=3$ có nghiệm là:\nA. $x=\\frac{7}{3}$\nB. $x=\\frac{8}{3}$\nC. $x=3$\nD. $x=\\frac{10}{3}$"
+    },
+    {
+      "question_number": "Câu 12",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Bảng điểm bài kiểm tra môn Toán của lớp 10A được cho ở bảng sau\n\nĐiểm: $[0;2)$, $[2;4)$, $[4;6)$, $[6;8)$, $[8;10)$\n\nSố học sinh: $0,\\ 2,\\ 10,\\ 18,\\ 10$\n\nSố trung vị của mẫu số liệu trên thuộc khoảng nào trong các nhóm dưới đây?\n\nA. $[6;8)$\nB. $[8;10)$\nC. $[4;6)$\nD. $[2;4)$"
+    },
+    {
+      "question_number": "Câu 1",
+      "question_type": "true_false",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trang trại nhà ông A chuyên sản xuất các loại thực phẩm cho nhà hàng của ông B. Hai ông thỏa thuận rằng, hằng ngày ông A cung cấp cho B số lượng thực phẩm theo đơn đặt hàng của B (tối đa 100 kg thực phẩm). Nếu số lượng đặt hàng là $x$ kg thực phẩm thì giá bán cho mỗi kg được biểu diễn bởi công thức:\n\n$P(x)=30-\\frac{1}{1000}x^{2}$ (ngàn đồng). Chi phí để ông A sản xuất $x$ kg sản phẩm là $C(x)=200+15x$ (ngàn đồng). Khi đó\n\na) Chi phí sản xuất 100kg thực phẩm là 350 ngàn đồng\nb) Số tiền thu được khi bán 100 kg thực phẩm cho nhà hàng ông B là 200 ngàn đồng\nc) Lợi nhuận ông A thu được khi bán $x$ kg, $x \\in (0;100)$, thực phẩm cho ông B là $L(x)=xP(x)-C(x)$\nd) Lợi nhuận lớn nhất mà ông A có được trong 1 ngày là 507 ngàn đồng (làm tròn đến hàng đơn vị)"
+    },
+    {
+      "question_number": "Câu 2",
+      "question_type": "true_false",
+      "has_figure": true,
+      "figure_description": "Đồ thị của hàm số phân thức $y=\\frac{ax+b}{cx-1}$, dùng để xét các tiệm cận và các tính chất hình học của đồ thị.",
+      "figure_pages": [
+        3
+      ],
+      "content": "Cho hàm số $y=f(x)=\\frac{ax+b}{cx-1}$ (với $a,b,c$ là các số thực) có đồ thị được cho ở hình\n\na) Đồ thị hàm số có một đường tiệm cận đứng $x=1$ và một đường tiệm cận ngang $y=-1$\n\nb) Giá trị của $a+2b-3c=5$\n\nc) Đạo hàm của $f'(x)<0$ với mọi số $x\\in \\mathbb{R}\\setminus\\{1\\}$\n\nd) $M, N$ là hai điểm thuộc hai nhánh khác nhau của đồ thị. Khi đó $MN$ ngắn nhất bằng $\\sqrt{10}$"
+    },
+    {
+      "question_number": "Câu 3",
+      "question_type": "true_false",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số bậc ba $y=f(x)=ax^3+bx^2+cx+d$ với cực đại tại $x=0$ giá trị $2$ và cực tiểu tại $x=3$ giá trị $-4$.",
+      "figure_pages": [
+        3
+      ],
+      "content": "Cho hàm số $y=f(x)=ax^3+bx^2+cx+d$ có bảng biến thiên được cho như bảng sau\n\n$x:\\ -\\infty\\ \\ 0\\ \\ 3\\ \\ +\\infty$\n\n$f'(x):\\ +\\ \\ 0\\ \\ -\\ \\ 0\\ \\ +$\n\n$f(x):\\ -\\infty\\ \\nearrow\\ 2\\ \\searrow\\ -4\\ \\nearrow\\ +\\infty$\n\na) $f(2025)>f(2026)$\n\nb) Hàm số đạt cực đại tại $x=3$\n\nc) Giá trị lớn nhất của hàm số trên $(-\\infty;3]$ bằng $0$\n\nd) Trong bốn hệ số $a,b,c,d$ chỉ có hệ số $b$ nhận giá trị âm"
+    },
+    {
+      "question_number": "Câu 4",
+      "question_type": "true_false",
+      "has_figure": true,
+      "figure_description": "Hình lăng trụ $ABCA'B'C'$ trong không gian $Oxyz$, đáy là tam giác đều cạnh 6, cạnh bên dài 5; $O$ là trung điểm $AC$, các điểm $B,C,A'$ lần lượt thuộc các tia $Ox, Oy, Oz$.",
+      "figure_pages": [
+        3
+      ],
+      "content": "Trong không gian $Oxyz$, cho hình lăng trụ $ABCA'B'C'$ có đáy là tam giác đều cạnh bằng $6$, cạnh bên có độ dài bằng $5$. Gốc tọa độ $O$ là trung điểm cạnh $AC$, các điểm $B, C, A'$ theo thứ tự thuộc các tia $Ox, Oy, Oz$ như hình\n\na) Gọi $M$ là trung điểm $BC$, $E$ là trung điểm $A'B'$ khi đó tọa độ $\\overrightarrow{ME}=(0;0;-4)$\n\nb) Tọa độ điểm $B(3\\sqrt{3};0;0)$\n\nc) $\\cos(\\overrightarrow{A'B},\\overrightarrow{BC})>0$\n\nd) Khoảng cách giữa hai đường thẳng $ME$ với $AA'$ bằng $\\frac{3\\sqrt{3}}{2}$"
+    },
+    {
+      "question_number": "Câu 1",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Bạn Tiến làm một bài kiểm tra gồm 20 câu hỏi trắc nghiệm nhiều lựa chọn. Mỗi câu hỏi có 4 phương án trả lời và chỉ có một phương án đúng, trả lời đúng mỗi câu được 0,5 điểm. Bạn ấy đã làm đúng 15 câu, trong những câu còn lại có 2 câu bạn ấy đã loại được một phương án sai. Do quá sát giờ nộp bài nên bạn ấy đã trả lời bằng cách chọn ngẫu nhiên. Tính xác suất để bạn Tiến được 9 điểm. (làm tròn đến hàng phần trăm)."
+    },
+    {
+      "question_number": "Câu 2",
+      "question_type": "short_answer",
+      "has_figure": true,
+      "figure_description": "Bài toán hình học không gian về tấm bìa hình tròn tâm O, bán kính 2 nằm trên mặt phẳng $(Oxy)$, chuyển động theo hướng vectơ $\\vec{j}=(0;1;0)$ để che khuất tầm nhìn giữa hai điểm $M(1;2;3)$ và $N(3;6;-12)$.",
+      "figure_pages": [
+        4
+      ],
+      "content": "Trong không gian $Oxyz$, mắt một người quan sát đặt tại điểm $M(1;2;3)$ và vật cần quan sát đặt tại điểm $N(3;6;-12)$. Một tấm bìa cứng có dạng hình tròn tâm tại gốc tọa độ, bán kính $R=2$ thuộc mặt phẳng $(Oxy)$ bắt đầu xuất phát đi thẳng theo hướng vectơ $\\vec{j}=(0;1;0)$ với tốc độ không đổi $v=5\\,(cm/s)$. Tính khoảng thời gian mà trong quá trình di chuyển tấm bìa đã che khuất tầm nhìn của người quan sát. làm tròn kết quả đến hàng phần trăm. (lấy đơn vị trên mỗi trục tọa độ là 1cm)."
+    },
+    {
+      "question_number": "Câu 3",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Khảo sát thời gian sử dụng điện thoại trong một ngày của mỗi học sinh trong lớp học có 42 học sinh thu được mẫu số liệu ghép nhóm sau\n\n| Thời gian (phút) | [0;20) | [20;40) | [40;60) | [60;80) | [80;100) |\n|---|---:|---:|---:|---:|---:|\n| Số học sinh | 7 | a | b | 6 | 3 |\n\nBiết thời gian sử dụng điện thoại trung bình của lớp trên là 40 phút. Hỏi lớp học trên có nhiều nhất bao nhiêu bạn có thời gian sử dụng điện thoại dưới mức trung bình của lớp."
+    },
+    {
+      "question_number": "Câu 4",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Tổng giá trị lớn nhất và nhỏ nhất của hàm số $y=(x^{2}+x+1)e^{-x}$ trên đoạn $[-1;0]$ (làm tròn đến hàng phần chục)"
+    },
+    {
+      "question_number": "Câu 5",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Người ta bơm xăng vào bình xăng của một chiếc xe ô tô. Biết thể tích $V$ (lít) của xăng được bơm vào bình phụ thuộc theo thời gian $t$ (phút) được cho bởi công thức $V(t)=\\frac{35}{4}(3t-t^{2}+t^{3})+4$ với $0\\le t\\le 1$ . Gọi $V'(t)$ là tốc độ bơm của xăng vào bình. Xác định thể tích (lít) của xăng trong bình tại thời điểm mà tốc độ bơm đạt nhỏ nhất (làm tròn đến hàng phần chục)."
+    },
+    {
+      "question_number": "Câu 6",
+      "question_type": "short_answer",
+      "has_figure": true,
+      "figure_description": "Hình chóp $S.ABCD$ có đáy $ABCD$ là hình vuông cạnh 4; mặt bên $SAB$ là tam giác đều và $SCD$ là tam giác vuông cân tại $S$.",
+      "figure_pages": [
+        4
+      ],
+      "content": "Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình vuông có cạnh bằng 4. Mặt bên $SAB$ là tam giác đều và $SCD$ là tam giác vuông cân tại đỉnh $S$. Tính thể tích của khối chóp $S.ABCD$ (làm tròn đến hàng phần trăm)"
+    }
+  ]
+}

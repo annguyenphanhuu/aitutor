@@ -61,6 +61,7 @@ class ExamSolverResult:
     raw_ocr: str = ""
     ocr_engine_used: str = "cloud"
     elapsed_seconds: float = 0.0
+    extracted_images: list = field(default_factory=list)  # ExtractedImage objects
 
 
 # Type for progress callback: (current, total, question_number) → None
@@ -95,6 +96,7 @@ class ExamSolver:
         user_id: int,
         db: AsyncSession,
         on_progress: Optional[ProgressCallback] = None,
+        raw_ocr_text: Optional[str] = None,
     ) -> ExamSolverResult:
         """Full pipeline: OCR → Split → Solve each → Aggregate.
 
@@ -112,6 +114,8 @@ class ExamSolver:
             Database session.
         on_progress : callable, optional
             Async callback (current, total, question_number) for SSE updates.
+        raw_ocr_text : str, optional
+            If provided, skips the OCR step and uses this text directly.
 
         Returns
         -------
@@ -120,22 +124,59 @@ class ExamSolver:
         t0 = time.monotonic()
 
         # ── Step 1: OCR ─────────────────────────────────────────
-        logger.info("🔍 Exam Solver: OCR start (engine=%s, type=%s)", self.ocr_engine_name, file_type)
+        if raw_ocr_text:
+            logger.info("🔍 Exam Solver: Using provided OCR text (engine=%s, type=%s)", self.ocr_engine_name, file_type)
+            raw_ocr = raw_ocr_text
+        else:
+            logger.info("🔍 Exam Solver: OCR start (engine=%s, type=%s)", self.ocr_engine_name, file_type)
+
+        extracted_images = []
+        page_images: dict[int, bytes] = {}  # page_num (1-indexed) → PNG bytes
 
         if file_type == "pdf":
-            page_texts = await self.ocr.ocr_pdf(file_bytes)
-            raw_ocr = "\n\n---\n\n".join(
-                f"[Trang {i+1}]\n{text}" for i, text in enumerate(page_texts)
-            )
+            if not raw_ocr_text:
+                page_texts = await self.ocr.ocr_pdf(file_bytes)
+                raw_ocr = "\n\n---\n\n".join(
+                    f"[Trang {i+1}]\n{text}" for i, text in enumerate(page_texts)
+                )
+                n_ocr_pages = len(page_texts)
+            else:
+                n_ocr_pages = 50 # Fallback: render up to 50 pages if raw_ocr_text is provided
+
+            # Step 1b: Render page images for Vision-based solving
+            try:
+                import fitz
+                doc = fitz.open(stream=file_bytes, filetype="pdf")
+                n_render_pages = min(len(doc), n_ocr_pages)
+                for pg_num in range(n_render_pages):
+                    page = doc[pg_num]
+                    pix = page.get_pixmap(dpi=200)  # 200 DPI balances quality vs token cost
+                    page_images[pg_num + 1] = pix.tobytes("png")
+                doc.close()
+                logger.info("📸 Rendered %d page images for Vision", len(page_images))
+            except Exception as e:
+                logger.warning("⚠️ Page image rendering failed: %s", e)
+
+            # Step 1c: Extract standalone images/graphs
+            try:
+                from app.ocr.image_extractor import extract_images_from_pdf
+                extracted_images = extract_images_from_pdf(file_bytes)
+                logger.info("📸 Extracted %d standalone images from PDF", len(extracted_images))
+            except Exception as e:
+                logger.warning("⚠️ Image extraction failed: %s", e)
         else:
-            raw_ocr = await self.ocr.ocr_image(file_bytes, mime_type)
+            if not raw_ocr_text:
+                raw_ocr = await self.ocr.ocr_image(file_bytes, mime_type)
+            # For single images, store as page 1
+            page_images[1] = file_bytes
 
         logger.info("📄 OCR done: %d chars", len(raw_ocr))
 
         # ── Step 2: Split questions ──────────────────────────────
         questions = await self.splitter.split(raw_ocr)
         total = len(questions)
-        logger.info("📋 Split done: %d questions", total)
+        n_with_fig = sum(1 for q in questions if q.get("has_figure"))
+        logger.info("📋 Split done: %d questions (%d with figures)", total, n_with_fig)
 
         if total == 0:
             return ExamSolverResult(
@@ -152,7 +193,7 @@ class ExamSolver:
 
         async def _solve_with_semaphore(q: dict) -> QuestionSolution:
             async with self._semaphore:
-                result = await self._solve_single(q, masteries)
+                result = await self._solve_single(q, masteries, page_images)
                 progress_counter["done"] += 1
                 if on_progress:
                     on_progress(
@@ -175,20 +216,24 @@ class ExamSolver:
         )
 
         # ── Step 4: Aggregate ────────────────────────────────────
-        return self._aggregate(solutions, raw_ocr, elapsed)
+        return self._aggregate(solutions, raw_ocr, elapsed, extracted_images)
 
     async def _solve_single(
         self,
         question: dict,
         masteries: dict[str, float],
+        page_images: dict[int, bytes] | None = None,
     ) -> QuestionSolution:
         """Solve a single question: classify → RAG → Teacher.
 
-        Each question gets its own independent RAG retrieval
-        to ensure context is accurate for that specific question.
+        If the question has_figure and page images are available,
+        uses Vision model (respond_with_image) for accurate visual reasoning.
+        Otherwise uses text-only model (respond) which is cheaper.
         """
         content = question["content"]
         q_num = question["question_number"]
+        has_figure = question.get("has_figure", False)
+        figure_pages = question.get("figure_pages", [])
 
         try:
             # Classify skill
@@ -202,17 +247,60 @@ class ExamSolver:
             if not skill_id and skill_ids:
                 skill_id = skill_ids[0]
 
-            # Teacher responds in "answer" mode (direct solution, no Socratic)
-            response = await self.teacher.respond(
-                question=content,
-                mode="answer",
-                mastery_level="proficient",
-                skill_id=skill_id,
-                skill_ids=skill_ids,
-                formula_ids=formula_ids,
-                masteries=masteries,
-                p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
-            )
+            # Route: Vision (has_figure) or Text-only
+            if has_figure and page_images and figure_pages:
+                # Get the first relevant page image
+                img_bytes = None
+                for pg in figure_pages:
+                    if pg in page_images:
+                        img_bytes = page_images[pg]
+                        break
+                # Fallback: try all pages if specific page not found
+                if not img_bytes and page_images:
+                    img_bytes = next(iter(page_images.values()))
+
+                if img_bytes:
+                    logger.info(
+                        "🖼️ %s: Vision solve (figure on page %s)",
+                        q_num, figure_pages,
+                    )
+                    response = await self.teacher.respond_with_image(
+                        image_bytes=img_bytes,
+                        image_mime="image/png",
+                        ocr_text=content,
+                        user_text=f"Giải {q_num}. Chỉ giải câu này, không giải câu khác.",
+                        mode="answer",
+                        mastery_level="proficient",
+                        skill_id=skill_id,
+                        skill_ids=skill_ids,
+                        formula_ids=formula_ids,
+                        masteries=masteries,
+                        p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
+                    )
+                else:
+                    # No image available, fallback to text
+                    response = await self.teacher.respond(
+                        question=content,
+                        mode="answer",
+                        mastery_level="proficient",
+                        skill_id=skill_id,
+                        skill_ids=skill_ids,
+                        formula_ids=formula_ids,
+                        masteries=masteries,
+                        p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
+                    )
+            else:
+                # Text-only solve (cheaper, faster)
+                response = await self.teacher.respond(
+                    question=content,
+                    mode="answer",
+                    mastery_level="proficient",
+                    skill_id=skill_id,
+                    skill_ids=skill_ids,
+                    formula_ids=formula_ids,
+                    masteries=masteries,
+                    p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
+                )
 
             skill_info = SKILLS.get(skill_id, {}) if skill_id else {}
             return QuestionSolution(
@@ -297,6 +385,7 @@ CHỈ TRẢ VỀ JSON."""
         solutions: list[QuestionSolution],
         raw_ocr: str,
         elapsed: float,
+        extracted_images: list | None = None,
     ) -> ExamSolverResult:
         """Aggregate per-question solutions into a formatted report."""
 
@@ -334,4 +423,5 @@ CHỈ TRẢ VỀ JSON."""
             raw_ocr=raw_ocr,
             ocr_engine_used=self.ocr_engine_name if hasattr(self, 'ocr_engine_name') else "cloud",
             elapsed_seconds=elapsed,
+            extracted_images=extracted_images or [],
         )

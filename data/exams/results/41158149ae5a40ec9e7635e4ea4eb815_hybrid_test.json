@@ -1,0 +1,203 @@
+{
+  "pdf": "41158149ae5a40ec9e7635e4ea4eb815.pdf",
+  "pages_ocr": 4,
+  "ocr_elapsed_s": 49.1,
+  "split_elapsed_s": 21.2,
+  "total_questions": 22,
+  "questions_with_figure": 7,
+  "questions_text_only": 15,
+  "questions": [
+    {
+      "question_number": "Câu 1",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trong không gian $Oxyz$ cho $vec{a} = \\vec{i} - 2\\vec{j} + 3\\vec{k}$. Tọa độ điểm $A$ là\nA. $(1;-2;3)$ B. $(3;-2;1)$ C. $(-1;2;3)$ D. $(-1;-2;-3)$"
+    },
+    {
+      "question_number": "Câu 2",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Giá trị nhỏ nhất của hàm số $y = x^4 - 2x^2 + 3$ trên đoạn $[2;2]$ bằng\nA. 2 B. -2 C. 4 D. 3"
+    },
+    {
+      "question_number": "Câu 3",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trong không gian $Oxyz$, cho hai vectơ $vec{u} = (1; -2; -2)$ và $vec{v} = (2; -2; 3)$. Tọa độ của vectơ $vec{u} - vec{v}$ là\nA. $(-5; 4; -1)$ B. $(1; -4; 5)$ C. $(3; 0; 1)$ D. $(-1; 4; -5)$"
+    },
+    {
+      "question_number": "Câu 4",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Cho cấp số nhân $(u_n)$ có $u_2 = 2, u_6 = 6$. Khi đó số hạng thứ 4 của cấp số nhân đó là:\nA. $u_4 = 12$ B. $u_4 = 18$ C. $u_4 = 72$ D. $u_4 = 18$"
+    },
+    {
+      "question_number": "Câu 5",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Cho hình hộp chữ nhật $ABCD.A'B'C'D'$ với $C$ nào sau đây bằng vectơ $AB$\nA. $B'A'$ B. $D'C'$ C. $C'D$ D. $BC$"
+    },
+    {
+      "question_number": "Câu 6",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số liên tục trên $mathbb{R}$ với các mốc $x=-2,0,1,+infty$",
+      "figure_pages": [
+        1
+      ],
+      "content": "Cho hàm số $y = f(x)$ liên tục trên $mathbb{R}$ và có bảng biến thiên được như sau:\n\\[\n\\begin{array}{|c|c|c|c|c|}\n\\hline\nx & -2 & 0 & 1 & +\\infty \\\\\n\\hline\nf(x) & +\\infty & 0 & +0 & +\\infty \\\\\n\\hline\n\\end{array}\n\\]\nHàm số $y = f(x)$ đồng biến trên khoảng nào sau đây?\nA. $(1; +\\infty)$ B. $(-2; 1)$ C. $(-2; 3)$ D. $(-\\infty; -2)$"
+    },
+    {
+      "question_number": "Câu 7",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số xác định trên $\\mathbb{R}\\setminus\\{-1\\}$ với các mốc $x=-1,0,1,+\\infty$",
+      "figure_pages": [
+        1
+      ],
+      "content": "Cho hàm số $y = f(x)$ xác định trên $R \\setminus \\{-1\\}$ liên tục trên mỗi khoảng xác định và có bảng biến thiên như hình:\n\\[\n\\begin{array}{|c|c|c|c|c|}\n\\hline\nx & -1 & 0 & 1 & +\\infty \\\\\n\\hline\ny & +0 & + & 0 & +\\infty \\\\\n\\hline\n\\end{array}\n\\]\nHỏi đồ thị hàm số có bao nhiêu đường tiệm cận ngang\nA. 0 B. 2 C. 1 D. 3"
+    },
+    {
+      "question_number": "Câu 8",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Phương trình $\\cos x = 1$ có các nghiệm là:"
+    },
+    {
+      "question_number": "Câu 9",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Đồ thị hàm số dạng đường cong như hình vẽ, các phương án cho sẵn gồm các hàm bậc hai và bậc bốn",
+      "figure_pages": [
+        2
+      ],
+      "content": "Hàm số nào dưới đây có đồ thị là đường cong như hình vẽ\nA. $y = -x^4 + 3x + 1$\nB. $y = x^2 - 3x + 1$\nC. $y = -x^2 + 3x + 1$\nD. $y = -x^4 + 3x + 1$"
+    },
+    {
+      "question_number": "Câu 10",
+      "question_type": "mcq",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số $y=f(x)$ với các mốc $x=-\\infty,-3,-2,1,+\\infty$",
+      "figure_pages": [
+        2
+      ],
+      "content": "Cho hàm số $y = f(x)$ có bảng biến thiên sau:\n\\[\n\\begin{array}{|c|c|c|c|c|}\n\\hline\nx & -\\infty & -3 & -2 & 1 & +\\infty \\\\\n\\hline\ny & +\\infty & 0 & + & 0 & -\\infty \\\\\n\\hline\n\\end{array}\n\\]\nGiá trị cực đại của hàm số $y = f(x)$ là:\nA. $1$\nB. $5$\nC. $0$\nD. $-3$"
+    },
+    {
+      "question_number": "Câu 11",
+      "question_type": "mcq",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Phương trình $\\log_2(3x-1) = 3$ có nghiệm là:\nA. $x = 7$\nB. $x = 8$\nC. $x = 3$\nD. $x = \\frac{10}{3}$"
+    },
+    {
+      "question_number": "Câu 12",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Bảng điểm bài kiểm tra môn Toán của lớp 10A được cho ở bảng sau\n\\[\n\\begin{array}{|c|c|c|c|c|c|}\n\\hline\nĐiểm & [0;2) & [2;4) & [4;6) & [6;8) & [8;10) \\\\\n\\hline\nSố sinh & 10 & 18 & 10 & 10 \\\\\n\\hline\n\\end{array}\n\\]"
+    },
+    {
+      "question_number": "Câu 1",
+      "question_type": "true_false",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trang trình bày Ông A chuyển sản xuất các thực phẩm cho nhà hàng của ông B. Hai ông thỏa thuận rằng, hàng ngày ông A cung cấp cho B số lượng thực phẩm theo đơn đặt hàng của B (tối đa 100 kg thực phẩm). Nếu số lượng đặt hàng là $x$ kg thực phẩm thì giá bán cho mỗi kg được biểu diễn bằng công thức:\n\\[\nP(x) = 200 - \\frac{1}{1000} x^2 \\quad (\\text{ngàn đồng}).\n\\]\nKhi đó\n\na) Chi phí sản xuất 100kg thực phẩm là 350 ngàn đồng\nb) Số tiền thu được khi bán 100 kg thực phẩm cho nhà hàng ông B là 200 ngàn đồng\nc) Lợi nhuận ông A dự kiến bán $x$ kg xê thực phẩm cho nhà hàng ông B là $L(x) = xP(x) - C(x)$\n d) Lợi nhuận không ít hơn ông A có được trong 1 ngày là 507 ngàn đồng (làm tròn đến hàng đơn vị)"
+    },
+    {
+      "question_number": "Câu 2",
+      "question_type": "true_false",
+      "has_figure": true,
+      "figure_description": "Đồ thị hàm số $y=\\frac{ax+b}{cx-1}$ với các nhận xét về tiệm cận và tính đơn điệu; có hai điểm M, N thuộc hai nhánh khác nhau của đồ thị",
+      "figure_pages": [
+        2,
+        3
+      ],
+      "content": "Cho hàm số $y = f(x) = \\frac{ax + b}{cx - 1}$ (với a, b, c là các số thực được cho hình)\n\na) Đồ thị hàm số có một đường tiệm cận đứng $x = 1$ và một đường tiệm cận ngang $y = -1$\n b) Giải trị của $a + 2b - 3c = 5$\n c) Đạo hàm của $f'(x) < 0$ với mọi số $x \\in \\mathbb{R} \\setminus \\{1\\}$\n\nM, N là hai điểm thuộc hai nhánh khác nhau của đồ thị, khi đó MN ngắn nhất bằng $\\sqrt{10}$"
+    },
+    {
+      "question_number": "Câu 3",
+      "question_type": "true_false",
+      "has_figure": true,
+      "figure_description": "Bảng biến thiên của hàm số bậc ba $y=ax^3+bx^2+cx+d$ với các mốc $x=-\\infty,0,3,+\\infty$",
+      "figure_pages": [
+        3
+      ],
+      "content": "Cho hàm số $y = f(x) = ax^3 + bx^2 + cx + d$ có bảng biến thiên được cho bảng sau\n\\[\n\\begin{array}{c|c|c|c}\nx & -\\infty & 0 & 3 & +\\infty \\\\\n\\hline\nf'(x) & + & 0 & - & + \\\\\n\\hline\nf(x) & -\\infty & 0 & 2 & +\\infty \\\\\n\\end{array}\n\\]\na) $f(2025) > f(2026)$\n b) Hàm số đạt cực đại tại $x = 3$\n c) Giá trị lớn nhất của hàm số trên $(-\\infty; 3]$ bằng 0\n d) Trong bốn hệ số $a, b, c$ và chỉ có hệ số b nhận giá trị âm"
+    },
+    {
+      "question_number": "Câu 4",
+      "question_type": "true_false",
+      "has_figure": true,
+      "figure_description": "Hình lăng trụ $ABCA'B'C'$ trong hệ trục $Oxyz$, đáy là tam giác đều cạnh 6, cạnh bên dài 5; $O$ là trung điểm $AC$, các điểm $B,C,A'$ lần lượt thuộc các tia $Ox, Oy, Oz$",
+      "figure_pages": [
+        3
+      ],
+      "content": "Trong không gian $Oxyz$, cho hình lăng trụ $ABCA'B'C'$ có đáy là tam giác đều cạnh bằng 6, cạnh bên có độ dài bằng 5. Gọi tọa độ O là trung điểm cạnh AC, các điểm B, C, A' theo thứ tự thuộc các tia $Ox, Oy, Oz$ như hình\n\na) Gọi M là trung điểm BC, E là trung điểm A'B' khi đó tọa độ $M_E = (0;0;-4)$\n b) Tọa độ điểm $B(3\\sqrt{3};0;0)$\n c) $\\cos(A'B, BC) > 0$\n d) Khoảng cách giữa hai đường thẳng $ME$ với $A'A$ bằng $\\frac{3\\sqrt{3}}{2}$"
+    },
+    {
+      "question_number": "Câu 1",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Bạn Tiến làm một bài kiểm tra gồm 20 câu hỏi trắc nghiệm nhiều lựa chọn. Mỗi câu hỏi có 4 phương án trả lời và chỉ có một phương án đúng, trả lời đúng mỗi câu được 0,5 điểm. Bạn ấy đã làm đúng 15 câu, trong đó những câu còn lại có 2 câu bạn ấy đã loại được phương án sai. Do quá sức giới hạn nên bạn ấy đã trả lời bằng cách chọn ngẫu nhiên. Tính xác suất để bạn Tiến được 9 điểm. (làm tròn đến hàng phần trăm)."
+    },
+    {
+      "question_number": "Câu 2",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Trong không gian $Oxy$, mắt một người quan sát đặt tại điểm $M(1; 2; 3)$ và vật cần quan sát đặt tại điểm $N(3; 6; -12)$. Một điểm $A$ cũng có dạng hình tròn tại gốc tọa độ, bán kính $R = 2$ thuộc mặt phẳng $(Oxy)$ bắt đầu xuất phát đi thẳng theo hướng vector $\\vec{j} = (0; 1; 0)$ với tốc độ $v = 5 \\text{(cm/s)}$. Tính khoảng thời gian mà trong quá trình di chuyển tâm bia đã có khúc tâm nhìn của người quan sát. Làm tròn kết quả đến hàng phần trăm. (đơn vị trên mỗi trục tọa độ là 1cm)."
+    },
+    {
+      "question_number": "Câu 3",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Khảo sát thời gian sử dụng điện thoại trong một ngày của một học sinh trong lớp học có 42 học sinh thu được mẫu số liệu nhóm sau\n\\[\n\\begin{array}{|c|c|c|c|c|c|}\n\\hline\nThời gian (phút) & [0;20) & [20;40) & [40;60) & [60;80) & [80;100) \\\\\n\\hline\nSố học sinh & 7 & a & b & 6 &  \\\\\n\\hline\n\\end{array}\n\\]\nBiết rằng số học sinh sử dụng điện thoại trung bình của lớp trên là 40 phút. Hỏi lớp trên có nhiều bạn có thời gian sử dụng điện thoại dưới mức trung bình lớp."
+    },
+    {
+      "question_number": "Câu 4",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Tìm giá trị lớn nhất và nhỏ nhất của hàm số $y = (x^2 + x + 1)e^{-x}$ trên đoạn $[-1; 0]$ (làm tròn đến hàng phần chức)."
+    },
+    {
+      "question_number": "Câu 5",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Người ta bơm xăng vào bình xăng của một chiếc xe ô tô. Biết thể tích $V (lit)$ của xăng được bơm vào bình phụ thuộc theo thời gian $t$ (phút) được cho bởi công thức $V(t) = \\frac{35}{4} (3t - t^2) + 4$ với $0 \\leq t \\leq 1$. Gọi $V' (t)$ là tốc độ bơm của xăng vào bình. Xác định thể tích (lit) của xăng trong bình tại thời điểm mà tốc độ bơm đạt nhỏ nhất (làm tròn đến hàng phần chức)."
+    },
+    {
+      "question_number": "Câu 6",
+      "question_type": "short_answer",
+      "has_figure": false,
+      "figure_description": null,
+      "figure_pages": [],
+      "content": "Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình vuông có cạnh bằng 4. Mặt bên $SAB$ là tam giác đều và $SCD$ là tam giác vuông cạnh tại đỉnh $S$. Tính thể tích khối chóp $S.ABCD$ (làm tròn đến hàng phần trăm)."
+    }
+  ],
+  "raw_ocr": "[Trang 1]\n[Trang 1]  \nSỞ GD & ĐT NGHỆ AN  \nLIÊN TRƯỜNG THPT ANH SƠN,  \nĐÔ LƯƠNG, THANH CHƯƠNG,  \nYÊN THÀNH, ...  \nĐỀ THI THỬ TỐT NGHIỆP THPT  \nLẦN 1, NĂM HỌC 2025-2026  \nMÔN: TOÁN  \nThời gian làm bài: 90 phút (không kể thời gian phát đề)  \n\nHọ và tên: ......................................................... Số báo danh: .......... Mã đề 0121  \n\nPHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn. Thí sinh trả lời từ câu 1 đến câu 12. Mỗi câu hỏi thí sinh chỉ chọn một phương án.  \nCâu 1. Trong không gian $Oxyz$ cho $\\vec{a} = \\vec{i} - 2\\vec{j} + 3\\vec{k}$. Tọa độ điểm $A$ là  \nA. $(1;-2;3)$ B. $(3;-2;1)$ C. $(-1;2;3)$ D. $(-1;-2;-3)$  \n\nCâu 2. Giả trị nhị nhất của hàm số $y = x^4 - 2x^2 + 3$ trên đoạn $[2; 2]$ bằng  \nA. 2 B. -2 C. 4 D. 3  \n\nCâu 3. Trong không gian $Oxyz$, cho hai vectơ $\\vec{u} = (1; -2; -2)$ và $\\vec{v} = (2; -2; 3)$. Tọa độ của vectơ $\\vec{u} - \\vec{v}$ là  \nA. $(-5; 4; -1)$ B. $(1; -4; 5)$ C. $(3; 0; 1)$ D. $(-1; 4; -5)$  \n\nCâu 4. Cho cấp số nhân $(u_n)$ có $u_2 = 2, u_6 = 6$. Khi đó số hạng thứ 4 của cấp số nhân đó là:  \nA. $u_4 = 12$ B. $u_4 = 18$ C. $u_4 = 72$ D. $u_4 = 18$  \n\nCâu 5. Cho hình hợp chữ nhật $ABCD$ với $C$ nào sau đây bằng vectơ $AB$  \nA. $B'A'$ B. $D'C'$ C. $C'D$ D. $BC$  \n\nCâu 6. Cho hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ và có bảng biến thiên được như sau:  \n\\[\n\\begin{array}{|c|c|c|c|c|}\n\\hline\nx & -2 & 0 & 1 & +\\infty \\\\\n\\hline\nf(x) & +\\infty & 0 & +0 & +\\infty \\\\\n\\hline\n\\end{array}\n\\]  \nHàm số $y = f(x)$ đồng biến trên khoảng nào sau đây?  \nA. $(1; +\\infty)$ B. $(-2; 1)$ C. $(-2; 3)$ D. $(-\\infty; -2)$  \n\nCâu 7. Cho hàm số $y = f(x)$ xác định trên $R \\setminus \\{-1\\}$ liên tục trên mỗi khoảng xác định và có bảng biến thiên như hình:  \n\\[\n\\begin{array}{|c|c|c|c|}\n\\hline\nx & -1 & 0 & 1 & +\\infty \\\\\n\\hline\ny & +0 & + & 0 & +\\infty \\\\\n\\hline\n\\end{array}\n\\]  \nHỏi đồ thị hàm số có bao nhiêu đường tiệm cận ngang  \nA. 0 B. 2 C. 1 D. 3  \n\nCâu 8. Phương trình $\\cos x = 1$ có các nghiệm là:\n\n---\n\n[Trang 2]\n[Trang 1]\n\nCâu 9. Hàm số nào dưới đây có đồ thị là đường cong như hình vẽ\n\\[\n\\begin{array}{c}\nA. \\quad y = -x^4 + 3x + 1 \\\\\nB. \\quad y = x^2 - 3x + 1 \\\\\nC. \\quad y = -x^2 + 3x + 1 \\\\\nD. \\quad y = -x^4 + 3x + 1\n\\end{array}\n\\]\n\nCâu 10. Cho hàm số \\( y = f(x) \\) có bảng biến thiên sau:\n\\[\n\\begin{array}{|c|c|c|c|c|}\n\\hline\nx & -\\infty & -3 & -2 & 1 & +\\infty \\\\\n\\hline\ny & +\\infty & 0 & + & 0 & -\\infty \\\\\n\\hline\n\\end{array}\n\\]\n\nGiá trị cực đại của hàm số \\( y = f(x) \\) là:\n\\[\n\\begin{array}{c}\nA. \\quad 1 \\\\\nB. \\quad 5 \\\\\nC. \\quad 0 \\\\\nD. \\quad -3 \\\\\n\\end{array}\n\\]\n\nCâu 11. Phương trình \\( \\log_2(3x-1) = 3 \\) có nghiệm là:\n\\[\n\\begin{array}{c}\nA. \\quad x = 7 \\\\\nB. \\quad x = 8 \\\\\nC. \\quad x = 3 \\\\\nD. \\quad x = \\frac{10}{3} \\\\\n\\end{array}\n\\]\n\nCâu 12. Bảng điểm bài kiểm tra môn Toán của lớp 10A được cho ở bảng sau\n\\[\n\\begin{array}{|c|c|c|c|c|c|}\n\\hline\nĐiểm & [0;2) & [2;4) & [4;6) & [6;8) & [8;10) \\\\\n\\hline\nSố sinh & 10 & 18 & 10 & 10 \\\\\n\\hline\n\\end{array}\n\\]\n\nPHẦN I. Câu trắc nghiệm đúng sai. Thí sinh trả lời từ câu 1 đến câu 4. Trong mỗi ý a), b), c), d) ở mỗi câu, thí sinh chọn đúng hoặc sai.\n\nCâu 1. Trang trình bày Ông A chuyển sản xuất các thực phẩm cho nhà hàng của ông B. Hai ông thỏa thuận rằng, hàng ngày ông A cung cấp cho B số lượng thực phẩm theo đơn đặt hàng của B (tối đa 100 kg thực phẩm). Nếu số lượng đặt hàng là x kg thực phẩm thì giá bán cho mỗi kg được biểu diễn bằng công thức:\n\\[\nP(x) = 200 - \\frac{1}{1000} x^2 \\quad (\\text{ngàn đồng}).\n\\]\n\nKhi đó\na) Chi phí sản xuất 100kg thực phẩm là 350 ngàn đồng\nb) Số tiền thu được khi bán 100 kg thực phẩm cho nhà hàng ông B là 200 ngàn đồng\nc) Lợi nhuận ông A dự kiến bán x kg xê thực phẩm cho nhà hàng ông B là \\( L(x) = xP(x) - C(x) \\)\nd) Lợi nhuận không ít hơn ông A có được trong 1 ngày là 507 ngàn đồng (làm tròn đến hàng đơn vị) \n\nCâu 2. Cho hàm số \\( y = f(x) = \\frac{ax + b}{cx - 1} \\) (với a, b, c là các số thực được cho hình)\n\n---\n\n[Trang 3]\n[Trang 1]\na) Đồ thị hàm số có một đường tiệm cận đứng $x = 1$ và một đường tiệm cận ngang $y = -1$  \nb) Giải trị của $a + 2b - 3c = 5$  \nc) Đạo hàm của $f'(x) < 0$ với mọi số $x \\in \\mathbb{R} \\setminus \\{1\\}$  \n\nM, N là hai điểm thuộc hai nhánh khác nhau của đồ thị, khi đó MN ngắn nhất bằng $\\sqrt{10}$  \n\nCâu 3. Cho hàm số $y = f(x) = ax^3 + bx^2 + cx + d$ có bảng biến thiên được cho bảng sau  \n\\[\n\\begin{array}{c|c|c|c}\nx & -\\infty & 0 & 3 & +\\infty \\\\\n\\hline\nf'(x) & + & 0 & - & + \\\\\n\\hline\nf(x) & -\\infty & 0 & 2 & +\\infty \\\\\n\\end{array}\n\\]\n\na) $f(2025) > f(2026)$  \nb) Hàm số đạt cực đại tại $x = 3$  \nc) Giải trị lớn nhất của hàm số trên $(-\\infty; 3]$ bằng 0  \nd) Trong bốn hệ số $a, b, c$ và chỉ có hệ số b nhận giá trị âm  \n\nCâu 4. Trong không gian $Oxyz$, cho hình lăng trụ $ABCA'B'C'$ có đáy là tam giác đều cạnh bằng 6, cạnh bên có độ dài bằng 5. Gọi tọa độ O là trung điểm cạnh AC, các điểm B, C, A' theo thứ tự thuộc các tia $Ox, Oy, Oz$ như hình  \n\na) Gọi M là trung điểm BC, E là trung điểm A'B' khi đó tọa độ $M_E = (0;0;-4)$  \nb) Tọa độ điểm $B(3\\sqrt{3};0;0)$  \nc) $\\cos(A'B, BC) > 0$  \nd) Khoảng cách giữa hai đường thẳng $ME$ với $A'A$ bằng $\\frac{3\\sqrt{3}}{2}$  \n\nPHẦN III. Câu yêu cầu trình bày lời ngắn, thí sinh trả lời từ câu 1 đến câu 6.  \nCâu I. Bạn Tiến làm một bài kiểm tra gồm 20 câu hỏi trắc nghiệm nhiều lựa chọn. Mỗi câu hỏi có 4 phương án trả lời và chỉ có một phương án đúng, trả lời đúng mỗi câu được 0,5 điểm. Bạn ấy đã làm đúng 15 câu, trong đó những câu còn lại có 2 câu bạn ấy đã loại được phương án sai. Do quá sức giới hạn nên bạn\n\n---\n\n[Trang 4]\n[Trang 1]\n\nCâu 1. Ấy đã trả lời bằng cách chọn ngẫu nhiên. Tính xác suất để bạn Tiến được 9 điểm. (làm tròn đến hàng phần trăm).\n\nCâu 2. Trong không gian $Oxy$, mắt một người quan sát đặt tại điểm $M(1; 2; 3)$ và vật cần quan sát đặt tại điểm $N(3; 6; -12)$. Một điểm $A$ cũng có dạng hình tròn tại gốc tọa độ, bán kính $R = 2$ thuộc mặt phẳng $(Oxy)$ bắt đầu xuất phát đi thẳng theo hướng vector $\\vec{j} = (0; 1; 0)$ với tốc độ $v = 5 \\text{(cm/s)}$. Tính khoảng thời gian mà trong quá trình di chuyển tâm bia đã có khúc tâm nhìn của người quan sát. làm tròn kết quả đến hàng phần trăm. (đơn vị trên mỗi trục tọa độ là 1cm).\n\nCâu 3. Khảo sát thời gian sử dụng điện thoại trong một ngày của một học sinh trong lớp học có 42 học sinh thu được mẫu số liệu nhóm sau\n\n\\[\n\\begin{array}{|c|c|c|c|c|c|}\n\\hline\nThời gian (phút) & [0;20) & [20;40) & [40;60) & [60;80) & [80;100) \\\\\n\\hline\nSố học sinh & 7 & a & b & 6 &  \\\\\n\\hline\n\\end{array}\n\\]\n\nBiết rằng số học sinh sử dụng điện thoại trung bình của lớp trên là 40 phút. Hỏi lớp trên có nhiều bạn có thời gian sử dụng điện thoại dưới mức trung bình lớp.\n\nCâu 4. Tìm giá trị lớn nhất và nhỏ nhất của hàm số $y = (x^2 + x + 1)e^{-x}$ trên đoạn $[-1; 0]$ (làm tròn đến hàng phần chức).\n\nCâu 5. Người ta bơm xăng vào bình xăng của một chiếc xe ô tô. Biết thể tích $V (lit)$ của xăng được bơm vào bình phụ thuộc theo thời gian $t$ (phút) được cho bởi công thức $V(t) = \\frac{35}{4} (3t - t^2) + 4$ với $0 \\leq t \\leq 1$. Gọi $V' (t)$ là tốc độ bơm của xăng vào bình. Xác định thể tích (lit) của xăng trong bình tại thời điểm mà tốc độ bơm đạt nhỏ nhất (làm tròn đến hàng phần chức).\n\nCâu 6. Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình vuông có cạnh bằng 4. Mặt bên $SAB$ là tam giác đều và $SCD$ là tam giác vuông cạnh tại đỉnh $S$. Tính thể tích khối chóp $S.ABCD$ (làm tròn đến hàng phần trăm).\n\n------- HẾT -------"
+}

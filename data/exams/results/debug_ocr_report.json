@@ -1,0 +1,882 @@
+{
+  "pdf": "03a1a1a17294463cb4667ef9b6c3b34b.pdf",
+  "engine": "cloud",
+  "n_pages": 15,
+  "n_questions": 22,
+  "latex_summary": {
+    "avg_score": 10.0,
+    "perfect_count": 22,
+    "issues_count": 0,
+    "details": [
+      {
+        "question_number": "Câu 1",
+        "stats": {
+          "inline_math": 7,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 7
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 179
+      },
+      {
+        "question_number": "Câu 2",
+        "stats": {
+          "inline_math": 5,
+          "block_math": 0,
+          "frac": 2,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 7
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 136
+      },
+      {
+        "question_number": "Câu 3",
+        "stats": {
+          "inline_math": 8,
+          "block_math": 0,
+          "frac": 12,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 20
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 295
+      },
+      {
+        "question_number": "Câu 4",
+        "stats": {
+          "inline_math": 5,
+          "block_math": 0,
+          "frac": 1,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 6
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 149
+      },
+      {
+        "question_number": "Câu 5",
+        "stats": {
+          "inline_math": 5,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 5
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 304
+      },
+      {
+        "question_number": "Câu 6",
+        "stats": {
+          "inline_math": 7,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 7
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 174
+      },
+      {
+        "question_number": "Câu 7",
+        "stats": {
+          "inline_math": 0,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 0
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": false,
+        "content_length": 113
+      },
+      {
+        "question_number": "Câu 8",
+        "stats": {
+          "inline_math": 3,
+          "block_math": 1,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 4
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 335
+      },
+      {
+        "question_number": "Câu 9",
+        "stats": {
+          "inline_math": 5,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 5
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 88
+      },
+      {
+        "question_number": "Câu 10",
+        "stats": {
+          "inline_math": 8,
+          "block_math": 0,
+          "frac": 3,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 11
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 174
+      },
+      {
+        "question_number": "Câu 11",
+        "stats": {
+          "inline_math": 4,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 4
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 105
+      },
+      {
+        "question_number": "Câu 12",
+        "stats": {
+          "inline_math": 6,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 2,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 8
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 167
+      },
+      {
+        "question_number": "Câu 1",
+        "stats": {
+          "inline_math": 7,
+          "block_math": 1,
+          "frac": 1,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 9
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 500
+      },
+      {
+        "question_number": "Câu 2",
+        "stats": {
+          "inline_math": 19,
+          "block_math": 2,
+          "frac": 3,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 24
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 506
+      },
+      {
+        "question_number": "Câu 3",
+        "stats": {
+          "inline_math": 3,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 3
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 470
+      },
+      {
+        "question_number": "Câu 4",
+        "stats": {
+          "inline_math": 20,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 20
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 933
+      },
+      {
+        "question_number": "Câu 1",
+        "stats": {
+          "inline_math": 4,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 4
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 171
+      },
+      {
+        "question_number": "Câu 2",
+        "stats": {
+          "inline_math": 0,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 0
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": false,
+        "content_length": 306
+      },
+      {
+        "question_number": "Câu 3",
+        "stats": {
+          "inline_math": 0,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 0
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": false,
+        "content_length": 221
+      },
+      {
+        "question_number": "Câu 4",
+        "stats": {
+          "inline_math": 4,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 4
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 186
+      },
+      {
+        "question_number": "Câu 5",
+        "stats": {
+          "inline_math": 1,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 0,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 1
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 210
+      },
+      {
+        "question_number": "Câu 6",
+        "stats": {
+          "inline_math": 2,
+          "block_math": 0,
+          "frac": 0,
+          "sqrt": 1,
+          "integral": 0,
+          "sum": 0,
+          "limit": 0,
+          "total_latex": 3
+        },
+        "issues": [],
+        "score": 10,
+        "has_latex": true,
+        "content_length": 624
+      }
+    ]
+  },
+  "crop_summary": {
+    "total": 22,
+    "with_figure": 3,
+    "success": 3,
+    "details": [
+      {
+        "question_number": "Câu 1",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 2",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 3",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 4",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 5",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 6",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 7",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 8",
+        "has_figure": true,
+        "figure_description": "Bảng biến thiên của hàm số $y=f(x)$ với các mốc $x=-\\infty,0,3,+\\infty$, đạo hàm đổi dấu $+:0:-:0:+$, giá trị hàm số lần lượt $-\\infty,2,-5,+\\infty$.",
+        "figure_pages": [
+          2
+        ],
+        "crops": [
+          {
+            "page": 2,
+            "status": "saved",
+            "filepath": "D:\\ANNGUYEN\\Project\\AITutor\\data\\exams\\debug_ocr\\crops\\Câu_8_page2.png",
+            "size": "1241x1754",
+            "file_size_kb": 159.994140625
+          }
+        ],
+        "status": "ok"
+      },
+      {
+        "question_number": "Câu 9",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 10",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 11",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 12",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 1",
+        "has_figure": true,
+        "figure_description": "Bài đúng/sai về hàm số $y=\\frac{x^{2}+4}{x}$, gồm các mệnh đề a), b), c), d); mệnh đề d) tham chiếu đến đồ thị của hàm số.",
+        "figure_pages": [
+          2
+        ],
+        "crops": [
+          {
+            "page": 2,
+            "status": "saved",
+            "filepath": "D:\\ANNGUYEN\\Project\\AITutor\\data\\exams\\debug_ocr\\crops\\Câu_1_page2.png",
+            "size": "1241x1754",
+            "file_size_kb": 159.994140625
+          }
+        ],
+        "status": "ok"
+      },
+      {
+        "question_number": "Câu 2",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 3",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 4",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 1",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 2",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 3",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 4",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 5",
+        "has_figure": false,
+        "crops": [],
+        "status": "skipped_no_figure"
+      },
+      {
+        "question_number": "Câu 6",
+        "has_figure": true,
+        "figure_description": "Hình vuông cạnh $80cm$ lát nền, gồm 4 bông hoa; mỗi bông hoa có 4 cánh hoa. Mỗi cánh hoa là phần giao của hai hình tròn cùng bán kính, khoảng cách hai tâm là $20\\sqrt{2}cm$. Phần màu xanh và phần màu trắng có chi phí tráng men khác nhau.",
+        "figure_pages": [
+          4
+        ],
+        "crops": [
+          {
+            "page": 4,
+            "status": "saved",
+            "filepath": "D:\\ANNGUYEN\\Project\\AITutor\\data\\exams\\debug_ocr\\crops\\Câu_6_page4.png",
+            "size": "1241x1754",
+            "file_size_kb": 227.8671875
+          }
+        ],
+        "status": "ok"
+      }
+    ]
+  },
+  "cross_page_summary": {
+    "detected": 0,
+    "total": 22,
+    "details": [
+      {
+        "question_number": "Câu 1",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 179,
+          "figure_pages": []
+        },
+        "content_preview": "Trong không gian $Oxyz$, cho mặt phẳng $(P): 2x - y + 3z - 4 = 0$. Một vectơ pháp tuyến của mặt phẳng $(P)$ có tọa độ là\nA. $(3;-1;2)$.\nB. $(2;-1;3)$.\nC. $(-1;2;3)$.\nD. $(2;1;3)$."
+      },
+      {
+        "question_number": "Câu 2",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 136,
+          "figure_pages": []
+        },
+        "content_preview": "Tiệm cận đứng của đồ thị hàm số $y=\\frac{2x-1}{x+2}$ là đường thẳng có phương trình:\nA. $x=\\frac{1}{2}$.\nB. $y=2$.\nC. $x=-2$.\nD. $y=-2$."
+      },
+      {
+        "question_number": "Câu 3",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 295,
+          "figure_pages": []
+        },
+        "content_preview": "Trong không gian $Oxyz$, cho hai điểm $A(1;3;-2)$ và $B(2;-2;-1)$. Phương trình đường thẳng $AB$ là\nA. $\\frac{x+1}{1}=\\frac{y+3}{-5}=\\frac{z-2}{1}$.\nB. $\\frac{x-1}{1}=\\frac{y-3}{3}=\\frac{z+2}{-2}$.\nC. $\\frac{x-2}{1}=\\frac{y+2}{-5}=\\frac{z+1}{1}$.\nD. $\\frac{x+2}{1}=\\frac{y-2}{-5}=\\frac{z-1}{1}$."
+      },
+      {
+        "question_number": "Câu 4",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 149,
+          "figure_pages": []
+        },
+        "content_preview": "Tập nghiệm của bất phương trình $\\left(\\frac{1}{2}\\right)^{2x+3}\\le 8$ là.\nA. $[3;+\\infty)$.\nB. $(-\\infty;-3]$.\nC. $[-3;+\\infty)$.\nD. $(-3;+\\infty)$."
+      },
+      {
+        "question_number": "Câu 5",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 304,
+          "figure_pages": []
+        },
+        "content_preview": "Thời gian hoàn thành bài kiểm tra cuối học kỳ II môn Toán của các bạn học sinh lớp 12A được cho trong bảng sau:\n\nThời gian (phút) | $[65;70)$ | $[70;75)$ | $[75;80)$ | $[80;85)$ | $[85;90)$\nSố học sinh | 2 | 3 | 15 | 20 | 5\n\nKhoảng biến thiên của mẫu số liệu ghép nhóm trên là\nA. 25.\nB. 20.\nC. 30.\nD."
+      },
+      {
+        "question_number": "Câu 6",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 174,
+          "figure_pages": []
+        },
+        "content_preview": "Nguyên hàm $F(x)$ của hàm số $f(x)=e^x+2\\sin x$ thỏa mãn $F(0)=20$ là\nA. $F(x)=-e^x-2\\cos x+23$.\nB. $F(x)=e^x-2\\cos x+21$.\nC. $F(x)=e^x+2\\cos x+17$.\nD. $F(x)=e^x+2\\sin x+19$."
+      },
+      {
+        "question_number": "Câu 7",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 113,
+          "figure_pages": []
+        },
+        "content_preview": "Thể tích của khối chóp có diện tích đáy bằng 2025 và chiều cao bằng 60 là\nA. 40500.\nB. 121500.\nC. 1965.\nD. 33,75."
+      },
+      {
+        "question_number": "Câu 8",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 335,
+          "figure_pages": [
+            2
+          ]
+        },
+        "content_preview": "Cho hàm số $y=f(x)$ xác định và liên tục trên $\\mathbb{R}$ và có bảng biến thiên như sau:\n$$\n\\begin{array}{c|cccc}\nx & -\\infty & 0 & 3 & +\\infty \\\\\n\\hline\ny' & + & 0 & - & 0 \\; + \\\\\n\\hline\ny & -\\infty & 2 & -5 & +\\infty\n\\end{array}\n$$\nTổng giá trị cực đại và giá trị cực tiểu của hàm số đã cho bằng b"
+      },
+      {
+        "question_number": "Câu 9",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 88,
+          "figure_pages": []
+        },
+        "content_preview": "Nghiệm của phương trình $\\log_{3}(2x-1)=3$ là:\nA. $x=2$.\nB. $x=5$.\nC. $x=14$.\nD. $x=41$."
+      },
+      {
+        "question_number": "Câu 10",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 174,
+          "figure_pages": []
+        },
+        "content_preview": "Diện tích hình phẳng giới hạn bởi đồ thị hàm số $y=x^{2}-2x$, $y=-2x^{2}+2x$ và hai đường thẳng $x=0$, $x=1$ là:\nA. $1$.\nB. $\\frac{2}{3}$.\nC. $\\frac{1}{2}$.\nD. $\\frac{4}{3}$."
+      },
+      {
+        "question_number": "Câu 11",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 105,
+          "figure_pages": []
+        },
+        "content_preview": "Cấp số cộng $(u_n)$ có $u_1=-1$ và $u_9=23$. Số hạng $u_5$ của cấp số cộng là:\nA. 10.\nB. 14.\nC. 11.\nD. 8."
+      },
+      {
+        "question_number": "Câu 12",
+        "question_type": "mcq",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 167,
+          "figure_pages": []
+        },
+        "content_preview": "Cho hình lập phương $ABCD.A'B'C'D'$ có độ dài mỗi cạnh bằng 1. Tính độ dài của $\\overrightarrow{AB}+\\overrightarrow{CC'}$\nA. $\\sqrt{2}$.\nB. $\\sqrt{3}$.\nC. $1$.\nD. $2$."
+      },
+      {
+        "question_number": "Câu 1",
+        "question_type": "true_false",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 500,
+          "figure_pages": [
+            2
+          ]
+        },
+        "content_preview": "Cho hàm số $y=\\frac{x^{2}+4}{x}$.\n\na) Đạo hàm của hàm số đã cho $y' = 1-\\frac{4}{x^{2}}$\n\nb) Đạo hàm của hàm số đã cho nhận giá trị âm trên các khoảng $(-2;0)$ và $(0;2)$ và nhận giá trị dương trên các khoảng $(-\\infty;-2)$ và $(2;+\\infty)$.\n\nc) Bảng biến thiên của hàm số đã cho là\n$$\n\\begin{array}{"
+      },
+      {
+        "question_number": "Câu 2",
+        "question_type": "true_false",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 506,
+          "figure_pages": []
+        },
+        "content_preview": "Trong không gian $Oxyz$, cho điểm $M(3;1;9)$, đường thẳng $d:\\begin{cases}x=t\\\\ y=-1-t\\\\ z=2+2t\\end{cases}$ và mặt phẳng\n$$(\\alpha): x+y-z+3=0.$$\n\na) Một vectơ pháp tuyến của mặt phẳng $(\\alpha)$ là $\\vec n=(1;1;-1)$.\n\nb) Điểm $M$ thuộc đường thẳng $d$.\n\nc) Điểm $A$ có tọa độ dạng $A(t;-1-t;2+2t)$ v"
+      },
+      {
+        "question_number": "Câu 3",
+        "question_type": "true_false",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 470,
+          "figure_pages": []
+        },
+        "content_preview": "Một công ty truyền thông đấu thầu 2 dự án. Khả năng thắng thầu dự án 1 là 0,5 và dự án 2 là 0,6. Khả năng thắng thầu cả hai dự án là 0,4. Gọi $A,B$ lần lượt là các biến cố thắng thầu dự án 1 và dự án 2.\n\na) $A$ và $B$ là hai biến cố độc lập.\n\nb) Xác suất công ty thắng thầu đúng một dự án là 0,3.\n\nc)"
+      },
+      {
+        "question_number": "Câu 4",
+        "question_type": "true_false",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": true,
+          "missing_answers_mcq": false,
+          "content_length": 933,
+          "figure_pages": []
+        },
+        "content_preview": "Nhà máy $A$ chuyên sản xuất một loại sản phẩm cho nhà máy $B$. Hai nhà máy thỏa thuận rằng, hằng tháng nhà máy $A$ cung cấp cho nhà máy $B$ số lượng sản phẩm theo đơn đặt hàng của nhà máy $B$ (tối đa 100 tấn sản phẩm). Biết rằng, nếu số lượng đặt hàng là $x$ (tấn) sản phẩm thì giá bán cho mỗi tấn sả"
+      },
+      {
+        "question_number": "Câu 1",
+        "question_type": "short_answer",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 171,
+          "figure_pages": []
+        },
+        "content_preview": "Cho tứ diện $ABCD$ có tất cả các cạnh bằng nhau và bằng $a$. Tính côsin của góc giữa đường thẳng $AB$ và mặt phẳng $(BCD)$ (làm tròn kết quả đến chữ số thập phân thứ hai)."
+      },
+      {
+        "question_number": "Câu 2",
+        "question_type": "short_answer",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 306,
+          "figure_pages": []
+        },
+        "content_preview": "Hộp thứ nhất chứa 5 viên bi xanh và 1 viên bi đỏ. Hộp thứ hai chứa 4 viên bi đỏ. Lấy ngẫu nhiên 3 viên bi từ hộp thứ nhất và bỏ vào hộp thứ hai, rồi từ hộp thứ hai lấy ngẫu nhiên 2 viên bi. Biết 2 viên bi lấy ra ở hộp thứ hai có cùng màu. Tính xác suất 3 viên bi bị lấy ra từ hộp thứ nhất cũng có cùn"
+      },
+      {
+        "question_number": "Câu 3",
+        "question_type": "short_answer",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 221,
+          "figure_pages": []
+        },
+        "content_preview": "Cuối mỗi tháng anh Bình đều gửi tiết kiệm 1 triệu đồng vào ngân hàng với lãi suất 8%/năm theo phương thức tính lãi kép với kì hạn 1 tháng. Hỏi sau bao nhiêu tháng anh Bình có đủ 21 triệu đồng để mua được một chiếc xe máy?"
+      },
+      {
+        "question_number": "Câu 4",
+        "question_type": "short_answer",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 186,
+          "figure_pages": []
+        },
+        "content_preview": "Cho hình hộp chữ nhật $ABCD.A'B'C'D'$. Biết khoảng cách từ đỉnh $A$ đến mặt phẳng $(A'BD)$ bằng 10. Tính thể tích nhỏ nhất của khối hộp $ABCD.A'B'C'D'$ (làm tròn kết quả đến hàng đơn vị)"
+      },
+      {
+        "question_number": "Câu 5",
+        "question_type": "short_answer",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 210,
+          "figure_pages": []
+        },
+        "content_preview": "Một nhà sản xuất cần làm những hộp đựng hình trụ có thể tích $330ml$. Tìm bán kính của hộp đựng để chi phí vật liệu dùng để sản xuất là nhỏ nhất (kết quả được tính theo centimét và làm tròn đến hàng phần trăm)."
+      },
+      {
+        "question_number": "Câu 6",
+        "question_type": "short_answer",
+        "is_cross_page": false,
+        "signals": {
+          "multi_fig_pages": false,
+          "has_page_markers": false,
+          "is_very_long": false,
+          "missing_answers_mcq": false,
+          "content_length": 624,
+          "figure_pages": [
+            4
+          ]
+        },
+        "content_preview": "Viên gạch men dùng để lát nền nhà là một hình vuông có cạnh bằng $80cm$ (xem hình bên dưới):\n\nMỗi viên gạch có 4 bông hoa, mỗi bông hoa gồm 4 cánh hoa. Mỗi cánh hoa (phần màu xanh) là phần giao nhau của hai hình tròn có cùng bán kính và khoảng cách giữa hai tâm là $20\\sqrt{2}cm$. Ước tính ở công đoạ"
+      }
+    ]
+  }
+}

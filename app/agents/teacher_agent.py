@@ -285,29 +285,32 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── Step 3: Build messages ───────────────────────────────
         if mode == "exam":
-            system_prompt = TEACHER_SYSTEM_PROMPT_EXAM.format(
-                context=context,
-                skill_names_list=skill_names_list,
-                formulas_list=formulas_list,
-                mastery_level=mastery_level,
-                few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_EXAM
+                .replace("{context}", context)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{few_shot_block}", few_shot_block)
             )
         elif mode == "answer":
-            system_prompt = TEACHER_SYSTEM_PROMPT_ANSWER.format(
-                context=context,
-                skill_names_list=skill_names_list,
-                formulas_list=formulas_list,
-                mastery_level=mastery_level,
-                few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_ANSWER
+                .replace("{context}", context)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{few_shot_block}", few_shot_block)
             )
         else:
-            system_prompt = TEACHER_SYSTEM_PROMPT_SOCRATIC.format(
-                context=context,
-                skill_names_list=skill_names_list,
-                formulas_list=formulas_list,
-                mastery_level=mastery_level,
-                prerequisite_gaps=gaps_text,
-                few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_SOCRATIC
+                .replace("{context}", context)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{prerequisite_gaps}", gaps_text or "")
+                .replace("{few_shot_block}", few_shot_block)
             )
 
         messages = [SystemMessage(content=system_prompt)]
@@ -436,20 +439,32 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── Step 3: Build system prompt ───────────────────────────────
         if mode == "exam":
-            system_prompt = TEACHER_SYSTEM_PROMPT_EXAM.format(
-                context=context, mastery_level=mastery_level, few_shot_block=few_shot_block,
-                skill_names_list=skill_names_list, formulas_list=formulas_list,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_EXAM
+                .replace("{context}", context)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{few_shot_block}", few_shot_block)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
             )
         elif mode == "answer":
-            system_prompt = TEACHER_SYSTEM_PROMPT_ANSWER.format(
-                context=context, mastery_level=mastery_level, few_shot_block=few_shot_block,
-                skill_names_list=skill_names_list, formulas_list=formulas_list,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_ANSWER
+                .replace("{context}", context)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{few_shot_block}", few_shot_block)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
             )
         else:
-            system_prompt = TEACHER_SYSTEM_PROMPT_SOCRATIC.format(
-                context=context, mastery_level=mastery_level,
-                skill_names_list=skill_names_list, formulas_list=formulas_list,
-                prerequisite_gaps=gaps_text or "", few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_SOCRATIC
+                .replace("{context}", context)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{prerequisite_gaps}", gaps_text or "")
+                .replace("{few_shot_block}", few_shot_block)
             )
 
         # ── Step 4: Build OpenAI messages (dùng AsyncOpenAI vì LangChain không hỗ trợ stream=True dễ) ──
@@ -527,29 +542,32 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── Chọn system prompt theo mode ───────────────────────────
         if mode == "exam":
-            system_prompt = TEACHER_SYSTEM_PROMPT_EXAM.format(
-                context=context,
-                skill_names_list=skill_names_list,
-                formulas_list=formulas_list,
-                mastery_level=mastery_level,
-                few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_EXAM
+                .replace("{context}", context)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{few_shot_block}", few_shot_block)
             )
         elif mode == "answer":
-            system_prompt = TEACHER_SYSTEM_PROMPT_ANSWER.format(
-                context=context,
-                skill_names_list=skill_names_list,
-                formulas_list=formulas_list,
-                mastery_level=mastery_level,
-                few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_ANSWER
+                .replace("{context}", context)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{few_shot_block}", few_shot_block)
             )
         else:
-            system_prompt = TEACHER_SYSTEM_PROMPT_SOCRATIC.format(
-                context=context,
-                skill_names_list=skill_names_list,
-                formulas_list=formulas_list,
-                mastery_level=mastery_level,
-                prerequisite_gaps=gaps_text,
-                few_shot_block=few_shot_block,
+            system_prompt = (
+                TEACHER_SYSTEM_PROMPT_SOCRATIC
+                .replace("{context}", context)
+                .replace("{skill_names_list}", skill_names_list)
+                .replace("{formulas_list}", formulas_list)
+                .replace("{mastery_level}", mastery_level)
+                .replace("{prerequisite_gaps}", gaps_text or "")
+                .replace("{few_shot_block}", few_shot_block)
             )
 
         # ── Build messages với history ─────────────────────────────

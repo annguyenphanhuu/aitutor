@@ -271,6 +271,16 @@
                 </div>
             </div>
 
+            <!-- OCR Confirm Area -->
+            <div class="exam-solver-confirm" id="exam-solver-confirm" style="display:none; padding: 20px; flex: 1; flex-direction: column;">
+                <p style="margin-bottom: 10px; font-weight: 600; color: var(--text);">Vui lòng kiểm tra và chỉnh sửa văn bản OCR trước khi giải:</p>
+                <textarea id="exam-ocr-textarea" style="flex: 1; width: 100%; border-radius: 8px; border: 1px solid var(--border); padding: 12px; font-family: monospace; resize: none; background: var(--bg-secondary); color: var(--text);"></textarea>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+                    <button class="solver-action-btn" onclick="resetExamSolver()">Huỷ</button>
+                    <button class="solver-action-btn primary" onclick="confirmAndSolveExam()">Xác nhận & Giải Đề</button>
+                </div>
+            </div>
+
             <!-- Progress Area -->
             <div class="exam-solver-progress" id="exam-solver-progress" style="display:none">
                 <div class="exam-progress-status" id="exam-progress-status">

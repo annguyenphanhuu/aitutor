@@ -1,0 +1,345 @@
+[
+  {
+    "id": "exam_de7plus_de06_p1_q01",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nHàm số $F(x) = e^{-2x}$ là nguyên hàm của hàm số nào sau đây?\n\nA. $f_1(x) = \\frac{e^{-2x}}{-2}$.\nB. $f_2(x) = e^{-2x}$.\nC. $f_3(x) - 2e^{-2x}$.\nD. $f_4(x) = -2e^{-2x}$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 1,
+      "difficulty_part": 1,
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nTa có $[F(x)]' = (e^{-2x})' = -2e^{-2x}$\nNên hàm số $F(x) = e^{-2x}$ là nguyên hàm của hàm số $f_4 = -2e^{-2x}$"
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q02",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nTọa độ của vectơ $\\vec{u} = \\vec{k} - \\vec{j}$ là\n\nA. $(0; -1; 1)$.\nB. $(0; 1; 1)$.\nC. $(1; 0; 0)$.\nD. $(-1; 0; 0)$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 2,
+      "difficulty_part": 1,
+      "skill_id": "geometry_vector",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nTa có $\\vec{u} = x.\\vec{i} + y.\\vec{j} + z.\\vec{k} \\Leftrightarrow \\vec{u} = (x; y; z)$ nên $\\vec{u} = \\vec{k} - \\vec{j} \\Leftrightarrow \\vec{u} = (0; -1; 1)$."
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q03",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nTập xác định của hàm số $y = x - 1 + \\frac{3}{x + 2}$ là\n\nA. $\\mathbb{R} \\setminus \\{1\\}$.\nB. $\\mathbb{R} \\setminus \\{-1\\}$.\nC. $\\mathbb{R} \\setminus \\{2\\}$.\nD. $\\mathbb{R} \\setminus \\{-2\\}$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 3,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nHàm số xác định khi $x + 2 \\neq 0 \\Leftrightarrow x \\neq -2$ nên tập xác định của hàm số là $\\mathbb{R} \\setminus \\{-2\\}$."
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q04",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nGiá trị lớn nhất của hàm số $y = \\sin x$ là\n\nA. $\\pi$.\nB. $2\\pi$.\nC. $1$.\nD. $-1$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 4,
+      "difficulty_part": 1,
+      "skill_id": "trigonometric_equations",
+      "chapter": "Hàm số lượng giác",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTa có $-1 \\leq \\sin x \\leq 1$ với mọi $x \\in \\mathbb{R}$ nên GTLN của hàm số $y = \\sin x$ là 1."
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q05",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nNếu hàm số $y = f(x)$ thỏa mãn $\\lim\\limits_{x \\to -\\infty} f(x) = -1$ và $\\lim\\limits_{x \\to +\\infty} f(x) = 1$ thì:\n\nA. Đồ thị hàm số có 2 đường tiệm cận đứng là $x = -1$ và $x = 1$\nB. Đồ thị hàm số có 1 đường tiệm cận đứng là $x = -1$ và 1 đường tiệm cận ngang là $y = 1$\nC. Đồ thị hàm số có 1 đường tiệm cận ngang là $y = -1$ và 1 đường tiệm cận đứng là $x = 1$\nD. Đồ thị hàm số có 2 đường tiệm cận ngang là $y = -1$ và $y = 1$",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 5,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Khảo sát hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nTheo định nghĩa:\nHàm số $y = f(x)$ thỏa mãn $\\lim\\limits_{x \\to -\\infty} f(x) = -1$ hoặc $\\lim\\limits_{x \\to +\\infty} f(x) = -1$ thì đường thẳng $y = -1$ là tiệm cận ngang của đồ thị hàm số;\nHàm số $y = f(x)$ thỏa mãn $\\lim\\limits_{x \\to -\\infty} f(x) = 1$ hoặc $\\lim\\limits_{x \\to +\\infty} f(x) = 1$ thì đường thẳng $y = 1$ là tiệm cận ngang của đồ thị hàm số;"
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q06",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, mặt phẳng $(P): 2x - y - 3 = 0$ có một vectơ pháp tuyến là\n\nA. $\\vec{n}_1 = (2; -1)$.\nB. $\\vec{n}_2 = (2; -1; 3)$.\nC. $\\vec{n}_3 = (2; -1; 0)$.\nD. $\\vec{n}_4 = (-2; 1; 3)$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 6,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nMặt phẳng $ax+by+cz+d=0$ có một vec tơ pháp tuyến là $\\vec{n}=(a;b;c)$ nên mặt phẳng $(P): 2x - y - 3 = 0$ có một vectơ pháp tuyến là $\\vec{n}=(2;-1;0)$."
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q07",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây là một nguyên hàm của hàm số $f(x) = \\sin x$?\n\nA. $F_1(x) = \\sin x$.\nB. $F_2(x) = -\\sin x$.\nC. $F_3(x) = \\cos x$.\nD. $F_4(x) = -\\cos x$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 7,
+      "difficulty_part": 1,
+      "skill_id": "primitive_basic",
+      "chapter": "Nguyên hàm và Tích phân",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nTa có $\\int \\sin x.dx = -\\cos x + C$."
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q08",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, mặt cầu có tâm $I(2; 1; -3)$ và bán kính $9$ có phương trình là\n\nA. $(x-2)^2 + (y-1)^2 + (z+3)^2 = 81$.\nB. $(x+2)^2 + (y+1)^2 + (z-3)^2 = 81$.\nC. $(x-2)^2 + (y-1)^2 + (z+3)^2 = 9$.\nD. $(x+2)^2 + (y+1)^2 + (z-3)^2 = 9$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 8,
+      "difficulty_part": 1,
+      "skill_id": "geometry_sphere",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nÁp dụng định nghĩa phương trình mặt cầu có tâm và bán kính\n$(x-x_I)^2 + (y-y_I)^2 + (z-z_I)^2 = R^2$"
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q09",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, khoảng cách từ một điểm $M_0(x_0; y_0; z_0)$ đến một mặt phẳng $(P): ax + by + cz + d = 0$ bằng:\n\nA. $\\frac{|ax_0 + by_0 + c|}{\\sqrt{a^2 + b^2}}$.\nB. $\\frac{|ax_0 + by_0 + cz_0 + d|}{\\sqrt{a^2 + b^2 + c^2}}$.\nC. $\\frac{\\sqrt{a^2 + b^2 + c^2}}{|ax_0 + by_0 + cz_0 + d|}$.\nD. $\\frac{|ax_0 + by_0 + cz_0 + d|}{a^2 + b^2 + c^2}$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 9,
+      "difficulty_part": 1,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\n$d(M_0; (P)) = \\frac{|ax_0 + by_0 + cz_0 + d|}{\\sqrt{a^2 + b^2 + c^2}}$"
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q10",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nKhi thống kê chiều cao (đơn vị: centimet) của học sinh lớp 12A, người ta thu được mẫu số liệu ghép nhóm như Bảng 1. Khoảng biến thiên của mẫu số liệu ghép nhóm đó bằng:\n\n| Nhóm | Tần số |\n|---|---|\n| $[155; 160)$ | $2$ |\n| $[160; 165)$ | $5$ |\n| $[165; 170)$ | $21$ |\n| $[170; 175)$ | $11$ |\n| $[175; 180)$ | $1$ |\n| | $n = 40$ |\n\nA. $25cm$.\nB. $5cm$.\nC. $20cm$.\nD. $180cm$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 10,
+      "difficulty_part": 1,
+      "skill_id": "statistics_dispersion",
+      "chapter": "Thống kê",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nĐầu mút trái của nhóm 1 là $a_1 = 155$\nĐầu mút phải của nhóm 5 là $a_6 = 180$\nKhoảng biến thiên là $R = a_6 - a_1 = 180 - 155 = 25cm$"
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q11",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nCho $A$ và $B$ là hai biến cố độc lập thỏa mãn $P(A) = 0,5$ và $P(B) = 0,3$. Khi đó $P(A \\cap B)$ bằng:\n\nA. $0,8$.\nB. $0,2$.\nC. $0,6$.\nD. $0,15$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 11,
+      "difficulty_part": 1,
+      "skill_id": "probability_basic",
+      "chapter": "Xác suất",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nVì $A$ và $B$ là hai biến cố độc lập nên $P(A \\cap B) = P(A).P(B) = 0,5 . 0,3 = 0,15$"
+  },
+  {
+    "id": "exam_de7plus_de06_p1_q12",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây có đồ thị là đường cong như hình vẽ\n\nA. $y = x - \\frac{1}{x-1}$.\nB. $y = -x + \\frac{1}{x-1}$.\nC. $y = -x - \\frac{1}{x-1}$.\nD. $y = x + \\frac{1}{x-1}$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 12,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Khảo sát hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de06/q12.png"
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nTừ đồ thị cho thấy tiệm cận xiên là đường thẳng $y = x$, suy ra loại đáp án B và C\nXét hàm số $y = x - \\frac{1}{x-1}$ ta có $y' = 1 + \\frac{1}{(x-1)^2} > 0, \\forall x \\neq 1$, suy ra loại đáp án A"
+  },
+  {
+    "id": "exam_de7plus_de06_p2_q13",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = f(x) = x^3 + ax^2 + bx + c$ có đồ thị như hình vẽ.\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Hàm số $y = f(x)$ có hai điểm cực trị là 0 và 2 | | |\n| (b) Giá trị $b$ bằng 0 | | |\n| (c) Giá trị $c = -2$ | | |\n| (d) $f(x) = x^3 - 6x^2 + 2$ | | |",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 13,
+      "difficulty_part": 2,
+      "skill_id": "function_survey",
+      "chapter": "Khảo sát hàm số",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-F,d-F",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de06/q13.png"
+    },
+    "answer": "ĐÁP ÁN: a-T,b-T,c-F,d-F\n\nGIẢI THÍCH:\n(a) Hàm số $y = f(x)$ có hai điểm cực trị là 0 và 2. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Ta có $y' = f'(x) = 3x^2 + 2ax + b$. Vì $x = 0$ là cực trị của hàm số nên $f'(0) = 0 \\Rightarrow b = 0$. $\\rightarrow$ Chọn ĐÚNG.\n\n(c) Đồ thị hàm số đi qua điểm $(0; 2)$ nên $f(0) = 2 \\Rightarrow c = 2$. Do đó giá trị $c = -2$ là sai. $\\rightarrow$ Chọn SAI.\n\n(d) Ta có $x = 2$ là cực trị của hàm số nên $f'(2) = 0 \\Rightarrow 3.2^2 + 2a.2 + b = 0$. Vì $b = 0 \\Rightarrow 12 + 4a = 0 \\Rightarrow a = -3$.\nTa có $b = 0, a = -3, c = 2 \\Rightarrow f(x) = x^3 - 3x^2 + 2$. Đề cho $f(x) = x^3 - 6x^2 + 2$ là sai. $\\rightarrow$ Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de06_p2_q14",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nTrong không gian $Oxyz$, cho đường thẳng $d$ đi qua hai điểm $A(1; 2; 1)$ và $B(3; 0; 1)$, mặt phẳng $(\\alpha)$ đi qua ba điểm $M(0; 1; 0)$, $N(2; 1; 3)$, $P(4; 1; 1)$.\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Vecto $\\overrightarrow{AB}$ không là vecto chỉ phương của đường thẳng $d$. | | |\n| (b) $\\overrightarrow{MN} = (2; 0; 3)$, $\\overrightarrow{MP} = (4; 0; 1)$ | | |\n| (c) Mặt phẳng $(\\alpha)$ có một vecto pháp tuyến có tọa độ là $(0; -1; 0)$. | | |\n| (d) Góc giữa đường thẳng $d$ và mặt phẳng $(\\alpha)$ bằng $45^\\circ$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 14,
+      "difficulty_part": 2,
+      "skill_id": "geometry_line_plane",
+      "chapter": "Hình học không gian",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-T,c-T,d-T",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: a-F,b-T,c-T,d-T\n\nGIẢI THÍCH:\n(a) Vecto $\\overrightarrow{AB}$ là một vecto chỉ phương của đường thẳng $d$ nên phát biểu \"không là\" là sai. $\\rightarrow$ Chọn SAI.\n\n(b) Ta tính được $\\overrightarrow{MN} = (2 - 0; 1 - 1; 3 - 0) = (2; 0; 3)$ và $\\overrightarrow{MP} = (4 - 0; 1 - 1; 1 - 0) = (4; 0; 1)$. $\\rightarrow$ Chọn ĐÚNG.\n\n(c) Ta có $[\\overrightarrow{MN}, \\overrightarrow{MP}] = (0; 10; 0)$. Gọi $\\vec{m}$ là một vecto pháp tuyến của $(\\alpha)$.\n$\\Rightarrow \\vec{m} = [\\overrightarrow{MN}, \\overrightarrow{MP}] = (0; 10; 0)$. Vecto $\\vec{u}(0; -1; 0)$ cùng phương với $\\vec{m}$.\nVậy mặt phẳng $(\\alpha)$ có một vecto pháp tuyến có tọa độ là $\\vec{u}(0; -1; 0)$. $\\rightarrow$ Chọn ĐÚNG.\n\n(d) Đường thẳng $d$ có vecto chỉ phương $\\overrightarrow{AB} = (2; -2; 0)$. Mặt phẳng $(\\alpha)$ có vecto pháp tuyến $\\vec{n} = (0; -1; 0)$.\nTa có: $\\sin(\\widehat{d, (\\alpha)}) = |\\cos(\\overrightarrow{AB}; \\vec{n})| = \\frac{|2.0 + (-2).(-1) + 0.0|}{\\sqrt{2^2 + (-2)^2 + 0^2} \\cdot \\sqrt{0^2 + (-1)^2 + 0^2}} = \\frac{2}{2\\sqrt{2}.1} = \\frac{\\sqrt{2}}{2}$\n$\\Rightarrow (\\widehat{d, (\\alpha)}) = 45^\\circ$. Vậy góc giữa đường thẳng $d$ và mặt phẳng $(\\alpha)$ là $45^\\circ$. $\\rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de06_p2_q15",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $f(x) = \\left(\\sin\\frac{x}{2} + \\cos\\frac{x}{2}\\right)^2$\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) $f(x) = 1 + \\sin x$ | | |\n| (b) $f(x)$ liên tục trên $\\mathbb{R}$ | | |\n| (c) $\\int f(x)dx = \\int dx + \\int (-\\cos x)dx$ | | |\n| (d) $\\int f(x)dx = x + \\cos x + C$ | | |",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 15,
+      "difficulty_part": 2,
+      "skill_id": "calculus_integral_basic",
+      "chapter": "Nguyên hàm - Tích phân",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-F,d-F",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: a-T,b-T,c-F,d-F\n\nGIẢI THÍCH:\nXét hàm số $f(x) = \\left(\\sin\\frac{x}{2} + \\cos\\frac{x}{2}\\right)^2 = \\sin^2\\frac{x}{2} + 2\\sin\\frac{x}{2}\\cos\\frac{x}{2} + \\cos^2\\frac{x}{2} = 1 + \\sin x$.\n\n(a) $f(x) = 1 + \\sin x$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Ta có $f(x) = 1 + \\sin x$ là hàm lượng giác nên liên tục trên $\\mathbb{R}$. $\\rightarrow$ Chọn ĐÚNG.\n\n(c) Ta có $\\int f(x)dx = \\int (1 + \\sin x)dx = \\int dx + \\int \\sin x dx$. Phép biến đổi trong đề là sai. $\\rightarrow$ Chọn SAI.\n\n(d) Ta có $\\int f(x)dx = \\int (1 + \\sin x)dx = x - \\cos x + C$. Đề cho $x + \\cos x + C$ là sai. $\\rightarrow$ Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de06_p2_q16",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nKhi kiểm tra sức khoẻ tổng quát của bệnh nhân ở một bệnh viện, người ta được kết quả như sau:\n- Có $40\\%$ bệnh nhân bị đau dạ dày.\n- Có $30\\%$ bệnh nhân thường xuyên bị stress.\n- Trong số các bệnh nhân thường xuyên bị stress có $80\\%$ bệnh nhân bị đau dạ dày.\nChọn ngẫu nhiên $1$ bệnh nhân.\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Xác suất chọn được bệnh nhân thường xuyên bị stress là 0,3. | | |\n| (b) Xác suất chọn được bệnh nhân bị đau dạ dày, biết bệnh nhân đó thường xuyên bị stress, là 0,8. | | |\n| (c) Xác suất chọn được bệnh nhân vừa thường xuyên bị stress vừa bị đau dạ dày là 0,24. | | |\n| (d) Xác suất chọn được bệnh nhân thường xuyên bị stress, biết bệnh nhân đó bị đau dạ dày, là 0,6. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 16,
+      "difficulty_part": 2,
+      "skill_id": "probability_conditional",
+      "chapter": "Xác suất",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-T,d-T",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: a-T,b-T,c-T,d-T\n\nGIẢI THÍCH:\nXét các biến cố:\n$A$: \"Bệnh nhân bị đau dạ dày\" $\\Rightarrow P(A) = 40\\% = 0,4$.\n$B$: \"Bệnh nhân thường xuyên bị stress\" $\\Rightarrow P(B) = 30\\% = 0,3$.\nTheo giả thiết, trong số bệnh nhân bị stress thì có $80\\%$ bị đau dạ dày, nghĩa là xác suất có điều kiện $P(A|B) = 80\\% = 0,8$.\n\n(a) Xác suất chọn được bệnh nhân thường xuyên bị stress là $P(B) = 0,3$. $\\rightarrow$ Chọn ĐÚNG.\n\n(b) Xác suất chọn được bệnh nhân bị đau dạ dày, biết bệnh nhân đó thường xuyên bị stress, chính là $P(A|B) = 0,8$. $\\rightarrow$ Chọn ĐÚNG.\n\n(c) Xác suất chọn được bệnh nhân vừa bị stress vừa bị đau dạ dày là: $P(A \\cap B) = P(B) \\cdot P(A|B) = 0,3 \\cdot 0,8 = 0,24$. $\\rightarrow$ Chọn ĐÚNG.\n\n(d) Xác suất chọn được bệnh nhân thường xuyên bị stress, biết bệnh nhân đó bị đau dạ dày là: $P(B|A) = \\frac{P(A \\cap B)}{P(A)} = \\frac{0,24}{0,4} = 0,6$. $\\rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de06_p3_q20",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 20 [Phần 3 - Trả lời ngắn]:\n\nMột vận động viên thể thao hai môn phối hợp luyện tập với một bể bơi hình chữ nhật rộng $400m$, dài $800m$. Vận động viên chạy phối hợp với bơi như sau: Xuất phát từ điểm $A$, chạy đến điểm $X$ và bơi từ điểm $X$ đến điểm $C$ (hình vẽ). Hỏi nên chọn điểm $X$ cách $A$ gần bằng bao nhiêu mét để vận động viên đến $C$ nhanh nhất (làm tròn kết quả đến hàng đơn vị)? Biết rằng vận tốc chạy là $30km/h$, vận tốc bơi là $6km/h$.",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 20,
+      "difficulty_part": 3,
+      "skill_id": "function_optimization",
+      "chapter": "Ứng dụng đạo hàm",
+      "type": "exam_short_answer",
+      "correct_answer": "718",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de06/q20.png"
+    },
+    "answer": "ĐÁP ÁN: 718\n\nGIẢI THÍCH:\nĐặt $x (km)$ là khoảng cách từ điểm $A$ tới điểm $X$, khi đó ta có điều kiện $x \\in [0; 0,8]$.\nTa có thời gian chạy từ $A$ tới $X$ là $t_1 = \\frac{x}{30} (h)$.\nĐộ dài $XB = 0,8 - x$, khoảng cách từ $X$ tới $C$ là:\n$\\sqrt{(0,8 - x)^2 + 0,4^2} = \\sqrt{x^2 - 1,6x + 0,8} (km)$.\nTa có thời gian bơi từ $X$ tới $C$ là $t_2 = \\frac{\\sqrt{x^2 - 1,6x + 0,8}}{6} (h)$.\nĐể vận động viên đến $C$ nhanh nhất thì tổng thời gian $t_1 + t_2$ phải nhỏ nhất.\nXét hàm số $f(x) = \\frac{x}{30} + \\frac{\\sqrt{x^2 - 1,6x + 0,8}}{6}$ với $x \\in [0; 0,8]$.\nTa có $f'(x) = \\frac{1}{30} + \\frac{2x - 1,6}{12\\sqrt{x^2 - 1,6x + 0,8}} = \\frac{1}{30} + \\frac{x - 0,8}{6\\sqrt{x^2 - 1,6x + 0,8}}$.\n$f'(x) = 0 \\Leftrightarrow \\frac{0,8 - x}{6\\sqrt{x^2 - 1,6x + 0,8}} = \\frac{1}{30} \\Leftrightarrow 5(0,8 - x) = \\sqrt{x^2 - 1,6x + 0,8}$.\nBình phương 2 vế (do $x \\le 0,8$ nên $0,8 - x \\ge 0$):\n$25(x^2 - 1,6x + 0,64) = x^2 - 1,6x + 0,8 \\Leftrightarrow 24x^2 - 38,4x + 15,2 = 0$.\nGiải phương trình ta được $x \\approx 0,88$ (loại vì $x \\le 0,8$) hoặc $x \\approx 0,71835$ (nhận).\nVậy $X$ cách $A$ khoảng $718,35 m$. Làm tròn đến hàng đơn vị ta được $718 m$."
+  },
+  {
+    "id": "exam_de7plus_de06_p3_q21",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 21 [Phần 3 - Trả lời ngắn]:\n\nTrong không gian $Oxyz$, đài kiểm soát không lưu sân bay có tọa độ $O(0; 0; 0)$, đơn vị trên mỗi trục tính theo kilômét. Một máy bay chuyển động hướng về đài kiểm soát không lưu, bay qua hai vị trí $A(-500; -250; 150), B(-200; -200; 100)$. Khi máy bay ở gần đài kiểm soát nhất, tọa độ của vị trí máy bay là $(a; b; c)$. Giá trị của biểu thức $-3a - b - c$ là bao nhiêu (làm tròn kết quả đến hàng đơn vị)?",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 21,
+      "difficulty_part": 3,
+      "skill_id": "geometry_distance",
+      "chapter": "Hình học không gian",
+      "type": "exam_short_answer",
+      "correct_answer": "-11",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: -11\n\nGIẢI THÍCH:\nTa có máy bay đang bay trên đường thẳng $AB$.\nKhi máy bay gần đài kiểm soát nhất thì vị trí của máy bay chính là hình chiếu vuông góc của điểm $O$ lên đường thẳng $AB$.\nVới $A(-500; -250; 150), B(-200; -200; 100) \\Rightarrow \\overrightarrow{AB} = (300; 50; -50)$.\nChọn vecto chỉ phương của đường thẳng $AB$ là $\\vec{u} = (6; 1; -1)$.\nPhương trình tham số của đường thẳng $AB$: $\\begin{cases} x = -500 + 6t \\\\ y = -250 + t \\\\ z = 150 - t \\end{cases} (t \\in \\mathbb{R})$.\nGọi $(P)$ là mặt phẳng đi qua $O(0; 0; 0)$ và vuông góc với $AB$. Phương trình $(P)$ là: $6x + y - z = 0$.\nGọi $H = AB \\cap (P)$, tọa độ $H$ thỏa mãn hệ:\n$\\begin{cases} x = -500 + 6t \\\\ y = -250 + t \\\\ z = 150 - t \\\\ 6x + y - z = 0 \\end{cases} \\Leftrightarrow \\begin{cases} t = \\frac{1700}{19} \\\\ x = \\frac{700}{19} \\\\ y = -\\frac{3050}{19} \\\\ z = \\frac{1150}{19} \\end{cases}$\nVậy tọa độ của vị trí máy bay khi gần $O$ nhất là $(a; b; c) = \\left(\\frac{700}{19}; -\\frac{3050}{19}; \\frac{1150}{19}\\right)$.\nGiá trị của biểu thức: $-3a - b - c = -3\\left(\\frac{700}{19}\\right) - \\left(-\\frac{3050}{19}\\right) - \\frac{1150}{19} = -\\frac{200}{19} \\approx -10,53$.\nLàm tròn đến hàng đơn vị ta được kết quả là $-11$."
+  },
+  {
+    "id": "exam_de7plus_de06_p3_q22",
+    "content": "ĐỀ 7+ (Đề số 6) - CÂU 22 [Phần 3 - Trả lời ngắn]:\n\nNgười ta thiết kế một mẫu gạch lát nền nhà có dạng hình vuông cạnh $4dm$. Bốn góc viên gạch màu trắng, phần ở giữa màu xanh (hình vẽ). Đường viền của phần màu xanh bao gồm bốn đoạn thẳng nằm trên các cạnh hình vuông và bốn đường cong có tính chất: Tích khoảng cách từ một điểm bất kì thuộc đường cong đó đến hai trục đối xứng của viên gạch (hai đường thẳng đi qua tâm viên gạch và lần lượt song song với hai cạnh vuông góc) bằng $2dm^2$. Hãy cho biết phần màu xanh có diện tích bằng bao nhiêu decimét vuông (làm tròn kết quả đến hàng phần mười)?",
+    "metadata": {
+      "exam_id": "de7plus_de06",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 6)",
+      "question_number": 22,
+      "difficulty_part": 3,
+      "skill_id": "calculus_integral_application",
+      "chapter": "Nguyên hàm - Tích phân",
+      "type": "exam_short_answer",
+      "correct_answer": "13,5",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de06/q22.png"
+    },
+    "answer": "ĐÁP ÁN: 13,5\n\nGIẢI THÍCH:\nChọn hệ trục tọa độ $Oxy$ có gốc $O$ là tâm viên gạch, các trục $Ox, Oy$ song song với các cạnh. Khi đó viên gạch là hình vuông giới hạn bởi các đường $x = \\pm 2, y = \\pm 2$.\nGiả sử tọa độ một điểm trên đường viền cong là $(x; y)$. Theo giả thiết, khoảng cách đến hai trục đối xứng là $|x|$ và $|y|$, tích của chúng bằng 2: $|xy| = 2 \\Rightarrow y = \\pm\\frac{2}{x}$.\nCác đường viền cong $NP, TS$ nằm ở góc phần tư thứ I và III là một phần của đồ thị hàm số $y = \\frac{2}{x}$.\nCác đường viền cong $UM, RQ$ nằm ở góc phần tư thứ II và IV là một phần của đồ thị hàm số $y = -\\frac{2}{x}$.\nGiao điểm của $y = \\frac{2}{x}$ với đường thẳng $y = 2$ là $N(1; 2)$.\nDiện tích phần màu xanh có thể chia thành:\n- Một hình chữ nhật $MNRS$ ở giữa có chiều rộng từ $x = -1$ đến $x = 1$, chiều dài từ $y = -2$ đến $y = 2$. Diện tích hình chữ nhật này là $2 \\times 4 = 8 (dm^2)$.\n- Bốn phần diện tích cong bằng nhau, mỗi phần được giới hạn bởi đường cong $y = \\frac{2}{x}$, trục $Ox$, $x = 1, x = 2$.\nVậy tổng diện tích là: $S = 8 + 4 \\int_{1}^{2} \\frac{2}{x} dx = 8 + 8\\ln|x|\\Big|_1^2 = 8 + 8\\ln 2 \\approx 13,545$.\nLàm tròn tới hàng phần mười ta có $S = 13,5 (dm^2)$."
+  }
+]
+

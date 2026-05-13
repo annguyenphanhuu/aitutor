@@ -984,6 +984,7 @@ async def guardrails_config():
 async def solve_exam(
     file: UploadFile = File(...),
     ocr_engine: str = Form(default="cloud"),
+    raw_ocr_text: Optional[str] = Form(default=None),
     db: AsyncSession = Depends(get_db),
     user_id: int = Depends(get_current_user_id),
 ):
@@ -1045,6 +1046,7 @@ async def solve_exam(
                 user_id=user_id,
                 db=db,
                 on_progress=on_progress,
+                raw_ocr_text=raw_ocr_text,
             )
 
             # Emit progress events that accumulated during solving
@@ -1090,6 +1092,40 @@ async def solve_exam(
             "X-Accel-Buffering": "no",
         },
     )
+
+
+@router.post("/exam-solver/ocr")
+async def extract_ocr_only(
+    file: UploadFile = File(...),
+    ocr_engine: str = Form(default="cloud"),
+    db: AsyncSession = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
+):
+    """Only perform OCR on the exam file."""
+    mime = file.content_type or ""
+    if mime.startswith("image/"):
+        file_type = "image"
+    elif mime == "application/pdf":
+        file_type = "pdf"
+    else:
+        raise HTTPException(400, "Chỉ hỗ trợ file ảnh hoặc PDF")
+
+    file_bytes = await file.read()
+    if len(file_bytes) > 20 * 1024 * 1024:
+        raise HTTPException(400, "File quá lớn (tối đa 20MB)")
+
+    from app.ocr.ocr_strategy import get_ocr_engine
+    ocr = get_ocr_engine(ocr_engine)
+    
+    if file_type == "pdf":
+        page_texts = await ocr.ocr_pdf(file_bytes)
+        raw_ocr = "\n\n---\n\n".join(
+            f"[Trang {i+1}]\n{text}" for i, text in enumerate(page_texts)
+        )
+    else:
+        raw_ocr = await ocr.ocr_image(file_bytes, mime, is_exam=True)
+        
+    return {"raw_ocr": raw_ocr}
 
 
 @router.get("/exam-solver/ocr-engines")

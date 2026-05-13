@@ -58,7 +58,7 @@ class Settings(BaseSettings):
 
     # ── Exam Solver (OCR + Per-Question Pipeline) ───────────────────────
     OCR_ENGINE: str = "cloud"        # "cloud" (GPT Vision) | "local" (GOT-OCR2.0)
-    MAX_EXAM_PAGES: int = 10         # Max PDF pages for exam solving
+    MAX_EXAM_PAGES: int = 20         # Max PDF pages to scan for questions (solution detection handles the real cutoff)
     SOLVE_CONCURRENCY: int = 5       # Parallel question solving (semaphore)
 
     # ── Langfuse Observability ────────────────────────────────────────────
@@ -70,6 +70,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"  # Allow extra vars in .env (docker, infra, etc.)
 
 
 @lru_cache()

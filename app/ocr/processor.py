@@ -38,13 +38,17 @@ class OCRProcessor:
         # MINI: vision OCR for math images — balanced speed/quality
         self.vision_model = settings.LLM_MODEL_MINI
 
-    async def process_image(self, image_bytes: bytes, mime_type: str = "image/jpeg") -> str:
+    async def process_image(self, image_bytes: bytes, mime_type: str = "image/jpeg", is_exam: bool = False) -> str:
         """
         Extract LaTeX-formatted math text from an image using OpenAI Vision.
         Returns the extracted LaTeX string.
         """
         try:
             b64 = base64.b64encode(image_bytes).decode("utf-8")
+            
+            prompt = VISION_PROMPT
+            if is_exam:
+                prompt += "\n\n*** CHÚ Ý QUAN TRỌNG ***\nNẾU BẠN THẤY PHẦN ĐÁP ÁN, HƯỚNG DẪN GIẢI, LỜI GIẢI CHI TIẾT, HOẶC BẢNG ĐÁP ÁN (BẢNG KẾT QUẢ ĐÁP ÁN CÁC MÃ ĐỀ): BẠN CHỈ CẦN TRẢ VỀ DUY NHẤT CHUỖI `<END_OF_EXAM>` VÀ TUYỆT ĐỐI KHÔNG TRÍCH XUẤT GÌ THÊM. Điều này giúp hệ thống biết đề thi đã kết thúc."
 
             response = await self.client.chat.completions.create(
                 model=self.vision_model,
@@ -52,7 +56,7 @@ class OCRProcessor:
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": VISION_PROMPT},
+                            {"type": "text", "text": prompt},
                             {
                                 "type": "image_url",
                                 "image_url": {
@@ -63,7 +67,7 @@ class OCRProcessor:
                         ],
                     }
                 ],
-                max_tokens=1500,
+                max_completion_tokens=1500,
                 temperature=0.0,
             )
 

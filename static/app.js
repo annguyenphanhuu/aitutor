@@ -2043,19 +2043,26 @@ function closeImageLightbox() {
 let examSolverState = {
     selectedEngine: 'cloud',
     isProcessing: false,
+    currentFile: null,
 };
 
 function showExamSolver() {
     const panel = document.getElementById('exam-solver-panel');
-    panel.style.display = 'block';
+    panel.style.display = 'flex';
 
     // Hide other panels
     const welcome = document.getElementById('welcome-msg');
     if (welcome) welcome.style.display = 'none';
     document.getElementById('quiz-panel').style.display = 'none';
 
+    // Hide chat elements to prevent squeezing
+    document.getElementById('chat-messages').style.display = 'none';
+    const inputArea = document.querySelector('.chat-input-area');
+    if (inputArea) inputArea.style.display = 'none';
+
     // Reset to upload state
-    document.getElementById('exam-solver-upload').style.display = 'block';
+    document.getElementById('exam-solver-upload').style.display = 'flex';
+    document.getElementById('exam-solver-confirm').style.display = 'none';
     document.getElementById('exam-solver-progress').style.display = 'none';
     document.getElementById('exam-solver-results').style.display = 'none';
 
@@ -2065,6 +2072,11 @@ function showExamSolver() {
 
 function closeExamSolver() {
     document.getElementById('exam-solver-panel').style.display = 'none';
+    
+    // Restore chat elements
+    document.getElementById('chat-messages').style.display = 'flex';
+    const inputArea = document.querySelector('.chat-input-area');
+    if (inputArea) inputArea.style.display = 'block';
 }
 
 function selectOCREngine(engine, btn) {
@@ -2128,19 +2140,70 @@ async function processExamFile(file) {
     }
 
     examSolverState.isProcessing = true;
+    examSolverState.currentFile = file;
 
     // Switch to progress view
     document.getElementById('exam-solver-upload').style.display = 'none';
-    document.getElementById('exam-solver-progress').style.display = 'block';
+    document.getElementById('exam-solver-confirm').style.display = 'none';
+    document.getElementById('exam-solver-progress').style.display = 'flex';
     document.getElementById('exam-solver-results').style.display = 'none';
-    document.getElementById('exam-progress-fill').style.width = '0%';
-    document.getElementById('exam-status-text').textContent = `Đang OCR đề thi (${examSolverState.selectedEngine})...`;
-    document.getElementById('exam-progress-detail').textContent = '';
+    document.getElementById('exam-progress-fill').style.width = '50%';
+    document.getElementById('exam-status-text').textContent = `Đang trích xuất văn bản (OCR ${examSolverState.selectedEngine})...`;
+    document.getElementById('exam-progress-detail').textContent = 'Vui lòng đợi trong giây lát...';
 
     // Build form data
     const formData = new FormData();
     formData.append('file', file);
     formData.append('ocr_engine', examSolverState.selectedEngine);
+
+    try {
+        const response = await fetch(`${API}/exam-solver/ocr`, {
+            method: 'POST',
+            headers: {
+                'X-User-Id': localStorage.getItem('userId') || '1',
+            },
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Lỗi OCR');
+        }
+
+        const data = await response.json();
+        
+        // Switch to confirm view
+        document.getElementById('exam-solver-progress').style.display = 'none';
+        document.getElementById('exam-solver-confirm').style.display = 'flex';
+        document.getElementById('exam-ocr-textarea').value = data.raw_ocr || '';
+        
+    } catch (e) {
+        document.getElementById('exam-status-text').textContent = `⚠️ Lỗi: ${e.message}`;
+        document.getElementById('exam-progress-fill').style.width = '0%';
+        document.getElementById('exam-progress-fill').style.background = '#f87171';
+    } finally {
+        examSolverState.isProcessing = false;
+    }
+}
+
+async function confirmAndSolveExam() {
+    if (examSolverState.isProcessing || !examSolverState.currentFile) return;
+
+    examSolverState.isProcessing = true;
+
+    // Switch to progress view
+    document.getElementById('exam-solver-confirm').style.display = 'none';
+    document.getElementById('exam-solver-progress').style.display = 'flex';
+    document.getElementById('exam-progress-fill').style.width = '0%';
+    document.getElementById('exam-status-text').textContent = `Đang giải đề thi...`;
+    document.getElementById('exam-progress-detail').textContent = '';
+
+    const formData = new FormData();
+    formData.append('file', examSolverState.currentFile);
+    formData.append('ocr_engine', examSolverState.selectedEngine);
+    
+    const editedText = document.getElementById('exam-ocr-textarea').value;
+    formData.append('raw_ocr_text', editedText);
 
     try {
         const response = await fetch(`${API}/exam-solver/solve`, {
@@ -2296,7 +2359,8 @@ function toggleRawOCR() {
 }
 
 function resetExamSolver() {
-    document.getElementById('exam-solver-upload').style.display = 'block';
+    document.getElementById('exam-solver-upload').style.display = 'flex';
+    document.getElementById('exam-solver-confirm').style.display = 'none';
     document.getElementById('exam-solver-progress').style.display = 'none';
     document.getElementById('exam-solver-results').style.display = 'none';
     document.getElementById('exam-progress-fill').style.width = '0%';
