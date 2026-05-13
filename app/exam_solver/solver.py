@@ -81,7 +81,7 @@ class ExamSolver:
         self.ocr = get_ocr_engine(ocr_engine)
         self.ocr_engine_name = ocr_engine
         self.splitter = QuestionSplitter()
-        self.teacher = TeacherAgent()
+        self.teacher = TeacherAgent(model=settings.EXAM_SOLVER_MODEL)
         self._semaphore = asyncio.Semaphore(settings.SOLVE_CONCURRENCY)
 
         # Classifier — reuse Orchestrator's OpenAI client

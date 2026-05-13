@@ -48,7 +48,7 @@ class OCRProcessor:
             
             prompt = VISION_PROMPT
             if is_exam:
-                prompt += "\n\n*** CHÚ Ý QUAN TRỌNG ***\nNẾU BẠN THẤY PHẦN ĐÁP ÁN, HƯỚNG DẪN GIẢI, LỜI GIẢI CHI TIẾT, HOẶC BẢNG ĐÁP ÁN (BẢNG KẾT QUẢ ĐÁP ÁN CÁC MÃ ĐỀ): BẠN CHỈ CẦN TRẢ VỀ DUY NHẤT CHUỖI `<END_OF_EXAM>` VÀ TUYỆT ĐỐI KHÔNG TRÍCH XUẤT GÌ THÊM. Điều này giúp hệ thống biết đề thi đã kết thúc."
+                prompt += "\n\n*** CHÚ Ý QUAN TRỌNG ***\nNẾU BẠN THẤY TIÊU ĐỀ 'BẢNG ĐÁP ÁN', 'HƯỚNG DẪN GIẢI', 'LỜI GIẢI CHI TIẾT' trên trang này: Hãy chỉ trích xuất phần nội dung nằm TRƯỚC tiêu đề đó (để không làm mất câu hỏi cuối cùng). SAU ĐÓ, bạn PHẢI in ra chuỗi `<END_OF_EXAM>` ở cuối cùng. Tuyệt đối KHÔNG trích xuất bảng đáp án hay lời giải. Nếu trang chỉ toàn lời giải mà không có câu hỏi nào, chỉ cần in ra `<END_OF_EXAM>`."
 
             response = await self.client.chat.completions.create(
                 model=self.vision_model,

@@ -1,0 +1,263 @@
+{
+  "pdf": "03a1a1a17294463cb4667ef9b6c3b34b.pdf",
+  "images_extracted": 12,
+  "image_details": [
+    {
+      "page": 1,
+      "label": "graph",
+      "size": "1540x183"
+    },
+    {
+      "page": 2,
+      "label": "figure",
+      "size": "394x169"
+    },
+    {
+      "page": 2,
+      "label": "table",
+      "size": "619x167"
+    },
+    {
+      "page": 3,
+      "label": "graph",
+      "size": "385x384"
+    },
+    {
+      "page": 4,
+      "label": "graph",
+      "size": "479x473"
+    },
+    {
+      "page": 5,
+      "label": "graph",
+      "size": "1582x396"
+    },
+    {
+      "page": 6,
+      "label": "figure",
+      "size": "394x169"
+    },
+    {
+      "page": 7,
+      "label": "table",
+      "size": "619x167"
+    },
+    {
+      "page": 8,
+      "label": "graph",
+      "size": "385x384"
+    },
+    {
+      "page": 8,
+      "label": "figure",
+      "size": "792x318"
+    },
+    {
+      "page": 8,
+      "label": "graph",
+      "size": "456x496"
+    },
+    {
+      "page": 10,
+      "label": "figure",
+      "size": "419x204"
+    }
+  ],
+  "ocr_cloud": {
+    "pages": 4,
+    "total_chars": 7239,
+    "page_texts": [
+      "Kho tài liệu học tập các môn – Truy cập: khodethi.site\n\nSỞ GIÁO DỤC VÀ ĐÀO TẠO THÁI BÌNH\n\nĐỀ THI THỬ TỐT NGHIỆP THPT NĂM 2025 – LẦN 1  \nMÔN: TOÁN\n\nPHẦN 1. Trắc nghiệm (thí sinh làm từ câu 1 đến câu 12)\n\nCâu 1: Trong không gian $Oxyz$, cho mặt phẳng $(P): 2x - y + 3z - 4 = 0$. Một vectơ pháp tuyến của mặt phẳng $(P)$ có tọa độ là  \nA. $(3;-1;2)$.  \nB. $(2;-1;3)$.  \nC. $(-1;2;3)$.  \nD. $(2;1;3)$.\n\nCâu 2: Tiệm cận đứng của đồ thị hàm số $y=\\frac{2x-1}{x+2}$ là đường thẳng có phương trình:  \nA. $x=\\frac{1}{2}$.  \nB. $y=2$.  \nC. $x=-2$.  \nD. $y=-2$.\n\nCâu 3: Trong không gian $Oxyz$, cho hai điểm $A(1;3;-2)$ và $B(2;-2;-1)$. Phương trình đường thẳng $AB$ là  \nA. $\\frac{x+1}{1}=\\frac{y+3}{-5}=\\frac{z-2}{1}$.  \nB. $\\frac{x-1}{1}=\\frac{y-3}{3}=\\frac{z+2}{-2}$.  \nC. $\\frac{x-2}{1}=\\frac{y+2}{-5}=\\frac{z+1}{1}$.  \nD. $\\frac{x+2}{1}=\\frac{y-2}{-5}=\\frac{z-1}{1}$.\n\nCâu 4: Tập nghiệm của bất phương trình $\\left(\\frac{1}{2}\\right)^{2x+3}\\leq 8$ là.  \nA. $[3;+\\infty)$.  \nB. $(-\\infty;-3]$.  \nC. $[-3;+\\infty)$.  \nD. $(-3;+\\infty)$.\n\nCâu 5: Thời gian hoàn thành bài kiểm tra cuối học kỳ II môn Toán của các bạn học sinh lớp 12A được cho trong bảng sau:  \n\nThời gian (phút): $[65;70)$, $[70;75)$, $[75;80)$, $[80;85)$, $[85;90)$  \nSố học sinh: $2$, $3$, $15$, $20$, $5$\n\nKhoảng biến thiên của mẫu số liệu ghép nhóm trên là  \nA. $25$.  \nB. $20$.  \nC. $30$.  \nD. $15$.\n\nCâu 6: Nguyên hàm $F(x)$ của hàm số $f(x)=e^x+2\\sin x$ thỏa mãn $F(0)=20$ là  \nA. $F(x)=-e^x-2\\cos x+23$.  \nB. $F(x)=e^x-2\\cos x+21$.  \nC. $F(x)=e^x+2\\cos x+17$.  \nD. $F(x)=e^x+2\\sin x+19$.\n\nCâu 7: Thể tích của khối chóp có diện tích đáy bằng $2025$ và chiều cao bằng $60$ là  \nA. $40500$.  \nB. $121500$.  \nC. $1965$.  \nD. $33,75$.\n\nCâu 8: Cho hàm số $y=f(x)$ xác định và liên tục trên $\\mathbb{R}$ và có bảng biến thiên như sau:",
+      "Kho tài liệu học tập các môn – Truy cập: khodethi.site\n\n$$\n\\begin{array}{c|cccc}\nx & -\\infty & 0 & 3 & +\\infty \\\\\n\\hline\ny' & + & 0 & - & 0 \\; + \\\\\n\\hline\ny & -\\infty & 2 & -5 & +\\infty\n\\end{array}\n$$\n\nTổng giá trị cực đại và giá trị cực tiểu của hàm số đã cho bằng bao nhiêu?\n\nA. 3. \\quad B. 2. \\quad C. -5. \\quad D. -3.\n\nCâu 9: Nghiệm của phương trình $\\log_{3}(2x-1)=3$ là:\n\nA. $x=2$. \\quad B. $x=5$. \\quad C. $x=14$. \\quad D. $x=41$.\n\nCâu 10: Diện tích hình phẳng giới hạn bởi đồ thị hàm số $y=x^{2}-2x$, $y=-2x^{2}+2x$ và hai đường thẳng $x=0$, $x=1$ là:\n\nA. $1$. \\quad B. $\\frac{2}{3}$. \\quad C. $\\frac{1}{2}$. \\quad D. $\\frac{4}{3}$.\n\nCâu 11: Cấp số cộng $(u_n)$ có $u_1=-1$ và $u_9=23$. Số hạng $u_5$ của cấp số cộng là:\n\nA. 10. \\quad B. 14. \\quad C. 11. \\quad D. 8.\n\nCâu 12: Cho hình lập phương $ABCD.A'B'C'D'$ có độ dài mỗi cạnh bằng $1$. Tính độ dài của $\\overrightarrow{AB}+\\overrightarrow{CC'}$\n\nA. $\\sqrt{2}$. \\quad B. $\\sqrt{3}$. \\quad C. $1$. \\quad D. $2$.\n\nPHẦN II. Trắc nghiệm chọn đúng sai (thí sinh làm từ câu 13 đến câu 16)\n\nCâu 1: Cho hàm số $y=\\frac{x^{2}+4}{x}$.\n\na) Đạo hàm của hàm số đã cho $y' = 1 - \\frac{4}{x^{2}}$\n\nb) Đạo hàm của hàm số đã cho nhận giá trị âm trên các khoảng $(-2;0)$ và $(0;2)$ và nhận giá trị dương trên các khoảng $(-\\infty;-2)$ và $(2;+\\infty)$.\n\nc) Bảng biến thiên của hàm số đã cho là\n\n$$\n\\begin{array}{c|ccccc}\nx & -\\infty & -2 & 0 & 2 & +\\infty \\\\\n\\hline\ny' & - & 0 & + & + & 0 \\; - \\\\\n\\hline\ny & +\\infty & 4 & +\\infty & -\\infty & -4 \\; -\\infty\n\\end{array}\n$$\n\nd) Đồ thị của hàm số đã cho là",
+      "Kho tài liệu học tập các môn – Truy cập: khodethi.site\n\nCâu 2: Trong không gian $Oxyz$, cho điểm $M(3;1;9)$, đường thẳng $d:\\begin{cases}x=t\\\\y=-1-t\\\\z=2+2t\\end{cases}$ và mặt phẳng\n$$(\\alpha): x+y-z+3=0.$$\n\na) Một vectơ pháp tuyến của mặt phẳng $(\\alpha)$ là $\\vec n=(1;1;-1)$.\n\nb) Điểm $M$ thuộc đường thẳng $d$.\n\nc) Điểm $A$ có tọa độ dạng $A(t;-1-t;2+2t)$ với $t\\in\\mathbb{R}$ thì $A$ thuộc đường thẳng $d$.\n\nd) Đường thẳng $D$ đi qua $M$, cắt đường thẳng $d$ và song song với mặt phẳng $(\\alpha)$ có phương trình là\n$$\\frac{x-1}{2}=\\frac{y+2}{3}=\\frac{z-4}{5}.$$\n\nCâu 3: Một công ty truyền thông đấu thầu 2 dự án. Khả năng thắng thầu dự án 1 là 0,5 và dự án 2 là 0,6. Khả năng thắng thầu cả hai dự án là 0,4. Gọi $A,B$ lần lượt là các biến cố thắng thầu dự án 1 và dự án 2.\n\na) $A$ và $B$ là hai biến cố độc lập.\n\nb) Xác suất công ty thắng thầu đúng một dự án là 0,3.\n\nc) Biết công ty thắng thầu dự án 1, xác suất để công ty thắng thầu dự án 2 là 0,4.\n\nd) Biết công ty không thắng thầu dự án 1, xác suất để công ty thắng thầu dự án 2 là 0,8.\n\nCâu 4: Nhà máy $A$ chuyên sản xuất một loại sản phẩm cho nhà máy $B$. Hai nhà máy thỏa thuận rằng, hàng tháng nhà máy $A$ cung cấp cho nhà máy $B$ số lượng sản phẩm theo đơn đặt hàng của nhà máy $B$ (tối đa 100 tấn sản phẩm). Biết rằng, nếu số lượng đặt hàng là $x$ (tấn) sản phẩm thì giá bán cho mỗi tấn sản phẩm là $P(x)=45-0,001x^{2}$ (triệu đồng) và chi phí để nhà máy $A$ sản xuất được $x$ (tấn) sản phẩm trong một tháng là $C(x)=100+30x$ (triệu đồng, gồm 100 triệu đồng chi phí cố định và 30 triệu đồng cho mỗi tấn sản phẩm).\n\na) Chi phí để nhà máy $A$ sản xuất 10 tấn sản phẩm trong một tháng là 400 triệu đồng.\n\nb) Số tiền nhà máy $A$ thu được khi bán 10 tấn sản phẩm cho nhà máy $B$ là 600 triệu đồng.\n\nc) Lợi nhuận mà nhà máy $A$ thu được khi bán $x$ (tấn) sản phẩm $(0\\le x\\le 100)$ cho nhà máy $B$ là $H(x)=-0,001x^{3}+15x-100$.\n\nd) Nhà máy $A$ bán cho nhà máy $B$ khoảng 70,7 tấn sản phẩm mỗi tháng thì thu được lợi nhuận lớn nhất.",
+      "Kho tài liệu học tập các môn – Truy cập: khodethi.site\n\nPHẦN III. Trả lời ngắn (thí sinh làm từ câu 17 đến câu 22)\n\nCâu 1: Cho tứ diện $ABCD$ có tất cả các cạnh bằng nhau và bằng $a$. Tính côsin của góc giữa đường thẳng $AB$ và mặt phẳng $(BCD)$ (làm tròn kết quả đến chữ số thập phân thứ hai).\n\nCâu 2: Hộp thứ nhất chứa 5 viên bi xanh và 1 viên bi đỏ. Hộp thứ hai chứa 4 viên bi đỏ. Lấy ngẫu nhiên 3 viên bi từ hộp thứ nhất và bỏ vào hộp thứ hai, rồi từ hộp thứ hai lấy ngẫu nhiên 2 viên bi. Biết 2 viên bi lấy ra ở hộp thứ hai có cùng màu. Tính xác suất 3 viên bi lấy ra từ hộp thứ nhất cũng có cùng màu.\n\nCâu 3: Cuối mỗi tháng anh Bình đều gửi tiết kiệm 1 triệu đồng vào ngân hàng với lãi suất 8%/năm theo phương thức tính lãi kép với kì hạn 1 tháng. Hỏi sau bao nhiêu tháng anh Bình có đủ 21 triệu đồng để mua được một chiếc xe máy?\n\nCâu 4: Cho hình hộp chữ nhật $ABCD.A'B'C'D'$. Biết khoảng cách từ đỉnh $A$ đến mặt phẳng $(A'BD)$ bằng 10. Tính thể tích nhỏ nhất của khối hộp $ABCD.A'B'C'D'$ (làm tròn kết quả đến hàng đơn vị)\n\nCâu 5: Một nhà sản xuất cần làm những hộp đựng hình trụ có thể tích $330ml$. Tìm bán kính của hộp đựng để chi phí vật liệu dùng để sản xuất là nhỏ nhất (kết quả được tính theo centimét và làm tròn đến hàng phần trăm).\n\nCâu 6: Viên gạch men dùng để lát nền nhà là một hình vuông có cạnh bằng $80cm$ (xem hình bên dưới):\n\nMỗi viên gạch có 4 bông hoa, mỗi bông hoa gồm 4 cánh hoa. Mỗi cánh hoa (phần màu xanh) là phần giao nhau của hai hình tròn có cùng bán kính và khoảng cách giữa hai tâm là $20\\sqrt{2}cm$. Ước tính ở công đoạn tráng men, phần màu xanh (ở đề của các em là màu đen) có chi phí 50 nghìn đồng trên một mét vuông, còn phần màu trắng có chi phí 30 nghìn đồng trên một mét vuông. Tính chi phí (đơn vị: tỉ đồng) của công đoạn tráng men này, khi cơ sở sản xuất dự định sản xuất 100000 viên gạch như thế (làm tròn kết quả đến hàng phần trăm).\n\n--------- HẾT ---------"
+    ]
+  },
+  "questions_cloud": {
+    "count": 22,
+    "questions": [
+      {
+        "question_number": "Câu 1",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Trong không gian $Oxyz$, cho mặt phẳng $(P): 2x - y + 3z - 4 = 0$. Một vectơ pháp tuyến của mặt phẳng $(P)$ có tọa độ là\nA. $(3;-1;2)$.\nB. $(2;-1;3)$.\nC. $(-1;2;3)$.\nD. $(2;1;3)$."
+      },
+      {
+        "question_number": "Câu 2",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Tiệm cận đứng của đồ thị hàm số $y=\\frac{2x-1}{x+2}$ là đường thẳng có phương trình:\nA. $x=\\frac{1}{2}$.\nB. $y=2$.\nC. $x=-2$.\nD. $y=-2$."
+      },
+      {
+        "question_number": "Câu 3",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Trong không gian $Oxyz$, cho hai điểm $A(1;3;-2)$ và $B(2;-2;-1)$. Phương trình đường thẳng $AB$ là\nA. $\\frac{x+1}{1}=\\frac{y+3}{-5}=\\frac{z-2}{1}$.\nB. $\\frac{x-1}{1}=\\frac{y-3}{3}=\\frac{z+2}{-2}$.\nC. $\\frac{x-2}{1}=\\frac{y+2}{-5}=\\frac{z+1}{1}$.\nD. $\\frac{x+2}{1}=\\frac{y-2}{-5}=\\frac{z-1}{1}$."
+      },
+      {
+        "question_number": "Câu 4",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Tập nghiệm của bất phương trình $\\left(\\frac{1}{2}\\right)^{2x+3}\\leq 8$ là.\nA. $[3;+\\infty)$.\nB. $(-\\infty;-3]$.\nC. $[-3;+\\infty)$.\nD. $(-3;+\\infty)$."
+      },
+      {
+        "question_number": "Câu 5",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Thời gian hoàn thành bài kiểm tra cuối học kỳ II môn Toán của các bạn học sinh lớp 12A được cho trong bảng sau:\nThời gian (phút): $[65;70)$, $[70;75)$, $[75;80)$, $[80;85)$, $[85;90)$\nSố học sinh: $2$, $3$, $15$, $20$, $5$\nKhoảng biến thiên của mẫu số liệu ghép nhóm trên là\nA. $25$.\nB. $20$.\nC. $30$.\nD. $15$."
+      },
+      {
+        "question_number": "Câu 6",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Nguyên hàm $F(x)$ của hàm số $f(x)=e^x+2\\sin x$ thỏa mãn $F(0)=20$ là\nA. $F(x)=-e^x-2\\cos x+23$.\nB. $F(x)=e^x-2\\cos x+21$.\nC. $F(x)=e^x+2\\cos x+17$.\nD. $F(x)=e^x+2\\sin x+19$."
+      },
+      {
+        "question_number": "Câu 7",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Thể tích của khối chóp có diện tích đáy bằng $2025$ và chiều cao bằng $60$ là\nA. $40500$.\nB. $121500$.\nC. $1965$.\nD. $33,75$."
+      },
+      {
+        "question_number": "Câu 8",
+        "question_type": "mcq",
+        "has_figure": true,
+        "figure_description": "Bảng biến thiên của hàm số $y=f(x)$ trên $R$ với các mốc $x=-\\infty,0,3,+\\infty$, đạo hàm đổi dấu $+:0:-:0:+$, giá trị cực đại tại $x=0$ là $2$ và giá trị cực tiểu tại $x=3$ là $-5$.",
+        "figure_pages": [
+          2
+        ],
+        "content": "Cho hàm số $y=f(x)$ xác định và liên tục trên $\\mathbb{R}$ và có bảng biến thiên như sau:\n$$\n\\begin{array}{c|cccc}\nx & -\\infty & 0 & 3 & +\\infty \\\\\n\\hline\ny' & + & 0 & - & 0 \\; + \\\\\n\\hline\ny & -\\infty & 2 & -5 & +\\infty\n\\end{array}\n$$\nTổng giá trị cực đại và giá trị cực tiểu của hàm số đã cho bằng bao nhiêu?\nA. 3. \\quad B. 2. \\quad C. -5. \\quad D. -3."
+      },
+      {
+        "question_number": "Câu 9",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Nghiệm của phương trình $\\log_{3}(2x-1)=3$ là:\nA. $x=2$.\nB. $x=5$.\nC. $x=14$.\nD. $x=41$."
+      },
+      {
+        "question_number": "Câu 10",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Diện tích hình phẳng giới hạn bởi đồ thị hàm số $y=x^{2}-2x$, $y=-2x^{2}+2x$ và hai đường thẳng $x=0$, $x=1$ là:\nA. $1$.\nB. $\\frac{2}{3}$.\nC. $\\frac{1}{2}$.\nD. $\\frac{4}{3}$."
+      },
+      {
+        "question_number": "Câu 11",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Cấp số cộng $(u_n)$ có $u_1=-1$ và $u_9=23$. Số hạng $u_5$ của cấp số cộng là:\nA. 10. \\quad B. 14. \\quad C. 11. \\quad D. 8."
+      },
+      {
+        "question_number": "Câu 12",
+        "question_type": "mcq",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Cho hình lập phương $ABCD.A'B'C'D'$ có độ dài mỗi cạnh bằng $1$. Tính độ dài của $\\overrightarrow{AB}+\\overrightarrow{CC'}$\nA. $\\sqrt{2}$.\nB. $\\sqrt{3}$.\nC. $1$.\nD. $2$."
+      },
+      {
+        "question_number": "Câu 13",
+        "question_type": "true_false",
+        "has_figure": true,
+        "figure_description": "Đồ thị của hàm số $y=\\frac{x^{2}+4}{x}$.",
+        "figure_pages": [
+          2
+        ],
+        "content": "Cho hàm số $y=\\frac{x^{2}+4}{x}$.\n\na) Đạo hàm của hàm số đã cho $y' = 1 - \\frac{4}{x^{2}}$\n\nb) Đạo hàm của hàm số đã cho nhận giá trị âm trên các khoảng $(-2;0)$ và $(0;2)$ và nhận giá trị dương trên các khoảng $(-\\infty;-2)$ và $(2;+\\infty)$.\n\nc) Bảng biến thiên của hàm số đã cho là\n$$\n\\begin{array}{c|ccccc}\nx & -\\infty & -2 & 0 & 2 & +\\infty \\\\\n\\hline\ny' & - & 0 & + & + & 0 \\; - \\\\\n\\hline\ny & +\\infty & 4 & +\\infty & -\\infty & -4 \\; -\\infty\n\\end{array}\n$$\n\nd) Đồ thị của hàm số đã cho là"
+      },
+      {
+        "question_number": "Câu 14",
+        "question_type": "true_false",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Trong không gian $Oxyz$, cho điểm $M(3;1;9)$, đường thẳng $d:\\begin{cases}x=t\\\\y=-1-t\\\\z=2+2t\\end{cases}$ và mặt phẳng\n$$(\\alpha): x+y-z+3=0.$$\n\na) Một vectơ pháp tuyến của mặt phẳng $(\\alpha)$ là $\\vec n=(1;1;-1)$.\n\nb) Điểm $M$ thuộc đường thẳng $d$.\n\nc) Điểm $A$ có tọa độ dạng $A(t;-1-t;2+2t)$ với $t\\in\\mathbb{R}$ thì $A$ thuộc đường thẳng $d$.\n\nd) Đường thẳng $D$ đi qua $M$, cắt đường thẳng $d$ và song song với mặt phẳng $(\\alpha)$ có phương trình là\n$$\\frac{x-1}{2}=\\frac{y+2}{3}=\\frac{z-4}{5}.$$"
+      },
+      {
+        "question_number": "Câu 15",
+        "question_type": "true_false",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Một công ty truyền thông đấu thầu 2 dự án. Khả năng thắng thầu dự án 1 là 0,5 và dự án 2 là 0,6. Khả năng thắng thầu cả hai dự án là 0,4. Gọi $A,B$ lần lượt là các biến cố thắng thầu dự án 1 và dự án 2.\n\na) $A$ và $B$ là hai biến cố độc lập.\n\nb) Xác suất công ty thắng thầu đúng một dự án là 0,3.\n\nc) Biết công ty thắng thầu dự án 1, xác suất để công ty thắng thầu dự án 2 là 0,4.\n\nd) Biết công ty không thắng thầu dự án 1, xác suất để công ty thắng thầu dự án 2 là 0,8."
+      },
+      {
+        "question_number": "Câu 16",
+        "question_type": "true_false",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Nhà máy $A$ chuyên sản xuất một loại sản phẩm cho nhà máy $B$. Hai nhà máy thỏa thuận rằng, hàng tháng nhà máy $A$ cung cấp cho nhà máy $B$ số lượng sản phẩm theo đơn đặt hàng của nhà máy $B$ (tối đa 100 tấn sản phẩm). Biết rằng, nếu số lượng đặt hàng là $x$ (tấn) sản phẩm thì giá bán cho mỗi tấn sản phẩm là $P(x)=45-0,001x^{2}$ (triệu đồng) và chi phí để nhà máy $A$ sản xuất được $x$ (tấn) sản phẩm trong một tháng là $C(x)=100+30x$ (triệu đồng, gồm 100 triệu đồng chi phí cố định và 30 triệu đồng cho mỗi tấn sản phẩm).\n\na) Chi phí để nhà máy $A$ sản xuất 10 tấn sản phẩm trong một tháng là 400 triệu đồng.\n\nb) Số tiền nhà máy $A$ thu được khi bán 10 tấn sản phẩm cho nhà máy $B$ là 600 triệu đồng.\n\nc) Lợi nhuận mà nhà máy $A$ thu được khi bán $x$ (tấn) sản phẩm $(0\\le x\\le 100)$ cho nhà máy $B$ là $H(x)=-0,001x^{3}+15x-100$.\n\nd) Nhà máy $A$ bán cho nhà máy $B$ khoảng 70,7 tấn sản phẩm mỗi tháng thì thu được lợi nhuận lớn nhất."
+      },
+      {
+        "question_number": "Câu 17",
+        "question_type": "short_answer",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Cho tứ diện $ABCD$ có tất cả các cạnh bằng nhau và bằng $a$. Tính côsin của góc giữa đường thẳng $AB$ và mặt phẳng $(BCD)$ (làm tròn kết quả đến chữ số thập phân thứ hai)."
+      },
+      {
+        "question_number": "Câu 18",
+        "question_type": "short_answer",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Hộp thứ nhất chứa 5 viên bi xanh và 1 viên bi đỏ. Hộp thứ hai chứa 4 viên bi đỏ. Lấy ngẫu nhiên 3 viên bi từ hộp thứ nhất và bỏ vào hộp thứ hai, rồi từ hộp thứ hai lấy ngẫu nhiên 2 viên bi. Biết 2 viên bi lấy ra ở hộp thứ hai có cùng màu. Tính xác suất 3 viên bi lấy ra từ hộp thứ nhất cũng có cùng màu."
+      },
+      {
+        "question_number": "Câu 19",
+        "question_type": "short_answer",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Cuối mỗi tháng anh Bình đều gửi tiết kiệm 1 triệu đồng vào ngân hàng với lãi suất 8%/năm theo phương thức tính lãi kép với kì hạn 1 tháng. Hỏi sau bao nhiêu tháng anh Bình có đủ 21 triệu đồng để mua được một chiếc xe máy?"
+      },
+      {
+        "question_number": "Câu 20",
+        "question_type": "short_answer",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Cho hình hộp chữ nhật $ABCD.A'B'C'D'$. Biết khoảng cách từ đỉnh $A$ đến mặt phẳng $(A'BD)$ bằng 10. Tính thể tích nhỏ nhất của khối hộp $ABCD.A'B'C'D'$ (làm tròn kết quả đến hàng đơn vị)"
+      },
+      {
+        "question_number": "Câu 21",
+        "question_type": "short_answer",
+        "has_figure": false,
+        "figure_description": null,
+        "figure_pages": [],
+        "content": "Một nhà sản xuất cần làm những hộp đựng hình trụ có thể tích $330ml$. Tìm bán kính của hộp đựng để chi phí vật liệu dùng để sản xuất là nhỏ nhất (kết quả được tính theo centimét và làm tròn đến hàng phần trăm)."
+      },
+      {
+        "question_number": "Câu 22",
+        "question_type": "short_answer",
+        "has_figure": true,
+        "figure_description": "Viên gạch men hình vuông cạnh $80cm$, gồm 4 bông hoa; mỗi bông hoa có 4 cánh hoa. Mỗi cánh hoa là phần giao nhau của hai hình tròn cùng bán kính, khoảng cách giữa hai tâm là $20\\sqrt{2}cm$. Phần màu xanh và phần màu trắng có đơn giá tráng men khác nhau.",
+        "figure_pages": [
+          4
+        ],
+        "content": "Viên gạch men dùng để lát nền nhà là một hình vuông có cạnh bằng $80cm$ (xem hình bên dưới):\n\nMỗi viên gạch có 4 bông hoa, mỗi bông hoa gồm 4 cánh hoa. Mỗi cánh hoa (phần màu xanh) là phần giao nhau của hai hình tròn có cùng bán kính và khoảng cách giữa hai tâm là $20\\sqrt{2}cm$. Ước tính ở công đoạn tráng men, phần màu xanh (ở đề của các em là màu đen) có chi phí 50 nghìn đồng trên một mét vuông, còn phần màu trắng có chi phí 30 nghìn đồng trên một mét vuông. Tính chi phí (đơn vị: tỉ đồng) của công đoạn tráng men này, khi cơ sở sản xuất dự định sản xuất 100000 viên gạch như thế (làm tròn kết quả đến hàng phần trăm)."
+      }
+    ]
+  }
+}

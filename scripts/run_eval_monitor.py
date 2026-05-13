@@ -315,6 +315,7 @@ async def generate_with_trace(
     system_prompt: str,
     question_type: str,
     image_path: str,
+    solver_model: Optional[str] = None,
 ) -> tuple[str, str, bool]:
     """Returns (response, model_used, used_vision)."""
     from langchain_openai import ChatOpenAI
@@ -326,12 +327,16 @@ async def generate_with_trace(
     img_data = _resolve_image(image_path) if image_path else None
     using_vision = img_data is not None
 
-    model = settings.VISION_LLM_MODEL if using_vision else settings.LLM_MODEL
+    if solver_model:
+        model = solver_model
+    else:
+        model = settings.VISION_LLM_MODEL if using_vision else settings.LLM_MODEL
 
+    temp = 1.0 if any(prefix in model for prefix in ["o1", "o3", "o4"]) else 0.1
     llm = ChatOpenAI(
         model=model,
         api_key=settings.OPENAI_API_KEY,
-        temperature=0.1,
+        temperature=temp,
     )
 
     if using_vision:
@@ -650,7 +655,7 @@ async def main(args):
         # ── Generate ──
         img_path = q["image_path"] if q["has_image"] else ""
         response, model_used, using_vision = await generate_with_trace(
-            q["question"], system_prompt, q["type"], img_path
+            q["question"], system_prompt, q["type"], img_path, args.solver_model
         )
 
         # ── Build sample for judges ──
@@ -790,6 +795,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--judge-model", default="gpt-4o-mini",
         help="Model cho MathJudge + RAGAS judge",
+    )
+    parser.add_argument(
+        "--solver-model", default=None,
+        help="Model giải toán. Nếu không truyền sẽ lấy từ config.py (LLM_MODEL/VISION_LLM_MODEL)",
     )
     parser.add_argument(
         "--no-ragas", action="store_true",

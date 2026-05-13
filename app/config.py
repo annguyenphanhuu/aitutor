@@ -57,6 +57,7 @@ class Settings(BaseSettings):
     S3_ENABLED: bool = False   # Bật qua .env: S3_ENABLED=true
 
     # ── Exam Solver (OCR + Per-Question Pipeline) ───────────────────────
+    EXAM_SOLVER_MODEL: str = "o4-mini-2025-04-16"
     OCR_ENGINE: str = "cloud"        # "cloud" (GPT Vision) | "local" (GOT-OCR2.0)
     MAX_EXAM_PAGES: int = 20         # Max PDF pages to scan for questions (solution detection handles the real cutoff)
     SOLVE_CONCURRENCY: int = 5       # Parallel question solving (semaphore)

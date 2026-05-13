@@ -277,13 +277,15 @@ class OCRStrategy(ABC):
 
             text = await self.ocr_image(img_bytes, mime_type="image/png", is_exam=True)
 
+            is_end = False
             if "<END_OF_EXAM>" in text:
                 logger.info("🛑 GPT Vision phát hiện phần Đáp án/Giải chi tiết tại trang %d. Dừng OCR.", page_num + 1)
-                break
+                text = text.replace("<END_OF_EXAM>", "").strip()
+                is_end = True
 
             # Retry if response is suspiciously short
             attempt = 1
-            while len(text.strip()) < self.MIN_PAGE_CHARS and attempt <= self.MAX_OCR_RETRIES:
+            while len(text.strip()) < self.MIN_PAGE_CHARS and attempt <= self.MAX_OCR_RETRIES and not is_end:
                 import asyncio
                 wait = attempt  # 1s, 2s backoff
                 logger.warning(
@@ -294,16 +296,24 @@ class OCRStrategy(ABC):
                 )
                 await asyncio.sleep(wait)
                 text = await self.ocr_image(img_bytes, mime_type="image/png", is_exam=True)
+                if "<END_OF_EXAM>" in text:
+                    text = text.replace("<END_OF_EXAM>", "").strip()
+                    is_end = True
                 attempt += 1
 
-            if len(text.strip()) < self.MIN_PAGE_CHARS:
+            if len(text.strip()) < self.MIN_PAGE_CHARS and not is_end:
                 logger.error(
                     "❌ OCR page %d still only %d chars after %d retries",
                     page_num + 1, len(text.strip()), self.MAX_OCR_RETRIES,
                 )
 
-            page_texts.append(text)
+            if text.strip():
+                page_texts.append(text)
+                
             logger.debug("OCR page %d/%d done (%d chars)", page_num + 1, n_pages, len(text))
+            
+            if is_end:
+                break
 
         doc.close()
         return page_texts

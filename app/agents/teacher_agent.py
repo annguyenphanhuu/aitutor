@@ -223,9 +223,17 @@ class TeacherAgent(AgenticTeacherMixin):
     (metadata.has_image = true). Không cần thay đổi gì ở phía gọi agent.
     """
 
-    def __init__(self):
+    def __init__(self, model: Optional[str] = None):
+        self.model_name = model or settings.LLM_MODEL
+        temp = 1.0 if any(prefix in self.model_name for prefix in ["o1", "o3", "o4"]) else 0.3
+        
         self.llm = ChatOpenAI(
-            model=settings.LLM_MODEL,
+            model=self.model_name,
+            api_key=settings.OPENAI_API_KEY,
+            temperature=temp,
+        )
+        self.vision_llm = ChatOpenAI(
+            model=settings.VISION_LLM_MODEL,
             api_key=settings.OPENAI_API_KEY,
             temperature=0.3,
         )
@@ -354,7 +362,7 @@ class TeacherAgent(AgenticTeacherMixin):
         from app.utils.langfuse_client import new_generation, end_generation
         gen = new_generation(
             name="teacher.llm_call",
-            model=settings.LLM_MODEL,
+            model=self.model_name,
             input_text=question[:400],
             metadata={"mode": mode, "skill_id": skill_id},
         )
@@ -366,7 +374,7 @@ class TeacherAgent(AgenticTeacherMixin):
         img_flag = "vision" if has_images(all_docs) else "text"
         log_from_response(
             agent="Teacher",
-            model=settings.LLM_MODEL,
+            model=self.model_name,
             response=response,
             extra=f"mode={mode},input={img_flag},graphrag=true,few_shot={get_mastery_tier(p_mastery)}",
         )
@@ -481,7 +489,7 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── Step 5: Stream tokens ───────────────────────────────────────
         stream = await self.openai_client.chat.completions.create(
-            model=settings.LLM_MODEL,
+            model=self.model_name,
             messages=oai_messages,
             temperature=0.3,
             stream=True,
@@ -604,13 +612,13 @@ class TeacherAgent(AgenticTeacherMixin):
         ]
         messages.append(HumanMessage(content=human_content))
 
-        response = await self.llm.ainvoke(messages)
+        response = await self.vision_llm.ainvoke(messages)
         draft = response.content
 
         # ── Cost log ───────────────────────────────────────────────
         log_from_response(
             agent="Teacher",
-            model=settings.LLM_MODEL,
+            model=settings.VISION_LLM_MODEL,
             response=response,
             extra=f"mode={mode},input=hybrid_vision,graphrag=true,few_shot={get_mastery_tier(p_mastery)}",
         )
