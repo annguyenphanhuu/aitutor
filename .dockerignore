@@ -1,0 +1,26 @@
+.git
+.gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.env
+
+# Tests
+.pytest_cache/
+tests/
+
+# Data and logs
+*.log
+data/chroma_db/
+data/evaluation/logs/
+test_out.txt
+test_pg_connection.py
+
+# OS generated files
+.DS_Store
+Thumbs.db

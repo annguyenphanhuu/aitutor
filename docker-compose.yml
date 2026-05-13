@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    container_name: aitutor-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: aitutor
+      POSTGRES_PASSWORD: aitutorpassword
+      POSTGRES_DB: aitutordb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aitutor -d aitutordb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: aitutor-api
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Cấu hình trỏ database về container db thay vì localhost
+      - DATABASE_URL=postgresql+asyncpg://aitutor:aitutorpassword@db:5432/aitutordb
+    volumes:
+      - ./data:/app/data       # Ánh xạ thư mục data để lưu vector database và file upload
+      - ./static:/app/static   # Ánh xạ thư mục static cho giao diện Dashboard
+      - ./scripts:/app/scripts # Để có thể chạy các script evaluation
+
+volumes:
+  postgres_data:

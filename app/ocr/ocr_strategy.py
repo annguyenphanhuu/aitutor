@@ -330,8 +330,49 @@ class CloudVisionOCR(OCRStrategy):
     """
 
     async def ocr_image(self, image_bytes: bytes, mime_type: str = "image/jpeg", is_exam: bool = False) -> str:
-        from app.ocr.processor import get_ocr_processor
-        return await get_ocr_processor().process_image(image_bytes, mime_type, is_exam=is_exam)
+        import base64
+        from openai import AsyncOpenAI
+        
+        client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+        base64_image = base64.b64encode(image_bytes).decode("utf-8")
+        
+        prompt = (
+            "Bạn là một hệ thống OCR chuyên dụng cho Toán học THPT. "
+            "Hãy trích xuất toàn bộ văn bản và công thức toán học từ ảnh một cách chính xác nhất. "
+            "Sử dụng chuẩn định dạng LaTeX cho TẤT CẢ các công thức, ký hiệu toán học. "
+            "Bảo toàn nguyên vẹn tiếng Việt, cấu trúc đoạn văn và câu hỏi. "
+        )
+        if is_exam:
+            prompt += (
+                "\nĐây là một trang đề thi. Hãy trình bày rõ ràng từng câu hỏi và các đáp án A, B, C, D. "
+                "QUAN TRỌNG: Nếu bạn thấy bắt đầu phần HƯỚNG DẪN GIẢI, LỜI GIẢI CHI TIẾT hoặc ĐÁP ÁN (không phải phần câu hỏi), "
+                "hãy thêm chính xác thẻ <END_OF_EXAM> vào cuối câu trả lời của bạn."
+            )
+
+        try:
+            response = await client.chat.completions.create(
+                model=settings.VISION_LLM_MODEL,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": prompt},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:{mime_type};base64,{base64_image}"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens=2500,
+                temperature=0.1
+            )
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            logger.error(f"CloudVisionOCR error: {e}")
+            return f"[Lỗi OCR từ Cloud Vision API: {str(e)}]"
 
 
 class LocalGOTOCR(OCRStrategy):

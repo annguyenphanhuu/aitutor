@@ -1,0 +1,398 @@
+[
+  {
+    "id": "exam_de7plus_de08_p1_q01",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nCho cấp số cộng $(u_n)$ có số hạng đầu $u_1 = 3$, công sai $d = -4$. Số hạng thứ năm của cấp số cộng là\n\nA. $768$.\nB. $-13$.\nC. $-3072$.\nD. $-17$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 1,
+      "difficulty_part": 1,
+      "skill_id": "sequence_arithmetic",
+      "chapter": "Dãy số - Cấp số cộng - Cấp số nhân",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTa có: $u_5 = u_1 + 4d = 3 + 4.(-4) = -13$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q02",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nThống kê số phút học bài ở nhà buổi tối của $100$ học sinh ta có bảng phân bố tần số ghép nhóm như sau:\n\n| Số phút | $[30;60)$ | $[60;90)$ | $[90;120)$ | $[120;150)$ |\n| :--- | :--- | :--- | :--- | :--- |\n| Số học sinh | $18$ | $15$ | $42$ | $25$ |\n\nSố học sinh có thời gian học ít hơn $90$ phút trong số học sinh trên là\n\nA. $15$.\nB. $33$.\nC. $67$.\nD. $18$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 2,
+      "difficulty_part": 1,
+      "skill_id": "statistics_dispersion",
+      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nSố học sinh có thời gian học ít hơn $90$ phút trong số học sinh trên là: $15 + 18 = 33$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q03",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian với hệ tọa độ $Oxyz$, cho điểm $A(1;2;-1)$. Tọa độ hình chiếu vuông góc của $A$ trên mặt phẳng $(Oyz)$ là\n\nA. $(0;2;-1)$\nB. $(1;0;0)$\nC. $(1;2;0)$\nD. $(1;0;-1)$",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 3,
+      "difficulty_part": 1,
+      "skill_id": "geometry_coordinate",
+      "chapter": "Hệ tọa độ trong không gian",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nHình chiếu vuông góc của điểm $A(1;2;-1)$ trên mặt phẳng $(Oyz)$ có hoành độ $x=0$, tung độ và cao độ giữ nguyên. Vậy tọa độ hình chiếu là $(0;2;-1)$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q04",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nGọi $M, m$ lần lượt là giá trị lớn nhất, giá trị nhỏ nhất của hàm số $f(x) = x^4 - 2x^2 - 1$ trên $[-1; 2]$. Giá trị của biểu thức $M + 3m$ bằng\n\nA. $1$.\nB. $5$.\nC. $6$.\nD. $4$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 4,
+      "difficulty_part": 1,
+      "skill_id": "function_min_max",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nHàm số $f(x) = x^4 - 2x^2 - 1$ có tập xác định là $D = \\mathbb{R}$. Hàm số liên tục trên $[-1; 2]$.\n\n$f'(x) = 4x^3 - 4x$.\n\n$f'(x) = 0 \\Leftrightarrow 4x^3 - 4x = 0 \\Leftrightarrow \\left[ \\begin{array}{l} x_1 = 0 \\in [-1; 2] \\\\ x_2 = 1 \\in [-1; 2] \\\\ x_3 = -1 \\in [-1; 2] \\end{array} \\right.$\n\n$f(-1) = f(1) = -2, f(0) = -1, f(2) = 7$.\n\nDo đó $M = 7, m = -2$.\n\nVậy $M + 3m = 7 - 3.2 = 1$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q05",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nCho khối lăng trụ đều có diện tích đáy bằng $1\\ (m^2)$ và chiều cao bằng $3\\ (m)$. Thể tích khối lăng trụ đã cho bằng\n\nA. $\\dfrac{3\\sqrt{3}}{4}\\ (m^3)$.\nB. $1\\ (m^3)$.\nC. $\\dfrac{\\sqrt{3}}{4}\\ (m^3)$.\nD. $3\\ (m^3)$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 5,
+      "difficulty_part": 1,
+      "skill_id": "geometry_volume",
+      "chapter": "Khối đa diện",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nÁp dụng công thức tính thể tích khối lăng trụ $V = S.h = 1.3 = 3\\ (m^3)$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q06",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ liên tục trên $\\mathbb{R}$ và có bảng biến thiên như sau\n\n| $x$ | $-\\infty$ | | $-1$ | | $1$ | | $+\\infty$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | $-\\infty$ | $\\nearrow$ | $3$ | $\\searrow$ | $0$ | $\\nearrow$ | $+\\infty$ |\n\n[Xem hình: q06.png]\n\nHàm số đã cho nghịch biến trên khoảng nào\n\nA. $(-1;1)$.\nB. $(0;3)$.\nC. $(-\\infty;-1)$.\nD. $(1;+\\infty)$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 6,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q06.png"
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nDựa vào bảng biến thiên hàm số nghịch biến trên $(-1;1)$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q07",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nĐường tiệm cận xiên của đồ thị hàm số $y = 2x - 1 + \\dfrac{1}{x}$ có phương trình là\n\nA. $y = 1 - 2x$.\nB. $y = 2x$.\nC. $y = 2x - 1$.\nD. $y = -2x$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 7,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTa có $\\lim_{x \\to +\\infty} [y - (2x - 1)] = \\lim_{x \\to +\\infty} \\dfrac{1}{x} = 0$ và $\\lim_{x \\to -\\infty} [y - (2x - 1)] = \\lim_{x \\to -\\infty} \\dfrac{1}{x} = 0$\n\nSuy ra đường tiệm cận xiên của đồ thị hàm số $y = 2x - 1 + \\dfrac{1}{x}$ có phương trình là $y = 2x - 1$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q08",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào dưới đây có đồ thị như hình vẽ sau\n\n[Xem hình: q08.png]\n\nA. $y = \\dfrac{x}{x + 1}$.\nB. $y = -\\dfrac{x}{x - 1}$.\nC. $y = -\\dfrac{x}{x + 1}$.\nD. $y = \\dfrac{x}{x - 1}$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 8,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q08.png"
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nTa có $\\lim_{x \\to +\\infty} y = \\lim_{x \\to +\\infty} \\dfrac{x}{x - 1} = 1; \\lim_{x \\to -\\infty} y = \\lim_{x \\to -\\infty} \\dfrac{x}{x - 1} = 1 \\Rightarrow y = 1$ là đường tiệm cận ngang của đồ thị hàm số.\n\n$\\lim_{x \\to 1^+} y = \\lim_{x \\to 1^+} \\dfrac{x}{x - 1} = +\\infty; \\lim_{x \\to 1^-} y = \\lim_{x \\to 1^-} \\dfrac{x}{x - 1} = -\\infty \\Rightarrow x = 1$ là đường tiệm cận đứng của đồ thị hàm số."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q09",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số bậc ba $y = f(x)$ có đồ thị như hình vẽ dưới đây:\n\n[Xem hình: q09.png]\n\nGiá trị cực tiểu của hàm số đã cho là:\n\nA. $-3$.\nB. $2$.\nC. $1$.\nD. $0$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 9,
+      "difficulty_part": 1,
+      "skill_id": "function_survey",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_mcq",
+      "correct_answer": "A",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q09.png"
+    },
+    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nHàm số đạt cực tiểu tại $x = 2$, $y_{CT} = -3$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q10",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian $Oxyz$, cho tam giác $ABC$ có $A(1;1;1)$ và $\\overrightarrow{AB} + \\overrightarrow{AC} = (4;0;-6)$. Tọa độ trung điểm $M$ của $BC$ là\n\nA. $(5;1;-5)$.\nB. $(3;-1;7)$.\nC. $(1;-1;-4)$.\nD. $(3;1;-2)$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 10,
+      "difficulty_part": 1,
+      "skill_id": "geometry_coordinate",
+      "chapter": "Hệ tọa độ trong không gian",
+      "type": "exam_mcq",
+      "correct_answer": "D",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nGọi $M(x; y; z)$ là tọa độ trung điểm của $BC$. Ta có: $\\overrightarrow{AM} = (x - 1; y - 1; z - 1)$.\n\nKhi đó: $\\overrightarrow{AB} + \\overrightarrow{AC} = 2\\overrightarrow{AM} \\Leftrightarrow \\begin{cases} 4 = 2(x - 1) \\\\ 0 = 2(y - 1) \\\\ -6 = 2(z - 1) \\end{cases} \\Leftrightarrow \\begin{cases} x = 3 \\\\ y = 1 \\\\ z = -2 \\end{cases}$.\n\nVậy $M(3; 1; -2)$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q11",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nCho hình chóp $S.ABCD$ có đáy là hình bình hành. Đẳng thức nào sau đây đúng?\n\nA. $\\overrightarrow{SA} + \\overrightarrow{SB} + \\overrightarrow{SC} + \\overrightarrow{SD} = \\overrightarrow{0}$.\nB. $\\overrightarrow{SA} + \\overrightarrow{SB} = \\overrightarrow{SC} + \\overrightarrow{SD}$.\nC. $\\overrightarrow{SA} + \\overrightarrow{SC} = \\overrightarrow{SB} + \\overrightarrow{SD}$.\nD. $\\overrightarrow{SB} + \\overrightarrow{SC} = \\overrightarrow{SA} + \\overrightarrow{SD}$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 11,
+      "difficulty_part": 1,
+      "skill_id": "geometry_vector",
+      "chapter": "Vectơ trong không gian",
+      "type": "exam_mcq",
+      "correct_answer": "C",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nTa có: $\\overrightarrow{SA} + \\overrightarrow{SC} = \\overrightarrow{SB} + \\overrightarrow{SD} \\Leftrightarrow \\overrightarrow{SA} - \\overrightarrow{SB} = \\overrightarrow{SD} - \\overrightarrow{SC} \\Leftrightarrow \\overrightarrow{BA} = \\overrightarrow{CD}$ (hiển nhiên đúng vì $ABCD$ là hình bình hành).\n\nVậy $\\overrightarrow{SA} + \\overrightarrow{SC} = \\overrightarrow{SB} + \\overrightarrow{SD}$."
+  },
+  {
+    "id": "exam_de7plus_de08_p1_q12",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nCho $A$ và $B$ là hai biến cố độc lập. Biết xác suất của biến cố $A$ là $0,4$; xác suất của biến cố $B$ là $0,3$. Xác suất của biến cố $A \\cup B$ là:\n\nA. $0,12$.\nB. $0,58$.\nC. $0,7$.\nD. $0,82$.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 12,
+      "difficulty_part": 1,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_mcq",
+      "correct_answer": "B",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nTa có $P(A) = 0,4; P(B) = 0,3$.\n\nSuy ra $P(\\overline{A}) = 0,6; P(\\overline{B}) = 0,7$.\n\n$P(A \\cup B) = P(A \\overline{B}) + P(\\overline{A} B) + P(AB)$\n\n$= P(A).P(\\overline{B}) + P(\\overline{A}).P(B) + P(A).P(B) = 0,4.0,7 + 0,6.0,3 + 0,4.0,3 = 0,58$."
+  },
+  {
+    "id": "exam_de7plus_de08_p2_q13",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nMột ngôi nhà có hình dáng và kích thước như hình vẽ. Biết rằng các bức tường và nền nhà đều là các hình chữ nhật; hai bên mái nhà là các hình thang cân $IJGF$ và $IJHE$ có diện tích bằng nhau; độ dốc của mái nhà (số đo góc nhị diện $[J, FG, H]$) là $45^\\circ$. Chọn hệ trục tọa độ $Oxyz$ như hình vẽ (đơn vị trên mỗi trục là $1\\text{ m}$).\n\n[Xem hình: q13.png]\n\nKhi đó:\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Tọa độ của vectơ $\\overrightarrow{JI}$ là $(0;6;0)$. | | |\n| (b) Tọa độ điểm $J$ là $\\left(\\frac{5}{2};7;6\\right)$. | | |\n| (c) Tọa độ của điểm $E$ là $\\left(0;0;\\frac{7}{2}\\right)$. | | |\n| (d) Tọa độ điểm $G$ là $\\left(5;8;\\frac{7}{2}\\right)$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 13,
+      "difficulty_part": 2,
+      "skill_id": "geometry_coordinate",
+      "chapter": "Hệ tọa độ trong không gian",
+      "type": "exam_true_false",
+      "correct_answer": "a-F,b-T,c-T,d-T",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q13.png"
+    },
+    "answer": "ĐÁP ÁN:\n(a) SAI\n(b) ĐÚNG\n(c) ĐÚNG\n(d) ĐÚNG\n\nGIẢI THÍCH:\n(a) Dựa vào hệ trục tọa độ ta có: $O(0;0;0)$, $D(0;8;0)$\n$\\Rightarrow \\overrightarrow{OD} = (0;8;0)$\nMà $EH = OD \\Rightarrow \\overrightarrow{EH} = (0;8;0)$\nLại có: $JI = \\frac{6}{8} EH = \\frac{3}{4} EH$ và $\\overrightarrow{JI}$ ngược hướng $\\overrightarrow{EH}$.\nNên $\\overrightarrow{JI} = -\\frac{3}{4} \\overrightarrow{EH} = -\\frac{3}{4}(0;8;0) = (0;-6;0)$\n$\\Rightarrow$ Chọn SAI.\n\n(b) Kẻ $JM \\perp FG$, $JN \\perp EH$, $P$ là trung điểm của $MN$.\nDo độ dốc của mái nhà là $45^\\circ$ nên $\\widehat{JMP} = \\widehat{JNP} = 45^\\circ$.\n$\\Rightarrow \\Delta JMN$ cân tại $J \\Rightarrow JP \\perp MN$\nLại có $(JMN) \\perp (EFGH)$ và $(JMN) \\cap (EFGH) = MN$\n$\\Rightarrow JP \\perp (EFGH) \\Rightarrow JP \\perp (Oxy)$\n$\\Rightarrow x_J = x_P = \\frac{x_M + x_N}{2} = \\frac{x_G + x_H}{2} = \\frac{x_C + x_D}{2} = \\frac{5}{2}$\n$NH = \\frac{8-6}{2} = 1$\n$y_J = y_P = y_N = y_H - 1 = 7$\n$\\Delta JPN$ vuông cân tại $P \\Rightarrow JP = PN = \\frac{MN}{2} = \\frac{5}{2}$\n$z_J = z_P + JP = z_H + JP = 3,5 + 2,5 = 6$.\nVậy $J\\left(\\frac{5}{2};7;6\\right)$\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(c) Theo hình vẽ, ta thấy $E \\in$ tia $Oz$ và $OE = DH = \\frac{7}{2}$\n$\\Rightarrow E\\left(0;0;\\frac{7}{2}\\right)$\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(d) Ta có: $C(5;8;0)$ là hình chiếu của $G$ lên $(Oxy) \\Rightarrow G(5;8;z_G)$\n$z_G = z_E = \\frac{7}{2}$\nVậy $G\\left(5;8;\\frac{7}{2}\\right)$.\n$\\Rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de08_p2_q14",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $f(x) = \\log_2(x - 1)$.\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Tập nghiệm của phương trình $f(x) = 0$ là: $\\{2\\}$. | | |\n| (b) Tập nghiệm của bất phương trình $f(x) \\ge 1$ là: $[3; +\\infty)$. | | |\n| (c) Tổng tất cả các nghiệm của phương trình $f(x) = 2\\log_4(x^2 - x - 4)$ bằng $2$. | | |\n| (d) Số nghiệm nguyên nhỏ hơn $2025$ của bất phương trình $\\dfrac{f(x)}{\\sqrt{x + 7} - \\sqrt{x - 5}} \\ge 1$ là $2018$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 14,
+      "difficulty_part": 2,
+      "skill_id": "logarithm_equation_inequation",
+      "chapter": "Hàm số mũ và hàm số lôgarit",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-F,d-T",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) ĐÚNG\n(c) SAI\n(d) ĐÚNG\n\nGIẢI THÍCH:\n(a) Giải phương trình: $\\log_2(x - 1) = 0$\nĐiều kiện $x - 1 > 0 \\Leftrightarrow x > 1$\nPhương trình $f(x) = 0$ trở thành: $\\log_2(x - 1) = 0 \\Leftrightarrow x - 1 = 2^0 \\Leftrightarrow x = 2$\nSo với điều kiện $x > 1$ ta nhận nghiệm $x = 2$\nVậy tập nghiệm phương trình là: $\\{2\\}$\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(b) Giải bất phương trình: $\\log_2(x - 1) \\ge 1$\nĐiều kiện $x - 1 > 0 \\Leftrightarrow x > 1$\nBất phương trình trở thành: $\\log_2(x - 1) \\ge 1 \\Leftrightarrow x - 1 \\ge 2 \\Leftrightarrow x \\ge 3$\nSo với điều kiện $x > 1$ ta thấy nghiệm của bất phương trình là: $x \\ge 3$\nVậy tập nghiệm của bất phương trình là: $[3; +\\infty)$\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(c) Giải phương trình: $\\log_2(x - 1) = 2\\log_4(x^2 - x - 4)$\nĐiều kiện $\\begin{cases} x - 1 > 0 \\\\ x^2 - x - 4 > 0 \\end{cases}$\nPhương trình $\\log_2(x - 1) = 2\\log_4(x^2 - x - 4)$ trở thành:\n$\\log_2(x - 1) = \\log_2(x^2 - x - 4) \\Leftrightarrow x - 1 = x^2 - x - 4 \\Leftrightarrow x^2 - 2x - 3 = 0 \\Leftrightarrow \\begin{bmatrix} x = -1 \\\\ x = 3 \\end{bmatrix}$\nSo với điều kiện $\\begin{cases} x - 1 > 0 \\\\ x^2 - x - 4 > 0 \\end{cases}$ ta nhận nghiệm $x = 3$\nVậy tổng tất cả các nghiệm của phương trình $f(x) = 2\\log_4(x^2 - x - 4)$ bằng $3$.\n$\\Rightarrow$ Chọn SAI.\n\n(d) Giải bất phương trình: $\\dfrac{\\log_2(x - 1)}{\\sqrt{x + 7} - \\sqrt{x - 5}} \\ge 1$\nĐiều kiện $\\begin{cases} x - 1 > 0 \\\\ x + 7 \\ge 0 \\\\ x - 5 \\ge 0 \\\\ \\sqrt{x + 7} - \\sqrt{x - 5} \\ne 0 \\end{cases} \\Leftrightarrow x \\ge 5$\nXét hàm số $y = \\dfrac{\\log_2(x - 1)}{\\sqrt{x + 7} - \\sqrt{x - 5}}$ với $x \\in [5; +\\infty)$\n$y' = \\dfrac{\\dfrac{1}{(x - 1)\\ln 2}(\\sqrt{x + 7} - \\sqrt{x - 5}) - \\left(\\dfrac{1}{2\\sqrt{x + 7}} - \\dfrac{1}{2\\sqrt{x - 5}}\\right)\\log_2(x - 1)}{(\\sqrt{x + 7} - \\sqrt{x - 5})^2}$ với $x \\in [5; +\\infty)$\nVì $x \\ge 5$ nên $x - 1 > 1; \\log_2(x - 1) > 0; \\sqrt{x + 7} - \\sqrt{x - 5} > 0; \\dfrac{1}{2\\sqrt{x + 7}} - \\dfrac{1}{2\\sqrt{x - 5}} < 0$\nDo đó hàm số đồng biến trên $[5; +\\infty)$\nMặt khác: $y(5) = \\dfrac{\\sqrt{3}}{3} \\simeq 0,57 < 1; y(6) \\simeq 0,89 < 1; y(7) \\simeq 1,11 > 1$\nDo đó $\\dfrac{\\log_2(x - 1)}{\\sqrt{x + 7} - \\sqrt{x - 5}} \\ge 1, \\forall x \\in [7; +\\infty)$\nVậy số nghiệm nguyên nhỏ hơn $2025$ là $2024 - 7 + 1 = 2018$.\n$\\Rightarrow$ Chọn ĐÚNG."
+  },
+  {
+    "id": "exam_de7plus_de08_p2_q15",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = f(x) = \\dfrac{ax^2 + bx + 1}{cx + d}$ đạt cực đại tại $x = 0$ và có đồ thị như hình vẽ sau:\n\n[Xem hình: q15.png]\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Giá trị của biểu thức $a + b + c + d$ bằng $0$. | | |\n| (b) Hàm số đồng biến trên $(-1;0)$. | | |\n| (c) Gọi $A, B$ là các điểm cực trị của đồ thị hàm số; $M$ là điểm di động trên trục $Ox$ sao cho góc $\\widehat{AMB}$ không tù. Giá trị nhỏ nhất của hoành độ điểm $M$ là $3$. | | |\n| (d) Đường thẳng đi qua hai điểm cực trị của đồ thị hàm số có phương trình $y = x - 1$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 15,
+      "difficulty_part": 2,
+      "skill_id": "function_survey_properties",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-T,c-F,d-F",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q15.png"
+    },
+    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) ĐÚNG\n(c) SAI\n(d) SAI\n\nGIẢI THÍCH:\n(a) Từ đồ thị suy ra:\nĐồ thị hàm số cắt trục $Oy$ tại điểm có toạ độ $(0; -1)$ suy ra $\\dfrac{1}{d} = -1 \\Leftrightarrow d = -1$.\nĐồ thị có tiệm cận đứng $x = 1 \\Rightarrow -\\dfrac{d}{c} = 1 \\Leftrightarrow \\dfrac{1}{c} = 1 \\Leftrightarrow c = 1$.\n$y = f(x) = \\dfrac{ax^2 + bx + 1}{x - 1}$\n$y' = f'(x) = \\dfrac{(2ax + b)(x - 1) - ax^2 - bx - 1}{(x - 1)^2} = \\dfrac{ax^2 - 2ax - b - 1}{(x - 1)^2}$.\nHàm số đạt cực đại tại $x = 0 \\Rightarrow f'(0) = 0 \\Leftrightarrow -b - 1 = 0 \\Leftrightarrow b = -1$.\nSuy ra hàm số $y = f(x) = \\dfrac{ax^2 - x + 1}{x - 1}$\nTiệm cận xiên của đồ thị đi qua gốc $O(0;0)$ và $(1;1)$ suy ra phương trình đường tiệm cận xiên là $y = x$ nên $a = 1$\nVậy $a = 1; b = -1; c = 1; d = -1 \\Rightarrow a + b + c + d = 0$ và $y = f(x) = \\dfrac{x^2 - x + 1}{x - 1}$.\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(b) Từ đồ thị ta thấy hàm số đồng biến trên $(-1; 0)$.\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(c) $M$ là điểm di động trên trục $Ox \\Rightarrow M(x; 0)$.\n$y = f(x) = \\dfrac{x^2 - x + 1}{x - 1}$, $y' = \\dfrac{x^2 - 2x}{(x - 1)^2}$. $y' = 0 \\Leftrightarrow \\begin{bmatrix} x = 0 \\Rightarrow y = -1 \\\\ x = 2 \\Rightarrow y = 3 \\end{bmatrix}$.\nSuy ra các điểm cực trị $A(0; -1), B(2; 3)$.\nCó $\\overrightarrow{MA} = (-x; -1)$, $\\overrightarrow{MB} = (2 - x; 3)$ nên góc $\\widehat{AMB}$ không tù khi và chỉ khi:\n$\\overrightarrow{MA}.\\overrightarrow{MB} \\ge 0 \\Leftrightarrow -x(2 - x) + (-1)3 \\ge 0 \\Leftrightarrow x^2 - 2x - 3 \\ge 0 \\Leftrightarrow \\begin{bmatrix} x \\ge 3 \\\\ x \\le -1 \\end{bmatrix}$\nVậy không tồn tại giá trị nhỏ nhất của hoành độ điểm $M$.\n$\\Rightarrow$ Chọn SAI.\n\n(d) Hai điểm cực trị của đồ thị hàm số là $A(0; -1), B(2; 3) \\Rightarrow \\overrightarrow{AB} = (2; 4)$.\nĐường thẳng $AB$ đi qua điểm $A(0; -1)$ có VTCP $\\vec{u} = (2; 4)$ suy ra VTPT $\\vec{n} = (2; -1)$\nPhương trình $AB$: $2(x - 0) - (y + 1) = 0 \\Leftrightarrow y = 2x - 1$.\n$\\Rightarrow$ Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de08_p2_q16",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nThống kê chiều cao của $40$ học sinh của một lớp (đơn vị đo: $\\text{cm}$) ta được mẫu số liệu ghép nhóm như sau:\n\n| Nhóm chiều cao | $[155; 160)$ | $[160; 165)$ | $[165; 170)$ | $[170; 175)$ | Tổng |\n|---|---|---|---|---|---|\n| **Số học sinh** | $5$ | $12$ | $16$ | $7$ | $n = 40$ |\n\nKhi đó:\n\n| Mệnh đề | Đúng | Sai |\n|---|---|---|\n| (a) Tần số của nhóm $[160; 165)$ là $12$. | | |\n| (b) Tần số tích lũy của nhóm $[165; 170)$ là $17$. | | |\n| (c) Mốt (làm tròn đến hàng phần mười) của mẫu số liệu trên là $165,6$. | | |\n| (d) Số trung bình cộng (làm tròn đến hàng phần mười) của mẫu số liệu trên là $165,5$. | | |",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 16,
+      "difficulty_part": 2,
+      "skill_id": "statistics_grouped_data",
+      "chapter": "Thống kê",
+      "type": "exam_true_false",
+      "correct_answer": "a-T,b-F,c-F,d-F",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) SAI\n(d) SAI\n\nGIẢI THÍCH:\n(a) Quan sát bảng ta thấy tần số của nhóm $[160; 165)$ là $12$.\n$\\Rightarrow$ Chọn ĐÚNG.\n\n(b) Tần số tích lũy của nhóm $[165; 170)$ là:\n$cf_3 = 5 + 12 + 16 = 33$.\n$\\Rightarrow$ Chọn SAI.\n\n(c) Tần số lớn nhất là $16$ nên nhóm chứa mốt là $[165; 170)$.\nTa có $M_o = 165 + \\dfrac{16 - 12}{(16 - 12) + (16 - 7)} \\cdot 5 \\approx 166,5$.\n$\\Rightarrow$ Chọn SAI.\n\n(d) Trong mỗi khoảng nhóm chiều cao, giá trị đại diện là trung bình cộng của giá trị hai đầu mút nên có bảng sau:\n\n| Nhóm chiều cao | $157,5$ | $162,5$ | $167,5$ | $172,5$ | Tổng |\n|---|---|---|---|---|---|\n| **Số học sinh** | $5$ | $12$ | $16$ | $7$ | $n = 40$ |\n\nSố trung bình cộng là:\n$\\bar{x} = \\dfrac{5 \\cdot 157,5 + 12 \\cdot 162,5 + 16 \\cdot 167,5 + 7 \\cdot 172,5}{40} \\approx 165,6$.\n$\\Rightarrow$ Chọn SAI."
+  },
+  {
+    "id": "exam_de7plus_de08_p3_q17",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 17 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:\n\nChọn ngẫu nhiên một số tự nhiên thuộc đoạn $[10; 199]$. Tính xác suất để chọn được số lẻ hoặc số chia hết cho $5$ (kết quả viết dưới dạng số thập phân).",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 17,
+      "difficulty_part": 3,
+      "skill_id": "probability_basic",
+      "chapter": "Tổ hợp - Xác suất",
+      "type": "exam_short_answer",
+      "correct_answer": "0,6",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 0,6\n\nGIẢI THÍCH:\nSố các số tự nhiên thuộc đoạn $[10; 199]$ là: $190$ (số).\nChọn ngẫu nhiên một số tự nhiên thuộc đoạn $[10; 199] \\Rightarrow n(\\Omega) = 190$.\nGọi $A$ là biến cố: \"chọn được số lẻ hoặc số chia hết cho $5$\".\nSố các số tự nhiên lẻ thuộc đoạn $[10; 199]$ là: $\\dfrac{199 - 11}{2} + 1 = 95$ (số).\nSố các số tự nhiên có tận cùng bằng $0$ thuộc đoạn $[10; 199]$ là: $\\dfrac{190 - 10}{10} + 1 = 19$ (số).\nSuy ra $n(A) = 95 + 19 = 114 \\Rightarrow P(A) = \\dfrac{n(A)}{n(\\Omega)} = \\dfrac{114}{190} = 0,6$."
+  },
+  {
+    "id": "exam_de7plus_de08_p3_q18",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 18 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:\n\nTrong không gian với hệ tọa độ $Oxyz$ (đơn vị trên mỗi trục tọa độ là $1\\text{m}$), một cabin cáp treo xuất phát từ điểm $A(10; 3; 0)$ và chuyển động đều theo đường cáp thẳng đến vị trí $D$ cách $A$ $4050\\text{m}$. Biết đường đi của cabin cùng phương với vectơ $\\vec{u}(2; -2; 1)$ và sau $3$ phút kể từ khi xuất phát thì cabin đi đến vị trí $B$ có hoành độ $x_B = 550$. Hỏi thời gian di chuyển của cabin trên quãng đường $AD$ là bao nhiêu phút?",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 18,
+      "difficulty_part": 3,
+      "skill_id": "geometry_coordinate_application",
+      "chapter": "Hệ tọa độ trong không gian",
+      "type": "exam_short_answer",
+      "correct_answer": "15",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 15\n\nGIẢI THÍCH:\nĐiểm $B$ có hoành độ $x_B = 550 \\Rightarrow B(550; y; z) \\Rightarrow \\overrightarrow{AB} = (540; y - 3; z)$.\nVì đường đi của cabin cùng phương với vectơ $\\vec{u} = (2; -2; 1)$\n$\\Rightarrow \\overrightarrow{AB}$ cùng phương với $\\vec{u} = (2; -2; 1)$\n$\\Rightarrow \\dfrac{540}{2} = \\dfrac{y - 3}{-2} = \\dfrac{z}{1} \\Rightarrow \\begin{cases} y = -537 \\\\ z = 270 \\end{cases} \\Rightarrow B(550; -537; 270)$\n$\\Rightarrow AB = |\\overrightarrow{AB}| = \\sqrt{(550 - 10)^2 + (-537 - 3)^2 + (270 - 0)^2} = 810$.\nVận tốc chuyển động của cabin là: $\\dfrac{810}{3} = 270 \\text{ (m/phút)}$.\nThời gian di chuyển của cabin trên quãng đường $AD$ là: $\\dfrac{4050}{270} = 15 \\text{ (phút)}$."
+  },
+  {
+    "id": "exam_de7plus_de08_p3_q19",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 19 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:\n\nMột vật chuyển động. Quãng đường $s(t)$ (tính theo mét) vật đi được sau khoảng thời gian $t$ (tính theo giây), $t \\ge 0$, được mô tả là một hàm số bậc ba có đồ thị như hình vẽ dưới đây.\n\n[Xem hình: q19.png]\n\nHỏi trong $10$ giây đầu tiên, khoảng thời gian vật chuyển động nhanh dần kéo dài bao nhiêu giây?",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 19,
+      "difficulty_part": 3,
+      "skill_id": "derivative_application_physics",
+      "chapter": "Đạo hàm",
+      "type": "exam_short_answer",
+      "correct_answer": "8",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q19.png"
+    },
+    "answer": "ĐÁP ÁN: 8\n\nGIẢI THÍCH:\nGọi $s(t) = at^3 + bt^2 + ct + d$ ($a \\ne 0$).\nĐồ thị hàm số $s(t)$ đi qua các điểm $O(0;0)$, $\\left(4; \\dfrac{8}{3}\\right)$, $\\left(8; \\dfrac{112}{3}\\right)$, $\\left(10; \\dfrac{260}{3}\\right)$.\nNên ta có hệ: $\\begin{cases} d = 0 \\\\ 64a + 16b + 4c + d = \\dfrac{8}{3} \\\\ 512a + 64b + 8c + d = \\dfrac{112}{3} \\\\ 1000a + 100b + 10c + d = \\dfrac{260}{3} \\end{cases} \\Leftrightarrow \\begin{cases} a = \\dfrac{1}{6} \\\\ b = -1 \\\\ c = 2 \\\\ d = 0 \\end{cases} \\Rightarrow s(t) = \\dfrac{1}{6}t^3 - t^2 + 2t$\nVật chuyển động nhanh dần nghĩa là vận tốc tăng:\nXét $v(t) = s'(t) = \\dfrac{1}{2}t^2 - 2t + 2$ với $t \\in [0; 10]$\n$\\Rightarrow v'(t) = t - 2 = 0 \\Leftrightarrow t = 2$.\nTa có bảng biến thiên của $v(t)$:\n\n| $t$ | $0$ | $2$ | $10$ |\n|---|---|---|---|\n| $v'(t)$ | $-$ | $0$ | $+$ |\n| $v(t)$ | $2 \\searrow$ | $0 \\nearrow$ | $32$ |\n\nVận tốc chuyển động nhanh dần trong khoảng thời gian từ $2$ giây đến $10$ giây.\nKhoảng thời gian này kéo dài: $10 - 2 = 8$ (giây)."
+  },
+  {
+    "id": "exam_de7plus_de08_p3_q20",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 20 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:\n\nCho hình chóp tam giác đều $S.ABC$ có cạnh đáy bằng $1$. Góc giữa đường thẳng $SA$ và mặt phẳng $(ABC)$ bằng $60^\\circ$. Tính khoảng cách giữa hai đường thẳng $SA$ và $BC$ (kết quả viết dưới dạng số thập phân).\n\n[Xem hình minh họa: q20.png]",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 20,
+      "difficulty_part": 3,
+      "skill_id": "geometry_distance_two_lines",
+      "chapter": "Hình học không gian",
+      "type": "exam_short_answer",
+      "correct_answer": "0,75",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q20.png"
+    },
+    "answer": "ĐÁP ÁN: 0,75\n\nGIẢI THÍCH:\nHình chóp tam giác đều $S.ABC$ và $G$ là trọng tâm $\\Delta ABC$ nên $SG \\perp (ABC)$.\nGóc giữa $SA$ và $(ABC)$ là góc $\\widehat{SAG} = 60^\\circ$.\n$\\Delta ABC$ đều cạnh $1 \\Rightarrow AM = \\dfrac{\\sqrt{3}}{2}$.\nTa có:\n$\\begin{cases} BC \\perp AM \\\\ BC \\perp SG \\end{cases} \\Rightarrow BC \\perp (SAM) \\Rightarrow BC \\perp SA$.\nKẻ $MH \\perp SA$ tại $H$.\nTa lại có: $\\begin{cases} MH \\perp BC \\\\ MH \\perp SA \\end{cases} \\Rightarrow MH$ là đoạn vuông góc chung của $SA$ và $BC \\Rightarrow d(SA, BC) = MH$.\nVới $AG = \\dfrac{2}{3}AM \\Rightarrow AG = \\dfrac{\\sqrt{3}}{3}$; $\\tan 60^\\circ = \\dfrac{SG}{AG} \\Rightarrow SG = 1$; $SA = \\sqrt{AG^2 + SG^2} = \\dfrac{2\\sqrt{3}}{3}$.\n$S_{\\Delta SAM} = \\dfrac{1}{2}SG \\cdot AM = \\dfrac{1}{2}MH \\cdot SA \\Leftrightarrow 1 \\cdot \\dfrac{\\sqrt{3}}{2} = MH \\cdot \\dfrac{2\\sqrt{3}}{3} \\Rightarrow MH = \\dfrac{3}{4}$.\n$\\Rightarrow d(SA, BC) = MH = \\dfrac{3}{4} = 0,75$."
+  },
+  {
+    "id": "exam_de7plus_de08_p3_q21",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 21 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:\n\nMột trang trại rau sạch ở Đà Lạt mỗi ngày thu hoạch được $1$ tấn rau. Mỗi ngày, nếu giá bán rau là $30.000$ đồng/kg thì bán hết rau, nếu giá bán rau tăng $1000$ đồng/kg thì số rau thừa tăng $20\\text{ kg}$. Số rau thừa này được thu mua hết để làm thức ăn chăn nuôi với giá $2000$ đồng/kg. Hỏi để mỗi ngày thu được số tiền bán rau lớn nhất thì trang trại đó nên bán rau với giá bao nhiêu nghìn đồng?",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 21,
+      "difficulty_part": 3,
+      "skill_id": "optimization_revenue_profit",
+      "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "type": "exam_short_answer",
+      "correct_answer": "41",
+      "has_image": false,
+      "image_path": ""
+    },
+    "answer": "ĐÁP ÁN: 41\n\nGIẢI THÍCH:\nGọi số tiền cần tăng giá mỗi kg rau là $x$ ($x \\ge 0$) (nghìn đồng).\nVì cứ tăng giá thêm $1000$ đồng/kg thì số rau thừa lại $20\\text{ kg}$ nên tăng $x$ (nghìn đồng) thì số rau thừa lại $20x\\text{ kg}$.\nDo đó tổng số rau bán ra mỗi ngày là: $1000 - 20x \\text{ (kg)}$.\nGọi $f(x)$ là tổng số tiền bán rau một ngày (nghìn đồng):\n$f(x) = (1000 - 20x)(30 + x) + 20x \\cdot 2 = -20x^2 + 440x + 30000$ (nghìn đồng)\nXét hàm số $f(x) = -20x^2 + 440x + 30000$ trên $(0; +\\infty)$.\nHàm số đạt giá trị lớn nhất tại $x = -\\dfrac{b}{2a} = -\\dfrac{440}{2 \\cdot (-20)} = 11$.\nKhi đó $\\max_{x \\in (0; +\\infty)} f(x) = f(11) = 32420$ (nghìn đồng).\nVậy trang trại đó nên bán rau với giá $30 + 11 = 41$ (nghìn đồng)."
+  },
+  {
+    "id": "exam_de7plus_de08_p3_q22",
+    "content": "ĐỀ 7+ (Đề số 8) - CÂU 22 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:\n\nĐo chiều dài của $80$ con cá, kết quả thu được biểu diễn ở biểu đồ tần số tương đối ghép nhóm như hình vẽ.\n\n[Xem hình: q22.png]\n\nTìm tứ phân vị thứ nhất của mẫu số liệu ghép nhóm trên.",
+    "metadata": {
+      "exam_id": "de7plus_de08",
+      "year": 2025,
+      "exam_source": "Đề 7+ (Đề số 8)",
+      "question_number": 22,
+      "difficulty_part": 3,
+      "skill_id": "statistics_grouped_data",
+      "chapter": "Thống kê",
+      "type": "exam_short_answer",
+      "correct_answer": "29",
+      "has_image": true,
+      "image_path": "data/exams/images/de7plus_de08/q22.png"
+    },
+    "answer": "ĐÁP ÁN: 29\n\nGIẢI THÍCH:\nTa có bảng phân bố tần số ghép nhóm:\n\n| Chiều dài | $[27; 28)$ | $[28; 29)$ | $[29; 30)$ | $[30; 31)$ | $[31; 32)$ | Tổng |\n|---|---|---|---|---|---|---|\n| Tần số tương đối % | $5$ | $20$ | $50$ | $15$ | $10$ | |\n| Tần số | $4$ | $16$ | $40$ | $12$ | $8$ | $n = 80$ |\n| Tần số tích lũy | $4$ | $20$ | $60$ | $72$ | $80$ | |\n\nCách tính tần số của các nhóm:\nNhóm $[27; 28)$: $\\dfrac{5\\% \\cdot 80}{100\\%} = 4$.\nNhóm $[28; 29)$: $\\dfrac{20\\% \\cdot 80}{100\\%} = 16$.\nNhóm $[29; 30)$: $\\dfrac{50\\% \\cdot 80}{100\\%} = 40$.\nNhóm $[30; 31)$: $\\dfrac{15\\% \\cdot 80}{100\\%} = 12$.\nNhóm $[31; 32)$: $\\dfrac{10\\% \\cdot 80}{100\\%} = 8$.\n\nTa có $\\dfrac{1}{4}n = \\dfrac{1}{4} \\cdot 80 = 20$ nên $Q_1 \\in [29; 30)$.\n$\\Rightarrow Q_1 = 29 + \\dfrac{\\frac{1}{4} \\cdot 80 - 20}{40} \\cdot (30 - 29) = 29$."
+  }
+]

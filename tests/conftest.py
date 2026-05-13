@@ -27,7 +27,7 @@ def mock_settings(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test-fake-key-for-unit-tests")
     monkeypatch.setenv("LLM_MODEL", "gpt-4o")
     monkeypatch.setenv("EMBEDDING_MODEL", "text-embedding-3-small")
-    monkeypatch.setenv("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
+    monkeypatch.setenv("DATABASE_URL", "postgresql+asyncpg://aitutor:aitutorpassword@localhost:5432/aitutordb")
     monkeypatch.setenv("CHROMA_PERSIST_DIR", "./test_chroma_db")
     monkeypatch.setenv("DEBUG", "false")
 
@@ -45,7 +45,7 @@ async def db_session():
     from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
     from app.db.database import Base
 
-    engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=False)
+    engine = create_async_engine("postgresql+asyncpg://aitutor:aitutorpassword@localhost:5432/aitutordb", echo=False)
     session_factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     async with engine.begin() as conn:

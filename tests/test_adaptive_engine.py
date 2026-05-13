@@ -94,16 +94,8 @@ class TestRecommendNextSkill:
         assert recommended is not None
 
     def test_all_mastered_returns_none(self, engine):
-        masteries = {sid: 0.95 for sid in ["derivative_basic", "derivative_rules",
-                                            "derivative_applications", "function_survey",
-                                            "primitive_basic", "integral_definite",
-                                            "integral_applications", "sequence_basic",
-                                            "arithmetic_sequence", "geometric_sequence",
-                                            "geometry_vectors", "geometry_line_plane",
-                                            "geometry_distance_angle", "geometry_sphere",
-                                            "combinatorics_basic", "probability_basic",
-                                            "probability_distribution",
-                                            "statistics_descriptive", "statistics_inference"]}
+        from app.knowledge_tracing.skill_graph import SKILLS
+        masteries = {sid: 0.95 for sid in SKILLS.keys()}
         recommended = engine.recommend_next_skill(masteries)
         assert recommended is None
 

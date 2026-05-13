@@ -31,7 +31,7 @@ from app.agents.planner_agent import PlannerAgent
 from app.knowledge_tracing.service import get_mastery_profile, get_all_masteries
 from app.knowledge_tracing.skill_graph import SKILLS, get_chapters, get_skills_by_chapter
 from app.knowledge_tracing.bkt import BKTModel
-from app.ocr.processor import get_ocr_processor
+from app.ocr.ocr_strategy import get_ocr_engine
 from app.quiz.service import create_quiz_session, submit_quiz_answer, get_quiz_result
 from app.quiz.diagnostic import start_diagnostic, answer_diagnostic, get_diagnostic_result
 from app.quiz.exam_service import list_exams, load_exam, grade_exam, grade_exam_and_update
@@ -394,9 +394,9 @@ async def upload_image(
         images.append((data, mime))
 
     # ── Step 1: OCR song song tất cả ảnh ─────────────────────────
-    processor = get_ocr_processor()
+    ocr_engine = get_ocr_engine()
     ocr_results: list[str] = await asyncio.gather(
-        *[processor.process_image(b, mime_type=m) for b, m in images]
+        *[ocr_engine.ocr_image(b, mime_type=m) for b, m in images]
     )
 
     # Gộp OCR results với label "Ảnh 1/2/..."
