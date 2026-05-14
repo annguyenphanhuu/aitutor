@@ -228,10 +228,37 @@ def judge_short_answer_accuracy(response: str, correct_answer: str) -> float:
     if not correct_answer or not response:
         return 0.0
 
-    def extract_number(text: str) -> Optional[float]:
+    def extract_number(text: str, is_response: bool = False) -> Optional[float]:
         """Tìm số cuối cùng (hoặc duy nhất) trong text."""
+        # Ưu tiên lấy trong thẻ <answer> nếu là response
+        if is_response:
+            m = re.search(r"<answer>(.*?)</answer>", text, re.IGNORECASE | re.DOTALL)
+            if m:
+                text = m.group(1)
+                
         # Thay dấu phẩy châu Âu (4,5) → dấu chấm (4.5)
         text_normalized = re.sub(r"(\d),(\d)", r"\1.\2", text)
+        
+        # Thử parse latex fraction \dfrac{a}{b} hoặc \frac{a}{b}
+        frac_m = re.findall(r"\\(?:d)?frac\s*\{(-?\d+\.?\d*)\}\s*\{(-?\d+\.?\d*)\}", text_normalized)
+        if frac_m:
+            try:
+                a, b = float(frac_m[-1][0]), float(frac_m[-1][1])
+                if b != 0:
+                    return a / b
+            except ValueError:
+                pass
+                
+        # Thử parse phân số thường a/b
+        frac_simple = re.findall(r"(-?\d+\.?\d*)\s*/\s*(-?\d+\.?\d*)", text_normalized)
+        if frac_simple:
+            try:
+                a, b = float(frac_simple[-1][0]), float(frac_simple[-1][1])
+                if b != 0:
+                    return a / b
+            except ValueError:
+                pass
+                
         nums = re.findall(r"-?\d+\.?\d*", text_normalized)
         if nums:
             try:
@@ -246,7 +273,7 @@ def judge_short_answer_accuracy(response: str, correct_answer: str) -> float:
 
     # Try numeric
     ref_num  = extract_number(correct_answer)
-    resp_num = extract_number(response)
+    resp_num = extract_number(response, is_response=True)
     if ref_num is not None and resp_num is not None:
         if abs(ref_num - resp_num) < 0.01:
             return 1.0

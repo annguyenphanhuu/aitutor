@@ -59,6 +59,8 @@ EXAM_FILES = {
     "de03": EXAMS_DIR / "de7plus_de03.json",
     "de04": EXAMS_DIR / "de7plus_de04.json",
     "de05": EXAMS_DIR / "de7plus_de05.json",
+    "de08": EXAMS_DIR / "de7plus_de08.json",
+    "de09": EXAMS_DIR / "de7plus_de09.json",
 }
 
 SEP  = "─" * 80
@@ -256,8 +258,8 @@ def build_system_prompt(context: str, question_type: str) -> str:
     if question_type == "exam_true_false":
         fmt = (
             "\n\nQUAN TRONG: Cau hoi nay la dang Dung/Sai nhieu menh de. "
-            "Bat buoc ket thuc cau tra loi bang dong: "
-            "'KET QUA: a-T,b-F,c-T,d-F' (T=Dung, F=Sai)."
+            "Bat buoc dat dap an cuoi cung vao the <answer>a-T,b-F,c-T,d-F</answer> voi T la Dung, F la Sai. "
+            "Tuyet doi khong dung chu 'Dung/Sai', khong boc trong \\text{} hay bat ky format nao khac."
         )
     elif question_type == "exam_mcq":
         fmt = (
@@ -266,9 +268,11 @@ def build_system_prompt(context: str, question_type: str) -> str:
         )
     elif question_type == "exam_short_answer":
         fmt = (
-            "\n\nQUAN TRONG: Ket thuc cau tra loi bang 'DAP AN: [gia tri so]'."
-            " Neu ket qua la xac suat hoac phan tram, ghi duoi dang SO THAP PHAN (vi du: 0.56), "
-            "KHONG ghi duoi dang phan tram (vi du: KHONG ghi 56)."
+            "\n\nQUAN TRONG: Ban PHAI dat con so dap an cuoi cung vao the <answer>GIA_TRI</answer>. "
+            "GIA_TRI chi duoc la SO THAP PHAN hoac PHAN SO, tuyet doi KHONG kem theo don vi do luong hay text nao khac. "
+            "Dac biet, neu de bai co yeu cau LAM TRON (vi du: 'lam tron den hang phan muoi', 'lam tron den hang phan tram'), "
+            "ban PHAI tu thuc hien phep lam tron do va CHI ghi gia tri DA LAM TRON vao the <answer>. "
+            "Vi du: <answer>0.56</answer> hay <answer>2</answer>."
         )
     else:
         fmt = ""
@@ -279,13 +283,12 @@ def build_system_prompt(context: str, question_type: str) -> str:
         "\n  Buoc 1: Xac dinh dang bai va phuong phap giai."
         "\n  Buoc 2: Neu bai co HINH VE hoac DO THI, bat buoc thuc hien day du 3 micro-buoc sau:"
         "\n    [Mo ta] - Liet ke tat ca cac gia tri tren truc Ox va Oy bao gom ca dau am (-)."
-        "\n             - Xac dinh so nhanh do thi va chung nam o goc phan tu nao."
-        "\n             - Mo ta cac duong tiem can (ngang/dung) va cac diem dac biet ro rang tren do thi."
-        "\n    [Dinh vi] - Voi moi duong tiem can ngang: xac dinh TRUOC no nam TREN hay DUOI truc Ox,"
-        "\n               sau do dem o vuong luoi (grid) de doc chinh xac gia tri y (bao gom dau am)."
-        "\n             - Voi moi duong tiem can dung: xac dinh no nam BEN TRAI hay BEN PHAI truc Oy,"
-        "\n               dem o vuong luoi de doc chinh xac gia tri x."
-        "\n    [Xac nhan] - The toa do vua doc vao do thi de kiem tra tinh hop le truoc khi ket luan."
+        "\n             - Xac dinh so nhanh do thi, hinh dang (parabol, duong thang, v.v.)."
+        "\n             - Tim cac duong tiem can neu co."
+        "\n    [Dinh vi] - CHI lay toa do cac diem nam CHINH XAC tren NUT LUOI TOA DO (giao cua cac duong ke luoi)."
+        "\n             - TUYET DOI KHONG uoc luong bang mat cac diem giao voi truc toa do neu chung khong nam ngay nut luoi (nghia la khong phai so nguyen). Hay tim cac diem khac tren nhanh do thi co toa do nguyen ro rang."
+        "\n             - Voi Parabol: uu tien doc toa do DINH va 1 diem bat ky di qua nut luoi."
+        "\n    [Xac nhan] - Viet phuong trinh do thi tu cac diem nguyen vua doc va thu lai de kiem tra tinh hop le."
         "\n  Buoc 3: Thuc hien phep tinh / loai tru phuong an."
         "\n  Buoc 4: Kiem tra lai dap an bang thu nguoc hoac dieu kien bien."
     )
@@ -316,8 +319,9 @@ async def generate_with_trace(
     question_type: str,
     image_path: str,
     solver_model: Optional[str] = None,
-) -> tuple[str, str, bool]:
-    """Returns (response, model_used, used_vision)."""
+    use_reflection: bool = False,
+) -> tuple[str, str, bool, Optional[str]]:
+    """Returns (response, model_used, used_vision, reflection_log)."""
     from langchain_openai import ChatOpenAI
     from langchain.schema import HumanMessage, SystemMessage
     from app.config import get_settings
@@ -352,7 +356,21 @@ async def generate_with_trace(
         messages = [SystemMessage(content=system_prompt), HumanMessage(content=question)]
 
     resp = await llm.ainvoke(messages)
-    return resp.content, model, using_vision
+    
+    from app.utils.cost_tracker import log_from_response
+    log_from_response(agent="Solver", model=model, response=resp)
+    
+    draft_response = resp.content
+
+    reflection_log = None
+    if use_reflection:
+        from app.agents.reflection import ReflectionEngine
+        engine = ReflectionEngine()
+        reflection_result = await engine.reflect(draft_response, question)
+        draft_response = reflection_result.build_full_response(include_thinking=False)
+        reflection_log = "\n".join(reflection_result.thinking_log) if reflection_result.thinking_log else None
+
+    return draft_response, model, using_vision, reflection_log
 
 
 # ── MathJudge (inline, no asyncio.run conflict) ────────────────────────────────
@@ -454,6 +472,7 @@ def print_question_trace(
     response: str,
     model_used: str,
     using_vision: bool,
+    reflection_log: Optional[str],
     judge: dict,
     ragas_scores: Optional[dict],
     verbose_prompt: bool,
@@ -540,6 +559,12 @@ def print_question_trace(
         print(f"\n📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]")
         print(f"   Format: {qtype} | CoT: ✅ | RAG framing: ✅")
 
+    # ── Reflection / SymPy Log ──
+    if reflection_log:
+        print("\n⚙️  SYM-PY REFLECTION:")
+        print(SEP)
+        print(reflection_log)
+
     # ── Response ──
     print(f"\n🤖 MODEL RESPONSE:")
     print(SEP)
@@ -607,7 +632,25 @@ def save_trace(trace_records: list[dict], exam: str) -> str:
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
+class TeeLogger:
+    def __init__(self, filename):
+        self.terminal = sys.stdout
+        self.log = open(filename, "w", encoding="utf-8")
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
 async def main(args):
+    if args.log_file:
+        # Tự động tạo thư mục chứa log nếu chưa có
+        Path(args.log_file).parent.mkdir(parents=True, exist_ok=True)
+        sys.stdout = TeeLogger(args.log_file)
+
     print(f"""
 {SEP2}
   AITutor — Custom Evaluation Monitor
@@ -616,6 +659,7 @@ async def main(args):
   Types   : {args.types or 'all'}
   RAGAS   : {'OFF' if args.no_ragas else 'ON (per-question)'}
   Judge   : {args.judge_model}
+  Log File: {args.log_file or 'None'}
 {SEP2}
 """)
 
@@ -654,8 +698,8 @@ async def main(args):
 
         # ── Generate ──
         img_path = q["image_path"] if q["has_image"] else ""
-        response, model_used, using_vision = await generate_with_trace(
-            q["question"], system_prompt, q["type"], img_path, args.solver_model
+        response, model_used, using_vision, reflection_log = await generate_with_trace(
+            q["question"], system_prompt, q["type"], img_path, args.solver_model, args.use_reflection
         )
 
         # ── Build sample for judges ──
@@ -695,6 +739,7 @@ async def main(args):
             response=response,
             model_used=model_used,
             using_vision=using_vision,
+            reflection_log=reflection_log,
             judge=judge_result,
             ragas_scores=ragas_scores,
             verbose_prompt=args.verbose_prompt,
@@ -725,6 +770,7 @@ async def main(args):
                     for c in chunks
                 ],
                 "response":        response,
+                "reflection_log":  reflection_log,
                 "math_accuracy":   judge_result.get("accuracy"),
                 "step_clarity":    judge_result.get("step_clarity"),
                 "examiner":        judge_result.get("examiner"),
@@ -762,6 +808,9 @@ async def main(args):
         visuals = [j.get("visual_score") for j in all_judges if j.get("visual_score") is not None]
         if visuals:
             print(f"  Visual Reasoning Avg     : {sum(visuals)/len(visuals):.3f}  ({len(visuals)} Vision questions)")
+            
+        from app.utils.cost_tracker import session_summary
+        print(f"\n  {session_summary()}")
 
     # ── Save trace ──
     if args.save_trace and trace_records:
@@ -811,6 +860,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--save-trace", action="store_true",
         help="Lưu trace ra file JSONL trong data/evaluation/",
+    )
+    parser.add_argument(
+        "--use-reflection", action="store_true",
+        help="Bật luồng Reflection để dùng SymPy kiểm chứng tính toán (mặc định: tắt)",
+    )
+    parser.add_argument(
+        "--log-file", default=None,
+        help="Đường dẫn file txt/log để lưu lại kết quả in ra màn hình (ví dụ: data/evaluation/log_de01.txt)",
     )
 
     args = parser.parse_args()

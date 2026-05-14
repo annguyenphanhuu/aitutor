@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     # LLM Models — 3 tiers
     OPENAI_API_KEY: str = ""
     # Tier 1 — Full reasoning: Teacher, Reflection-Correct
-    LLM_MODEL: str = "gpt-5.4"
+    LLM_MODEL: str = "o4-mini-2025-04-16"
     # Tier 2 — Balanced: Classifier, Planner, Assessor, Reflection-Extract, OCR
     LLM_MODEL_MINI: str = "gpt-5.4-mini-2026-03-17"
     # Tier 3 — Fast & cheap: ExprExtractor, simple utilities

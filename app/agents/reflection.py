@@ -53,13 +53,18 @@ settings = get_settings()
 
 REFLECTION_SYSTEM = """Bạn là một hệ thống kiểm tra toán học nội bộ (Internal Math Verifier).
 
-NHIỆM VỤ: Phân tích bài giải bên dưới và tìm các biểu thức toán học cần kiểm chứng.
+NHIỆM VỤ: Phân tích bài giải bên dưới và tìm các biểu thức toán học cần kiểm chứng bằng SymPy.
+LƯU Ý CÁC HÀM VÀ THAM SỐ CỦA TỪNG HÀM:
+1. compute_derivative: {{"expr_str": "x^2", "var": "x", "order": 1}}
+2. compute_integral: {{"expr_str": "x^2", "var": "x", "lower": "0", "upper": "1"}}
+3. solve_equation: {{"equation_str": "x^2 - 1 = 0", "var": "x"}}
+4. simplify_expression: {{"expr_str": "x + x"}}
 
 Với mỗi biểu thức, hãy trả về JSON array. Mỗi phần tử có dạng:
 {{
-  "expression": "<biểu thức SymPy>",
-  "operation": "compute_derivative | compute_integral | solve_equation | simplify_expression",
-  "params": {{"expr_str": "...", ...}}
+  "expression": "<biểu thức hoặc phương trình>",
+  "operation": "<tên_hàm_tương_ứng>",
+  "params": {{"<tên_tham_số>": "<giá_trị>"}}
 }}
 
 Chỉ trích xuất những phép tính CÓ THỂ KIỂM CHỨNG bằng SymPy.
@@ -77,6 +82,9 @@ CORRECTION_PROMPT = """Bạn vừa giải một bài toán nhưng hệ thống p
 
 Hãy VIẾT LẠI bài giải hoàn chỉnh với các kết quả đúng.
 Giữ nguyên phong cách giảng dạy, chỉ sửa lại phần tính toán sai.
+QUAN TRỌNG: 
+1. BẮT BUỘC giữ nguyên định dạng thẻ <answer>...</answer> chứa đáp án cuối cùng như yêu cầu của câu hỏi ban đầu.
+2. NẾU câu hỏi ban đầu có yêu cầu LÀM TRÒN (ví dụ: làm tròn đến hàng phần chục, phần trăm), bạn PHẢI làm tròn kết quả từ SymPy thành số thập phân rồi mới đưa vào thẻ <answer>. KHÔNG đưa biểu thức căn (ví dụ $\sqrt{{6}}$) hay phân số vào thẻ <answer> nếu có yêu cầu làm tròn.
 Dùng LaTeX: $...$ inline, $$...$$ block.
 Trả lời bằng tiếng Việt."""
 
@@ -272,7 +280,8 @@ class ReflectionEngine:
         messages = [
             SystemMessage(
                 content="Bạn là gia sư Toán 12. Hãy viết lại bài giải "
-                        "với kết quả tính toán CHÍNH XÁC từ SymPy."
+                        "với kết quả tính toán CHÍNH XÁC từ SymPy. "
+                        "QUAN TRỌNG: Luôn phải giữ lại thẻ <answer>...</answer> chứa đáp án cuối cùng."
             ),
             HumanMessage(content=prompt),
         ]
