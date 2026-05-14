@@ -221,73 +221,81 @@ def judge_short_answer_accuracy(response: str, correct_answer: str) -> float:
     So sánh câu trả lời ngắn (số hoặc chuỗi đơn giản).
 
     Cách thức:
-    1. Thử numeric comparison (làm tròn 4 chữ số)
-    2. Normalize string → so sánh exact
+    1. Thử dùng SymPy evalf() để so sánh giá trị toán học (hỗ trợ phân số, căn...).
+    2. Thử numeric comparison cơ bản.
+    3. Normalize string → so sánh exact.
     Returns 1.0 nếu đúng, 0.0 nếu sai.
     """
     if not correct_answer or not response:
         return 0.0
 
-    def extract_number(text: str, is_response: bool = False) -> Optional[float]:
-        """Tìm số cuối cùng (hoặc duy nhất) trong text."""
-        # Ưu tiên lấy trong thẻ <answer> nếu là response
+    def get_answer_content(text: str, is_response: bool = False) -> str:
         if is_response:
             m = re.search(r"<answer>(.*?)</answer>", text, re.IGNORECASE | re.DOTALL)
             if m:
-                text = m.group(1)
-                
-        # Thay dấu phẩy châu Âu (4,5) → dấu chấm (4.5)
-        text_normalized = re.sub(r"(\d),(\d)", r"\1.\2", text)
+                return m.group(1).strip()
+        return text.strip()
+
+    ans_str = get_answer_content(response, is_response=True)
+    ref_str = correct_answer.strip()
+
+    # 1. Evaluate with SymPy
+    try:
+        from app.agents.tools import _safe_parse
         
-        # Thử parse latex fraction \dfrac{a}{b} hoặc \frac{a}{b}
-        frac_m = re.findall(r"\\(?:d)?frac\s*\{(-?\d+\.?\d*)\}\s*\{(-?\d+\.?\d*)\}", text_normalized)
-        if frac_m:
-            try:
-                a, b = float(frac_m[-1][0]), float(frac_m[-1][1])
-                if b != 0:
-                    return a / b
-            except ValueError:
-                pass
-                
-        # Thử parse phân số thường a/b
-        frac_simple = re.findall(r"(-?\d+\.?\d*)\s*/\s*(-?\d+\.?\d*)", text_normalized)
-        if frac_simple:
-            try:
-                a, b = float(frac_simple[-1][0]), float(frac_simple[-1][1])
-                if b != 0:
-                    return a / b
-            except ValueError:
-                pass
-                
+        def clean_latex_for_sympy(s: str) -> str:
+            s = s.replace('$', '').replace('\n', '')
+            s = re.sub(r"(\d),(\d)", r"\1.\2", s)  # 4,5 -> 4.5
+            s = s.replace('\\dfrac', '\\frac')
+            # convert \frac{a}{b} to (a)/(b)
+            s = re.sub(r'\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}', r'((\1)/(\2))', s)
+            return s.strip()
+
+        resp_clean = clean_latex_for_sympy(ans_str)
+        ref_clean = clean_latex_for_sympy(ref_str)
+        
+        resp_expr = _safe_parse(resp_clean)
+        ref_expr = _safe_parse(ref_clean)
+        
+        if resp_expr.is_number and ref_expr.is_number:
+            resp_val = float(resp_expr.evalf())
+            ref_val = float(ref_expr.evalf())
+            if abs(resp_val - ref_val) < 0.01:
+                return 1.0
+            # % vs decimal check
+            if 0.0 <= ref_val <= 1.0 and abs(ref_val * 100 - resp_val) < 0.1:
+                return 1.0
+            if 0.0 <= resp_val <= 1.0 and abs(resp_val * 100 - ref_val) < 0.1:
+                return 1.0
+    except Exception:
+        pass
+
+    def extract_number(text: str) -> Optional[float]:
+        text_normalized = re.sub(r"(\d),(\d)", r"\1.\2", text)
         nums = re.findall(r"-?\d+\.?\d*", text_normalized)
         if nums:
             try:
                 return float(nums[-1])
             except ValueError:
-                return None
+                pass
         return None
 
-    def normalize_str(text: str) -> str:
-        """Lowercase, strip, remove spaces."""
-        return re.sub(r"\s+", "", text.strip().lower())
-
-    # Try numeric
-    ref_num  = extract_number(correct_answer)
-    resp_num = extract_number(response, is_response=True)
+    # 2. Try simple numeric fallback
+    ref_num  = extract_number(ref_str)
+    resp_num = extract_number(ans_str)
     if ref_num is not None and resp_num is not None:
         if abs(ref_num - resp_num) < 0.01:
             return 1.0
-        # Kiểm tra tương đương % ↔ decimal:
-        # VD: đáp án "0,56" (decimal) nhưng model trả "56" (phần trăm) → vẫn đúng.
-        # Áp dụng khi ref nằm trong [0,1] và resp = ref × 100 (hoặc ngược lại).
         if 0.0 <= ref_num <= 1.0 and abs(ref_num * 100 - resp_num) < 0.1:
             return 1.0
         if 0.0 <= resp_num <= 1.0 and abs(resp_num * 100 - ref_num) < 0.1:
             return 1.0
-        return 0.0
 
-    # Fallback: string exact match
-    return 1.0 if normalize_str(response) == normalize_str(correct_answer) else 0.0
+    # 3. Fallback: string exact match
+    def normalize_str(text: str) -> str:
+        return re.sub(r"\s+", "", text.strip().lower())
+        
+    return 1.0 if normalize_str(ans_str) == normalize_str(ref_str) else 0.0
 
 
 async def judge_step_clarity(

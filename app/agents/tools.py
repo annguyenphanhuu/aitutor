@@ -178,11 +178,17 @@ def simplify_expression(expr_str: str) -> dict:
     try:
         expr = _safe_parse(expr_str)
         result = simplify(expr)
-        return {
+        res = {
             "success": True,
             "result_latex": f"${latex(result)}$",
             "result_sympy": str(result),
         }
+        if result.is_number:
+            try:
+                res["result_float"] = str(float(result.evalf()))
+            except Exception:
+                pass
+        return res
     except Exception as e:
         return {"success": False, "error": str(e)}
 

@@ -10,7 +10,7 @@
       "difficulty_part": 1,
       "skill_id": "function_graph_recognition",
       "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "B",
       "has_image": true,
       "image_path": "data/exams/images/de7plus_de09/q01.png"
@@ -28,7 +28,7 @@
       "difficulty_part": 1,
       "skill_id": "function_min_max_graph",
       "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "A",
       "has_image": true,
       "image_path": "data/exams/images/de7plus_de09/q02.png"
@@ -46,7 +46,7 @@
       "difficulty_part": 1,
       "skill_id": "arithmetic_progression",
       "chapter": "Dãy số. Cấp số cộng và cấp số nhân",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "D",
       "has_image": false,
       "image_path": ""
@@ -64,7 +64,7 @@
       "difficulty_part": 1,
       "skill_id": "function_monotonicity",
       "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "B",
       "has_image": true,
       "image_path": "data/exams/images/de7plus_de09/q04.png"
@@ -82,7 +82,7 @@
       "difficulty_part": 1,
       "skill_id": "logarithmic_function_domain",
       "chapter": "Hàm số lũy thừa, hàm số mũ và hàm số lôgarit",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "A",
       "has_image": false,
       "image_path": ""
@@ -100,7 +100,7 @@
       "difficulty_part": 1,
       "skill_id": "function_extremum_sign_chart",
       "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "A",
       "has_image": true,
       "image_path": "data/exams/images/de7plus_de09/q06.png"
@@ -118,7 +118,7 @@
       "difficulty_part": 1,
       "skill_id": "geometry_distance_point_plane",
       "chapter": "Quan hệ vuông góc trong không gian",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "D",
       "has_image": false,
       "image_path": ""
@@ -136,7 +136,7 @@
       "difficulty_part": 1,
       "skill_id": "function_asymptote_intersection",
       "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "A",
       "has_image": false,
       "image_path": ""
@@ -154,7 +154,7 @@
       "difficulty_part": 1,
       "skill_id": "probability_addition_rule",
       "chapter": "Xác suất",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "D",
       "has_image": false,
       "image_path": ""
@@ -172,7 +172,7 @@
       "difficulty_part": 1,
       "skill_id": "statistics_range",
       "chapter": "Thống kê",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "A",
       "has_image": false,
       "image_path": ""
@@ -190,7 +190,7 @@
       "difficulty_part": 1,
       "skill_id": "function_asymptote_vertical",
       "chapter": "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "B",
       "has_image": false,
       "image_path": ""
@@ -208,7 +208,7 @@
       "difficulty_part": 1,
       "skill_id": "derivative_application_kinematics",
       "chapter": "Đạo hàm",
-      "type": "exam_multiple_choice",
+      "type": "exam_mcq",
       "correct_answer": "D",
       "has_image": false,
       "image_path": ""

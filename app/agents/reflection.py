@@ -260,6 +260,8 @@ class ReflectionEngine:
             r = v.get("result", {})
             if r.get("success"):
                 result_str = r.get("result_latex", r.get("solutions", ""))
+                if "result_float" in r:
+                    result_str += f" (Giá trị thập phân: {r['result_float']})"
                 lines.append(
                     f"• {v['tool']}({v['params'].get('expr_str', '')}) "
                     f"→ KẾT QUẢ ĐÚNG (SymPy): {result_str}"
