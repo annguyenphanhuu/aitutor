@@ -33,6 +33,36 @@ settings = get_settings()
 # Maximum number of history messages to include in context
 MAX_HISTORY_MESSAGES = 10
 
+# ── Skill-based routing ───────────────────────────────────────────────────────
+# Skills that need heavy symbolic computation → use Agentic Tool-Calling
+_HEAVY_MATH_SKILLS: set[str] = {
+    "integral_applications", "primitive_basic", "primitive_advanced",
+    "solve_inequality", "exponential_growth", "compound_interest",
+    "combinatorics_probability", "solve_equation", "optimization",
+    "probability_complex",
+}
+
+# Vietnamese keywords in the question text that imply heavy calculation
+_HEAVY_MATH_KEYWORDS = [
+    "tích phân", "nguyên hàm", "∫", "diện tích", "thể tích vật tròn xoay",
+    "lãi kép", "lãi suất", "tăng trưởng", "phân bào", "vi khuẩn nhân đôi",
+    "sau bao nhiêu", "xác suất",
+]
+
+
+def _is_heavy_math(question: str, skill_id: Optional[str]) -> bool:
+    """Return True if this question needs Agentic Tool-Calling.
+
+    Criteria:
+    - skill_id is in _HEAVY_MATH_SKILLS, OR
+    - Question text contains keywords related to integrals / finance / growth.
+    Remaining questions use the cheaper Reflection pipeline.
+    """
+    if skill_id and any(s in skill_id.lower() for s in _HEAVY_MATH_SKILLS):
+        return True
+    q_lower = question.lower()
+    return any(kw in q_lower for kw in _HEAVY_MATH_KEYWORDS)
+
 
 def _normalize_skill_ids(
     skill_id: Optional[str] = None,
@@ -346,11 +376,18 @@ class TeacherAgent(AgenticTeacherMixin):
 
         messages.append(human_message)
 
-        # ── Step 4: LLM Generation ─────────────────────────────────────────
-        # Branch A: Function Calling (ReAct agentic)
-        if settings.USE_FUNCTION_CALLING:
-            # normalize LangChain messages → dict format cho OpenAI SDK
+        # ── Step 4: LLM Generation — Hybrid routing ──────────────────────────
+        # Route heavy-math questions to Agentic Tool-Calling;
+        # use cheaper Reflection pipeline for all other questions.
+        use_agentic = (
+            settings.USE_FUNCTION_CALLING  # global override (e.g. for A/B testing)
+            or _is_heavy_math(question, skill_id)
+        )
+
+        if use_agentic:
+            # Agentic path: LLM → tool call → … → final answer
             oai_messages = _normalize_messages(messages)
+            logger.info("🧠 TeacherAgent [Agentic] skill=%s", skill_id)
             return await self.respond_agentic(
                 messages=oai_messages,
                 question=question,
@@ -358,7 +395,8 @@ class TeacherAgent(AgenticTeacherMixin):
                 mode=mode,
             )
 
-        # Branch B: Legacy LangChain + Reflection
+        # Reflection path: single LLM call → post-hoc SymPy verify (cheaper)
+        logger.info("📝 TeacherAgent [Reflection] skill=%s", skill_id)
         from app.utils.langfuse_client import new_generation, end_generation
         gen = new_generation(
             name="teacher.llm_call",
@@ -376,7 +414,7 @@ class TeacherAgent(AgenticTeacherMixin):
             agent="Teacher",
             model=self.model_name,
             response=response,
-            extra=f"mode={mode},input={img_flag},graphrag=true,few_shot={get_mastery_tier(p_mastery)}",
+            extra=f"mode={mode},input={img_flag},graphrag=true,few_shot={get_mastery_tier(p_mastery)},routing=reflection",
         )
 
         # Kết thúc Langfuse generation span
@@ -395,12 +433,8 @@ class TeacherAgent(AgenticTeacherMixin):
         )
 
         if reflection_result.was_corrected:
-            logger.info(
-                "🔄 Reflection corrected the answer (skill=%s)",
-                skill_id,
-            )
+            logger.info("🔄 Reflection corrected the answer (skill=%s)", skill_id)
 
-        # Return the final answer (with thinking block stripped)
         return reflection_result.build_full_response(include_thinking=True)
 
     async def respond_stream(

@@ -167,24 +167,33 @@ class ReflectionEngine:
 
             try:
                 result = tool_fn(**params)
+                # result may be str (LangChain @tool returns str) or dict (legacy)
+                if isinstance(result, str):
+                    result_str = result
+                    success = not result_str.startswith("ERROR")
+                    result_dict = {"success": success, "result_latex": result_str}
+                else:
+                    result_dict = result
+                    result_str = str(result)
+
                 verifications.append({
                     "expression": ext.get("expression", ""),
                     "tool": tool_name,
                     "params": params,
-                    "result": result,
+                    "result": result_dict,
                 })
 
-                if result.get("success"):
+                if result_dict.get("success"):
                     thinking_log.append(
-                        f"  ✓ {tool_name}({params.get('expr_str', '')}) "
-                        f"= {result.get('result_latex', result.get('solutions', ''))}"
+                        f"  \u2713 {tool_name}({params.get('expr_str', '')}) "
+                        f"= {result_dict.get('result_latex', result_dict.get('solutions', result_str))}"
                     )
                 else:
                     thinking_log.append(
-                        f"  ✗ {tool_name} failed: {result.get('error', 'unknown')}"
+                        f"  \u2717 {tool_name} failed: {result_dict.get('error', result_str)}"
                     )
             except Exception as e:
-                thinking_log.append(f"  ✗ Exception in {tool_name}: {e}")
+                thinking_log.append(f"  \u2717 Exception in {tool_name}: {e}")
 
         # ── Step 3: Check if draft contains any mismatches ────────────
         # Compare SymPy results with what the LLM wrote
@@ -258,13 +267,14 @@ class ReflectionEngine:
         lines = []
         for v in verifications:
             r = v.get("result", {})
-            if r.get("success"):
+            # r may be dict (legacy) or already normalised dict
+            if isinstance(r, dict) and r.get("success"):
                 result_str = r.get("result_latex", r.get("solutions", ""))
                 if "result_float" in r:
-                    result_str += f" (Giá trị thập phân: {r['result_float']})"
+                    result_str += f" (Gi\u00e1 tr\u1ecb th\u1eadp ph\u00e2n: {r['result_float']})"
                 lines.append(
-                    f"• {v['tool']}({v['params'].get('expr_str', '')}) "
-                    f"→ KẾT QUẢ ĐÚNG (SymPy): {result_str}"
+                    f"\u2022 {v['tool']}({v['params'].get('expr_str', '')}) "
+                    f"\u2192 K\u1ebcT QU\u1ea2 \u0110\u00daNG (SymPy): {result_str}"
                 )
         return "\n".join(lines) if lines else ""
 

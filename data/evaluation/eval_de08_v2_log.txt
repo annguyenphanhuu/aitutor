@@ -1,0 +1,2424 @@
+
+════════════════════════════════════════════════════════════════════════════════
+  AITutor — Custom Evaluation Monitor
+  Exam    : DE08
+  Questions: ALL
+  Types   : all
+  RAGAS   : ON (per-question)
+  Judge   : gpt-4o-mini
+  Log File: data/evaluation/eval_de08_v2_log.txt
+════════════════════════════════════════════════════════════════════════════════
+
+  ✅ Loaded 22 câu
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3264 out=29 → $0.03351  (session: 1 calls, $0.0335)
+💸 [Solver] gpt-5.4-2026-03-05  in=3330 out=58 → $0.03504  (session: 2 calls, $0.0685)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 1  [1/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Dãy số - Cấp số cộng - Cấp số nhân
+  Skill   : sequence_arithmetic
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 1 [Phần 1 - Trắc nghiệm]:
+
+Cho cấp số cộng $(u_n)$ có số hạng đầu $u_1 = 3$, công sai $d = -4$. Số hạng thứ năm của cấp số cộng là
+
+A. $768$.
+B. $-13$.
+C. $-3072$.
+D. $-17$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Dãy số
+  🎯 Skills   : sequence_basic
+  📐 Formulas : (none)
+  💬 Reasoning: Câu hỏi yêu cầu tính số hạng thứ năm của cấp số cộng, do đó cần kiến thức về dãy số và công thức tính số hạng của cấp số cộng.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=seq_theory_002  hybrid=0.789  rerank=1.906  vec=0.489  bm25=1.000 🚀boost
+       chapter=Dãy số  skill=arithmetic_sequence
+       > CHƯƠNG: DÃY SỐ  CẤP SỐ CỘNG (CSC):  ĐỊNH NGHĨA: Dãy số (uₙ) gọi là cấp số cộng nếu:   uₙ₊₁ − uₙ = d (hằng số) với mọi n ∈ ℕ* Trong đó d gọi là CÔNG SAI.  CÔNG THỨC SỐ HẠNG THỨ n:   uₙ = u₁ + (n − 1)d  TỔNG n SỐ HẠNG ĐẦU:   Sₙ = n(u₁ + uₙ)/2 = n·u₁ + n(n−1)d/2  Tính chất:   • u₁, u₂, …, uₙ là CSC ⟺ u...
+
+  [2] id=seq_theory_003  hybrid=0.717  rerank=-0.517  vec=0.486  bm25=0.843 🚀boost
+       chapter=Dãy số  skill=geometric_sequence
+       > CHƯƠNG: DÃY SỐ  CẤP SỐ NHÂN (CSN):  ĐỊNH NGHĨA: Dãy số (uₙ) gọi là cấp số nhân nếu:   uₙ₊₁ / uₙ = q (hằng số ≠ 0) với mọi n ∈ ℕ* Trong đó q gọi là CÔNG BỘI.  CÔNG THỨC SỐ HẠNG THỨ n:   uₙ = u₁ · qⁿ⁻¹  TỔNG n SỐ HẠNG ĐẦU:   • Nếu q ≠ 1: Sₙ = u₁(qⁿ − 1)/(q − 1)   • Nếu q = 1: Sₙ = n·u₁  TỔNG CẤP SỐ NH...
+
+  [3] id=seq_theory_001  hybrid=0.650  rerank=0.112  vec=0.386  bm25=0.552 🚀boost
+       chapter=Dãy số  skill=sequence_basic
+       > CHƯƠNG: DÃY SỐ  KHÁI NIỆM DÃY SỐ:  DÃY SỐ là một hàm số xác định trên tập ℕ* (hoặc tập con của ℕ*). Cách cho dãy số:   • Bằng công thức số hạng tổng quát: uₙ = f(n)   • Bằng công thức truy hồi: uₙ₊₁ = g(uₙ), u₁ = a  DÃY TĂNG / GIẢM:   • Dãy tăng nếu: uₙ₊₁ > uₙ với mọi n ∈ ℕ*   • Dãy giảm nếu: uₙ₊₁ <...
+
+  [4] id=comb_theory_001  hybrid=0.447  rerank=-1.538  vec=0.435  bm25=0.462
+       chapter=Tổ hợp – Xác suất  skill=combinatorics_basic
+       > CHƯƠNG: TỔ HỢP – XÁC SUẤT  HOÁN VỊ – CHỈNH HỢP – TỔ HỢP:  HOÁN VỊ của n phần tử:   Pₙ = n! = n·(n−1)·…·2·1  CHỈNH HỢP chập k của n (k ≤ n):   Aⁿₖ = n!/(n−k)!  TỔ HỢP chập k của n:   Cⁿₖ = n! / [k!·(n−k)!]  NHỊ THỨC NEWTON:   (a+b)ⁿ = ∑[k=0→n] Cⁿₖ · aⁿ⁻ᵏ · bᵏ   Số hạng tổng quát: T_{k+1} = Cⁿₖ · aⁿ⁻ᵏ...
+
+  [5] id=theory_10  hybrid=0.409  rerank=-1.521  vec=0.404  bm25=0.416
+       chapter=Hình học không gian  skill=?
+       > **Phương trình tổng quát của mặt phẳng**  Trong không gian $Oxyz$, mỗi mặt phẳng đều có phương trình dạng: $$Ax + By + Cz + D = 0,$$ trong đó $A, B, C$ không đồng thời bằng 0, được gọi là phương trình tổng quát của mặt phẳng đó....
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "3 + (5-1)*(-4)"}
+     → SymPy result: simplify(3 + (5-1)*(-4)) = -13 ~ -13.000000
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>B</answer>
+
+Vì cấp số cộng có công thức \(u_n=u_1+(n-1)d\), nên
+\[
+u_5=3+(5-1)(-4)=-13.
+\]
+Chọn **B**.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : B
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và áp dụng công thức chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa và công thức cần thiết để tính số hạng thứ năm của cấp số cộng.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3630 out=56 → $0.03798  (session: 3 calls, $0.1065)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 2  [2/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm
+  Skill   : statistics_dispersion
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 2 [Phần 1 - Trắc nghiệm]:
+
+Thống kê số phút học bài ở nhà buổi tối của $100$ học sinh ta có bảng phân bố tần số ghép nhóm như sau:
+
+| Số phút | $[30;60)$ | $[60;90)$ | $[90;120)$ | $[120;150)$ |
+| :--- | :--- | :--- | :--- | :--- |
+| Số học sinh | $18$ | $15$ | $42$ | $25$ |
+
+Số học sinh có thời gian học ít hơn $90$ phút trong số học sinh trên là
+
+A. $15$.
+B. $33$.
+C. $67$.
+D. $18$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Thống kê
+  🎯 Skills   : statistics_descriptive
+  📐 Formulas : (none)
+  💬 Reasoning: Câu hỏi yêu cầu phân tích dữ liệu thống kê để xác định số học sinh có thời gian học dưới 90 phút.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=stat_theory_001  hybrid=0.698  rerank=-3.373  vec=0.396  bm25=0.645 🚀boost
+       chapter=Thống kê  skill=statistics_descriptive
+       > CHƯƠNG: THỐNG KÊ  CÁC SỐ ĐẶC TRƯNG CỦA MẪU SỐ LIỆU:  TRUNG BÌNH CỘNG (x̄):   x̄ = (x₁ + x₂ + … + xₙ) / n = (∑ xᵢ·fᵢ) / n   (fᵢ: tần số của giá trị xᵢ)  SỐ TRUNG VỊ (Me): Giá trị ở chính giữa khi sắp xếp dữ liệu theo thứ tự tăng dần.   • n lẻ: Me = x_{(n+1)/2}   • n chẵn: Me = (x_{n/2} + x_{n/2+1}) /...
+
+  [2] id=stat_theory_002  hybrid=0.724  rerank=-3.807  vec=0.436  bm25=0.920 🚀boost
+       chapter=Thống kê  skill=statistics_inference
+       > CHƯƠNG: THỐNG KÊ  ĐỘ PHÂN TÁN CỦA MẪU SỐ LIỆU:  PHƯƠNG SAI (s²):   s² = (1/n) · ∑(xᵢ − x̄)²  ĐỘ LỆCH CHUẨN (s):   s = √s²  Ý nghĩa:   • s nhỏ → dữ liệu tập trung gần x̄   • s lớn → dữ liệu phân tán rộng  CÁC BƯỚC TÍNH: 1. Tính x̄ 2. Tính (xᵢ − x̄)² cho từng giá trị 3. Tính trung bình của các (xᵢ − x...
+
+  [3] id=integral_theory_001  hybrid=0.406  rerank=-1.976  vec=0.322  bm25=0.509
+       chapter=Nguyên hàm và Tích phân  skill=primitive_basic
+       > CHƯƠNG: NGUYÊN HÀM VÀ TÍCH PHÂN  NGUYÊN HÀM:  ĐỊNH NGHĨA: Hàm số F(x) gọi là nguyên hàm của f(x) trên khoảng K nếu F'(x) = f(x) với mọi x ∈ K.  Tính chất: • Nếu F(x) là một nguyên hàm của f(x) thì F(x) + C (C ∈ ℝ) cũng là nguyên hàm. • Ký hiệu: ∫f(x)dx = F(x) + C  BẢNG NGUYÊN HÀM CƠ BẢN: • ∫xⁿ dx = ...
+
+  [4] id=geom_theory_003  hybrid=0.403  rerank=-2.134  vec=0.262  bm25=0.575
+       chapter=Hình học không gian  skill=geometry_sphere
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  MẶT CẦU:  PHƯƠNG TRÌNH MẶT CẦU tâm I(a;b;c) bán kính R:   (x−a)² + (y−b)² + (z−c)² = R²  DANG KHAI TRIỂN:   x² + y² + z² − 2ax − 2by − 2cz + (a²+b²+c²−R²) = 0  Hay: x² + y² + z² + 2Ax + 2By + 2Cz + D = 0   Tâm I(−A; −B; −C), R = √(A²+B²+C²−D)   (Điều kiện tồn tại: A²+B²+...
+
+  [5] id=geom_theory_002  hybrid=0.557  rerank=-3.108  vec=0.271  bm25=0.906
+       chapter=Hình học không gian  skill=geometry_line_plane
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  PHƯƠNG TRÌNH MẶT PHẲNG:  DANG TỔNG QUÁT:   ax + by + cz + d = 0  (a² + b² + c² ≠ 0)  VECTƠ PHÁP TUYẾN n⃗ = (a; b; c)  PHƯƠNG TRÌNH QUA ĐIỂM M₀(x₀;y₀;z₀) nhận n⃗ = (a;b;c):   a(x−x₀) + b(y−y₀) + c(z−z₀) = 0  KHOẢNG CÁCH TỪ ĐIỂM M(x₁;y₁;z₁) ĐẾN MẶT PHẲNG (α): ax+by+cz+d=0:...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>B</answer>
+
+Ít hơn \(90\) phút gồm hai nhóm: \([30;60)\) và \([60;90)\).
+
+Số học sinh là \(18+15=33\). Vậy chọn **B**.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : B
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và áp dụng đúng lý thuyết.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ các công thức và phương pháp cần thiết để xác định số học sinh có thời gian học ít hơn 90 phút.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3343 out=80 → $0.03583  (session: 4 calls, $0.1424)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 3  [3/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Hệ tọa độ trong không gian
+  Skill   : geometry_coordinate
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 3 [Phần 1 - Trắc nghiệm]:
+
+Trong không gian với hệ tọa độ $Oxyz$, cho điểm $A(1;2;-1)$. Tọa độ hình chiếu vuông góc của $A$ trên mặt phẳng $(Oyz)$ là
+
+A. $(0;2;-1)$
+B. $(1;0;0)$
+C. $(1;2;0)$
+D. $(1;0;-1)$
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_line_plane
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hình học không gian để xác định tọa độ hình chiếu vuông góc của điểm A trên mặt phẳng Oyz.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_9  hybrid=0.672  rerank=4.272  vec=0.403  bm25=1.000
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Ứng dụng tích phân để tính thể tích vật thể**  **Tính thể tích vật thể:**  Cho một vật thể trong không gian $Oxyz$. Gọi $B$ là phần vật thể giới hạn bởi hai mặt phẳng vuông góc với trục $Ox$ tại các điểm có hoành độ $x = a$ và $x = b$. Một mặt phẳng vuông góc với $Ox$ tại điểm $x$ cắt vật thể theo...
+
+  [2] id=theory_11  hybrid=0.515  rerank=6.768  vec=0.448  bm25=0.440 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Khoảng cách từ một điểm đến một mặt phẳng**  Trong không gian $Oxyz$, khoảng cách từ điểm $M(x_0; y_0; z_0)$ đến mặt phẳng $(P): Ax + By + Cz + D = 0$ là: $$d(M, (P)) = \frac{|Ax_0 + By_0 + Cz_0 + D|}{\sqrt{A^2 + B^2 + C^2}}.$$...
+
+  [3] id=theory_16  hybrid=0.543  rerank=5.281  vec=0.493  bm25=0.448 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Công thức tính góc giữa hai mặt phẳng**  Trong không gian $Oxyz$, cho hai mặt phẳng $(P)$, $(Q)$ có vectơ pháp tuyến lần lượt là $\vec{n} = (A; B; C)$, $\vec{n'} = (A'; B'; C')$. Góc giữa $(P)$ và $(Q)$, kí hiệu $((P), (Q))$, được tính theo công thức: $$\cos((P), (Q)) = |\cos(\vec{n}, \vec{n'})| =...
+
+  [4] id=theory_15  hybrid=0.535  rerank=5.394  vec=0.514  bm25=0.404 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Công thức tính góc giữa đường thẳng và mặt phẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ có vectơ chỉ phương $\vec{u} = (a; b; c)$ và mặt phẳng $(P)$ có vectơ pháp tuyến $\vec{n} = (A; B; C)$. Khi đó: $$\sin(\Delta, (P)) = |\cos(\vec{u}, \vec{n})| = \frac{|aA + bB + cC|}{\sqrt{a^2 + b...
+
+  [5] id=theory_5  hybrid=0.409  rerank=7.388  vec=0.439  bm25=0.216 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Biểu thức tọa độ của tích vô hướng trong không gian**  Trong không gian $Oxyz$, tích vô hướng của hai vectơ $\vec{a} = (x; y; z)$ và $\vec{b} = (x'; y'; z')$ được xác định bởi: $$\vec{a} \cdot \vec{b} = xx' + yy' + zz'.$$  **Nhận xét:** - $\vec{a} \perp \vec{b} \Leftrightarrow xx' + yy' + zz' = 0$...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>A</answer>
+
+Mặt phẳng $(Oyz)$ có phương trình \(x=0\).  
+Hình chiếu vuông góc của \(A(1;2;-1)\) lên \((Oyz)\) giữ nguyên \(y,z\) và cho \(x=0\), nên được điểm \((0;2;-1)\).
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : A
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp và trình bày đều chính xác, rõ ràng và đầy đủ.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.450
+     ❌ math_context_coverage       : 0.000
+     💬 Reason: Context không cung cấp định nghĩa, công thức hoặc phương pháp nào liên quan đến hình chiếu vuông góc của điểm lên mặt phẳng.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3319 out=38 → $0.03433  (session: 5 calls, $0.1767)
+💸 [Solver] gpt-5.4-2026-03-05  in=3402 out=34 → $0.03504  (session: 6 calls, $0.2117)
+💸 [Solver] gpt-5.4-2026-03-05  in=3471 out=160 → $0.03951  (session: 7 calls, $0.2512)
+💸 [Solver] gpt-5.4-2026-03-05  in=3792 out=52 → $0.03948  (session: 8 calls, $0.2907)
+💸 [Solver] gpt-5.4-2026-03-05  in=3903 out=192 → $0.04479  (session: 9 calls, $0.3355)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 4  [4/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : function_min_max
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 4 [Phần 1 - Trắc nghiệm]:
+
+Gọi $M, m$ lần lượt là giá trị lớn nhất, giá trị nhỏ nhất của hàm số $f(x) = x^4 - 2x^2 - 1$ trên $[-1; 2]$. Giá trị của biểu thức $M + 3m$ bằng
+
+A. $1$.
+B. $5$.
+C. $6$.
+D. $4$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Đạo hàm
+  🎯 Skills   : function_survey, derivative_applications
+  📐 Formulas : (none)
+  💬 Reasoning: Cần sử dụng kiến thức về hàm số và đạo hàm để tìm giá trị lớn nhất và nhỏ nhất của hàm f(x) trên đoạn [-1; 2].
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_2  hybrid=0.893  rerank=5.963  vec=0.678  bm25=1.000 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm giá trị lớn nhất và giá trị nhỏ nhất của hàm số $f(x)$ trên đoạn $[a; b]$:  - Bước 1: Tìm các điểm $x_1, x_2, \ldots, x_n \in (a; b)$ tại đó $f'(x)$ bằng 0 hoặc không tồn tại. - Bước 2: Tính $f(x_1), f(x_2), \ldots, f(x_n), f(a)$ và $f(b)$. - Bước 3: Tìm số lớn nhất $M$ và số nhỏ nhất $...
+
+  [2] id=deriv_theory_001  hybrid=0.580  rerank=-2.256  vec=0.509  bm25=0.244 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  TÍNH ĐƠN ĐIỆU CỦA HÀM SỐ:  Giả sử K là khoảng, một đoạn hoặc một nửa khoảng và y = f(x) là hàm số xác định trên K.  • Hàm số y = f(x) gọi là ĐỒNG BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁) < f(x₂)  • Hàm số y = f(x) gọi là NGHỊCH BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁...
+
+  [3] id=deriv_theory_003  hybrid=0.522  rerank=-1.949  vec=0.449  bm25=0.190 🚀boost
+       chapter=Đạo hàm  skill=function_survey
+       > CHƯƠNG: ĐẠO HÀM  TIỆM CẬN NGANG VÀ TIỆM CẬN ĐỨNG:  TIỆM CẬN NGANG: Đường thẳng y = y₀ là tiệm cận ngang của đồ thị y = f(x) nếu:   lim[x→+∞] f(x) = y₀  HOẶC  lim[x→−∞] f(x) = y₀  TIỆM CẬN ĐỨNG: Đường thẳng x = x₀ là tiệm cận đứng của đồ thị y = f(x) nếu ít nhất một trong:   lim[x→x₀⁺] f(x) = ±∞  hoặ...
+
+  [4] id=deriv_theory_002  hybrid=0.542  rerank=-2.431  vec=0.493  bm25=0.179 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  CỰC TRỊ CỦA HÀM SỐ:  ĐỊNH NGHĨA: Cho hàm số y = f(x) xác định và liên tục trên khoảng (a; b) và điểm x₀ ∈ (a; b).  • f(x) đạt CỰC ĐẠI tại x₀ nếu: ∃ h > 0 sao cho f(x) < f(x₀) với mọi x ∈ (x₀−h; x₀+h), x ≠ x₀ • f(x) đạt CỰC TIỂU tại x₀ nếu: ∃ h > 0 sao cho f(x) > f(x₀) với mọi x ∈ (x...
+
+  [5] id=theory_1  hybrid=0.457  rerank=-0.722  vec=0.555  bm25=0.181 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm điểm cực trị của hàm số $f(x)$  - Bước 1: Tìm tập xác định của hàm số $f(x)$. - Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại. - Bước 3: Lập bảng biến thiên của hàm số. - Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số....
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [compute_derivative] args={"expr_str": "x**4 - 2*x**2 - 1", "var": "x", "order": 1}
+     → SymPy result: d^1/dx^1(x**4 - 2*x**2 - 1) = 0 ~ 0.000000
+
+🔁 Lượt 2: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "4*x**3 - 4*x = 0", "var": "x"}
+     → SymPy result: Phương trình '4*x**3 - 4*x = 0' vô nghiệm.
+
+🔁 Lượt 3: LLM yêu cầu 4 tool call(s):
+  📐 [evaluate_at_point] args={"expr_str": "x**4 - 2*x**2 - 1", "var": "x", "value": "-1"}
+     → SymPy result: x**4 - 2*x**2 - 1 at x=-1 = x^{4} - 2 x^{2} - 1
+  📐 [evaluate_at_point] args={"expr_str": "x**4 - 2*x**2 - 1", "var": "x", "value": "0"}
+     → SymPy result: x**4 - 2*x**2 - 1 at x=0 = x^{4} - 2 x^{2} - 1
+  📐 [evaluate_at_point] args={"expr_str": "x**4 - 2*x**2 - 1", "var": "x", "value": "1"}
+     → SymPy result: x**4 - 2*x**2 - 1 at x=1 = x^{4} - 2 x^{2} - 1
+  📐 [evaluate_at_point] args={"expr_str": "x**4 - 2*x**2 - 1", "var": "x", "value": "2"}
+     → SymPy result: x**4 - 2*x**2 - 1 at x=2 = x^{4} - 2 x^{2} - 1
+
+🔁 Lượt 4: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "(2**4 - 2*2**2 - 1) + 3*(0**4 - 2*0**2 - 1)"}
+     → SymPy result: simplify((2**4 - 2*2**2 - 1) + 3*(0**4 - 2*0**2 - 1)) = 4 ~ 4.000000
+✅ Hoàn tất sau 4 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>D</answer>
+
+Ta có \(f(x)=x^4-2x^2-1\).
+
+\(f'(x)=4x^3-4x=4x(x^2-1)\Rightarrow f'(x)=0\) khi \(x=-1,0,1\).
+
+Xét các điểm cần kiểm tra trên \([-1,2]\): \(-1,0,1,2\).
+
+- \(f(-1)=1-2-1=-2\)
+- \(f(0)=-1\)
+- \(f(1)=1-2-1=-2\)
+- \(f(2)=16-8-1=7\)
+
+Suy ra:
+- \(M=7\)
+- \(m=-2\)
+
+Vậy \(M+3m=7+3(-2)=1\).
+
+Chọn đáp án đúng là A.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : A
+  ❌ MathJudge Accuracy        : 0.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ❌ Weighted Score       : 0.35
+     ❌ Accuracy (kết quả)  : 0.00
+     ❌  Method (phương pháp): 0.50
+     ✅  Steps (trình bày)   : 0.75
+     ✅ Knowledge use       : 0.50
+     💬 Phương pháp giải đúng hướng nhưng có sai sót trong việc xác định các điểm cần kiểm tra và tính giá trị hàm số tại các điểm đó. Trình bày có phần thiếu rõ ràng và không đầy đủ.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ các bước và quy tắc cần thiết để tìm giá trị lớn nhất và giá trị nhỏ nhất của hàm số trên đoạn, bao gồm cả việc tính đạo hàm và lập bảng biến thiên.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3506 out=56 → $0.03674  (session: 10 calls, $0.3723)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 5  [5/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Khối đa diện
+  Skill   : geometry_volume
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 5 [Phần 1 - Trắc nghiệm]:
+
+Cho khối lăng trụ đều có diện tích đáy bằng $1\ (m^2)$ và chiều cao bằng $3\ (m)$. Thể tích khối lăng trụ đã cho bằng
+
+A. $\dfrac{3\sqrt{3}}{4}\ (m^3)$.
+B. $1\ (m^3)$.
+C. $\dfrac{\sqrt{3}}{4}\ (m^3)$.
+D. $3\ (m^3)$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_line_plane
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hình học không gian để tính thể tích của khối lăng trụ đều dựa vào diện tích đáy và chiều cao.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_9  hybrid=0.766  rerank=-3.629  vec=0.574  bm25=1.000
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Ứng dụng tích phân để tính thể tích vật thể**  **Tính thể tích vật thể:**  Cho một vật thể trong không gian $Oxyz$. Gọi $B$ là phần vật thể giới hạn bởi hai mặt phẳng vuông góc với trục $Ox$ tại các điểm có hoành độ $x = a$ và $x = b$. Một mặt phẳng vuông góc với $Ox$ tại điểm $x$ cắt vật thể theo...
+
+  [2] id=theory_5  hybrid=0.384  rerank=-1.003  vec=0.378  bm25=0.235 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Biểu thức tọa độ của tích vô hướng trong không gian**  Trong không gian $Oxyz$, tích vô hướng của hai vectơ $\vec{a} = (x; y; z)$ và $\vec{b} = (x'; y'; z')$ được xác định bởi: $$\vec{a} \cdot \vec{b} = xx' + yy' + zz'.$$  **Nhận xét:** - $\vec{a} \perp \vec{b} \Leftrightarrow xx' + yy' + zz' = 0$...
+
+  [3] id=theory_4  hybrid=0.355  rerank=-1.568  vec=0.330  bm25=0.229 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Tích vô hướng của hai vectơ trong không gian**  Trong không gian, cho hai vectơ $\vec{a}, \vec{b}$ đều khác $\vec{0}$. Tích vô hướng của $\vec{a}$ và $\vec{b}$ là một số, kí hiệu $\vec{a} \cdot \vec{b}$, được xác định bởi: $$\vec{a} \cdot \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot \cos(\vec{a}, \ve...
+
+  [4] id=integral_theory_003  hybrid=0.445  rerank=-2.766  vec=0.400  bm25=0.500
+       chapter=Nguyên hàm và Tích phân  skill=integral_applications
+       > CHƯƠNG: NGUYÊN HÀM VÀ TÍCH PHÂN  ỨNG DỤNG TÍCH PHÂN:  DIỆN TÍCH HÌNH PHẲNG: Diện tích hình phẳng giới hạn bởi đồ thị y = f(x), trục Ox, x = a và x = b:   S = ∫[a→b] |f(x)| dx  Diện tích giới hạn bởi hai đồ thị y = f(x) và y = g(x):   S = ∫[a→b] |f(x) − g(x)| dx  THỂ TÍCH VẬT TRÒN XOAY: Quay hình phẳ...
+
+  [5] id=formula_log_product  hybrid=0.319  rerank=-2.006  vec=0.314  bm25=0.326
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Công thức tích Logarit:** $$\log_b(x \cdot y) = \log_b(x) + \log_b(y)$$ *Điều kiện:* $x > 0, y > 0, b > 0, b \neq 1$...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>D</answer>
+
+Thể tích khối lăng trụ:
+\[
+V=S_{\text{đáy}}\cdot h=1\cdot 3=3\ (m^3).
+\]
+
+Chọn **D**.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : D
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và áp dụng công thức chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ công thức tính thể tích khối lăng trụ, cho phép học sinh áp dụng để tìm ra đáp án.
+
+💸 [Solver] gpt-5.4  in=4153 out=80 → $0.01118  (session: 11 calls, $0.3834)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 6  [6/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : function_survey
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 6 [Phần 1 - Trắc nghiệm]:
+
+Cho hàm số $y = f(x)$ liên tục trên $\mathbb{R}$ và có bảng biến thiên như sau
+
+| $x$ | $-\infty$ | | $-1$ | | $1$ | | $+\infty$ |
+|---|---|---|---|---|---|---|---|
+| $f(x)$ | $-\infty$ | $\nearrow$ | $3$ | $\searrow$ | $0$ | $\nearrow$ | $+\infty$ |
+
+[Xem hình: q06.png]
+
+Hàm số đã cho nghịch biến trên khoảng nào
+
+A. $(-1;1)$.
+B. $(0;3)$.
+C. $(-\infty;-1)$.
+D. $(1;+\infty)$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số
+  🎯 Skills   : function_survey
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hàm số và cách phân tích bảng biến thiên để xác định khoảng nghịch biến.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=deriv_theory_001  hybrid=0.689  rerank=9.064  vec=0.435  bm25=1.000
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  TÍNH ĐƠN ĐIỆU CỦA HÀM SỐ:  Giả sử K là khoảng, một đoạn hoặc một nửa khoảng và y = f(x) là hàm số xác định trên K.  • Hàm số y = f(x) gọi là ĐỒNG BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁) < f(x₂)  • Hàm số y = f(x) gọi là NGHỊCH BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁...
+
+  [2] id=theory_1  hybrid=0.776  rerank=4.989  vec=0.493  bm25=0.968 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm điểm cực trị của hàm số $f(x)$  - Bước 1: Tìm tập xác định của hàm số $f(x)$. - Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại. - Bước 3: Lập bảng biến thiên của hàm số. - Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số....
+
+  [3] id=deriv_theory_002  hybrid=0.494  rerank=9.388  vec=0.468  bm25=0.526
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  CỰC TRỊ CỦA HÀM SỐ:  ĐỊNH NGHĨA: Cho hàm số y = f(x) xác định và liên tục trên khoảng (a; b) và điểm x₀ ∈ (a; b).  • f(x) đạt CỰC ĐẠI tại x₀ nếu: ∃ h > 0 sao cho f(x) < f(x₀) với mọi x ∈ (x₀−h; x₀+h), x ≠ x₀ • f(x) đạt CỰC TIỂU tại x₀ nếu: ∃ h > 0 sao cho f(x) > f(x₀) với mọi x ∈ (x...
+
+  [4] id=stat_theory_003  hybrid=0.632  rerank=0.441  vec=0.521  bm25=0.767
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=?
+       > **Khoảng biến thiên của mẫu số liệu ghép nhóm**  Cho mẫu số liệu ghép nhóm. Khoảng biến thiên của mẫu số liệu ghép nhóm, kí hiệu là $, là hiệu số giữa đầu mút phải của nhóm cuối cùng và đầu mút trái của nhóm đầu tiên: R = a_{m+1} - a_1....
+
+  [5] id=theory_21  hybrid=0.631  rerank=0.337  vec=0.522  bm25=0.763
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=trig_graph
+       > **Khoảng biến thiên của mẫu số liệu ghép nhóm**  Cho mẫu số liệu ghép nhóm. Khoảng biến thiên của mẫu số liệu ghép nhóm, kí hiệu là $R$, là hiệu số giữa đầu mút phải của nhóm cuối cùng và đầu mút trái của nhóm đầu tiên: $$R = a_{m+1} - a_1.$$...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>A</answer>
+
+Từ bảng biến thiên: hàm số **tăng** trên \((-\infty,-1)\), **giảm** trên \((-1,1)\), rồi lại **tăng** trên \((1,+\infty)\).
+
+Vậy hàm số nghịch biến trên \(\boxed{(-1;1)}\).
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : A
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp và trình bày đều chính xác, rõ ràng và đầy đủ.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa về tính đơn điệu của hàm số, mối liên hệ với đạo hàm và quy tắc xét cực trị, đủ để xác định khoảng nghịch biến của hàm số.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3435 out=38 → $0.03549  (session: 12 calls, $0.4189)
+💸 [Solver] gpt-5.4-2026-03-05  in=3517 out=86 → $0.03775  (session: 13 calls, $0.4567)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 7  [7/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : function_survey
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 7 [Phần 1 - Trắc nghiệm]:
+
+Đường tiệm cận xiên của đồ thị hàm số $y = 2x - 1 + \dfrac{1}{x}$ có phương trình là
+
+A. $y = 1 - 2x$.
+B. $y = 2x$.
+C. $y = 2x - 1$.
+D. $y = -2x$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số
+  🎯 Skills   : function_survey
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hàm số để xác định đường tiệm cận xiên của hàm số đã cho.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_3  hybrid=0.789  rerank=4.801  vec=0.591  bm25=0.875 🚀boost
+       chapter=Hàm số  skill=?
+       > **1. Đường tiệm cận ngang**  Đường thẳng $y = y_0$ gọi là tiệm cận ngang của đồ thị hàm số $y = f(x)$ nếu $\lim_{x \to +\infty} f(x) = y_0$ hoặc $\lim_{x \to -\infty} f(x) = y_0$.  **2. Đường tiệm cận đứng**  Đường thẳng $x = x_0$ gọi là tiệm cận đứng của đồ thị hàm số $y = f(x)$ nếu ít nhất một tro...
+
+  [2] id=deriv_theory_003  hybrid=0.841  rerank=-0.026  vec=0.493  bm25=1.000 🚀boost
+       chapter=Đạo hàm  skill=function_survey
+       > CHƯƠNG: ĐẠO HÀM  TIỆM CẬN NGANG VÀ TIỆM CẬN ĐỨNG:  TIỆM CẬN NGANG: Đường thẳng y = y₀ là tiệm cận ngang của đồ thị y = f(x) nếu:   lim[x→+∞] f(x) = y₀  HOẶC  lim[x→−∞] f(x) = y₀  TIỆM CẬN ĐỨNG: Đường thẳng x = x₀ là tiệm cận đứng của đồ thị y = f(x) nếu ít nhất một trong:   lim[x→x₀⁺] f(x) = ±∞  hoặ...
+
+  [3] id=theory_13  hybrid=0.288  rerank=-0.113  vec=0.365  bm25=0.194
+       chapter=Hình học không gian  skill=?
+       > **Phương trình chính tắc của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$ với $a, b, c \neq 0$. Phương trình chính tắc của $\Delta$ là: $$\frac{x - x_0}{a} = \frac{y - y_0}{b} = \frac{z - z_0}{c}.$$...
+
+  [4] id=theory_2  hybrid=0.465  rerank=-4.835  vec=0.516  bm25=0.246 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm giá trị lớn nhất và giá trị nhỏ nhất của hàm số $f(x)$ trên đoạn $[a; b]$:  - Bước 1: Tìm các điểm $x_1, x_2, \ldots, x_n \in (a; b)$ tại đó $f'(x)$ bằng 0 hoặc không tồn tại. - Bước 2: Tính $f(x_1), f(x_2), \ldots, f(x_n), f(a)$ và $f(b)$. - Bước 3: Tìm số lớn nhất $M$ và số nhỏ nhất $...
+
+  [5] id=theory_14  hybrid=0.325  rerank=-1.487  vec=0.424  bm25=0.203
+       chapter=Hình học không gian  skill=?
+       > **Vị trí tương đối giữa hai đường thẳng**  Trong không gian $Oxyz$, cho hai đường thẳng $\Delta_1, \Delta_2$ lần lượt đi qua $A_1(x_1; y_1; z_1)$, $A_2(x_2; y_2; z_2)$ và có vectơ chỉ phương $\vec{u_1} = (a_1; b_1; c_1)$, $\vec{u_2} = (a_2; b_2; c_2)$. Khi đó:  - $\Delta_1 \parallel \Delta_2 \Leftri...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "(2*x - 1 + 1/x) - (2*x - 1)"}
+     → SymPy result: simplify((2*x - 1 + 1/x) - (2*x - 1)) = \frac{1}{x}
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>C</answer>
+
+Vì
+\[
+y-(2x-1)=\left(2x-1+\frac1x\right)-(2x-1)=\frac1x \to 0 \quad (x\to \pm\infty).
+\]
+Nên tiệm cận xiên của đồ thị là
+\[
+y=2x-1.
+\]
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : C
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng hoàn toàn, trình bày rõ ràng và logic, vận dụng lý thuyết chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa và công thức cần thiết để xác định đường tiệm cận xiên của hàm số.
+
+💸 [Solver] gpt-5.4  in=3629 out=169 → $0.01076  (session: 14 calls, $0.4674)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 8  [8/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : function_survey
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 8 [Phần 1 - Trắc nghiệm]:
+
+Hàm số nào dưới đây có đồ thị như hình vẽ sau
+
+[Xem hình: q08.png]
+
+A. $y = \dfrac{x}{x + 1}$.
+B. $y = -\dfrac{x}{x - 1}$.
+C. $y = -\dfrac{x}{x + 1}$.
+D. $y = \dfrac{x}{x - 1}$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Hàm số Lũy thừa, Mũ và Logarit
+  🎯 Skills   : function_survey, logarithm_exponential
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hàm số và các loại hàm số lũy thừa, mũ và logarit để phân tích đồ thị và xác định hàm số tương ứng.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=formula_log_power  hybrid=0.814  rerank=-3.783  vec=0.534  bm25=1.000 🚀boost
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Công thức lũy thừa Logarit:** $$\log_b(x^p) = p \cdot \log_b(x)$$ *Điều kiện:* $x > 0, b > 0, b \neq 1$...
+
+  [2] id=theory_6  hybrid=0.610  rerank=-2.276  vec=0.560  bm25=0.670
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Nguyên hàm của hàm số lũy thừa:** $$\int x^\alpha \, dx = \frac{x^{\alpha+1}}{\alpha+1} + C \quad (\alpha \neq -1).$$ $$\int \frac{1}{x} \, dx = \ln|x| + C.$$  **Nguyên hàm của hàm số lượng giác:** $$\int \cos x \, dx = \sin x + C; \quad \int \sin x \, dx = -\cos x + C;$$ $$\int \frac{1}{\cos^2 x}...
+
+  [3] id=integral_power  hybrid=0.534  rerank=-1.910  vec=0.438  bm25=0.651
+       chapter=Nguyên Hàm - Tích Phân  skill=?
+       > **Nguyên hàm lũy thừa:** $$\int x^{\alpha}\,dx = \frac{x^{\alpha+1}}{\alpha+1} + C \quad (\alpha \neq -1)$$ *Dạng hợp:* $\int u^{\alpha}\,du = \dfrac{u^{\alpha+1}}{\alpha+1} + C \quad (\alpha \neq -1)$...
+
+  [4] id=theory_3  hybrid=0.533  rerank=-2.075  vec=0.385  bm25=0.559 🚀boost
+       chapter=Hàm số  skill=?
+       > **1. Đường tiệm cận ngang**  Đường thẳng $y = y_0$ gọi là tiệm cận ngang của đồ thị hàm số $y = f(x)$ nếu $\lim_{x \to +\infty} f(x) = y_0$ hoặc $\lim_{x \to -\infty} f(x) = y_0$.  **2. Đường tiệm cận đứng**  Đường thẳng $x = x_0$ gọi là tiệm cận đứng của đồ thị hàm số $y = f(x)$ nếu ít nhất một tro...
+
+  [5] id=deriv_theory_003  hybrid=0.581  rerank=-3.166  vec=0.383  bm25=0.557 🚀boost
+       chapter=Đạo hàm  skill=function_survey
+       > CHƯƠNG: ĐẠO HÀM  TIỆM CẬN NGANG VÀ TIỆM CẬN ĐỨNG:  TIỆM CẬN NGANG: Đường thẳng y = y₀ là tiệm cận ngang của đồ thị y = f(x) nếu:   lim[x→+∞] f(x) = y₀  HOẶC  lim[x→−∞] f(x) = y₀  TIỆM CẬN ĐỨNG: Đường thẳng x = x₀ là tiệm cận đứng của đồ thị y = f(x) nếu ít nhất một trong:   lim[x→x₀⁺] f(x) = ±∞  hoặ...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>D</answer>
+
+Từ hình vẽ đọc được:
+- Tiệm cận đứng: \(x=1\).
+- Tiệm cận ngang: \(y=1\).
+- Đồ thị đi qua gốc tọa độ \(O(0,0)\).
+
+Trong các đáp án, chỉ có
+\[
+y=\frac{x}{x-1}
+\]
+có:
+- mẫu bằng \(0\) khi \(x=1\) nên tiệm cận đứng \(x=1\),
+- hệ số bậc cao nhất tử và mẫu đều bằng \(1\) nên tiệm cận ngang \(y=1\),
+- \(x=0 \Rightarrow y=0\) nên đi qua \(O\).
+
+Vì vậy chọn \(D\).
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : D
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và đầy đủ, vận dụng lý thuyết chính xác.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.325
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa và công thức về tiệm cận ngang và tiệm cận đứng, cần thiết để giải bài toán.
+
+💸 [Solver] gpt-5.4  in=3691 out=54 → $0.00977  (session: 15 calls, $0.4772)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 9  [9/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : function_survey
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 9 [Phần 1 - Trắc nghiệm]:
+
+Cho hàm số bậc ba $y = f(x)$ có đồ thị như hình vẽ dưới đây:
+
+[Xem hình: q09.png]
+
+Giá trị cực tiểu của hàm số đã cho là:
+
+A. $-3$.
+B. $2$.
+C. $1$.
+D. $0$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Đạo hàm
+  🎯 Skills   : function_survey, derivative_applications
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hàm số và đạo hàm để xác định giá trị cực tiểu của hàm số bậc ba.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=deriv_theory_002  hybrid=0.864  rerank=3.854  vec=0.505  bm25=0.881 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  CỰC TRỊ CỦA HÀM SỐ:  ĐỊNH NGHĨA: Cho hàm số y = f(x) xác định và liên tục trên khoảng (a; b) và điểm x₀ ∈ (a; b).  • f(x) đạt CỰC ĐẠI tại x₀ nếu: ∃ h > 0 sao cho f(x) < f(x₀) với mọi x ∈ (x₀−h; x₀+h), x ≠ x₀ • f(x) đạt CỰC TIỂU tại x₀ nếu: ∃ h > 0 sao cho f(x) > f(x₀) với mọi x ∈ (x...
+
+  [2] id=theory_1  hybrid=0.853  rerank=1.429  vec=0.606  bm25=1.000 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm điểm cực trị của hàm số $f(x)$  - Bước 1: Tìm tập xác định của hàm số $f(x)$. - Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại. - Bước 3: Lập bảng biến thiên của hàm số. - Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số....
+
+  [3] id=deriv_theory_001  hybrid=0.649  rerank=2.560  vec=0.509  bm25=0.397 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  TÍNH ĐƠN ĐIỆU CỦA HÀM SỐ:  Giả sử K là khoảng, một đoạn hoặc một nửa khoảng và y = f(x) là hàm số xác định trên K.  • Hàm số y = f(x) gọi là ĐỒNG BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁) < f(x₂)  • Hàm số y = f(x) gọi là NGHỊCH BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁...
+
+  [4] id=deriv_theory_003  hybrid=0.530  rerank=1.796  vec=0.395  bm25=0.273 🚀boost
+       chapter=Đạo hàm  skill=function_survey
+       > CHƯƠNG: ĐẠO HÀM  TIỆM CẬN NGANG VÀ TIỆM CẬN ĐỨNG:  TIỆM CẬN NGANG: Đường thẳng y = y₀ là tiệm cận ngang của đồ thị y = f(x) nếu:   lim[x→+∞] f(x) = y₀  HOẶC  lim[x→−∞] f(x) = y₀  TIỆM CẬN ĐỨNG: Đường thẳng x = x₀ là tiệm cận đứng của đồ thị y = f(x) nếu ít nhất một trong:   lim[x→x₀⁺] f(x) = ±∞  hoặ...
+
+  [5] id=theory_2  hybrid=0.506  rerank=2.244  vec=0.517  bm25=0.336 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm giá trị lớn nhất và giá trị nhỏ nhất của hàm số $f(x)$ trên đoạn $[a; b]$:  - Bước 1: Tìm các điểm $x_1, x_2, \ldots, x_n \in (a; b)$ tại đó $f'(x)$ bằng 0 hoặc không tồn tại. - Bước 2: Tính $f(x_1), f(x_2), \ldots, f(x_n), f(a)$ và $f(b)$. - Bước 3: Tìm số lớn nhất $M$ và số nhỏ nhất $...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>A</answer>
+
+Từ đồ thị, điểm cực tiểu của hàm số là tại \(x=2\) và có tung độ \(y=-3\).  
+Vậy giá trị cực tiểu là \(-3\).
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : A
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và vận dụng lý thuyết chính xác.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa, quy tắc xét cực trị bằng đạo hàm và các bước cần thiết để tìm giá trị cực tiểu của hàm số.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3441 out=38 → $0.03555  (session: 16 calls, $0.5128)
+💸 [Solver] gpt-5.4-2026-03-05  in=3504 out=211 → $0.04137  (session: 17 calls, $0.5541)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 10  [10/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Hệ tọa độ trong không gian
+  Skill   : geometry_coordinate
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 10 [Phần 1 - Trắc nghiệm]:
+
+Trong không gian $Oxyz$, cho tam giác $ABC$ có $A(1;1;1)$ và $\overrightarrow{AB} + \overrightarrow{AC} = (4;0;-6)$. Tọa độ trung điểm $M$ của $BC$ là
+
+A. $(5;1;-5)$.
+B. $(3;-1;7)$.
+C. $(1;-1;-4)$.
+D. $(3;1;-2)$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_vector
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hình học không gian và vectơ để xác định tọa độ trung điểm và xử lý các vectơ trong không gian.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_13  hybrid=0.590  rerank=8.508  vec=0.508  bm25=0.534 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Phương trình chính tắc của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$ với $a, b, c \neq 0$. Phương trình chính tắc của $\Delta$ là: $$\frac{x - x_0}{a} = \frac{y - y_0}{b} = \frac{z - z_0}{c}.$$...
+
+  [2] id=theory_5  hybrid=0.561  rerank=8.412  vec=0.542  bm25=0.428 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Biểu thức tọa độ của tích vô hướng trong không gian**  Trong không gian $Oxyz$, tích vô hướng của hai vectơ $\vec{a} = (x; y; z)$ và $\vec{b} = (x'; y'; z')$ được xác định bởi: $$\vec{a} \cdot \vec{b} = xx' + yy' + zz'.$$  **Nhận xét:** - $\vec{a} \perp \vec{b} \Leftrightarrow xx' + yy' + zz' = 0$...
+
+  [3] id=geom_theory_001  hybrid=0.761  rerank=1.086  vec=0.438  bm25=1.000 🚀boost
+       chapter=Hình học không gian  skill=geometry_vectors
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  VECTƠ TRONG KHÔNG GIAN:  • Vectơ trong không gian là một đoạn thẳng có hướng. • Trong hệ tọa độ Oxyz: mọi vectơ v⃗ = (a; b; c) • |v⃗| = √(a² + b² + c²)  TÍCH VÔ HƯỚNG: a⃗ · b⃗ = a₁b₁ + a₂b₂ + a₃b₃ = |a⃗|·|b⃗|·cosθ  Hệ quả:   a⃗ ⊥ b⃗ ⟺ a⃗ · b⃗ = 0  KHOẢNG CÁCH GIỮA HAI ĐI...
+
+  [4] id=theory_12  hybrid=0.556  rerank=8.034  vec=0.449  bm25=0.531 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Phương trình tham số của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$. Hệ phương trình tham số của $\Delta$ là: $$\begin{cases} x = x_0 + at \\ y = y_0 + bt \\ z = z_0 + ct \end{cases} \quad (t \in \mat...
+
+  [5] id=theory_14  hybrid=0.455  rerank=8.737  vec=0.484  bm25=0.264 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Vị trí tương đối giữa hai đường thẳng**  Trong không gian $Oxyz$, cho hai đường thẳng $\Delta_1, \Delta_2$ lần lượt đi qua $A_1(x_1; y_1; z_1)$, $A_2(x_2; y_2; z_2)$ và có vectơ chỉ phương $\vec{u_1} = (a_1; b_1; c_1)$, $\vec{u_2} = (a_2; b_2; c_2)$. Khi đó:  - $\Delta_1 \parallel \Delta_2 \Leftri...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "(1,1,1) + (1/2)*(4,0,-6)"}
+     → ERROR: can't multiply sequence by non-int of type 'Half'
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>D</answer>
+
+Ta có
+\[
+\overrightarrow{AB}+\overrightarrow{AC}=(\vec B-\vec A)+(\vec C-\vec A)=\vec B+\vec C-2\vec A.
+\]
+Mà trung điểm \(M\) của \(BC\) thỏa
+\[
+\vec M=\frac{\vec B+\vec C}{2}.
+\]
+Suy ra
+\[
+\overrightarrow{AB}+\overrightarrow{AC}=2\vec M-2\vec A=2(\vec M-\vec A).
+\]
+Nên
+\[
+\vec M=\vec A+\frac{1}{2}(\overrightarrow{AB}+\overrightarrow{AC}).
+\]
+Thay số:
+\[
+M=(1,1,1)+\frac12(4,0,-6)=(1,1,1)+(2,0,-3)=(3,1,-2).
+\]
+
+Vậy chọn D.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : D
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và logic, vận dụng lý thuyết chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.589
+     ❌ math_context_coverage       : 0.500
+     💬 Reason: Context cung cấp một số công thức liên quan đến vectơ và khoảng cách, nhưng không có công thức cụ thể để tính tọa độ trung điểm của đoạn thẳng BC.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3395 out=157 → $0.03866  (session: 18 calls, $0.5928)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 11  [11/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Vectơ trong không gian
+  Skill   : geometry_vector
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 11 [Phần 1 - Trắc nghiệm]:
+
+Cho hình chóp $S.ABCD$ có đáy là hình bình hành. Đẳng thức nào sau đây đúng?
+
+A. $\overrightarrow{SA} + \overrightarrow{SB} + \overrightarrow{SC} + \overrightarrow{SD} = \overrightarrow{0}$.
+B. $\overrightarrow{SA} + \overrightarrow{SB} = \overrightarrow{SC} + \overrightarrow{SD}$.
+C. $\overrightarrow{SA} + \overrightarrow{SC} = \overrightarrow{SB} + \overrightarrow{SD}$.
+D. $\overrightarrow{SB} + \overrightarrow{SC} = \overrightarrow{SA} + \overrightarrow{SD}$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_vector
+  📐 Formulas : (none)
+  💬 Reasoning: Câu hỏi liên quan đến hình chóp và tính chất của hình bình hành trong không gian, do đó cần kiến thức về hình học không gian và vectơ.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=integral_theory_003  hybrid=0.575  rerank=-4.486  vec=0.392  bm25=0.799
+       chapter=Nguyên hàm và Tích phân  skill=integral_applications
+       > CHƯƠNG: NGUYÊN HÀM VÀ TÍCH PHÂN  ỨNG DỤNG TÍCH PHÂN:  DIỆN TÍCH HÌNH PHẲNG: Diện tích hình phẳng giới hạn bởi đồ thị y = f(x), trục Ox, x = a và x = b:   S = ∫[a→b] |f(x)| dx  Diện tích giới hạn bởi hai đồ thị y = f(x) và y = g(x):   S = ∫[a→b] |f(x) − g(x)| dx  THỂ TÍCH VẬT TRÒN XOAY: Quay hình phẳ...
+
+  [2] id=theory_8  hybrid=0.664  rerank=-5.266  vec=0.390  bm25=1.000
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Ứng dụng tích phân để tính diện tích hình phẳng**  **Hình phẳng giới hạn bởi một đồ thị hàm số, trục hoành và hai đường thẳng $x = a$, $x = b$:**  Diện tích $S$ của hình phẳng giới hạn bởi đồ thị $f(x)$ liên tục, trục hoành và hai đường thẳng $x = a$, $x = b$ ($a < b$) được tính bằng: $$S = \int_a...
+
+  [3] id=theory_7  hybrid=0.368  rerank=-4.756  vec=0.394  bm25=0.338
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Tính chất của tích phân:**  1. $\displaystyle\int_a^b k f(x) \, dx = k \int_a^b f(x) \, dx$ ($k$ là hằng số). 2. $\displaystyle\int_a^b [f(x) + g(x)] \, dx = \int_a^b f(x) \, dx + \int_a^b g(x) \, dx$. 3. $\displaystyle\int_a^b [f(x) - g(x)] \, dx = \int_a^b f(x) \, dx - \int_a^b g(x) \, dx$. 4. $...
+
+  [4] id=geom_theory_003  hybrid=0.390  rerank=-5.070  vec=0.245  bm25=0.412 🚀boost
+       chapter=Hình học không gian  skill=geometry_sphere
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  MẶT CẦU:  PHƯƠNG TRÌNH MẶT CẦU tâm I(a;b;c) bán kính R:   (x−a)² + (y−b)² + (z−c)² = R²  DANG KHAI TRIỂN:   x² + y² + z² − 2ax − 2by − 2cz + (a²+b²+c²−R²) = 0  Hay: x² + y² + z² + 2Ax + 2By + 2Cz + D = 0   Tâm I(−A; −B; −C), R = √(A²+B²+C²−D)   (Điều kiện tồn tại: A²+B²+...
+
+  [5] id=stat_theory_002  hybrid=0.393  rerank=-5.593  vec=0.336  bm25=0.462
+       chapter=Thống kê  skill=statistics_inference
+       > CHƯƠNG: THỐNG KÊ  ĐỘ PHÂN TÁN CỦA MẪU SỐ LIỆU:  PHƯƠNG SAI (s²):   s² = (1/n) · ∑(xᵢ − x̄)²  ĐỘ LỆCH CHUẨN (s):   s = √s²  Ý nghĩa:   • s nhỏ → dữ liệu tập trung gần x̄   • s lớn → dữ liệu phân tán rộng  CÁC BƯỚC TÍNH: 1. Tính x̄ 2. Tính (xᵢ − x̄)² cho từng giá trị 3. Tính trung bình của các (xᵢ − x...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>C</answer>
+
+Vì đáy \(ABCD\) là hình bình hành nên hai đường chéo cắt nhau tại trung điểm, suy ra
+\[
+\overrightarrow{A}+\overrightarrow{C}=\overrightarrow{B}+\overrightarrow{D}.
+\]
+Do đó
+\[
+\overrightarrow{SA}+\overrightarrow{SC}
+=(\overrightarrow{A}-\overrightarrow{S})+(\overrightarrow{C}-\overrightarrow{S})
+=(\overrightarrow{B}-\overrightarrow{S})+(\overrightarrow{D}-\overrightarrow{S})
+=\overrightarrow{SB}+\overrightarrow{SD}.
+\]
+Nên đẳng thức đúng là C.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : C
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng hoàn toàn, trình bày rõ ràng và logic, vận dụng lý thuyết chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.000
+     ❌ math_context_coverage       : 0.000
+     💬 Reason: Context không cung cấp định nghĩa, công thức hay phương pháp liên quan đến hình chóp và các vectơ trong không gian.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3451 out=36 → $0.03559  (session: 19 calls, $0.6284)
+💸 [Solver] gpt-5.4-2026-03-05  in=3534 out=82 → $0.03780  (session: 20 calls, $0.6662)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 12  [12/22]  —  Trắc nghiệm (MCQ)
+  Chapter : Tổ hợp - Xác suất
+  Skill   : probability_basic
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 12 [Phần 1 - Trắc nghiệm]:
+
+Cho $A$ và $B$ là hai biến cố độc lập. Biết xác suất của biến cố $A$ là $0,4$; xác suất của biến cố $B$ là $0,3$. Xác suất của biến cố $A \cup B$ là:
+
+A. $0,12$.
+B. $0,58$.
+C. $0,7$.
+D. $0,82$.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Xác suất, Tổ hợp - Xác suất
+  🎯 Skills   : probability_basic
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về xác suất và công thức tính xác suất của hợp hai biến cố độc lập để giải bài toán này.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_18  hybrid=0.966  rerank=8.654  vec=0.599  bm25=0.991 🚀boost
+       chapter=Xác suất  skill=probability_basic
+       > **Xác suất có điều kiện**  **Khái niệm:** Cho hai biến cố $A$ và $B$. Xác suất của biến cố $A$ khi biết biến cố $B$ đã xảy ra được gọi là xác suất của $A$ với điều kiện $B$, kí hiệu $P(A \mid B)$.  **Công thức tính xác suất có điều kiện:** Cho hai biến cố $A$ và $B$ bất kì, với $P(B) > 0$. Khi đó: $...
+
+  [2] id=theory_19  hybrid=0.782  rerank=7.856  vec=0.515  bm25=0.686 🚀boost
+       chapter=Xác suất  skill=probability_basic
+       > **Công thức xác suất toàn phần và công thức Bayes**  **Công thức xác suất toàn phần:** Cho hai biến cố $A$ và $B$. Khi đó: $$P(B) = P(A) \cdot P(B \mid A) + P(\bar{A}) \cdot P(B \mid \bar{A}).$$ Một phương pháp mô tả trực quan công thức xác suất toàn phần là dùng sơ đồ hình cây.  **Công thức Bayes:*...
+
+  [3] id=comb_theory_002  hybrid=0.928  rerank=4.847  vec=0.523  bm25=1.000 🚀boost
+       chapter=Tổ hợp – Xác suất  skill=probability_basic
+       > CHƯƠNG: TỔ HỢP – XÁC SUẤT  XÁC SUẤT CỦA BIẾN CỐ:  ĐỊNH NGHĨA CỔ ĐIỂN: Xét phép thử có n kết quả đồng khả năng. Biến cố A có m kết quả thuận lợi:   P(A) = m/n  Tính chất:   • 0 ≤ P(A) ≤ 1   • P(Ω) = 1,  P(∅) = 0   • P(A̅) = 1 − P(A)  QUY TẮC CỘNG (xung khắc):   P(A ∪ B) = P(A) + P(B) − P(A ∩ B)   Nếu...
+
+  [4] id=theory_4  hybrid=0.338  rerank=5.498  vec=0.462  bm25=0.186
+       chapter=Hình học không gian  skill=?
+       > **Tích vô hướng của hai vectơ trong không gian**  Trong không gian, cho hai vectơ $\vec{a}, \vec{b}$ đều khác $\vec{0}$. Tích vô hướng của $\vec{a}$ và $\vec{b}$ là một số, kí hiệu $\vec{a} \cdot \vec{b}$, được xác định bởi: $$\vec{a} \cdot \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot \cos(\vec{a}, \ve...
+
+  [5] id=comb_theory_001  hybrid=0.485  rerank=1.625  vec=0.419  bm25=0.410 🚀boost
+       chapter=Tổ hợp – Xác suất  skill=combinatorics_basic
+       > CHƯƠNG: TỔ HỢP – XÁC SUẤT  HOÁN VỊ – CHỈNH HỢP – TỔ HỢP:  HOÁN VỊ của n phần tử:   Pₙ = n! = n·(n−1)·…·2·1  CHỈNH HỢP chập k của n (k ≤ n):   Aⁿₖ = n!/(n−k)!  TỔ HỢP chập k của n:   Cⁿₖ = n! / [k!·(n−k)!]  NHỊ THỨC NEWTON:   (a+b)ⁿ = ∑[k=0→n] Cⁿₖ · aⁿ⁻ᵏ · bᵏ   Số hạng tổng quát: T_{k+1} = Cⁿₖ · aⁿ⁻ᵏ...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_mcq | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "0.4 + 0.3 - 0.4*0.3"}
+     → SymPy result: simplify(0.4 + 0.3 - 0.4*0.3) = 0.58 ~ 0.580000
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>B</answer>
+
+Vì \(A, B\) độc lập nên
+\[
+P(A\cup B)=P(A)+P(B)-P(A)P(B)=0{,}4+0{,}3-0{,}4\cdot 0{,}3=0{,}58.
+\]
+
+Chọn **B**.
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : B
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng hoàn toàn, trình bày rõ ràng và logic, áp dụng đúng công thức xác suất cho biến cố độc lập.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.333
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ quy tắc cộng và quy tắc nhân cho biến cố độc lập, cho phép tính xác suất của biến cố $A \cup B$.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=4039 out=354 → $0.05101  (session: 21 calls, $0.7172)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 13  [13/22]  —  Đúng / Sai (T/F)
+  Chapter : Hệ tọa độ trong không gian
+  Skill   : geometry_coordinate
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 13 [Phần 2 - Đúng/Sai]:
+
+Một ngôi nhà có hình dáng và kích thước như hình vẽ. Biết rằng các bức tường và nền nhà đều là các hình chữ nhật; hai bên mái nhà là các hình thang cân $IJGF$ và $IJHE$ có diện tích bằng nhau; độ dốc của mái nhà (số đo góc nhị diện $[J, FG, H]$) là $45^\circ$. Chọn hệ trục tọa độ $Oxyz$ như hình vẽ (đơn vị trên mỗi trục là $1\text{ m}$).
+
+[Xem hình: q13.png]
+
+Khi đó:
+
+| Mệnh đề | Đúng | Sai |
+|---|---|---|
+| (a) Tọa độ của vectơ $\overrightarrow{JI}$ là $(0;6;0)$. | | |
+| (b) Tọa độ điểm $J$ là $\left(\frac{5}{2};7;6\right)$. | | |
+| (c) Tọa độ của điểm $E$ là $\left(0;0;\frac{7}{2}\right)$. | | |
+| (d) Tọa độ điểm $G$ là $\left(5;8;\frac{7}{2}\right)$. | | |
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_vector
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hình học không gian để xác định tọa độ các điểm và tính toán liên quan đến hình thang cân và độ dốc của mái nhà.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_5  hybrid=0.512  rerank=2.337  vec=0.413  bm25=0.477 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Biểu thức tọa độ của tích vô hướng trong không gian**  Trong không gian $Oxyz$, tích vô hướng của hai vectơ $\vec{a} = (x; y; z)$ và $\vec{b} = (x'; y'; z')$ được xác định bởi: $$\vec{a} \cdot \vec{b} = xx' + yy' + zz'.$$  **Nhận xét:** - $\vec{a} \perp \vec{b} \Leftrightarrow xx' + yy' + zz' = 0$...
+
+  [2] id=theory_4  hybrid=0.377  rerank=2.761  vec=0.398  bm25=0.194 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Tích vô hướng của hai vectơ trong không gian**  Trong không gian, cho hai vectơ $\vec{a}, \vec{b}$ đều khác $\vec{0}$. Tích vô hướng của $\vec{a}$ và $\vec{b}$ là một số, kí hiệu $\vec{a} \cdot \vec{b}$, được xác định bởi: $$\vec{a} \cdot \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot \cos(\vec{a}, \ve...
+
+  [3] id=geom_theory_001  hybrid=0.737  rerank=0.206  vec=0.394  bm25=1.000 🚀boost
+       chapter=Hình học không gian  skill=geometry_vectors
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  VECTƠ TRONG KHÔNG GIAN:  • Vectơ trong không gian là một đoạn thẳng có hướng. • Trong hệ tọa độ Oxyz: mọi vectơ v⃗ = (a; b; c) • |v⃗| = √(a² + b² + c²)  TÍCH VÔ HƯỚNG: a⃗ · b⃗ = a₁b₁ + a₂b₂ + a₃b₃ = |a⃗|·|b⃗|·cosθ  Hệ quả:   a⃗ ⊥ b⃗ ⟺ a⃗ · b⃗ = 0  KHOẢNG CÁCH GIỮA HAI ĐI...
+
+  [4] id=geom_theory_003  hybrid=0.435  rerank=0.900  vec=0.394  bm25=0.330 🚀boost
+       chapter=Hình học không gian  skill=geometry_sphere
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  MẶT CẦU:  PHƯƠNG TRÌNH MẶT CẦU tâm I(a;b;c) bán kính R:   (x−a)² + (y−b)² + (z−c)² = R²  DANG KHAI TRIỂN:   x² + y² + z² − 2ax − 2by − 2cz + (a²+b²+c²−R²) = 0  Hay: x² + y² + z² + 2Ax + 2By + 2Cz + D = 0   Tâm I(−A; −B; −C), R = √(A²+B²+C²−D)   (Điều kiện tồn tại: A²+B²+...
+
+  [5] id=integral_theory_003  hybrid=0.292  rerank=1.802  vec=0.365  bm25=0.202
+       chapter=Nguyên hàm và Tích phân  skill=integral_applications
+       > CHƯƠNG: NGUYÊN HÀM VÀ TÍCH PHÂN  ỨNG DỤNG TÍCH PHÂN:  DIỆN TÍCH HÌNH PHẲNG: Diện tích hình phẳng giới hạn bởi đồ thị y = f(x), trục Ox, x = a và x = b:   S = ∫[a→b] |f(x)| dx  Diện tích giới hạn bởi hai đồ thị y = f(x) và y = g(x):   S = ∫[a→b] |f(x) − g(x)| dx  THỂ TÍCH VẬT TRÒN XOAY: Quay hình phẳ...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_true_false | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+✅ Hoàn tất sau 0 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Cần đọc tọa độ trực tiếp từ hình.
+
+- Nhà có bề ngang theo trục \(Ox\) là \(5\), chiều dài theo trục \(Oy\) là \(8\), tường cao \(z=3\), đỉnh mái cao thêm do độ dốc \(45^\circ\).
+- Vì mái đối xứng, sống mái đi qua trung điểm bề ngang nên \(x=\dfrac52\).
+- Sống mái song song trục \(Oy\), hai đầu là \(I,J\).
+- Từ hình, một đầu sống mái ở phía trước có \(y=1\), đầu kia ở phía sau có \(y=7\), nên
+  \[
+  I\left(\frac52,1,6\right),\quad J\left(\frac52,7,6\right).
+  \]
+  Do đó
+  \[
+  \overrightarrow{JI}=I-J=(0,-6,0),
+  \]
+  nên (a) sai.
+
+- (b): đúng vì \(J\left(\dfrac52,7,6\right)\).
+
+- Điểm \(E\) là đỉnh tường trước bên trái, nằm trên mặt phẳng \(x=0,\ y=0\), cao \(z=3\), không phải \(z=\dfrac72\). Nên (c) sai.
+
+- Điểm \(G\) là đỉnh tường sau bên phải, nên \(x=5,\ y=8,\ z=3\), không phải \(z=\dfrac72\). Nên (d) sai.
+
+<answer>a-F,b-T,c-F,d-F</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : a-F,b-T,c-T,d-T
+  ⚠️ MathJudge Accuracy        : 0.50
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ⚠️ Weighted Score       : 0.55
+     ❌ Accuracy (kết quả)  : 0.50
+     ❌  Method (phương pháp): 0.50
+     ✅  Steps (trình bày)   : 0.75
+     ✅ Knowledge use       : 0.50
+     💬 Phương pháp giải đúng hướng nhưng có một số sai sót trong việc xác định tọa độ và trình bày chưa đầy đủ. Cần làm rõ hơn về các bước và lý thuyết áp dụng.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 0.806
+     ❌ math_context_coverage       : 0.500
+     💬 Reason: Context cung cấp một số công thức và định nghĩa liên quan đến vectơ và khoảng cách, nhưng không đủ để giải quyết bài toán cụ thể về tọa độ các điểm trong không gian.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3020 out=176 → $0.03548  (session: 22 calls, $0.7527)
+💸 [Solver] gpt-5.4-2026-03-05  in=3415 out=90 → $0.03685  (session: 23 calls, $0.7895)
+💸 [Solver] gpt-5.4-2026-03-05  in=3613 out=202 → $0.04219  (session: 24 calls, $0.8317)
+💸 [Solver] gpt-5.4-2026-03-05  in=4113 out=159 → $0.04590  (session: 25 calls, $0.8776)
+💸 [Solver] gpt-5.4-2026-03-05  in=4540 out=619 → $0.06397  (session: 26 calls, $0.9416)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 14  [14/22]  —  Đúng / Sai (T/F)
+  Chapter : Hàm số mũ và hàm số lôgarit
+  Skill   : logarithm_equation_inequation
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 14 [Phần 2 - Đúng/Sai]:
+
+Cho hàm số $f(x) = \log_2(x - 1)$.
+
+| Mệnh đề | Đúng | Sai |
+|---|---|---|
+| (a) Tập nghiệm của phương trình $f(x) = 0$ là: $\{2\}$. | | |
+| (b) Tập nghiệm của bất phương trình $f(x) \ge 1$ là: $[3; +\infty)$. | | |
+| (c) Tổng tất cả các nghiệm của phương trình $f(x) = 2\log_4(x^2 - x - 4)$ bằng $2$. | | |
+| (d) Số nghiệm nguyên nhỏ hơn $2025$ của bất phương trình $\dfrac{f(x)}{\sqrt{x + 7} - \sqrt{x - 5}} \ge 1$ là $2018$. | | |
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Hàm số Lũy thừa, Mũ và Logarit
+  🎯 Skills   : function_survey, logarithm_exponential
+  📐 Formulas : formula_log_basic
+  💬 Reasoning: Cần kiến thức về hàm số logarit và cách giải phương trình, bất phương trình liên quan đến logarit để phân tích các mệnh đề.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=formula_log_quotient  hybrid=0.534  rerank=9.286  vec=0.635  bm25=0.255 🚀boost
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Công thức thương Logarit:** $$\log_b\left(\frac{x}{y}\right) = \log_b(x) - \log_b(y)$$ *Điều kiện:* $x > 0, y > 0, b > 0, b \neq 1$...
+
+  [2] id=formula_log_product  hybrid=0.532  rerank=9.190  vec=0.627  bm25=0.260 🚀boost
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Công thức tích Logarit:** $$\log_b(x \cdot y) = \log_b(x) + \log_b(y)$$ *Điều kiện:* $x > 0, y > 0, b > 0, b \neq 1$...
+
+  [3] id=theory_12  hybrid=0.679  rerank=8.333  vec=0.485  bm25=0.915
+       chapter=Hình học không gian  skill=?
+       > **Phương trình tham số của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$. Hệ phương trình tham số của $\Delta$ là: $$\begin{cases} x = x_0 + at \\ y = y_0 + bt \\ z = z_0 + ct \end{cases} \quad (t \in \mat...
+
+  [4] id=formula_log_base_change  hybrid=0.513  rerank=9.172  vec=0.600  bm25=0.251 🚀boost
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Công thức đổi cơ số Logarit:** $$\log_b(x) = \frac{\log_c(x)}{\log_c(b)}$$ *Điều kiện:* $x > 0, b > 0, b \neq 1, c > 0, c \neq 1$...
+
+  [5] id=theory_13  hybrid=0.657  rerank=8.259  vec=0.442  bm25=0.920
+       chapter=Hình học không gian  skill=?
+       > **Phương trình chính tắc của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$ với $a, b, c \neq 0$. Phương trình chính tắc của $\Delta$ là: $$\frac{x - x_0}{a} = \frac{y - y_0}{b} = \frac{z - z_0}{c}.$$...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_true_false | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 4 tool call(s):
+  📐 [solve_equation] args={"equation_str": "log(x - 1, 2) = 0", "var": "x"}
+     → SymPy result: Phương trình 'log(x - 1, 2) = 0' vô nghiệm.
+  📐 [solve_inequality] args={"inequality_str": "log(x - 1, 2) >= 1", "var": "x"}
+     → SymPy result: Bpt 'log(x - 1, 2) >= 1' nghiem: \left[3, \infty\right) | Bien: 3 ~ 3.000000
+LUU Y: Neu bai toan co chu ky roi rac (vi du vi khuan phan bao moi 20 phut), hay lam tron bien LEN den boi so nguyen gan nhat cua chu ky do.
+  📐 [solve_equation] args={"equation_str": "log(x - 1, 2) = 2*log(x**2 - x - 4, 4)", "var": "x"}
+     → SymPy result: Phương trình 'log(x - 1, 2) = 2*log(x**2 - x - 4, 4)' vô nghiệm.
+  📐 [solve_inequality] args={"inequality_str": "log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5)) >= 1", "var": "x"}
+     → ERROR: 
+The inequality, log(x - 1)/((-sqrt(x - 5) + sqrt(x + 7))*log(2)) >= 1,
+cannot be solved using solve_univariate_inequality.
+
+🔁 Lượt 2: LLM yêu cầu 2 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "(sqrt(x+7)+sqrt(x-5))/12"}
+     → SymPy result: simplify((sqrt(x+7)+sqrt(x-5))/12) = \frac{\sqrt{x - 5}}{12} + \frac{\sqrt{x + 7}}{12}
+  📐 [solve_inequality] args={"inequality_str": "log(x - 1, 2) >= (sqrt(x+7)+sqrt(x-5))/12", "var": "x"}
+     → ERROR: 
+The inequality, log(x - 1)/log(2) >= sqrt(x - 5)/12 + sqrt(x + 7)/12,
+cannot be solved using solve_univariate_inequality.
+
+🔁 Lượt 3: LLM yêu cầu 4 tool call(s):
+  📐 [evaluate_at_point] args={"expr_str": "log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5))", "var": "x", "value": "7"}
+     → SymPy result: log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5)) at x=7 = \frac{\log{\left(x - 1 \right)}}{\left(- \sqrt{x - 5} + \sqrt{x + 7}\right) \log{\left(2 \right)}}
+  📐 [evaluate_at_point] args={"expr_str": "log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5))", "var": "x", "value": "8"}
+     → SymPy result: log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5)) at x=8 = \frac{\log{\left(x - 1 \right)}}{\left(- \sqrt{x - 5} + \sqrt{x + 7}\right) \log{\left(2 \right)}}
+  📐 [evaluate_at_point] args={"expr_str": "log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5))", "var": "x", "value": "2024"}
+     → SymPy result: log(x - 1, 2)/(sqrt(x + 7) - sqrt(x - 5)) at x=2024 = \frac{\log{\left(x - 1 \right)}}{\left(- \sqrt{x - 5} + \sqrt{x + 7}\right) \log{\left(2 \right)}}
+  📐 [compute_derivative] args={"expr_str": "log(x - 1, 2) - (sqrt(x + 7)+sqrt(x - 5))/12", "var": "x", "order": 1}
+     → SymPy result: d^1/dx^1(log(x - 1, 2) - (sqrt(x + 7)+sqrt(x - 5))/12) = 0 ~ 0.000000
+
+🔁 Lượt 4: LLM yêu cầu 4 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "log(6,2)/(sqrt(14)-sqrt(2))"}
+     → SymPy result: simplify(log(6,2)/(sqrt(14)-sqrt(2))) = \log{\left(6^{\frac{1}{\left(- \sqrt{2} + \sqrt{14}\right) \log{\left(2 \right)}}} \right)} ~ 1.110644
+  📐 [simplify_expression] args={"expr_str": "log(7,2)/(sqrt(15)-sqrt(3))"}
+     → SymPy result: simplify(log(7,2)/(sqrt(15)-sqrt(3))) = \frac{\log{\left(7 \right)}}{\left(- \sqrt{3} + \sqrt{15}\right) \log{\left(2 \right)}} ~ 1.311277
+  📐 [simplify_expression] args={"expr_str": "log(2023,2)/(sqrt(2031)-sqrt(2019))"}
+     → SymPy result: simplify(log(2023,2)/(sqrt(2031)-sqrt(2019))) = - \frac{\log{\left(2023 \right)}}{\left(- \sqrt{2031} + \sqrt{2019}\right) \log{\left(2 \right)}} ~ 82.367014
+  📐 [solve_equation] args={"equation_str": "log(x - 1, 2) - (sqrt(x + 7)+sqrt(x - 5))/12 = 0", "var": "x"}
+     → SymPy result: Phương trình 'log(x - 1, 2) - (sqrt(x + 7)+sqrt(x - 5))/12 = 0' vô nghiệm.
+✅ Hoàn tất sau 4 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+(a) Điều kiện \(x>1\).  
+\(f(x)=0 \Leftrightarrow \log_2(x-1)=0 \Leftrightarrow x-1=1 \Leftrightarrow x=2\).  
+Nên (a) đúng.
+
+(b) \(f(x)\ge1 \Leftrightarrow \log_2(x-1)\ge1 \Leftrightarrow x-1\ge2 \Leftrightarrow x\ge3\).  
+Tập nghiệm là \([3,+\infty)\).  
+Nên (b) đúng.
+
+(c) Ta có
+\[
+\log_2(x-1)=2\log_4(x^2-x-4).
+\]
+Vì \(2\log_4 A=\log_2 A\) nên
+\[
+\log_2(x-1)=\log_2(x^2-x-4).
+\]
+Điều kiện: \(x>1,\ x^2-x-4>0\).  
+Suy ra
+\[
+x-1=x^2-x-4 \Leftrightarrow x^2-2x-3=0 \Leftrightarrow x=3,\,-1.
+\]
+Chỉ \(x=3\) thỏa điều kiện. Tổng các nghiệm bằng \(3\), không phải \(2\).  
+Nên (c) sai.
+
+(d) Điều kiện xác định: \(x\ge5\).  
+Rational hóa:
+\[
+\sqrt{x+7}-\sqrt{x-5}=\frac{12}{\sqrt{x+7}+\sqrt{x-5}}.
+\]
+Nên bất phương trình tương đương
+\[
+\frac{\log_2(x-1)}{\sqrt{x+7}-\sqrt{x-5}}\ge1
+\Leftrightarrow
+\log_2(x-1)\ge \frac{\sqrt{x+7}+\sqrt{x-5}}{12}.
+\]
+Mà
+\[
+\frac{d}{dx}\left(\log_2(x-1)-\frac{\sqrt{x+7}+\sqrt{x-5}}{12}\right)=0,
+\]
+nên hai vế luôn bằng nhau hoặc luôn lệch nhau một hằng số. Thử \(x=7\):
+\[
+\frac{\log_2 6}{\sqrt{14}-\sqrt2}\approx 1.110644>1.
+\]
+Do đó bất phương trình đúng với mọi \(x\ge5\).  
+Các số nguyên \(<2025\) thỏa là \(x=5,6,\dots,2024\), có
+\[
+2024-5+1=2020
+\]
+nghiệm, không phải \(2018\).  
+Nên (d) sai.
+
+<answer>a-T,b-T,c-F,d-F</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : a-T,b-T,c-F,d-T
+  ⚠️ MathJudge Accuracy        : 0.75
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ⚠️ Weighted Score       : 0.65
+     ❌ Accuracy (kết quả)  : 0.75
+     ❌  Method (phương pháp): 0.50
+     ✅  Steps (trình bày)   : 0.75
+     ✅ Knowledge use       : 0.50
+     💬 Phương pháp giải đúng hướng nhưng có một số sai sót trong việc tính toán và điều kiện nghiệm. Trình bày có phần thiếu sót và chưa rõ ràng ở một số bước.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 0.887
+     ❌ math_context_coverage       : 0.500
+     💬 Reason: Context chỉ cung cấp một số công thức logarit nhưng không đủ để giải quyết tất cả các bài toán trong câu hỏi, đặc biệt là không có công thức hoặc phương pháp liên quan đến bất phương trình và điều kiện của các hàm logarit.
+
+💸 [Solver] gpt-5.4  in=4024 out=464 → $0.01470  (session: 27 calls, $0.9563)
+💸 [Solver] gpt-5.4  in=4536 out=137 → $0.01271  (session: 28 calls, $0.9690)
+💸 [Solver] gpt-5.4  in=4714 out=126 → $0.01304  (session: 29 calls, $0.9820)
+💸 [Solver] gpt-5.4  in=4970 out=221 → $0.01464  (session: 30 calls, $0.9967)
+💸 [Solver] gpt-5.4  in=5343 out=585 → $0.01921  (session: 31 calls, $1.0159)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 15  [15/22]  —  Đúng / Sai (T/F)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : function_survey_properties
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 15 [Phần 2 - Đúng/Sai]:
+
+Cho hàm số $y = f(x) = \dfrac{ax^2 + bx + 1}{cx + d}$ đạt cực đại tại $x = 0$ và có đồ thị như hình vẽ sau:
+
+[Xem hình: q15.png]
+
+| Mệnh đề | Đúng | Sai |
+|---|---|---|
+| (a) Giá trị của biểu thức $a + b + c + d$ bằng $0$. | | |
+| (b) Hàm số đồng biến trên $(-1;0)$. | | |
+| (c) Gọi $A, B$ là các điểm cực trị của đồ thị hàm số; $M$ là điểm di động trên trục $Ox$ sao cho góc $\widehat{AMB}$ không tù. Giá trị nhỏ nhất của hoành độ điểm $M$ là $3$. | | |
+| (d) Đường thẳng đi qua hai điểm cực trị của đồ thị hàm số có phương trình $y = x - 1$. | | |
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Đạo hàm
+  🎯 Skills   : function_survey, derivative_applications
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hàm số và đạo hàm để phân tích cực trị, tính đồng biến và các tính chất của hàm số phân thức.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=deriv_theory_001  hybrid=0.878  rerank=9.655  vec=0.432  bm25=1.000 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  TÍNH ĐƠN ĐIỆU CỦA HÀM SỐ:  Giả sử K là khoảng, một đoạn hoặc một nửa khoảng và y = f(x) là hàm số xác định trên K.  • Hàm số y = f(x) gọi là ĐỒNG BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁) < f(x₂)  • Hàm số y = f(x) gọi là NGHỊCH BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁...
+
+  [2] id=deriv_theory_002  hybrid=0.811  rerank=7.787  vec=0.459  bm25=0.819 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  CỰC TRỊ CỦA HÀM SỐ:  ĐỊNH NGHĨA: Cho hàm số y = f(x) xác định và liên tục trên khoảng (a; b) và điểm x₀ ∈ (a; b).  • f(x) đạt CỰC ĐẠI tại x₀ nếu: ∃ h > 0 sao cho f(x) < f(x₀) với mọi x ∈ (x₀−h; x₀+h), x ≠ x₀ • f(x) đạt CỰC TIỂU tại x₀ nếu: ∃ h > 0 sao cho f(x) > f(x₀) với mọi x ∈ (x...
+
+  [3] id=theory_1  hybrid=0.791  rerank=7.711  vec=0.524  bm25=0.961 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm điểm cực trị của hàm số $f(x)$  - Bước 1: Tìm tập xác định của hàm số $f(x)$. - Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại. - Bước 3: Lập bảng biến thiên của hàm số. - Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số....
+
+  [4] id=integral_theory_002  hybrid=0.463  rerank=7.841  vec=0.449  bm25=0.481
+       chapter=Nguyên hàm và Tích phân  skill=integral_definite
+       > CHƯƠNG: NGUYÊN HÀM VÀ TÍCH PHÂN  TÍCH PHÂN XÁC ĐỊNH:  ĐỊNH NGHĨA (Newton–Leibniz):   ∫[a→b] f(x)dx = F(b) − F(a)  Trong đó F(x) là nguyên hàm bất kỳ của f(x) trên [a; b].  Tính chất: • ∫[a→b] f(x)dx = −∫[b→a] f(x)dx • ∫[a→b] [kf(x)] dx = k·∫[a→b] f(x)dx • ∫[a→b] [f(x) ± g(x)] dx = ∫[a→b] f(x)dx ± ∫[...
+
+  [5] id=theory_7  hybrid=0.406  rerank=7.923  vec=0.509  bm25=0.281
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Tính chất của tích phân:**  1. $\displaystyle\int_a^b k f(x) \, dx = k \int_a^b f(x) \, dx$ ($k$ là hằng số). 2. $\displaystyle\int_a^b [f(x) + g(x)] \, dx = \int_a^b f(x) \, dx + \int_a^b g(x) \, dx$. 3. $\displaystyle\int_a^b [f(x) - g(x)] \, dx = \int_a^b f(x) \, dx - \int_a^b g(x) \, dx$. 4. $...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_true_false | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [compute_derivative] args={"expr_str": "(x**2 + b*x + 1)/(x - 1)", "var": "x", "order": 1}
+     → SymPy result: d^1/dx^1((x**2 + b*x + 1)/(x - 1)) = 0 ~ 0.000000
+
+🔁 Lượt 2: LLM yêu cầu 1 tool call(s):
+  📐 [compute_derivative] args={"expr_str": "x + 1/(x-1)", "var": "x", "order": 1}
+     → SymPy result: d^1/dx^1(x + 1/(x-1)) = 0 ~ 0.000000
+
+🔁 Lượt 3: LLM yêu cầu 1 tool call(s):
+  📐 [solve_inequality] args={"inequality_str": "1 - 1/(x-1)**2 > 0", "var": "x"}
+     → SymPy result: Bpt '1 - 1/(x-1)**2 > 0' nghiem: \left(-\infty, 0\right) \cup \left(2, \infty\right) | Bien: 0 ~ 0.000000; 2 ~ 2.000000
+LUU Y: Neu bai toan co chu ky roi rac (vi du vi khuan phan bao moi 20 phut), hay lam tron bien LEN den boi so nguyen gan nhat cua chu ky do.
+
+🔁 Lượt 4: LLM yêu cầu 1 tool call(s):
+  📐 [solve_inequality] args={"inequality_str": "m**2 - 2*m - 1 >= 0", "var": "m"}
+     → SymPy result: Bpt 'm**2 - 2*m - 1 >= 0' nghiem: \left(-\infty, 1 - \sqrt{2}\right] \cup \left[1 + \sqrt{2}, \infty\right) | Bien: 1 + \sqrt{2} ~ 2.414214; 1 - \sqrt{2} ~ -0.414214
+LUU Y: Neu bai toan co chu ky roi rac (vi du vi khuan phan bao moi 20 phut), hay lam tron bien LEN den boi so nguyen gan nhat cua chu ky do.
+✅ Hoàn tất sau 4 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Tập hoành độ thỏa mãn không có giá trị nhỏ nhất (vì kéo dài đến \(-\infty\)); nếu xét phía phải thì cận là \(1+\sqrt2\ne3\). Nên (c) sai.
+
+- (d) Đường thẳng qua \(A(0,-1)\) và \(B(2,1)\) có hệ số góc:
+\[
+\frac{1-(-1)}{2-0}=1.
+\]
+Qua \(A\): \(y=x-1\). ⇒ (d) đúng.
+
+<answer>a-T,b-T,c-F,d-T</answer>
+[TRÍCH XUẤT THỊ GIÁC]
+
+1. Tiệm cận:
+- Tiệm cận đứng: \(x=1\).
+- Tiệm cận xiên: \(y=x\).
+
+2. Điểm đặc trưng:
+- Cực đại tại \(A=(0,-1)\).
+- Cực tiểu tại \(B=(2,1)\).
+- Giao trục \(Oy\): \((0,-1)\).
+- Không thấy giao trục \(Ox\).
+
+3. Chiều biến thiên:
+- Tăng trên \((-\infty,0)\),
+- Giảm trên \((0,1)\),
+- Giảm trên \((1,2)\),
+- Tăng trên \((2,+\infty)\).
+
+4. Dạng đồ thị:
+- Hàm phân thức bậc hai trên bậc nhất, hai nhánh kiểu hyperbol.
+- Tâm đối xứng là giao hai tiệm cận \((1,1)\).
+
+Từ hình:
+- \(x=1 \Rightarrow -\dfrac d c=1 \Rightarrow d=-c\).
+- Tiệm cận xiên \(y=x \Rightarrow \dfrac a c=1 \Rightarrow a=c\).
+- \(f(0)=\dfrac1d=-1 \Rightarrow d=-1 \Rightarrow c=1 \Rightarrow a=1\).
+- Hệ số tự do của tiệm cận xiên bằng 0:
+\[
+\frac{bc-ad}{c^2}=0 \Rightarrow b-(-1)=0 \Rightarrow b=-1.
+\]
+
+Suy ra
+\[
+f(x)=\frac{x^2-x+1}{x-1}=x+\frac1{x-1}.
+\]
+
+(a) 
+\[
+a+b+c+d=1+(-1)+1+(-1)=0.
+\]
+→ T.
+
+(b) Xét \(f'(x)=1-\dfrac1{(x-1)^2}\). Giải \(f'(x)>0\).
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : a-F,b-T,c-F,d-F
+  ⚠️ MathJudge Accuracy        : 0.50
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ⚠️ Weighted Score       : 0.55
+     ❌ Accuracy (kết quả)  : 0.50
+     ❌  Method (phương pháp): 0.50
+     ✅  Steps (trình bày)   : 0.75
+     ✅ Knowledge use       : 0.50
+     💬 Phương pháp giải đúng hướng nhưng có một số sai sót nhỏ trong việc xác định các hệ số và trình bày chưa đầy đủ. Cần làm rõ hơn về các bước và lý thuyết áp dụng.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa, công thức và phương pháp cần thiết để xác định cực trị và tính đơn điệu của hàm số.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3524 out=119 → $0.03881  (session: 32 calls, $1.0547)
+💸 [Solver] gpt-5.4-2026-03-05  in=3769 out=351 → $0.04822  (session: 33 calls, $1.1029)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 16  [16/22]  —  Đúng / Sai (T/F)
+  Chapter : Thống kê
+  Skill   : statistics_grouped_data
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 16 [Phần 2 - Đúng/Sai]:
+
+Thống kê chiều cao của $40$ học sinh của một lớp (đơn vị đo: $\text{cm}$) ta được mẫu số liệu ghép nhóm như sau:
+
+| Nhóm chiều cao | $[155; 160)$ | $[160; 165)$ | $[165; 170)$ | $[170; 175)$ | Tổng |
+|---|---|---|---|---|---|
+| **Số học sinh** | $5$ | $12$ | $16$ | $7$ | $n = 40$ |
+
+Khi đó:
+
+| Mệnh đề | Đúng | Sai |
+|---|---|---|
+| (a) Tần số của nhóm $[160; 165)$ là $12$. | | |
+| (b) Tần số tích lũy của nhóm $[165; 170)$ là $17$. | | |
+| (c) Mốt (làm tròn đến hàng phần mười) của mẫu số liệu trên là $165,6$. | | |
+| (d) Số trung bình cộng (làm tròn đến hàng phần mười) của mẫu số liệu trên là $165,5$. | | |
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Thống kê, Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm
+  🎯 Skills   : statistics_descriptive
+  📐 Formulas : (none)
+  💬 Reasoning: Các mục được chọn liên quan trực tiếp đến việc phân tích và tính toán các đặc trưng thống kê của mẫu số liệu ghép nhóm.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=stat_theory_001  hybrid=0.888  rerank=1.889  vec=0.527  bm25=0.908 🚀boost
+       chapter=Thống kê  skill=statistics_descriptive
+       > CHƯƠNG: THỐNG KÊ  CÁC SỐ ĐẶC TRƯNG CỦA MẪU SỐ LIỆU:  TRUNG BÌNH CỘNG (x̄):   x̄ = (x₁ + x₂ + … + xₙ) / n = (∑ xᵢ·fᵢ) / n   (fᵢ: tần số của giá trị xᵢ)  SỐ TRUNG VỊ (Me): Giá trị ở chính giữa khi sắp xếp dữ liệu theo thứ tự tăng dần.   • n lẻ: Me = x_{(n+1)/2}   • n chẵn: Me = (x_{n/2} + x_{n/2+1}) /...
+
+  [2] id=theory_23  hybrid=0.804  rerank=1.820  vec=0.544  bm25=0.966 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=trig_equation
+       > **Phương sai và độ lệch chuẩn của mẫu số liệu ghép nhóm**  Phương sai của mẫu số liệu ghép nhóm, kí hiệu là $s^2$, được tính bằng công thức: $$s^2 = \frac{1}{n} \sum_{i=1}^m n_i (x_i - \bar{x})^2$$ trong đó $n$ là cỡ mẫu, $n_i$ là tần số nhóm $i$, $x_i$ là giá trị đại diện của nhóm $i$, $\bar{x}$ là...
+
+  [3] id=stat_theory_005  hybrid=0.829  rerank=1.406  vec=0.562  bm25=1.000 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=?
+       > **Phương sai và độ lệch chuẩn của mẫu số liệu ghép nhóm**  Phương sai của mẫu số liệu ghép nhóm, kí hiệu là ^2$, được tính bằng công thức: s^2 = \frac{1}{n} \sum_{i=1}^m n_i (x_i - \bar{x})^2 trong đó $ là cỡ mẫu, $ là tần số nhóm $, $ là giá trị đại diện của nhóm $, $\bar{x}$ là số trung bình của m...
+
+  [4] id=theory_22  hybrid=0.641  rerank=2.026  vec=0.520  bm25=0.633 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=trig_graph
+       > **Khoảng tứ phân vị của mẫu số liệu ghép nhóm**  Khoảng tứ phân vị, kí hiệu là $\Delta_Q$, là hiệu số giữa tứ phân vị thứ ba $Q_3$ và tứ phân vị thứ nhất $Q_1$ của mẫu số liệu ghép nhóm: $$\Delta_Q = Q_3 - Q_1.$$...
+
+  [5] id=stat_theory_002  hybrid=0.707  rerank=1.361  vec=0.503  bm25=0.801 🚀boost
+       chapter=Thống kê  skill=statistics_inference
+       > CHƯƠNG: THỐNG KÊ  ĐỘ PHÂN TÁN CỦA MẪU SỐ LIỆU:  PHƯƠNG SAI (s²):   s² = (1/n) · ∑(xᵢ − x̄)²  ĐỘ LỆCH CHUẨN (s):   s = √s²  Ý nghĩa:   • s nhỏ → dữ liệu tập trung gần x̄   • s lớn → dữ liệu phân tán rộng  CÁC BƯỚC TÍNH: 1. Tính x̄ 2. Tính (xᵢ − x̄)² cho từng giá trị 3. Tính trung bình của các (xᵢ − x...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_true_false | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 3 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "5+12+16"}
+     → SymPy result: simplify(5+12+16) = 33 ~ 33.000000
+  📐 [simplify_expression] args={"expr_str": "165 + ((16-12)/((16-12)+(16-7)))*5"}
+     → SymPy result: simplify(165 + ((16-12)/((16-12)+(16-7)))*5) = \frac{2165}{13} ~ 166.538462
+  📐 [simplify_expression] args={"expr_str": "(157.5*5 + 162.5*12 + 167.5*16 + 172.5*7)/40"}
+     → SymPy result: simplify((157.5*5 + 162.5*12 + 167.5*16 + 172.5*7)/40) = 165.625 ~ 165.625000
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+(a) Nhóm \([160;165)\) có tần số là \(12\) nên a-T.
+
+(b) Tần số tích lũy của nhóm \([165;170)\) là \(5+12+16=33\), không phải \(17\) nên b-F.
+
+(c) Nhóm có tần số lớn nhất là \([165;170)\), nên là nhóm chứa mốt.  
+Công thức mốt của số liệu ghép nhóm:
+\[
+Mo=L+\frac{f_m-f_{m-1}}{(f_m-f_{m-1})+(f_m-f_{m+1})}\cdot h
+\]
+với \(L=165,\ h=5,\ f_m=16,\ f_{m-1}=12,\ f_{m+1}=7\).
+
+Suy ra
+\[
+Mo=165+\frac{4}{4+9}\cdot 5=166.538\ldots \approx 166.5
+\]
+không phải \(165.6\), nên c-F.
+
+(d) Số trung bình cộng:
+lấy trung điểm các nhóm là \(157.5,\ 162.5,\ 167.5,\ 172.5\).
+\[
+\overline{x}=\frac{157.5\cdot 5+162.5\cdot 12+167.5\cdot 16+172.5\cdot 7}{40}=165.625\approx 165.6
+\]
+không phải \(165.5\), nên d-F.
+
+<answer>a-T,b-F,c-F,d-F</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : a-T,b-F,c-F,d-F
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng hoàn toàn, trình bày rõ ràng và logic, vận dụng lý thuyết chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 0.700
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa, công thức và phương pháp cần thiết để tính tần số, tần số tích lũy, mốt và số trung bình cộng của mẫu số liệu ghép nhóm.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3219 out=78 → $0.03453  (session: 34 calls, $1.1374)
+💸 [Solver] gpt-5.4-2026-03-05  in=3380 out=112 → $0.03716  (session: 35 calls, $1.1746)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 17  [17/22]  —  Trả lời ngắn (SA)
+  Chapter : Tổ hợp - Xác suất
+  Skill   : probability_basic
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 17 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:
+
+Chọn ngẫu nhiên một số tự nhiên thuộc đoạn $[10; 199]$. Tính xác suất để chọn được số lẻ hoặc số chia hết cho $5$ (kết quả viết dưới dạng số thập phân).
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Xác suất, Tổ hợp - Xác suất
+  🎯 Skills   : probability_basic
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về xác suất và tổ hợp để tính xác suất của các sự kiện liên quan đến số lẻ và số chia hết cho 5.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_18  hybrid=0.858  rerank=-5.593  vec=0.396  bm25=1.000 🚀boost
+       chapter=Xác suất  skill=probability_basic
+       > **Xác suất có điều kiện**  **Khái niệm:** Cho hai biến cố $A$ và $B$. Xác suất của biến cố $A$ khi biết biến cố $B$ đã xảy ra được gọi là xác suất của $A$ với điều kiện $B$, kí hiệu $P(A \mid B)$.  **Công thức tính xác suất có điều kiện:** Cho hai biến cố $A$ và $B$ bất kì, với $P(B) > 0$. Khi đó: $...
+
+  [2] id=comb_theory_002  hybrid=0.738  rerank=-5.039  vec=0.441  bm25=0.679 🚀boost
+       chapter=Tổ hợp – Xác suất  skill=probability_basic
+       > CHƯƠNG: TỔ HỢP – XÁC SUẤT  XÁC SUẤT CỦA BIẾN CỐ:  ĐỊNH NGHĨA CỔ ĐIỂN: Xét phép thử có n kết quả đồng khả năng. Biến cố A có m kết quả thuận lợi:   P(A) = m/n  Tính chất:   • 0 ≤ P(A) ≤ 1   • P(Ω) = 1,  P(∅) = 0   • P(A̅) = 1 − P(A)  QUY TẮC CỘNG (xung khắc):   P(A ∪ B) = P(A) + P(B) − P(A ∩ B)   Nếu...
+
+  [3] id=theory_19  hybrid=0.773  rerank=-5.670  vec=0.387  bm25=0.824 🚀boost
+       chapter=Xác suất  skill=probability_basic
+       > **Công thức xác suất toàn phần và công thức Bayes**  **Công thức xác suất toàn phần:** Cho hai biến cố $A$ và $B$. Khi đó: $$P(B) = P(A) \cdot P(B \mid A) + P(\bar{A}) \cdot P(B \mid \bar{A}).$$ Một phương pháp mô tả trực quan công thức xác suất toàn phần là dùng sơ đồ hình cây.  **Công thức Bayes:*...
+
+  [4] id=formula_log_basic  hybrid=0.303  rerank=-0.643  vec=0.000  bm25=0.674
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Định nghĩa và tính chất cơ bản của Logarit:** - Logarit thập phân: $\log_{10} x$ thường được viết là $\log x$ hoặc $\lg x$. - Logarit tự nhiên: $\log_e x$ được viết là $\ln x$. - Tính chất cơ bản: $\log_a a = 1$, $\log_a 1 = 0$, $\log_a a^\alpha = \alpha$ (với  > 0, a \neq 1$)....
+
+  [5] id=theory_2  hybrid=0.527  rerank=-4.285  vec=0.425  bm25=0.650
+       chapter=Hàm số  skill=?
+       > Các bước tìm giá trị lớn nhất và giá trị nhỏ nhất của hàm số $f(x)$ trên đoạn $[a; b]$:  - Bước 1: Tìm các điểm $x_1, x_2, \ldots, x_n \in (a; b)$ tại đó $f'(x)$ bằng 0 hoặc không tồn tại. - Bước 2: Tính $f(x_1), f(x_2), \ldots, f(x_n), f(a)$ và $f(b)$. - Bước 3: Tìm số lớn nhất $M$ và số nhỏ nhất $...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_short_answer | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 3 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "190"}
+     → SymPy result: simplify(190) = 190 ~ 190.000000
+  📐 [simplify_expression] args={"expr_str": "95 + 38 - 19"}
+     → SymPy result: simplify(95 + 38 - 19) = 114 ~ 114.000000
+  📐 [simplify_expression] args={"expr_str": "114/190"}
+     → SymPy result: simplify(114/190) = \frac{3}{5} ~ 0.600000
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Có \(199-10+1=190\) số.
+
+- Số lẻ trong \([10,199]\): \(95\) số.
+- Số chia hết cho \(5\): \(38\) số.
+- Số vừa lẻ vừa chia hết cho \(5\): \(19\) số.
+
+Theo công thức cộng:
+\[
+P=\frac{95+38-19}{190}=\frac{114}{190}=0.6
+\]
+
+<answer>0.6</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : 0,6
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và áp dụng đúng công thức xác suất.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ❌ llm_context_precision_with_reference: 0.583
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa, công thức và quy tắc cần thiết để tính xác suất của biến cố.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3227 out=31 → $0.03320  (session: 36 calls, $1.2078)
+💸 [Solver] gpt-5.4-2026-03-05  in=3285 out=103 → $0.03594  (session: 37 calls, $1.2437)
+💸 [Solver] gpt-5.4-2026-03-05  in=3487 out=201 → $0.04090  (session: 38 calls, $1.2846)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 18  [18/22]  —  Trả lời ngắn (SA)
+  Chapter : Hệ tọa độ trong không gian
+  Skill   : geometry_coordinate_application
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 18 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:
+
+Trong không gian với hệ tọa độ $Oxyz$ (đơn vị trên mỗi trục tọa độ là $1\text{m}$), một cabin cáp treo xuất phát từ điểm $A(10; 3; 0)$ và chuyển động đều theo đường cáp thẳng đến vị trí $D$ cách $A$ $4050\text{m}$. Biết đường đi của cabin cùng phương với vectơ $\vec{u}(2; -2; 1)$ và sau $3$ phút kể từ khi xuất phát thì cabin đi đến vị trí $B$ có hoành độ $x_B = 550$. Hỏi thời gian di chuyển của cabin trên quãng đường $AD$ là bao nhiêu phút?
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_vector
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hình học không gian và vectơ để xác định vị trí cabin và tính toán quãng đường di chuyển.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_13  hybrid=0.880  rerank=5.181  vec=0.655  bm25=1.000 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Phương trình chính tắc của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$ với $a, b, c \neq 0$. Phương trình chính tắc của $\Delta$ là: $$\frac{x - x_0}{a} = \frac{y - y_0}{b} = \frac{z - z_0}{c}.$$...
+
+  [2] id=theory_12  hybrid=0.850  rerank=5.188  vec=0.605  bm25=0.995 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Phương trình tham số của đường thẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ đi qua điểm $A(x_0; y_0; z_0)$ và có vectơ chỉ phương $\vec{u} = (a; b; c)$. Hệ phương trình tham số của $\Delta$ là: $$\begin{cases} x = x_0 + at \\ y = y_0 + bt \\ z = z_0 + ct \end{cases} \quad (t \in \mat...
+
+  [3] id=theory_14  hybrid=0.670  rerank=8.714  vec=0.559  bm25=0.651 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Vị trí tương đối giữa hai đường thẳng**  Trong không gian $Oxyz$, cho hai đường thẳng $\Delta_1, \Delta_2$ lần lượt đi qua $A_1(x_1; y_1; z_1)$, $A_2(x_2; y_2; z_2)$ và có vectơ chỉ phương $\vec{u_1} = (a_1; b_1; c_1)$, $\vec{u_2} = (a_2; b_2; c_2)$. Khi đó:  - $\Delta_1 \parallel \Delta_2 \Leftri...
+
+  [4] id=theory_15  hybrid=0.721  rerank=4.725  vec=0.557  bm25=0.766 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Công thức tính góc giữa đường thẳng và mặt phẳng**  Trong không gian $Oxyz$, cho đường thẳng $\Delta$ có vectơ chỉ phương $\vec{u} = (a; b; c)$ và mặt phẳng $(P)$ có vectơ pháp tuyến $\vec{n} = (A; B; C)$. Khi đó: $$\sin(\Delta, (P)) = |\cos(\vec{u}, \vec{n})| = \frac{|aA + bB + cC|}{\sqrt{a^2 + b...
+
+  [5] id=theory_10  hybrid=0.636  rerank=5.487  vec=0.528  bm25=0.612 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Phương trình tổng quát của mặt phẳng**  Trong không gian $Oxyz$, mỗi mặt phẳng đều có phương trình dạng: $$Ax + By + Cz + D = 0,$$ trong đó $A, B, C$ không đồng thời bằng 0, được gọi là phương trình tổng quát của mặt phẳng đó....
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_short_answer | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "10 + 2*k = 550", "var": "k"}
+     → SymPy result: k in {270 ~ 270.000000}
+
+🔁 Lượt 2: LLM yêu cầu 2 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "sqrt((2*270)**2 + (-2*270)**2 + (1*270)**2)"}
+     → SymPy result: simplify(sqrt((2*270)**2 + (-2*270)**2 + (1*270)**2)) = 810 ~ 810.000000
+  📐 [simplify_expression] args={"expr_str": "4050 / (sqrt((2*270)**2 + (-2*270)**2 + (1*270)**2) / 3)"}
+     → SymPy result: simplify(4050 / (sqrt((2*270)**2 + (-2*270)**2 + (1*270)**2) / 3)) = 15 ~ 15.000000
+✅ Hoàn tất sau 2 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Đường đi có phương trình tham số:
+\[
+x=10+2k,\quad y=3-2k,\quad z=k.
+\]
+
+Tại \(B\), \(x_B=550\) nên:
+\[
+10+2k=550 \Rightarrow k=270.
+\]
+
+Suy ra:
+\[
+\overrightarrow{AB}=270(2,-2,1),
+\]
+nên
+\[
+AB=\sqrt{(540)^2+(-540)^2+270^2}=810.
+\]
+
+Cabin đi \(810\) m trong \(3\) phút, nên vận tốc là:
+\[
+v=\frac{810}{3}=270 \text{ m/phút}.
+\]
+
+Quãng đường \(AD=4050\) m, do đó thời gian đi hết quãng đường là:
+\[
+t=\frac{4050}{270}=15.
+\]
+
+<answer>15</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : 15
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và logic, vận dụng lý thuyết chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ các công thức và phương pháp cần thiết để xác định vị trí của cabin cáp treo và tính toán thời gian di chuyển.
+
+💸 [Solver] gpt-5.4  in=3753 out=245 → $0.01183  (session: 39 calls, $1.2965)
+💸 [Solver] gpt-5.4  in=4148 out=118 → $0.01155  (session: 40 calls, $1.3080)
+💸 [Solver] gpt-5.4  in=4289 out=118 → $0.01190  (session: 41 calls, $1.3199)
+💸 [Solver] gpt-5.4  in=4441 out=46 → $0.01156  (session: 42 calls, $1.3315)
+💸 [Solver] gpt-5.4  in=4512 out=55 → $0.01183  (session: 43 calls, $1.3433)
+💸 [Solver] gpt-5.4  in=4599 out=69 → $0.01219  (session: 44 calls, $1.3555)
+💸 [Solver] gpt-5.4  in=4709 out=84 → $0.01261  (session: 45 calls, $1.3681)
+💸 [Solver] gpt-5.4  in=4839 out=150 → $0.01360  (session: 46 calls, $1.3817)
+💸 [Solver] gpt-5.4  in=5028 out=119 → $0.01376  (session: 47 calls, $1.3955)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 19  [19/22]  —  Trả lời ngắn (SA)
+  Chapter : Đạo hàm
+  Skill   : derivative_application_physics
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 19 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:
+
+Một vật chuyển động. Quãng đường $s(t)$ (tính theo mét) vật đi được sau khoảng thời gian $t$ (tính theo giây), $t \ge 0$, được mô tả là một hàm số bậc ba có đồ thị như hình vẽ dưới đây.
+
+[Xem hình: q19.png]
+
+Hỏi trong $10$ giây đầu tiên, khoảng thời gian vật chuyển động nhanh dần kéo dài bao nhiêu giây?
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Đạo hàm
+  🎯 Skills   : function_survey, derivative_applications
+  📐 Formulas : (none)
+  💬 Reasoning: Cần sử dụng kiến thức về hàm số và đạo hàm để xác định khoảng thời gian vật chuyển động nhanh dần từ đồ thị quãng đường s(t).
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=deriv_theory_002  hybrid=0.693  rerank=-1.882  vec=0.492  bm25=0.517 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  CỰC TRỊ CỦA HÀM SỐ:  ĐỊNH NGHĨA: Cho hàm số y = f(x) xác định và liên tục trên khoảng (a; b) và điểm x₀ ∈ (a; b).  • f(x) đạt CỰC ĐẠI tại x₀ nếu: ∃ h > 0 sao cho f(x) < f(x₀) với mọi x ∈ (x₀−h; x₀+h), x ≠ x₀ • f(x) đạt CỰC TIỂU tại x₀ nếu: ∃ h > 0 sao cho f(x) > f(x₀) với mọi x ∈ (x...
+
+  [2] id=theory_1  hybrid=0.626  rerank=-1.733  vec=0.457  bm25=0.677 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm điểm cực trị của hàm số $f(x)$  - Bước 1: Tìm tập xác định của hàm số $f(x)$. - Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại. - Bước 3: Lập bảng biến thiên của hàm số. - Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số....
+
+  [3] id=deriv_theory_001  hybrid=0.728  rerank=-2.408  vec=0.461  bm25=0.633 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  TÍNH ĐƠN ĐIỆU CỦA HÀM SỐ:  Giả sử K là khoảng, một đoạn hoặc một nửa khoảng và y = f(x) là hàm số xác định trên K.  • Hàm số y = f(x) gọi là ĐỒNG BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁) < f(x₂)  • Hàm số y = f(x) gọi là NGHỊCH BIẾN trên K nếu:   ∀ x₁, x₂ ∈ K, x₁ < x₂ ⟹ f(x₁...
+
+  [4] id=deriv_theory_003  hybrid=0.559  rerank=-1.683  vec=0.372  bm25=0.364 🚀boost
+       chapter=Đạo hàm  skill=function_survey
+       > CHƯƠNG: ĐẠO HÀM  TIỆM CẬN NGANG VÀ TIỆM CẬN ĐỨNG:  TIỆM CẬN NGANG: Đường thẳng y = y₀ là tiệm cận ngang của đồ thị y = f(x) nếu:   lim[x→+∞] f(x) = y₀  HOẶC  lim[x→−∞] f(x) = y₀  TIỆM CẬN ĐỨNG: Đường thẳng x = x₀ là tiệm cận đứng của đồ thị y = f(x) nếu ít nhất một trong:   lim[x→x₀⁺] f(x) = ±∞  hoặ...
+
+  [5] id=stat_theory_001  hybrid=0.661  rerank=-2.269  vec=0.385  bm25=1.000
+       chapter=Thống kê  skill=statistics_descriptive
+       > CHƯƠNG: THỐNG KÊ  CÁC SỐ ĐẶC TRƯNG CỦA MẪU SỐ LIỆU:  TRUNG BÌNH CỘNG (x̄):   x̄ = (x₁ + x₂ + … + xₙ) / n = (∑ xᵢ·fᵢ) / n   (fᵢ: tần số của giá trị xᵢ)  SỐ TRUNG VỊ (Me): Giá trị ở chính giữa khi sắp xếp dữ liệu theo thứ tự tăng dần.   • n lẻ: Me = x_{(n+1)/2}   • n chẵn: Me = (x_{n/2} + x_{n/2+1}) /...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_short_answer | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 4 tool call(s):
+  📐 [solve_equation] args={"equation_str": "d=0", "var": "d"}
+     → SymPy result: d in {0 ~ 0.000000}
+  📐 [solve_equation] args={"equation_str": "64*a+16*b+4*c+d = 8/3", "var": "a"}
+     → SymPy result: a in {- \frac{b}{4} - \frac{c}{16} - \frac{d}{64} + \frac{1}{24}}
+  📐 [solve_equation] args={"equation_str": "512*a+64*b+8*c+d = 112/3", "var": "a"}
+     → SymPy result: a in {- \frac{b}{8} - \frac{c}{64} - \frac{d}{512} + \frac{7}{96}}
+  📐 [solve_equation] args={"equation_str": "1000*a+100*b+10*c+d = 260/3", "var": "a"}
+     → SymPy result: a in {- \frac{b}{10} - \frac{c}{100} - \frac{d}{1000} + \frac{13}{150}}
+
+🔁 Lượt 2: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "a*0**3+b*0**2+c*0+d=0, a*4**3+b*4**2+c*4+d=8/3, a*8**3+b*8**2+c*8+d=112/3, a*10**3+b*10**2+c*10+d=260/3", "var": "a"}
+     → ERROR: invalid syntax (<string>, line 1)
+
+🔁 Lượt 3: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "64*a+16*b+4*c-8/3=0", "var": "c"}
+     → SymPy result: c in {- 16 a - 4 b + \frac{2}{3}}
+
+🔁 Lượt 4: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "512*a+64*b+8*(-16*a-4*b+2/3)-112/3=0", "var": "b"}
+     → SymPy result: b in {1 - 12 a}
+
+🔁 Lượt 5: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "1000*a+100*(1-12*a)+10*(-16*a-4*(1-12*a)+2/3)-260/3=0", "var": "a"}
+     → SymPy result: a in {\frac{1}{6} ~ 0.166667}
+
+🔁 Lượt 6: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "-16*(1/6)-4*(-1)+2/3"}
+     → SymPy result: simplify(-16*(1/6)-4*(-1)+2/3) = 2 ~ 2.000000
+
+🔁 Lượt 7: LLM yêu cầu 1 tool call(s):
+  📐 [compute_derivative] args={"expr_str": "t**3/6 - t**2 + 2*t", "var": "t", "order": 1}
+     → SymPy result: d^1/dt^1(t**3/6 - t**2 + 2*t) = 0 ~ 0.000000
+
+🔁 Lượt 8: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "t**2/2 - 2*t + 2 = 0", "var": "t"}
+     → SymPy result: Phương trình 't**2/2 - 2*t + 2 = 0' vô nghiệm.
+✅ Hoàn tất sau 8 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Vì \(\Delta=4-4=0\) nên nghiệm kép \(t=2\), do đó \(v(t)\ge 0\) với mọi \(t\).
+
+Gia tốc \(a(t)=t-2>0\) khi \(t>2\). Trong \(10\) giây đầu, vật nhanh dần trên khoảng \((2,10)\), độ dài là
+\[
+10-2=8.
+\]
+
+<answer>8</answer>
+<answer>8</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : 8
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và áp dụng lý thuyết chính xác.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa, quy tắc và phương pháp cần thiết để tìm cực trị của hàm số và xét vận tốc, từ đó xác định khoảng thời gian vật chuyển động nhanh dần.
+
+💸 [Solver] gpt-5.4  in=4149 out=96 → $0.01133  (session: 48 calls, $1.4068)
+💸 [Solver] gpt-5.4  in=4367 out=417 → $0.01509  (session: 49 calls, $1.4219)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 20  [20/22]  —  Trả lời ngắn (SA)
+  Chapter : Hình học không gian
+  Skill   : geometry_distance_two_lines
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 20 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:
+
+Cho hình chóp tam giác đều $S.ABC$ có cạnh đáy bằng $1$. Góc giữa đường thẳng $SA$ và mặt phẳng $(ABC)$ bằng $60^\circ$. Tính khoảng cách giữa hai đường thẳng $SA$ và $BC$ (kết quả viết dưới dạng số thập phân).
+
+[Xem hình minh họa: q20.png]
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hình học không gian
+  🎯 Skills   : geometry_line_plane, geometry_vector
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về hình học không gian để tính khoảng cách giữa đường thẳng và mặt phẳng, cũng như giữa hai đường thẳng trong không gian.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=theory_14  hybrid=0.719  rerank=-1.349  vec=0.609  bm25=0.697 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Vị trí tương đối giữa hai đường thẳng**  Trong không gian $Oxyz$, cho hai đường thẳng $\Delta_1, \Delta_2$ lần lượt đi qua $A_1(x_1; y_1; z_1)$, $A_2(x_2; y_2; z_2)$ và có vectơ chỉ phương $\vec{u_1} = (a_1; b_1; c_1)$, $\vec{u_2} = (a_2; b_2; c_2)$. Khi đó:  - $\Delta_1 \parallel \Delta_2 \Leftri...
+
+  [2] id=theory_4  hybrid=0.510  rerank=-0.900  vec=0.526  bm25=0.334 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Tích vô hướng của hai vectơ trong không gian**  Trong không gian, cho hai vectơ $\vec{a}, \vec{b}$ đều khác $\vec{0}$. Tích vô hướng của $\vec{a}$ và $\vec{b}$ là một số, kí hiệu $\vec{a} \cdot \vec{b}$, được xác định bởi: $$\vec{a} \cdot \vec{b} = |\vec{a}| \cdot |\vec{b}| \cdot \cos(\vec{a}, \ve...
+
+  [3] id=theory_5  hybrid=0.462  rerank=-1.208  vec=0.492  bm25=0.271 🚀boost
+       chapter=Hình học không gian  skill=?
+       > **Biểu thức tọa độ của tích vô hướng trong không gian**  Trong không gian $Oxyz$, tích vô hướng của hai vectơ $\vec{a} = (x; y; z)$ và $\vec{b} = (x'; y'; z')$ được xác định bởi: $$\vec{a} \cdot \vec{b} = xx' + yy' + zz'.$$  **Nhận xét:** - $\vec{a} \perp \vec{b} \Leftrightarrow xx' + yy' + zz' = 0$...
+
+  [4] id=geom_theory_002  hybrid=0.666  rerank=-3.563  vec=0.371  bm25=0.605 🚀boost
+       chapter=Hình học không gian  skill=geometry_line_plane
+       > CHƯƠNG: HÌNH HỌC KHÔNG GIAN  PHƯƠNG TRÌNH MẶT PHẲNG:  DANG TỔNG QUÁT:   ax + by + cz + d = 0  (a² + b² + c² ≠ 0)  VECTƠ PHÁP TUYẾN n⃗ = (a; b; c)  PHƯƠNG TRÌNH QUA ĐIỂM M₀(x₀;y₀;z₀) nhận n⃗ = (a;b;c):   a(x−x₀) + b(y−y₀) + c(z−z₀) = 0  KHOẢNG CÁCH TỪ ĐIỂM M(x₁;y₁;z₁) ĐẾN MẶT PHẲNG (α): ax+by+cz+d=0:...
+
+  [5] id=theory_8  hybrid=0.527  rerank=-2.606  vec=0.467  bm25=0.602
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Ứng dụng tích phân để tính diện tích hình phẳng**  **Hình phẳng giới hạn bởi một đồ thị hàm số, trục hoành và hai đường thẳng $x = a$, $x = b$:**  Diện tích $S$ của hình phẳng giới hạn bởi đồ thị $f(x)$ liên tục, trục hoành và hai đường thẳng $x = a$, $x = b$ ($a < b$) được tính bằng: $$S = \int_a...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_short_answer | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 3 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "sqrt(3)/6"}
+     → SymPy result: simplify(sqrt(3)/6) = \frac{\sqrt{3}}{6} ~ 0.288675
+  📐 [simplify_expression] args={"expr_str": "sqrt(3)/2"}
+     → SymPy result: simplify(sqrt(3)/2) = \frac{\sqrt{3}}{2} ~ 0.866025
+  📐 [simplify_expression] args={"expr_str": "sqrt((sqrt(3)/6)**2 + (sqrt(3)/2)**2)"}
+     → SymPy result: simplify(sqrt((sqrt(3)/6)**2 + (sqrt(3)/2)**2)) = \frac{\sqrt{30}}{6} ~ 0.912871
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Gọi \(O\) là tâm tam giác đều \(ABC\). Vì là hình chóp tam giác đều nên \(SO \perp (ABC)\), và hình chiếu của \(SA\) lên \((ABC)\) là \(AO\).
+
+Ta có:
+\[
+\angle(SA,(ABC))=\angle SAO=60^\circ.
+\]
+
+Trong tam giác đều cạnh \(1\):
+\[
+AO=R=\frac{1}{\sqrt3}=\frac{\sqrt3}{3}.
+\]
+
+Suy ra trong tam giác vuông \(SAO\):
+\[
+\tan 60^\circ=\frac{SO}{AO}\Rightarrow SO=AO\sqrt3=1.
+\]
+
+Đặt hệ trục sao cho:
+\[
+A(0,0,0),\quad B(1,0,0),\quad C\left(\tfrac12,\tfrac{\sqrt3}{2},0\right).
+\]
+Khi đó
+\[
+O\left(\tfrac12,\tfrac{\sqrt3}{6},0\right),\quad S\left(\tfrac12,\tfrac{\sqrt3}{6},1\right).
+\]
+
+Khoảng cách giữa hai đường thẳng \(SA\) và \(BC\):
+\[
+d=\frac{|( \overrightarrow{BA}\cdot (\overrightarrow{AS}\times \overrightarrow{BC}) )|}{|\overrightarrow{AS}\times \overrightarrow{BC}|}.
+\]
+
+Tính được:
+\[
+\overrightarrow{AS}=\left(\tfrac12,\tfrac{\sqrt3}{6},1\right),\quad
+\overrightarrow{BC}=\left(-\tfrac12,\tfrac{\sqrt3}{2},0\right),
+\]
+suy ra
+\[
+d=\frac{\sqrt{30}}{6}\approx 0.912871.
+\]
+
+<answer>0.912871</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : 0,75
+  ❌ MathJudge Accuracy        : 0.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ❌ Weighted Score       : 0.35
+     ❌ Accuracy (kết quả)  : 0.00
+     ❌  Method (phương pháp): 0.50
+     ✅  Steps (trình bày)   : 0.75
+     ✅ Knowledge use       : 0.50
+     💬 Phương pháp giải đúng hướng nhưng có một số sai sót trong việc tính toán và áp dụng công thức. Trình bày có phần thiếu rõ ràng và cần thêm một số bước để dễ theo dõi.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ❌ math_context_coverage       : 0.500
+     💬 Reason: Context cung cấp một số lý thuyết về vị trí tương đối giữa hai đường thẳng và tích vô hướng, nhưng thiếu các công thức và phương pháp cụ thể để tính khoảng cách giữa hai đường thẳng trong không gian.
+
+💸 [Solver] gpt-5.4-2026-03-05  in=3272 out=41 → $0.03395  (session: 50 calls, $1.4558)
+💸 [Solver] gpt-5.4-2026-03-05  in=3360 out=34 → $0.03462  (session: 51 calls, $1.4905)
+💸 [Solver] gpt-5.4-2026-03-05  in=3442 out=37 → $0.03553  (session: 52 calls, $1.5260)
+💸 [Solver] gpt-5.4-2026-03-05  in=3523 out=30 → $0.03613  (session: 53 calls, $1.5621)
+💸 [Solver] gpt-5.4-2026-03-05  in=3583 out=28 → $0.03667  (session: 54 calls, $1.5988)
+💸 [Solver] gpt-5.4-2026-03-05  in=3635 out=222 → $0.04301  (session: 55 calls, $1.6418)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 21  [21/22]  —  Trả lời ngắn (SA)
+  Chapter : Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số
+  Skill   : optimization_revenue_profit
+  Model   : gpt-5.4-2026-03-05  📝 Text-only
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 21 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:
+
+Một trang trại rau sạch ở Đà Lạt mỗi ngày thu hoạch được $1$ tấn rau. Mỗi ngày, nếu giá bán rau là $30.000$ đồng/kg thì bán hết rau, nếu giá bán rau tăng $1000$ đồng/kg thì số rau thừa tăng $20\text{ kg}$. Số rau thừa này được thu mua hết để làm thức ăn chăn nuôi với giá $2000$ đồng/kg. Hỏi để mỗi ngày thu được số tiền bán rau lớn nhất thì trang trại đó nên bán rau với giá bao nhiêu nghìn đồng?
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Hàm số, Đạo hàm
+  🎯 Skills   : function_survey, derivative_applications
+  📐 Formulas : (none)
+  💬 Reasoning: Cần sử dụng kiến thức về hàm số và đạo hàm để tìm giá bán rau tối ưu nhằm tối đa hóa doanh thu.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=deriv_theory_002  hybrid=0.747  rerank=-1.416  vec=0.347  bm25=0.814 🚀boost
+       chapter=Đạo hàm  skill=derivative_applications
+       > CHƯƠNG: ĐẠO HÀM  CỰC TRỊ CỦA HÀM SỐ:  ĐỊNH NGHĨA: Cho hàm số y = f(x) xác định và liên tục trên khoảng (a; b) và điểm x₀ ∈ (a; b).  • f(x) đạt CỰC ĐẠI tại x₀ nếu: ∃ h > 0 sao cho f(x) < f(x₀) với mọi x ∈ (x₀−h; x₀+h), x ≠ x₀ • f(x) đạt CỰC TIỂU tại x₀ nếu: ∃ h > 0 sao cho f(x) > f(x₀) với mọi x ∈ (x...
+
+  [2] id=theory_6  hybrid=0.298  rerank=0.252  vec=0.408  bm25=0.164
+       chapter=Nguyên hàm - Tích phân  skill=?
+       > **Nguyên hàm của hàm số lũy thừa:** $$\int x^\alpha \, dx = \frac{x^{\alpha+1}}{\alpha+1} + C \quad (\alpha \neq -1).$$ $$\int \frac{1}{x} \, dx = \ln|x| + C.$$  **Nguyên hàm của hàm số lượng giác:** $$\int \cos x \, dx = \sin x + C; \quad \int \sin x \, dx = -\cos x + C;$$ $$\int \frac{1}{\cos^2 x}...
+
+  [3] id=formula_log_applications  hybrid=0.698  rerank=-1.753  vec=0.324  bm25=0.998 🚀boost
+       chapter=Hàm số Lũy thừa, Mũ và Logarit  skill=?
+       > **Một số ứng dụng thực tế của Logarit:** - **Độ pH của dung dịch:**  = -\log [H^+]$, trong đó $[H^+]$ là nồng độ ion hydrogen tính bằng mol/lít. - **Độ lớn động đất (Richter):**  = \log A - \log A_0$, với $ là biên độ tối đa. - **Mức cường độ âm:**  (dB) = 10 \log \frac{I}{I_0}$, với $ là cường độ â...
+
+  [4] id=theory_1  hybrid=0.635  rerank=-1.554  vec=0.364  bm25=0.811 🚀boost
+       chapter=Hàm số  skill=?
+       > Các bước tìm điểm cực trị của hàm số $f(x)$  - Bước 1: Tìm tập xác định của hàm số $f(x)$. - Bước 2: Tính đạo hàm $f'(x)$. Tìm các điểm mà tại đó đạo hàm $f'(x)$ bằng 0 hoặc đạo hàm không tồn tại. - Bước 3: Lập bảng biến thiên của hàm số. - Bước 4: Từ bảng biến thiên suy ra các cực trị của hàm số....
+
+  [5] id=theory_11  hybrid=0.450  rerank=-0.902  vec=0.000  bm25=1.000
+       chapter=Hình học không gian  skill=?
+       > **Khoảng cách từ một điểm đến một mặt phẳng**  Trong không gian $Oxyz$, khoảng cách từ điểm $M(x_0; y_0; z_0)$ đến mặt phẳng $(P): Ax + By + Cz + D = 0$ là: $$d(M, (P)) = \frac{|Ax_0 + By_0 + Cz_0 + D|}{\sqrt{A^2 + B^2 + C^2}}.$$...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_short_answer | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [compute_derivative] args={"expr_str": "(30+x)*(1000-20*x)+2*(20*x)", "var": "x", "order": 1}
+     → SymPy result: d^1/dx^1((30+x)*(1000-20*x)+2*(20*x)) = 0 ~ 0.000000
+
+🔁 Lượt 2: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "(30+x)*(1000-20*x)+2*(20*x)"}
+     → SymPy result: simplify((30+x)*(1000-20*x)+2*(20*x)) = - 20 x^{2} + 440 x + 30000
+
+🔁 Lượt 3: LLM yêu cầu 1 tool call(s):
+  📐 [compute_derivative] args={"expr_str": "-20*x**2+440*x+30000", "var": "x", "order": 1}
+     → SymPy result: d^1/dx^1(-20*x**2+440*x+30000) = 0 ~ 0.000000
+
+🔁 Lượt 4: LLM yêu cầu 1 tool call(s):
+  📐 [solve_equation] args={"equation_str": "-40*x+440=0", "var": "x"}
+     → SymPy result: Phương trình '-40*x+440=0' vô nghiệm.
+
+🔁 Lượt 5: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "solve(-40*x+440, x)"}
+     → ERROR: 'list' object has no attribute 'replace'
+✅ Hoàn tất sau 5 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+Gọi \(x\) là số lần tăng thêm \(1000\) đồng/kg.
+
+Khi đó:
+- Giá bán rau chính: \(30+x\) (nghìn đồng/kg),
+- Lượng rau bán theo giá này: \(1000-20x\) (kg),
+- Lượng rau thừa bán làm thức ăn chăn nuôi: \(20x\) (kg), giá \(2\) nghìn đồng/kg.
+
+Doanh thu mỗi ngày:
+\[
+R(x)=(30+x)(1000-20x)+2\cdot 20x
+\]
+Rút gọn:
+\[
+R(x)=-20x^2+440x+30000
+\]
+
+Đây là parabol quay xuống, đạt lớn nhất tại
+\[
+x=\frac{-b}{2a}=\frac{-440}{2(-20)}=11
+\]
+
+Vậy giá bán tối ưu là:
+\[
+30+11=41
+\]
+(nghìn đồng/kg)
+
+<answer>41</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : 41
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng, trình bày rõ ràng và logic, vận dụng lý thuyết chính xác.
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 0.750
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa, quy tắc xét cực trị bằng đạo hàm và các bước cần thiết để tìm điểm cực trị của hàm số.
+
+💸 [Solver] gpt-5.4  in=3204 out=286 → $0.01087  (session: 56 calls, $1.6527)
+💸 [Solver] gpt-5.4  in=3531 out=10 → $0.00893  (session: 57 calls, $1.6616)
+
+════════════════════════════════════════════════════════════════════════════════
+  CÂU 22  [22/22]  —  Trả lời ngắn (SA)
+  Chapter : Thống kê
+  Skill   : statistics_grouped_data
+  Model   : gpt-5.4  👁 Vision
+════════════════════════════════════════════════════════════════════════════════
+
+📌 NỘI DUNG CÂU HỎI:
+────────────────────────────────────────────────────────────────────────────────
+ĐỀ 7+ (Đề số 8) - CÂU 22 [Phần 3 - Câu trắc nghiệm trả lời ngắn]:
+
+Đo chiều dài của $80$ con cá, kết quả thu được biểu diễn ở biểu đồ tần số tương đối ghép nhóm như hình vẽ.
+
+[Xem hình: q22.png]
+
+Tìm tứ phân vị thứ nhất của mẫu số liệu ghép nhóm trên.
+
+🧠 QUERY EXPANSION (LLM suy luận kiến thức cần thiết):
+────────────────────────────────────────────────────────────────────────────────
+  📚 Chapters : Thống kê, Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm
+  🎯 Skills   : statistics_descriptive, statistics_dispersion
+  📐 Formulas : (none)
+  💬 Reasoning: Cần kiến thức về thống kê và các số đặc trưng để tính tứ phân vị trong mẫu số liệu ghép nhóm.
+
+🔍 RAG RETRIEVED (5 chunks):
+────────────────────────────────────────────────────────────────────────────────
+  [1] id=stat_theory_004  hybrid=0.851  rerank=-6.635  vec=0.603  bm25=1.000 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=?
+       > **Khoảng tứ phân vị của mẫu số liệu ghép nhóm**  Khoảng tứ phân vị, kí hiệu là $\Delta_Q$, là hiệu số giữa tứ phân vị thứ ba $ và tứ phân vị thứ nhất $ của mẫu số liệu ghép nhóm: \Delta_Q = Q_3 - Q_1....
+
+  [2] id=theory_22  hybrid=0.854  rerank=-7.147  vec=0.616  bm25=0.991 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=trig_graph
+       > **Khoảng tứ phân vị của mẫu số liệu ghép nhóm**  Khoảng tứ phân vị, kí hiệu là $\Delta_Q$, là hiệu số giữa tứ phân vị thứ ba $Q_3$ và tứ phân vị thứ nhất $Q_1$ của mẫu số liệu ghép nhóm: $$\Delta_Q = Q_3 - Q_1.$$...
+
+  [3] id=stat_theory_001  hybrid=0.722  rerank=-6.738  vec=0.421  bm25=0.666 🚀boost
+       chapter=Thống kê  skill=statistics_descriptive
+       > CHƯƠNG: THỐNG KÊ  CÁC SỐ ĐẶC TRƯNG CỦA MẪU SỐ LIỆU:  TRUNG BÌNH CỘNG (x̄):   x̄ = (x₁ + x₂ + … + xₙ) / n = (∑ xᵢ·fᵢ) / n   (fᵢ: tần số của giá trị xᵢ)  SỐ TRUNG VỊ (Me): Giá trị ở chính giữa khi sắp xếp dữ liệu theo thứ tự tăng dần.   • n lẻ: Me = x_{(n+1)/2}   • n chẵn: Me = (x_{n/2} + x_{n/2+1}) /...
+
+  [4] id=stat_theory_003  hybrid=0.562  rerank=-6.333  vec=0.513  bm25=0.466 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=?
+       > **Khoảng biến thiên của mẫu số liệu ghép nhóm**  Cho mẫu số liệu ghép nhóm. Khoảng biến thiên của mẫu số liệu ghép nhóm, kí hiệu là $, là hiệu số giữa đầu mút phải của nhóm cuối cùng và đầu mút trái của nhóm đầu tiên: R = a_{m+1} - a_1....
+
+  [5] id=theory_21  hybrid=0.566  rerank=-6.843  vec=0.522  bm25=0.464 🚀boost
+       chapter=Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm  skill=trig_graph
+       > **Khoảng biến thiên của mẫu số liệu ghép nhóm**  Cho mẫu số liệu ghép nhóm. Khoảng biến thiên của mẫu số liệu ghép nhóm, kí hiệu là $R$, là hiệu số giữa đầu mút phải của nhóm cuối cùng và đầu mút trái của nhóm đầu tiên: $$R = a_{m+1} - a_1.$$...
+
+
+📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]
+   Format: exam_short_answer | CoT: ✅ | RAG framing: ✅
+
+[TOOL CALLS] SYM-PY AGENTIC:
+────────────────────────────────────────────────────────────────────────────────
+🔧 Bắt đầu giải với Agentic SymPy Tool-Calling...
+
+🔁 Lượt 1: LLM yêu cầu 1 tool call(s):
+  📐 [simplify_expression] args={"expr_str": "28 + ((80/4)-4)/16 * 1"}
+     → SymPy result: simplify(28 + ((80/4)-4)/16 * 1) = 29 ~ 29.000000
+✅ Hoàn tất sau 1 lượt gọi tool.
+
+🤖 MODEL RESPONSE:
+────────────────────────────────────────────────────────────────────────────────
+<answer>29</answer>
+
+📊 SCORES:
+────────────────────────────────────────────────────────────────────────────────
+  Đáp án đúng  : 29
+  ✅ MathJudge Accuracy        : 1.00
+
+  🎓 LLM EXAMINER (rubric 4 chiều):
+     ✅ Weighted Score       : 1.00
+     ✅ Accuracy (kết quả)  : 1.00
+     ✅  Method (phương pháp): 1.00
+     ✅  Steps (trình bày)   : 1.00
+     ✅ Knowledge use       : 1.00
+     💬 Phương pháp giải đúng hoàn toàn, trình bày rõ ràng và đầy đủ, áp dụng đúng lý thuyết về tứ phân vị.
+
+  👁  Visual Reasoning Score  : ✅ 1.00
+
+  📡 RAG RETRIEVAL (RAGAS):
+     ✅ llm_context_precision_with_reference: 1.000
+     ✅ math_context_coverage       : 1.000
+     💬 Reason: Context cung cấp đầy đủ định nghĩa và công thức cần thiết để tính tứ phân vị thứ nhất của mẫu số liệu ghép nhóm.
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SUMMARY — 22 câu
+════════════════════════════════════════════════════════════════════════════════
+  Overall Accuracy         : 0.852  (17/22 đúng)
+  LLMExaminer Weighted Avg : 0.884
+  Step Clarity (steps)     : 0.943
+  Visual Reasoning Avg     : 1.000  (8 Vision questions)
+
+  📊 Session total: 57 calls | in=217312 out=8039 tokens | est. cost=$1.6616

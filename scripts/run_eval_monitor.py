@@ -252,9 +252,40 @@ def retrieve_with_trace(
     return ranked, expansion
 
 
+# ── heavy_math classifier ──────────────────────────────────────────────────────
+
+# Skills that require heavy symbolic computation — use Agentic Tool-Calling
+_HEAVY_MATH_SKILLS = {
+    "integral_applications", "primitive_basic", "primitive_advanced",
+    "solve_inequality", "exponential_growth", "compound_interest",
+    "combinatorics_probability", "solve_equation", "optimization",
+    "probability_complex",
+}
+
+# Keywords in question text that signal heavy computation
+_HEAVY_MATH_KEYWORDS = [
+    "tích phân", "nguyên hàm", "∫", "diện tích", "thể tích vật tròn xoay",
+    "lãi kép", "lãi suất", "tăng trưởng", "phân bào", "vi khuẩn nhân đôi",
+    "sau bao nhiêu", "xác suất",
+]
+
+
+def is_heavy_math(question: str, skill_id: str) -> bool:
+    """Return True nếu câu hỏi cần Agentic Tool-Calling (phép tính nặng).
+
+    Tiêu chí:
+    - skill_id nằm trong _HEAVY_MATH_SKILLS, HOẶC
+    - Câu hỏi chứa từ khóa liên quan đến tích phân/lãi kép/tăng trưởng...
+    """
+    if skill_id and any(s in skill_id.lower() for s in _HEAVY_MATH_SKILLS):
+        return True
+    q_lower = question.lower()
+    return any(kw in q_lower for kw in _HEAVY_MATH_KEYWORDS)
+
+
 # ── Build prompt (mirrors dataset_builder.py) ──────────────────────────────────
 
-def build_system_prompt(context: str, question_type: str) -> str:
+def build_system_prompt(context: str, question_type: str, use_agentic: bool = False) -> str:
     if question_type == "exam_true_false":
         fmt = (
             "\n\nQUAN TRONG: Cau hoi nay la dang Dung/Sai nhieu menh de. "
@@ -289,43 +320,37 @@ def build_system_prompt(context: str, question_type: str) -> str:
     else:
         fmt = ""
 
-    cot = (
-        "\n\nQUY TRINH SUY LUAN BAT BUOC — Agentic Tool-Calling:"
-        "\n⚠️  NGHIEM CAM: TUYET DOI KHONG duoc tu tinh nham bat ky phep toan nao."
-        "\nVoi MOI phep tinh, ban BAT BUOC phai goi Tool (Cong cu SymPy) de may tinh xu ly."
-        "\nCac truong hop BAT BUOC phai goi Tool:"
-        "\n  - Dao ham: goi compute_derivative"
-        "\n  - Tich phan: goi compute_integral"
-        "\n  - Giai phuong trinh: goi solve_equation"
-        "\n  - Giai bat phuong trinh (>, <, >=, <=): goi solve_inequality"
-        "\n  - Tinh logarit, mu, can bac n phuc tap: goi solve_equation hoac simplify_expression"
-        "\n  - Tinh gia tri bieu thuc: goi simplify_expression hoac evaluate_at_point"
-        "\nQuy trinh:"
-        "\n  Buoc 1: Xac dinh dang bai va phuong phap giai."
-        "\n  Buoc 2: Thiet lap bieu thuc / phuong trinh / bat phuong trinh can tinh."
-        "\n  Buoc 3: GOI TOOL de tinh. Doi ket qua chinh xac tu SymPy roi moi ket luan."
-        "\n  Buoc 4: Neu bai co HINH VE hoac DO THI — doc CAN THAN toa do tu hinh:"
-        "\n          a) Doc CHINH XAC vi tri tuong doi cua cac diem/duong co nhan (tren/duoi, trai/phai)."
-        "\n          b) Ghi lai it nhat 3 cap (x, y) CU THE doc tu hinh."
-        "\n          c) Doi chieu TUNG phuong an voi cac diem da doc."
-        "\n          KHONG BAO GIO ket luan chi dua vao cam giac hinh dang chung chung."
-        "\n  Buoc 5: Bai toan GTLN/GTNN/Toi uu hoa:"
-        "\n          a) Thiet lap ham f(t), goi compute_derivative de tinh f'(t)."
-        "\n          b) Goi solve_equation de giai f'(t)=0 tim nghiem t*."
-        "\n          c) Goi evaluate_at_point de tinh f(t*) chinh xac."
-        "\n  Buoc 6: Bai toan tang truong/phan bao/lai kep:"
-        "\n          a) Thiet lap bat phuong trinh, goi solve_inequality."
-        "\n          b) Doc ket qua bien thap phan tu SymPy."
-        "\n          c) Lam tron LEN den boi so nguyen cua chu ky (neu co chu ky roi rac)."
-        "\n  Buoc 7: Kiem tra lai dap an bang thu nguoc hoac dieu kien bien."
-        "\n  Buoc 8: QUY UOC LOGARIT KHI GOI SYMPY — BAT BUOC THUC HIEN:"
-        "\n          Trong toan pho thong Viet Nam, ky hieu 'log' hoac 'lg' MAC DINH la logarit co so 10."
-        "\n          Trong SymPy, ham log() MAC DINH la logarit tu nhien (co so e = ln)."
-        "\n          ==> De tranh sai, BAT BUOC mapping nhu sau khi goi SymPy:"
-        "\n              - 'log(x)'  trong de bai   ==> goi SymPy: log(x, 10)"
-        "\n              - 'lg(x)'   trong de bai   ==> goi SymPy: log(x, 10)"
-        "\n              - 'ln(x)'   trong de bai   ==> goi SymPy: log(x)       [giu nguyen]"
-    )
+    if use_agentic:
+        cot = (
+            "\n\nQUY TRINH SUY LUAN BAT BUOC — Agentic Tool-Calling:"
+            "\n⚠️  NGHIEM CAM: TUYET DOI KHONG duoc tu tinh nham bat ky phep toan nao."
+            "\nVoi MOI phep tinh, ban BAT BUOC phai goi Tool (Cong cu SymPy) de may tinh xu ly."
+            "\nCac truong hop BAT BUOC phai goi Tool:"
+            "\n  - Dao ham: goi compute_derivative"
+            "\n  - Tich phan: goi compute_integral"
+            "\n  - Giai phuong trinh: goi solve_equation"
+            "\n  - Giai bat phuong trinh (>, <, >=, <=): goi solve_inequality"
+            "\n  - Tinh logarit, mu, can bac n phuc tap: goi solve_equation hoac simplify_expression"
+            "\n  - Tinh gia tri bieu thuc: goi simplify_expression hoac evaluate_at_point"
+            "\nQuy trinh:"
+            "\n  Buoc 1: Xac dinh dang bai va phuong phap giai."
+            "\n  Buoc 2: Thiet lap bieu thuc / phuong trinh / bat phuong trinh can tinh — viet ro ra truoc."
+            "\n  Buoc 3: GOI TOOL de tinh. Doi ket qua chinh xac tu SymPy roi moi ket luan."
+            "\n  Buoc 4: Neu bai co HINH VE — doc CAN THAN toa do tu hinh truoc khi ket luan."
+            "\n  Buoc 5: Bai GTLN/GTNN: goi compute_derivative, solve_equation(f'=0), evaluate_at_point."
+            "\n  Buoc 6: Bai tang truong/lai kep: thiet lap bat phuong trinh, goi solve_inequality."
+            "\n  Buoc 7: QUY UOC LOG — 'log'/'lg' trong de = log co so 10 => goi log(x, 10) trong SymPy."
+        )
+    else:
+        # Reflection mode: LLM tu suy luan, SymPy chi kiem chung SAU (post-hoc)
+        cot = (
+            "\n\nQUY TRINH SUY LUAN:"
+            "\n  Buoc 1: Xac dinh dang bai, phuong phap giai."
+            "\n  Buoc 2: Tinh toan tung buoc ro rang, trinh bay day du."
+            "\n  Buoc 3: Neu bai co HINH VE — ghi lai cac toa do / dac diem doc tu hinh truoc khi ket luan."
+            "\n  Buoc 4: Kiem tra lai dap an bang dieu kien bien hoac thu nguoc."
+            "\n  QUY UOC LOG — 'log'/'lg' trong de bai = log co so 10."
+        )
 
     rag = (
         "\n\nCACH SU DUNG TAI LIEU THAM KHAO:"
@@ -345,9 +370,81 @@ def build_system_prompt(context: str, question_type: str) -> str:
     )
 
 
-# ── Generate answer (Agentic Tool-Calling) ────────────────────────────────────
+# ── Generate answer ────────────────────────────────────────────────────────────
 
 _TOOL_CALL_BUDGET = 8  # Số vòng gọi tool tối đa để tránh vòng lặp vô tận
+
+
+async def _invoke_llm_simple(
+    question: str,
+    system_prompt: str,
+    image_path: str,
+    model: str,
+) -> tuple[str, bool]:
+    """Gọi LLM đơn giản (không tool binding). Trả về (response_text, used_vision)."""
+    from langchain_openai import ChatOpenAI
+    from langchain_core.messages import HumanMessage, SystemMessage
+    from app.config import get_settings
+    from app.utils.cost_tracker import log_from_response
+
+    settings = get_settings()
+    img_data = _resolve_image(image_path) if image_path else None
+    using_vision = img_data is not None
+
+    is_reasoning = any(p in model for p in ["o1", "o3", "o4"])
+    llm = ChatOpenAI(
+        model=model,
+        api_key=settings.OPENAI_API_KEY,
+        temperature=1.0 if is_reasoning else 0.1,
+    )
+
+    if using_vision:
+        b64, mt = img_data
+        human_content = [
+            {"type": "text", "text": question},
+            {"type": "image_url", "image_url": {"url": f"data:{mt};base64,{b64}", "detail": "high"}},
+        ]
+        messages = [SystemMessage(content=system_prompt), HumanMessage(content=human_content)]
+    else:
+        messages = [SystemMessage(content=system_prompt), HumanMessage(content=question)]
+
+    resp = await llm.ainvoke(messages)
+    log_from_response(agent="Solver", model=model, response=resp)
+    return resp.content, using_vision
+
+
+async def generate_with_reflection(
+    question: str,
+    system_prompt: str,
+    image_path: str,
+    solver_model: Optional[str] = None,
+) -> tuple[str, str, bool, Optional[str]]:
+    """Pipeline bản thường: LLM giải → SymPy Reflection kiểm chứng hậu kỳ.
+
+    Chi phí thấp hơn Agentic vì system prompt gọn, không cần multi-turn tool calls.
+    Phù hợp với câu hỏi logic/hình học/khảo sát hàm số.
+
+    Returns (response, model_used, used_vision, reflection_log).
+    """
+    from app.config import get_settings
+    from app.agents.reflection import ReflectionEngine
+
+    settings = get_settings()
+    img_data = _resolve_image(image_path) if image_path else None
+    model = solver_model or (settings.VISION_LLM_MODEL if img_data else settings.LLM_MODEL)
+
+    # Step 1: Gọi LLM sinh draft
+    draft, using_vision = await _invoke_llm_simple(question, system_prompt, image_path, model)
+
+    # Step 2: SymPy Reflection (post-hoc)
+    engine = ReflectionEngine()
+    result = await engine.reflect(draft, question)
+
+    # Format reflection log tương tự bản thường cũ
+    reflection_log = "\n".join(result.thinking_log)
+
+    return result.final_answer, model, using_vision, reflection_log
+
 
 async def generate_with_trace(
     question: str,
@@ -355,12 +452,11 @@ async def generate_with_trace(
     question_type: str,
     image_path: str,
     solver_model: Optional[str] = None,
-    use_reflection: bool = False,  # Giữ param cho tương thích CLI, không dùng nữa
+    use_reflection: bool = False,  # unused — routing handled externally
 ) -> tuple[str, str, bool, Optional[str]]:
     """Sinh câu trả lời dùng Agentic Tool-Calling (SymPy as Function Call).
 
-    LLM được bind sẵn các tool SymPy. Khi cần tính toán, LLM chủ động gọi
-    tool thay vì tự nhẩm. Vòng lặp: LLM → tool call → SymPy result → LLM → ... → đáp án.
+    Chỉ gọi cho câu hỏi heavy_math. Với câu thường, dùng generate_with_reflection.
 
     Returns (response, model_used, used_vision, tool_call_log).
     """
@@ -640,9 +736,7 @@ def print_question_trace(
     if verbose_prompt:
         print("\n📋 SYSTEM PROMPT (gửi đến LLM):")
         print(SEP)
-        # Show truncated — without the full context (already shown above)
         prompt_lines = system_prompt.split("\n")
-        # Print up to line that says TAI LIEU THAM KHAO
         for line in prompt_lines:
             if "TAI LIEU THAM KHAO" in line:
                 print(line)
@@ -653,11 +747,10 @@ def print_question_trace(
         print(f"\n📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]")
         print(f"   Format: {qtype} | CoT: ✅ | RAG framing: ✅")
 
-    # -- Tool Calls / SymPy Log (thay the Reflection cũ) --
+    # -- SymPy Log (Agentic Tool Calls or Reflection) --
     if reflection_log:
-        print("\n[TOOL CALLS] SYM-PY AGENTIC:")
+        print("\n⚙️  SYM-PY REFLECTION:")
         print(SEP)
-        # Safe print: avoid UnicodeEncodeError on Windows cp1258 terminal
         safe_log = reflection_log.encode("utf-8", errors="replace").decode("utf-8")
         try:
             print(safe_log)
@@ -737,7 +830,11 @@ class TeeLogger:
         self.log = open(filename, "w", encoding="utf-8")
 
     def write(self, message):
-        self.terminal.write(message)
+        try:
+            self.terminal.write(message)
+        except UnicodeEncodeError:
+            # Windows terminal may not support all Unicode; fall back to ASCII
+            self.terminal.write(message.encode("ascii", errors="replace").decode("ascii"))
         self.log.write(message)
 
     def flush(self):
@@ -792,14 +889,23 @@ async def main(args):
         )
         context_text = "\n\n---\n\n".join(c["content"] for c in chunks) if chunks else "Khong tim thay tai lieu."
 
+        # ── Classify: heavy_math → Agentic, else → Reflection ──
+        use_agentic = is_heavy_math(clean_q, q["skill_id"])
+        pipeline_label = "Agentic" if use_agentic else "Reflection"
+
         # ── Build prompt ──
-        system_prompt = build_system_prompt(context_text, q["type"])
+        system_prompt = build_system_prompt(context_text, q["type"], use_agentic=use_agentic)
 
         # ── Generate ──
         img_path = q["image_path"] if q["has_image"] else ""
-        response, model_used, using_vision, reflection_log = await generate_with_trace(
-            q["question"], system_prompt, q["type"], img_path, args.solver_model, args.use_reflection
-        )
+        if use_agentic:
+            response, model_used, using_vision, reflection_log = await generate_with_trace(
+                q["question"], system_prompt, q["type"], img_path, args.solver_model,
+            )
+        else:
+            response, model_used, using_vision, reflection_log = await generate_with_reflection(
+                q["question"], system_prompt, img_path, args.solver_model,
+            )
 
         # ── Build sample for judges ──
         sample = {
