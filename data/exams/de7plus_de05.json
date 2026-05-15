@@ -1,398 +1,398 @@
 [
-  {
-    "id": "exam_de7plus_de05_p1_q01",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào dưới đây có đồ thị như hình vẽ dưới đây?\n\nA. $y = \\sin x$.\nB. $y = \\cos x$.\nC. $y = \\tan x$.\nD. $y = \\cot x$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 1,
-      "difficulty_part": 1,
-      "skill_id": "function_survey",
-      "chapter": "Hàm số lượng giác và phương trình lượng giác",
-      "type": "exam_mcq",
-      "correct_answer": "B",
-      "has_image": true,
-      "image_path": "data/exams/images/de7plus_de05/q01.png"
+    {
+        "id": "exam_de7plus_de05_p1_q01",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 1 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào dưới đây có đồ thị như hình vẽ dưới đây?\n\nA. $y = \\sin x$.\nB. $y = \\cos x$.\nC. $y = \\tan x$.\nD. $y = \\cot x$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 1,
+            "difficulty_part": 1,
+            "skill_id": "function_survey",
+            "chapter": "Hàm số lượng giác và phương trình lượng giác",
+            "type": "exam_mcq",
+            "correct_answer": "B",
+            "has_image": true,
+            "image_path": "data/exams/images/de7plus_de05/q01.png"
+        },
+        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nChọn B\nTa có: $x = 0; y = 1$ nên loại A, D.\n$x = \\frac{\\pi}{2}; y = 0$ loại C.\nVậy hàm số $y = \\cos x$ có đồ thị như hình đã cho."
     },
-    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nChọn B\nTa có: $x = 0; y = 1$ nên loại A, D.\n$x = \\frac{\\pi}{2}; y = 0$ loại C.\nVậy hàm số $y = \\cos x$ có đồ thị như hình đã cho."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q02",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có bảng biến thiên như hình.\n\nĐồ thị hàm số $y = f(x)$ có đường tiệm cận đứng và tiệm cận ngang lần lượt là:\nA. $x = 1; y = -1$.\nB. $x = 1; y = -1$.\nC. $x = 1; y = 1$.\nD. $x = -1; y = 1$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 2,
-      "difficulty_part": 1,
-      "skill_id": "function_survey",
-      "chapter": "Đạo hàm",
-      "type": "exam_mcq",
-      "correct_answer": "D",
-      "has_image": true,
-      "image_path": "data/exams/images/de7plus_de05/q02.png"
+    {
+        "id": "exam_de7plus_de05_p1_q02",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 2 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có bảng biến thiên như hình.\n\nĐồ thị hàm số $y = f(x)$ có đường tiệm cận đứng và tiệm cận ngang lần lượt là:\nA. $x = 1; y = -1$.\nB. $x = 1; y = -1$.\nC. $x = 1; y = 1$.\nD. $x = -1; y = 1$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 2,
+            "difficulty_part": 1,
+            "skill_id": "function_survey",
+            "chapter": "Đạo hàm",
+            "type": "exam_mcq",
+            "correct_answer": "D",
+            "has_image": true,
+            "image_path": "data/exams/images/de7plus_de05/q02.png"
+        },
+        "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nChọn D\nTa có: $\\lim_{x \\to \\pm\\infty} y = 1 \\Rightarrow y = 1$ là tiệm cận ngang của đồ thị hàm số.\n$\\begin{cases} \\lim_{x \\to -1^-} y = +\\infty \\\\ \\lim_{x \\to -1^+} y = -\\infty \\end{cases} \\Rightarrow x = -1$ là tiệm cận đứng của đồ thị hàm số."
     },
-    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nChọn D\nTa có: $\\lim_{x \\to \\pm\\infty} y = 1 \\Rightarrow y = 1$ là tiệm cận ngang của đồ thị hàm số.\n$\\begin{cases} \\lim_{x \\to -1^-} y = +\\infty \\\\ \\lim_{x \\to -1^+} y = -\\infty \\end{cases} \\Rightarrow x = -1$ là tiệm cận đứng của đồ thị hàm số."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q03",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây là một nguyên hàm của hàm số $y = \\frac{1}{x \\ln 3}$?\n\nA. $y = \\ln x$.\nB. $y = \\ln(3x)$.\nC. $y = \\log_3 x$.\nD. $y = \\ln \\left( \\frac{x}{3} \\right)$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 3,
-      "difficulty_part": 1,
-      "skill_id": "primitive_basic",
-      "chapter": "Nguyên hàm và Tích phân",
-      "type": "exam_mcq",
-      "correct_answer": "C",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q03",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 3 [Phần 1 - Trắc nghiệm]:\n\nHàm số nào sau đây là một nguyên hàm của hàm số $y = \\frac{1}{x \\ln 3}$?\n\nA. $y = \\ln x$.\nB. $y = \\ln(3x)$.\nC. $y = \\log_3 x$.\nD. $y = \\ln \\left( \\frac{x}{3} \\right)$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 3,
+            "difficulty_part": 1,
+            "skill_id": "primitive_basic",
+            "chapter": "Nguyên hàm và Tích phân",
+            "type": "exam_mcq",
+            "correct_answer": "C",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nTa có $(\\log_3 x)' = \\frac{1}{x \\ln 3}$."
     },
-    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nTa có $(\\log_3 x)' = \\frac{1}{x \\ln 3}$."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q04",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nPhát biểu nào sau đây là đúng?\n\nA. $\\int (\\sin x + \\cos x) dx = \\int \\sin x dx + \\int \\cos x dx$.\nB. $\\int (\\sin x + \\cos x) dx = \\int \\sin x dx - \\int \\cos x dx$.\nC. $\\int (\\sin x + \\cos x) dx = - \\int \\sin x dx + \\int \\cos x dx$.\nD. $\\int (\\sin x + \\cos x) dx = - \\int \\sin x dx - \\int \\cos x dx$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 4,
-      "difficulty_part": 1,
-      "skill_id": "primitive_properties",
-      "chapter": "Nguyên hàm và Tích phân",
-      "type": "exam_mcq",
-      "correct_answer": "A",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q04",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 4 [Phần 1 - Trắc nghiệm]:\n\nPhát biểu nào sau đây là đúng?\n\nA. $\\int (\\sin x + \\cos x) dx = \\int \\sin x dx + \\int \\cos x dx$.\nB. $\\int (\\sin x + \\cos x) dx = \\int \\sin x dx - \\int \\cos x dx$.\nC. $\\int (\\sin x + \\cos x) dx = - \\int \\sin x dx + \\int \\cos x dx$.\nD. $\\int (\\sin x + \\cos x) dx = - \\int \\sin x dx - \\int \\cos x dx$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 4,
+            "difficulty_part": 1,
+            "skill_id": "primitive_properties",
+            "chapter": "Nguyên hàm và Tích phân",
+            "type": "exam_mcq",
+            "correct_answer": "A",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nChọn A\nÁp dụng tính chất của nguyên hàm:\n$\\int (\\sin x + \\cos x) dx = \\int \\sin x dx + \\int \\cos x dx$."
     },
-    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nChọn A\nÁp dụng tính chất của nguyên hàm:\n$\\int (\\sin x + \\cos x) dx = \\int \\sin x dx + \\int \\cos x dx$."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q05",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, đường thẳng $\\frac{x-1}{2} = \\frac{y+2}{3} = \\frac{z-3}{4}$ có một vectơ chỉ phương là:\n\nA. $\\vec{u}_1 = (1; -2; 3)$.\nB. $\\vec{u}_2 = (2; 3; 4)$.\nC. $\\vec{u}_3 = (1; 2; 3)$.\nD. $\\vec{u}_4 = (-1; 2; -3)$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 5,
-      "difficulty_part": 1,
-      "skill_id": "geometry_line_plane",
-      "chapter": "Hình học không gian",
-      "type": "exam_mcq",
-      "correct_answer": "B",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q05",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 5 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, đường thẳng $\\frac{x-1}{2} = \\frac{y+2}{3} = \\frac{z-3}{4}$ có một vectơ chỉ phương là:\n\nA. $\\vec{u}_1 = (1; -2; 3)$.\nB. $\\vec{u}_2 = (2; 3; 4)$.\nC. $\\vec{u}_3 = (1; 2; 3)$.\nD. $\\vec{u}_4 = (-1; 2; -3)$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 5,
+            "difficulty_part": 1,
+            "skill_id": "geometry_line_plane",
+            "chapter": "Hình học không gian",
+            "type": "exam_mcq",
+            "correct_answer": "B",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nChọn B\nĐường thẳng $\\frac{x-1}{2} = \\frac{y+2}{3} = \\frac{z-3}{4}$ có một vectơ chỉ phương là: $\\vec{u}_2 = (2; 3; 4)$."
     },
-    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nChọn B\nĐường thẳng $\\frac{x-1}{2} = \\frac{y+2}{3} = \\frac{z-3}{4}$ có một vectơ chỉ phương là: $\\vec{u}_2 = (2; 3; 4)$."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q06",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, phương trình nào sau đây là phương trình mặt cầu có tâm $I(7; 6; -5)$ và bán kính 9?\n\nA. $(x+7)^2 + (y+6)^2 + (z-5)^2 = 81$.\nB. $(x+7)^2 + (y+6)^2 + (z-5)^2 = 9$.\nC. $(x-7)^2 + (y-6)^2 + (z+5)^2 = 81$.\nD. $(x-7)^2 + (y-6)^2 + (z+5)^2 = 9$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 6,
-      "difficulty_part": 1,
-      "skill_id": "geometry_sphere",
-      "chapter": "Hình học không gian",
-      "type": "exam_mcq",
-      "correct_answer": "C",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q06",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 6 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, phương trình nào sau đây là phương trình mặt cầu có tâm $I(7; 6; -5)$ và bán kính 9?\n\nA. $(x+7)^2 + (y+6)^2 + (z-5)^2 = 81$.\nB. $(x+7)^2 + (y+6)^2 + (z-5)^2 = 9$.\nC. $(x-7)^2 + (y-6)^2 + (z+5)^2 = 81$.\nD. $(x-7)^2 + (y-6)^2 + (z+5)^2 = 9$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 6,
+            "difficulty_part": 1,
+            "skill_id": "geometry_sphere",
+            "chapter": "Hình học không gian",
+            "type": "exam_mcq",
+            "correct_answer": "C",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nPhương trình mặt cầu có tâm $I(7; 6; -5)$ và bán kính 9 là:\n$(x-7)^2 + (y-6)^2 + (z+5)^2 = 81$."
     },
-    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nPhương trình mặt cầu có tâm $I(7; 6; -5)$ và bán kính 9 là:\n$(x-7)^2 + (y-6)^2 + (z+5)^2 = 81$."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q07",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nNếu hàm số $y=f(x)$ liên tục trên $\\mathbb{R}$ thoả mãn $f(x) \\le M \\forall x \\in \\mathbb{R}$ và tồn tại $a \\in \\mathbb{R}$ sao cho $f(a) = M$ thì:\n\nA. Hàm số đạt giá trị lớn nhất bằng $M$.\nB. Hàm số đạt giá trị cực tiểu bằng $M$.\nC. Hàm số đạt giá trị nhỏ nhất bằng $M$.\nD. Hàm số đạt giá trị cực đại bằng $M$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 7,
-      "difficulty_part": 1,
-      "skill_id": "function_survey",
-      "chapter": "Đạo hàm",
-      "type": "exam_mcq",
-      "correct_answer": "A",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q07",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 7 [Phần 1 - Trắc nghiệm]:\n\nNếu hàm số $y=f(x)$ liên tục trên $\\mathbb{R}$ thoả mãn $f(x) \\le M \\forall x \\in \\mathbb{R}$ và tồn tại $a \\in \\mathbb{R}$ sao cho $f(a) = M$ thì:\n\nA. Hàm số đạt giá trị lớn nhất bằng $M$.\nB. Hàm số đạt giá trị cực tiểu bằng $M$.\nC. Hàm số đạt giá trị nhỏ nhất bằng $M$.\nD. Hàm số đạt giá trị cực đại bằng $M$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 7,
+            "difficulty_part": 1,
+            "skill_id": "function_survey",
+            "chapter": "Đạo hàm",
+            "type": "exam_mcq",
+            "correct_answer": "A",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nChọn A\nTa có: Nếu hàm số $y=f(x)$ liên tục trên $\\mathbb{R}$ thoả mãn $f(x) \\le M \\forall x \\in \\mathbb{R}$ và tồn tại $a \\in \\mathbb{R}$ sao cho $f(a) = M$ thì: $\\max_{\\mathbb{R}} f(x) = M$."
     },
-    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nChọn A\nTa có: Nếu hàm số $y=f(x)$ liên tục trên $\\mathbb{R}$ thoả mãn $f(x) \\le M \\forall x \\in \\mathbb{R}$ và tồn tại $a \\in \\mathbb{R}$ sao cho $f(a) = M$ thì: $\\max_{\\mathbb{R}} f(x) = M$."
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q08",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, toạ độ của vectơ $\\vec{u} = 2\\vec{k} - 3\\vec{j} + 4\\vec{i}$ là:\n\nA. $(2; -3; 4)$.\nB. $(2; 3; 4)$.\nC. $(4; 3; 2)$.\nD. $(4; -3; 2)$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 8,
-      "difficulty_part": 1,
-      "skill_id": "geometry_vector_basic",
-      "chapter": "Hình học không gian",
-      "type": "exam_mcq",
-      "correct_answer": "D",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q08",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 8 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, toạ độ của vectơ $\\vec{u} = 2\\vec{k} - 3\\vec{j} + 4\\vec{i}$ là:\n\nA. $(2; -3; 4)$.\nB. $(2; 3; 4)$.\nC. $(4; 3; 2)$.\nD. $(4; -3; 2)$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 8,
+            "difficulty_part": 1,
+            "skill_id": "geometry_vector_basic",
+            "chapter": "Hình học không gian",
+            "type": "exam_mcq",
+            "correct_answer": "D",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nChọn D\n$\\vec{u} = 2\\vec{k} - 3\\vec{j} + 4\\vec{i} = 2(0; 0; 1) - 3(0; 1; 0) + 4(1; 0; 0) = (4; -3; 2)$"
     },
-    "answer": "ĐÁP ÁN: D\n\nGIẢI THÍCH:\nChọn D\n$\\vec{u} = 2\\vec{k} - 3\\vec{j} + 4\\vec{i} = 2(0; 0; 1) - 3(0; 1; 0) + 4(1; 0; 0) = (4; -3; 2)$"
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q09",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nTập nghiệm của bất phương trình $\\log_{0,5} x > 3$ là:\n\nA. $(\\log_{0,5} 3; +\\infty)$.\nB. $(-\\infty; \\log_{0,5} 3)$.\nC. $(0; 0,125)$.\nD. $(0; 3^{0,5})$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 9,
-      "difficulty_part": 1,
-      "skill_id": "logarithmic_inequality",
-      "chapter": "Hàm số luy thừa, mũ và logarit",
-      "type": "exam_mcq",
-      "correct_answer": "C",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q09",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 9 [Phần 1 - Trắc nghiệm]:\n\nTập nghiệm của bất phương trình $\\log_{0,5} x > 3$ là:\n\nA. $(\\log_{0,5} 3; +\\infty)$.\nB. $(-\\infty; \\log_{0,5} 3)$.\nC. $(0; 0,125)$.\nD. $(0; 3^{0,5})$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 9,
+            "difficulty_part": 1,
+            "skill_id": "logarithmic_inequality",
+            "chapter": "Hàm số luy thừa, mũ và logarit",
+            "type": "exam_mcq",
+            "correct_answer": "C",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nĐiều kiện: $x > 0$\n$\\log_{0,5} x > 3 \\Leftrightarrow x < (0,5)^3$ (cơ số $< 1$ đổi chiều bất phương trình)\nKết hợp với điều kiện: $\\Rightarrow 0 < x < (0,5)^3 = 0,125$"
     },
-    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nĐiều kiện: $x > 0$\n$\\log_{0,5} x > 3 \\Leftrightarrow x < (0,5)^3$ (cơ số $< 1$ đổi chiều bất phương trình)\nKết hợp với điều kiện: $\\Rightarrow 0 < x < (0,5)^3 = 0,125$"
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q10",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, cho hai vectơ $\\vec{u}_1 = (x_1; y_1; z_1), \\vec{u}_2 = (x_2; y_2; z_2)$. Vectơ $\\vec{u}_1 + \\vec{u}_2$ có toạ độ là:\n\nA. $(x_1 - x_2; y_1 - y_2; z_1 - z_2)$.\nB. $(x_1 + x_2; y_1 + y_2; z_1 + z_2)$.\nC. $(x_2 - x_1; y_2 - y_1; z_2 - z_1)$.\nD. $(x_1 - x_2; y_1 + y_2; z_1 - z_2)$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 10,
-      "difficulty_part": 1,
-      "skill_id": "geometry_vector_basic",
-      "chapter": "Hình học không gian",
-      "type": "exam_mcq",
-      "correct_answer": "B",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q10",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 10 [Phần 1 - Trắc nghiệm]:\n\nTrong không gian Oxyz, cho hai vectơ $\\vec{u}_1 = (x_1; y_1; z_1), \\vec{u}_2 = (x_2; y_2; z_2)$. Vectơ $\\vec{u}_1 + \\vec{u}_2$ có toạ độ là:\n\nA. $(x_1 - x_2; y_1 - y_2; z_1 - z_2)$.\nB. $(x_1 + x_2; y_1 + y_2; z_1 + z_2)$.\nC. $(x_2 - x_1; y_2 - y_1; z_2 - z_1)$.\nD. $(x_1 - x_2; y_1 + y_2; z_1 - z_2)$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 10,
+            "difficulty_part": 1,
+            "skill_id": "geometry_vector_basic",
+            "chapter": "Hình học không gian",
+            "type": "exam_mcq",
+            "correct_answer": "B",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nChọn B\n$\\vec{u}_1 + \\vec{u}_2 = (x_1; y_1; z_1) + (x_2; y_2; z_2) = (x_1 + x_2; y_1 + y_2; z_1 + z_2)$"
     },
-    "answer": "ĐÁP ÁN: B\n\nGIẢI THÍCH:\nChọn B\n$\\vec{u}_1 + \\vec{u}_2 = (x_1; y_1; z_1) + (x_2; y_2; z_2) = (x_1 + x_2; y_1 + y_2; z_1 + z_2)$"
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q11",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nMột mẫu số liệu ghép nhóm về chiều cao của một lớp (đơn vị là centimét) có phương sai $6,25$. Độ lệch chuẩn của mẫu số liệu đó bằng:\n\nA. $2,5 \\, cm$.\nB. $12,5 \\, cm$.\nC. $3,125 \\, cm$.\nD. $42,25 \\, cm$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 11,
-      "difficulty_part": 1,
-      "skill_id": "statistics_dispersion",
-      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
-      "type": "exam_mcq",
-      "correct_answer": "A",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q11",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 11 [Phần 1 - Trắc nghiệm]:\n\nMột mẫu số liệu ghép nhóm về chiều cao của một lớp (đơn vị là centimét) có phương sai $6,25$. Độ lệch chuẩn của mẫu số liệu đó bằng:\n\nA. $2,5 \\, cm$.\nB. $12,5 \\, cm$.\nC. $3,125 \\, cm$.\nD. $42,25 \\, cm$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 11,
+            "difficulty_part": 1,
+            "skill_id": "statistics_dispersion",
+            "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+            "type": "exam_mcq",
+            "correct_answer": "A",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nChọn A\nĐộ lệch chuẩn bằng căn bậc 2 của phương sai: $\\sigma = \\sqrt{S} = \\sqrt{6,25} = 2,5$"
     },
-    "answer": "ĐÁP ÁN: A\n\nGIẢI THÍCH:\nChọn A\nĐộ lệch chuẩn bằng căn bậc 2 của phương sai: $\\sigma = \\sqrt{S} = \\sqrt{6,25} = 2,5$"
-  },
-  {
-    "id": "exam_de7plus_de05_p1_q12",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đạo hàm trên $\\mathbb{R}$ thoả mãn $f(-1) = 1$ và $f'(-1) = 4$. Phương trình tiếp tuyến của đồ thị hàm số $y = f(x)$ tại điểm $M(-1; 1)$ là:\n\nA. $y = -4x - 5$.\nB. $y = -4x + 3$.\nC. $y = 4x + 5$.\nD. $y = -4x - 3$.",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 12,
-      "difficulty_part": 1,
-      "skill_id": "derivative_tangent_equation",
-      "chapter": "Đạo hàm",
-      "type": "exam_mcq",
-      "correct_answer": "C",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p1_q12",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 12 [Phần 1 - Trắc nghiệm]:\n\nCho hàm số $y = f(x)$ có đạo hàm trên $\\mathbb{R}$ thoả mãn $f(-1) = 1$ và $f'(-1) = 4$. Phương trình tiếp tuyến của đồ thị hàm số $y = f(x)$ tại điểm $M(-1; 1)$ là:\n\nA. $y = -4x - 5$.\nB. $y = -4x + 3$.\nC. $y = 4x + 5$.\nD. $y = -4x - 3$.",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 12,
+            "difficulty_part": 1,
+            "skill_id": "derivative_tangent_equation",
+            "chapter": "Đạo hàm",
+            "type": "exam_mcq",
+            "correct_answer": "C",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nTa có: $\\begin{cases} x_0 = -1 \\\\ y_0 = f(-1) = 1 \\\\ f'(x_0) = f'(-1) = 4 \\end{cases}$\nPhương trình có dạng: $y = f'(x_0)(x - x_0) + y_0$\n$\\Leftrightarrow y = 4(x + 1) + 1$\n$\\Leftrightarrow y = 4x + 4 + 1$\n$\\Leftrightarrow y = 4x + 5$"
     },
-    "answer": "ĐÁP ÁN: C\n\nGIẢI THÍCH:\nChọn C\nTa có: $\\begin{cases} x_0 = -1 \\\\ y_0 = f(-1) = 1 \\\\ f'(x_0) = f'(-1) = 4 \\end{cases}$\nPhương trình có dạng: $y = f'(x_0)(x - x_0) + y_0$\n$\\Leftrightarrow y = 4(x + 1) + 1$\n$\\Leftrightarrow y = 4x + 4 + 1$\n$\\Leftrightarrow y = 4x + 5$"
-  },
-  {
-    "id": "exam_de7plus_de05_p2_q13",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = f(x)$ có đạo hàm trên $\\mathbb{R}$ và đồ thị hình vẽ.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Hàm số nghịch biến trên khoảng $(-\\infty; -1)$. | | |\n| (b) | Hàm số đạt cực tiểu tại điểm $x_0 = -1$. | | |\n| (c) | Đạo hàm của hàm số nhận giá trị không âm trên khoảng $(-1; 1)$. | | |\n| (d) | Giá trị lớn nhất của hàm số trên đoạn $[-1; 0]$ bằng $1$. | | |",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 13,
-      "difficulty_part": 2,
-      "skill_id": "function_survey",
-      "chapter": "Đạo hàm",
-      "type": "exam_true_false",
-      "correct_answer": "a-T,b-T,c-T,d-F",
-      "has_image": true,
-      "image_path": "data/exams/images/de7plus_de05/q13.png"
+    {
+        "id": "exam_de7plus_de05_p2_q13",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 13 [Phần 2 - Đúng/Sai]:\n\nCho hàm số $y = f(x)$ có đạo hàm trên $\\mathbb{R}$ và đồ thị hình vẽ.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Hàm số nghịch biến trên khoảng $(-\\infty; -1)$. | | |\n| (b) | Hàm số đạt cực tiểu tại điểm $x_0 = -1$. | | |\n| (c) | Đạo hàm của hàm số nhận giá trị không âm trên khoảng $(-1; 1)$. | | |\n| (d) | Giá trị lớn nhất của hàm số trên đoạn $[-1; 0]$ bằng $1$. | | |",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 13,
+            "difficulty_part": 2,
+            "skill_id": "function_survey",
+            "chapter": "Đạo hàm",
+            "type": "exam_true_false",
+            "correct_answer": "a-T,b-T,c-T,d-F",
+            "has_image": true,
+            "image_path": "data/exams/images/de7plus_de05/q13.png"
+        },
+        "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) ĐÚNG\n(c) ĐÚNG\n(d) SAI\n\nGIẢI THÍCH:\nTa có: $f'(x) = a(x+1)(x-1) (a < 0)$;\n$f'(x) < 0, x \\in (-\\infty; -1)$ và $(1; +\\infty); f'(x) > 0, x \\in (-1; 1)$;\n$\\max_{[-1; 0]} f(x) = f(0) < 0$.\n\n(a) Hàm số nghịch biến trên khoảng $(-\\infty; -1)$.\nChọn ĐÚNG.\n\n(b) Hàm số đạt cực tiểu tại điểm $x_0 = -1$.\nChọn ĐÚNG.\n\n(c) Đạo hàm của hàm số nhận giá trị không âm trên khoảng $(-1; 1)$.\nChọn ĐÚNG.\n\n(d) Giá trị lớn nhất của hàm số trên đoạn $[-1; 0]$ bằng $1$.\nChọn SAI."
     },
-    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) ĐÚNG\n(c) ĐÚNG\n(d) SAI\n\nGIẢI THÍCH:\nTa có: $f'(x) = a(x+1)(x-1) (a < 0)$;\n$f'(x) < 0, x \\in (-\\infty; -1)$ và $(1; +\\infty); f'(x) > 0, x \\in (-1; 1)$;\n$\\max_{[-1; 0]} f(x) = f(0) < 0$.\n\n(a) Hàm số nghịch biến trên khoảng $(-\\infty; -1)$.\nChọn ĐÚNG.\n\n(b) Hàm số đạt cực tiểu tại điểm $x_0 = -1$.\nChọn ĐÚNG.\n\n(c) Đạo hàm của hàm số nhận giá trị không âm trên khoảng $(-1; 1)$.\nChọn ĐÚNG.\n\n(d) Giá trị lớn nhất của hàm số trên đoạn $[-1; 0]$ bằng $1$.\nChọn SAI."
-  },
-  {
-    "id": "exam_de7plus_de05_p2_q14",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nVào năm 2014, dân số nước ta khoảng 90,7 triệu người. Giả sử, dân số nước ta sau $t$ năm được xác định bởi hàm số $S(t)$ (đơn vị: triệu người), trong đó tốc độ gia tăng dân số được cho bởi $S'(t) = 1,2698 \\cdot e^{0,014t}$, với $t$ là số năm kể từ năm 2014. $S'(t)$ tính bằng triệu người/năm.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | $S(t)$ là một nguyên hàm của $S'(t)$ | | |\n| (b) | $S(t) = 90,7 \\cdot e^{0,014t} + 90,7$ | | |\n| (c) | Theo công thức trên, tốc độ tăng dân số nước ta năm 2034 (làm tròn đến hàng phần mười của triệu người/năm) khoảng $1,7$ triệu người/năm. | | |\n| (d) | Theo công thức trên, dân số nước ta năm 2034 (làm tròn đến hàng đơn vị của triệu người) là khoảng $120$ triệu người. | | |",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 14,
-      "difficulty_part": 2,
-      "skill_id": "integral_applications",
-      "chapter": "Nguyên hàm và Tích phân",
-      "type": "exam_true_false",
-      "correct_answer": "a-T,b-F,c-F,d-T",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p2_q14",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 14 [Phần 2 - Đúng/Sai]:\n\nVào năm 2014, dân số nước ta khoảng 90,7 triệu người. Giả sử, dân số nước ta sau $t$ năm được xác định bởi hàm số $S(t)$ (đơn vị: triệu người), trong đó tốc độ gia tăng dân số được cho bởi $S'(t) = 1,2698 \\cdot e^{0,014t}$, với $t$ là số năm kể từ năm 2014. $S'(t)$ tính bằng triệu người/năm.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | $S(t)$ là một nguyên hàm của $S'(t)$ | | |\n| (b) | $S(t) = 90,7 \\cdot e^{0,014t} + 90,7$ | | |\n| (c) | Theo công thức trên, tốc độ tăng dân số nước ta năm 2034 (làm tròn đến hàng phần mười của triệu người/năm) khoảng $1,7$ triệu người/năm. | | |\n| (d) | Theo công thức trên, dân số nước ta năm 2034 (làm tròn đến hàng đơn vị của triệu người) là khoảng $120$ triệu người. | | |",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 14,
+            "difficulty_part": 2,
+            "skill_id": "integral_applications",
+            "chapter": "Nguyên hàm và Tích phân",
+            "type": "exam_true_false",
+            "correct_answer": "a-T,b-F,c-F,d-T",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) ĐÚNG\n(d) ĐÚNG\n\nGIẢI THÍCH:\nTa có: $S(t) = \\int S'(t)dt = \\int 1,2698 \\cdot e^{0,014t} dt + C = 90,7 e^{0,014t} + C$;\nĐặt $G(2014+t) = S(t) = 90,7 e^{0,014t} + C; G(2014+0) = 90,7 \\Rightarrow 90,7 e^{0,014 \\cdot 0} + C = 90,7 \\Rightarrow C = 0$\n$\\Rightarrow S(t) = 90,7 e^{0,014t}$.\n$G(2034) = S(20) = 90,7 e^{0,014 \\cdot 20} \\approx 120,0079$ Triệu người.\n\n(a) $S(t)$ là một nguyên hàm của $S'(t)$.\nChọn ĐÚNG.\n\n(b) $S(t) = 90,7 \\cdot e^{0,014t} + 90,7$.\nChọn SAI.\n\n(c) Theo công thức trên, tốc độ tăng dân số nước ta năm 2034 (làm tròn đến hàng phần mười của triệu người/năm) khoảng $1,7$ triệu người/ năm.\nChọn SAI.\n\n(d) Theo công thức trên, dân số nước ta năm 2034 (làm tròn đến hàng đơn vị của triệu người) là khoảng $120$ triệu người.\nChọn ĐÚNG."
     },
-    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) SAI\n(d) ĐÚNG\n\nGIẢI THÍCH:\nTa có: $S(t) = \\int S'(t)dt = \\int 1,2698 \\cdot e^{0,014t} dt + C = 90,7 e^{0,014t} + C$;\nĐặt $G(2014+t) = S(t) = 90,7 e^{0,014t} + C; G(2014+0) = 90,7 \\Rightarrow 90,7 e^{0,014 \\cdot 0} + C = 90,7 \\Rightarrow C = 0$\n$\\Rightarrow S(t) = 90,7 e^{0,014t}$.\n$G(2034) = S(20) = 90,7 e^{0,014 \\cdot 20} \\approx 120,0079$ Triệu người.\n\n(a) $S(t)$ là một nguyên hàm của $S'(t)$.\nChọn ĐÚNG.\n\n(b) $S(t) = 90,7 \\cdot e^{0,014t} + 90,7$.\nChọn SAI.\n\n(c) Theo công thức trên, tốc độ tăng dân số nước ta năm 2034 (làm tròn đến hàng phần mười của triệu người/năm) khoảng $1,7$ triệu người/ năm.\nChọn SAI.\n\n(d) Theo công thức trên, dân số nước ta năm 2034 (làm tròn đến hàng đơn vị của triệu người) là khoảng $120$ triệu người.\nChọn ĐÚNG."
-  },
-  {
-    "id": "exam_de7plus_de05_p2_q15",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nTrong không gian Oxyz cho hình chóp $S.ABCD$ có $S(0; 0; 3,5)$, $ABCD$ là hình chữ nhật với $A(0; 0; 0), B(4; 0; 0), D(0; 10; 0)$ (hình 4)\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Toạ độ điểm C là $(4; 10; 0)$. | | |\n| (b) | Phương trình mặt phẳng $(SBD): \\frac{x}{4} + \\frac{y}{10} - \\frac{z}{3,5} = 1$ | | |\n| (c) | Toạ độ của vectơ $\\overrightarrow{SC} = (4; 10; -3,5)$. | | |\n| (d) | Góc giữa đường thẳng $SC$ và mặt phẳng $(SBD)$ làm tròn đến hàng đơn vị của độ là $20^\\circ$. | | |",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 15,
-      "difficulty_part": 2,
-      "skill_id": "geometry_coordinate_space",
-      "chapter": "Hình học không gian",
-      "type": "exam_true_false",
-      "correct_answer": "a-T,b-F,c-T,d-F",
-      "has_image": true,
-      "image_path": "data/exams/images/de7plus_de05/q15.png"
+    {
+        "id": "exam_de7plus_de05_p2_q15",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 15 [Phần 2 - Đúng/Sai]:\n\nTrong không gian Oxyz cho hình chóp $S.ABCD$ có $S(0; 0; 3,5)$, $ABCD$ là hình chữ nhật với $A(0; 0; 0), B(4; 0; 0), D(0; 10; 0)$ (hình 4)\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Toạ độ điểm C là $(4; 10; 0)$. | | |\n| (b) | Phương trình mặt phẳng $(SBD): \\frac{x}{4} + \\frac{y}{10} - \\frac{z}{3,5} = 1$ | | |\n| (c) | Toạ độ của vectơ $\\overrightarrow{SC} = (4; 10; -3,5)$. | | |\n| (d) | Góc giữa đường thẳng $SC$ và mặt phẳng $(SBD)$ làm tròn đến hàng đơn vị của độ là $20^\\circ$. | | |",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 15,
+            "difficulty_part": 2,
+            "skill_id": "geometry_coordinate_space",
+            "chapter": "Hình học không gian",
+            "type": "exam_true_false",
+            "correct_answer": "a-T,b-F,c-T,d-F",
+            "has_image": true,
+            "image_path": "data/exams/images/de7plus_de05/q15.png"
+        },
+        "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) ĐÚNG\n(d) SAI\n\nGIẢI THÍCH:\n(a) Toạ độ điểm $C$ là $(4; 10; 0)$.\nTa có $\\overrightarrow{AB} = (4; 0; 0); \\overrightarrow{DC} = (x_c; y_c - 10; z_c)$.\n$ABCD$ hình chữ nhật nên $\\overrightarrow{AB} = \\overrightarrow{DC} \\Leftrightarrow \\begin{cases} x_c = 4 \\\\ y_c - 10 = 0 \\\\ z_c = 0 \\end{cases} \\Leftrightarrow \\begin{cases} x_c = 4 \\\\ y_c = 10 \\\\ z_c = 0 \\end{cases} \\Rightarrow C(4; 10; 0)$\nChọn ĐÚNG.\n\n(b) Phương trình mặt phẳng $(SBD): \\frac{x}{4} + \\frac{y}{10} - \\frac{z}{3,5} = 1$\nMặt phẳng $(SBD)$ đi qua các điểm $S(0; 0; 3,5), B(4; 0; 0), D(0; 10; 0)$ suy ra phương trình mặt phẳng $(SBD): \\frac{x}{4} + \\frac{y}{10} + \\frac{z}{3,5} = 1$\nChọn SAI.\n\n(c) Toạ độ của vectơ $\\overrightarrow{SC} = (4; 10; -3,5)$.\nTa có $S(0; 0; 3,5), C(4; 10; 0) \\Rightarrow \\overrightarrow{SC} = (4; 10; -3,5)$.\nChọn ĐÚNG.\n\n(d) Góc giữa đường thẳng $SC$ và mặt phẳng $(SBD)$ làm tròn đến hàng đơn vị của độ là $20^\\circ$.\n$\\sin(SC, (SBD)) = \\left| \\cos(\\overrightarrow{SC}, \\vec{n}_{(SBD)}) \\right| = \\frac{\\left| 4 \\cdot \\frac{1}{4} + 10 \\cdot \\frac{1}{10} + (-3,5) \\cdot \\frac{1}{3,5} \\right|}{\\sqrt{16 + 100 + \\frac{49}{4}}} = \\frac{1}{\\sqrt{\\frac{513}{4}}} = \\frac{2\\sqrt{513}}{513}$.\n$\\Rightarrow \\widehat{(SC, (SBD))} \\approx 5,06^\\circ$.\nChọn SAI."
     },
-    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) ĐÚNG\n(d) SAI\n\nGIẢI THÍCH:\n(a) Toạ độ điểm $C$ là $(4; 10; 0)$.\nTa có $\\overrightarrow{AB} = (4; 0; 0); \\overrightarrow{DC} = (x_c; y_c - 10; z_c)$.\n$ABCD$ hình chữ nhật nên $\\overrightarrow{AB} = \\overrightarrow{DC} \\Leftrightarrow \\begin{cases} x_c = 4 \\\\ y_c - 10 = 0 \\\\ z_c = 0 \\end{cases} \\Leftrightarrow \\begin{cases} x_c = 4 \\\\ y_c = 10 \\\\ z_c = 0 \\end{cases} \\Rightarrow C(4; 10; 0)$\nChọn ĐÚNG.\n\n(b) Phương trình mặt phẳng $(SBD): \\frac{x}{4} + \\frac{y}{10} - \\frac{z}{3,5} = 1$\nMặt phẳng $(SBD)$ đi qua các điểm $S(0; 0; 3,5), B(4; 0; 0), D(0; 10; 0)$ suy ra phương trình mặt phẳng $(SBD): \\frac{x}{4} + \\frac{y}{10} + \\frac{z}{3,5} = 1$\nChọn SAI.\n\n(c) Toạ độ của vectơ $\\overrightarrow{SC} = (4; 10; -3,5)$.\nTa có $S(0; 0; 3,5), C(4; 10; 0) \\Rightarrow \\overrightarrow{SC} = (4; 10; -3,5)$.\nChọn ĐÚNG.\n\n(d) Góc giữa đường thẳng $SC$ và mặt phẳng $(SBD)$ làm tròn đến hàng đơn vị của độ là $20^\\circ$.\n$\\sin(SC, (SBD)) = \\left| \\cos(\\overrightarrow{SC}, \\vec{n}_{(SBD)}) \\right| = \\frac{\\left| 4 \\cdot \\frac{1}{4} + 10 \\cdot \\frac{1}{10} + (-3,5) \\cdot \\frac{1}{3,5} \\right|}{\\sqrt{16 + 100 + \\frac{49}{4}}} = \\frac{1}{\\sqrt{\\frac{513}{4}}} = \\frac{2\\sqrt{513}}{513}$.\n$\\Rightarrow \\widehat{(SC, (SBD))} \\approx 5,06^\\circ$.\nChọn SAI."
-  },
-  {
-    "id": "exam_de7plus_de05_p2_q16",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nKhi điều tra sức khoẻ nhiều người cao tuổi ở một địa phương, người ta thấy rằng có $40\\%$ người cao tuổi bị bệnh tiểu đường. Bên cạnh đó, số người bị bệnh huyết áp cao trong những người bị bệnh tiểu đường là $70\\%$, trong đó người không bị bệnh tiểu đường là $25\\%$. Chọn ngẫu nhiên 1 người cao tuổi kiểm tra sức khoẻ.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Xác suất chọn được người bị bệnh tiểu đường là $0,4$. | | |\n| (b) | Xác suất chọn được người bị bệnh huyết áp cao, biết người đó bị bệnh tiểu đường là $0,7$. | | |\n| (c) | Xác suất chọn được người bị bệnh huyết áp cao, biết người đó không bị bệnh tiểu đường là $0,75$. | | |\n| (d) | Xác suất chọn được người bị bệnh huyết áp cao là $0,8$. | | |",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 16,
-      "difficulty_part": 2,
-      "skill_id": "probability_conditional",
-      "chapter": "Xác suất",
-      "type": "exam_true_false",
-      "correct_answer": "a-T,b-F,c-F,d-F",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p2_q16",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 16 [Phần 2 - Đúng/Sai]:\n\nKhi điều tra sức khoẻ nhiều người cao tuổi ở một địa phương, người ta thấy rằng có $40\\%$ người cao tuổi bị bệnh tiểu đường. Bên cạnh đó, số người bị bệnh huyết áp cao trong những người bị bệnh tiểu đường là $70\\%$, trong đó người không bị bệnh tiểu đường là $25\\%$. Chọn ngẫu nhiên 1 người cao tuổi kiểm tra sức khoẻ.\n\n| | Mệnh đề | Đúng | Sai |\n|---|---|---|---|\n| (a) | Xác suất chọn được người bị bệnh tiểu đường là $0,4$. | | |\n| (b) | Xác suất chọn được người bị bệnh huyết áp cao, biết người đó bị bệnh tiểu đường là $0,7$. | | |\n| (c) | Xác suất chọn được người bị bệnh huyết áp cao, biết người đó không bị bệnh tiểu đường là $0,75$. | | |\n| (d) | Xác suất chọn được người bị bệnh huyết áp cao là $0,8$. | | |",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 16,
+            "difficulty_part": 2,
+            "skill_id": "probability_conditional",
+            "chapter": "Xác suất",
+            "type": "exam_true_false",
+            "correct_answer": "a-T,b-F,c-F,d-F",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) ĐÚNG\n(c) SAI\n(d) SAI\n\nGIẢI THÍCH:\n(a) Xác suất chọn được người bị bệnh tiểu đường là $0,4$.\nGọi biến cố $A$ “người cao tuổi mắc bệnh tiểu đường”, $\\Rightarrow P(A) = 0,4$.\nChọn ĐÚNG.\n\n(b) Xác suất chọn được người bị bệnh huyết áp cao, biết người đó bị bệnh tiểu đường là $0,7$.\nSuy ra biến cố $\\overline{A}$ “người cao tuổi không mắc bệnh tiểu đường” $\\Rightarrow P(\\overline{A}) = 0,6$\nGọi biến cố $B$ “người bị bệnh huyết áp cao trong những người bị bệnh tiểu đường”\n$\\Rightarrow P(B|A) = 0,7 \\Leftrightarrow \\frac{P(BA)}{P(A)} = 0,7 \\Leftrightarrow P(A) + P(B) - P(AB) = 0,4 \\cdot 0,7.$\n$\\Leftrightarrow P(B) = 1 + 0,28 - 0,4 = 0,88.$\nChọn SAI.\n\n(c) Xác suất chọn được người bị bệnh huyết áp cao, biết người đó không bị bệnh tiểu đường là $0,75$.\nGọi biến cố $C$ “người bị bệnh huyết áp cao trong những người không bị bệnh tiểu đường”\n$\\Rightarrow P(C|\\overline{A}) = 0,25 \\Leftrightarrow \\frac{P(C\\overline{A})}{P(\\overline{A})} = 0,25.$\n$\\Leftrightarrow P(C) + P(\\overline{A}) - P(C\\overline{A}) = 0,25 \\cdot 0,6 \\Leftrightarrow P(C) = 1 + 0,15 - 0,6 = 0,55.$\nChọn SAI.\n\n(d) Xác suất chọn được người bị bệnh huyết áp cao là $0,8$.\nXác suất chọn được người bị bệnh huyết áp cao là.\n$P(B+C) = P(B) + P(C) - P(BC) = 0,88 + 0,55$\nChọn SAI."
     },
-    "answer": "ĐÁP ÁN:\n(a) ĐÚNG\n(b) SAI\n(c) SAI\n(d) SAI\n\nGIẢI THÍCH:\n(a) Xác suất chọn được người bị bệnh tiểu đường là $0,4$.\nGọi biến cố $A$ “người cao tuổi mắc bệnh tiểu đường”, $\\Rightarrow P(A) = 0,4$.\nChọn ĐÚNG.\n\n(b) Xác suất chọn được người bị bệnh huyết áp cao, biết người đó bị bệnh tiểu đường là $0,7$.\nSuy ra biến cố $\\overline{A}$ “người cao tuổi không mắc bệnh tiểu đường” $\\Rightarrow P(\\overline{A}) = 0,6$\nGọi biến cố $B$ “người bị bệnh huyết áp cao trong những người bị bệnh tiểu đường”\n$\\Rightarrow P(B|A) = 0,7 \\Leftrightarrow \\frac{P(BA)}{P(A)} = 0,7 \\Leftrightarrow P(A) + P(B) - P(AB) = 0,4 \\cdot 0,7.$\n$\\Leftrightarrow P(B) = 1 + 0,28 - 0,4 = 0,88.$\nChọn SAI.\n\n(c) Xác suất chọn được người bị bệnh huyết áp cao, biết người đó không bị bệnh tiểu đường là $0,75$.\nGọi biến cố $C$ “người bị bệnh huyết áp cao trong những người không bị bệnh tiểu đường”\n$\\Rightarrow P(C|\\overline{A}) = 0,25 \\Leftrightarrow \\frac{P(C\\overline{A})}{P(\\overline{A})} = 0,25.$\n$\\Leftrightarrow P(C) + P(\\overline{A}) - P(C\\overline{A}) = 0,25 \\cdot 0,6 \\Leftrightarrow P(C) = 1 + 0,15 - 0,6 = 0,55.$\nChọn SAI.\n\n(d) Xác suất chọn được người bị bệnh huyết áp cao là $0,8$.\nXác suất chọn được người bị bệnh huyết áp cao là.\n$P(B+C) = P(B) + P(C) - P(BC) = 0,88 + 0,55$\nChọn SAI."
-  },
-  {
-    "id": "exam_de7plus_de05_p3_q17",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 17 [Phần 3 - Trả lời ngắn]:\n\nChỉ số hay độ pH của một dung dịch được tính theo công thức: $pH = -\\log[H^+]$ với $[H^+]$ là nồng độ ion hydrogen. Độ pH của một loại sữa chua có $[H^+] = 10^{-4,5}$ là bao nhiêu?",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 17,
-      "difficulty_part": 3,
-      "skill_id": "logarithm_formula",
-      "chapter": "Hàm số lũy thừa, mũ và logarit",
-      "type": "exam_short_answer",
-      "correct_answer": "4,5",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p3_q17",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 17 [Phần 3 - Trả lời ngắn]:\n\nChỉ số hay độ pH của một dung dịch được tính theo công thức: $pH = -\\log[H^+]$ với $[H^+]$ là nồng độ ion hydrogen. Độ pH của một loại sữa chua có $[H^+] = 10^{-4,5}$ là bao nhiêu?",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 17,
+            "difficulty_part": 3,
+            "skill_id": "logarithm_formula",
+            "chapter": "Hàm số lũy thừa, mũ và logarit",
+            "type": "exam_short_answer",
+            "correct_answer": "4,5",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: 4,5\n\nGIẢI THÍCH:\nTa có: $pH = -\\log[H^+]$, với $[H^+] = 10^{-4,5}$ ta có $pH = -\\log 10^{-4,5} = 4,5$."
     },
-    "answer": "ĐÁP ÁN: 4,5\n\nGIẢI THÍCH:\nTa có: $pH = -\\log[H^+]$, với $[H^+] = 10^{-4,5}$ ta có $pH = -\\log 10^{-4,5} = 4,5$."
-  },
-  {
-    "id": "exam_de7plus_de05_p3_q18",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 18 [Phần 3 - Trả lời ngắn]:\n\nTrong một đợt khám sức khỏe của 50 học sinh nam lớp 12, người ta được kết quả như bảng dưới đây:\n\n| Nhóm | $[160; 164)$ | $[164; 168)$ | $[168; 172)$ | $[172; 176)$ | $[176; 180)$ |\n|---|---|---|---|---|---|\n| Tần số | 3 | 8 | 18 | 12 | 9 |\n\nĐộ lệch chuẩn của mẫu số liệu ghép nhóm cho ở bảng trên bằng bao nhiêu centimét (làm tròn đến hàng phần mười)?",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 18,
-      "difficulty_part": 3,
-      "skill_id": "statistics_dispersion",
-      "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
-      "type": "exam_short_answer",
-      "correct_answer": "4,5",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p3_q18",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 18 [Phần 3 - Trả lời ngắn]:\n\nTrong một đợt khám sức khỏe của 50 học sinh nam lớp 12, người ta được kết quả như bảng dưới đây:\n\n| Nhóm | $[160; 164)$ | $[164; 168)$ | $[168; 172)$ | $[172; 176)$ | $[176; 180)$ |\n|---|---|---|---|---|---|\n| Tần số | 3 | 8 | 18 | 12 | 9 |\n\nĐộ lệch chuẩn của mẫu số liệu ghép nhóm cho ở bảng trên bằng bao nhiêu centimét (làm tròn đến hàng phần mười)?",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 18,
+            "difficulty_part": 3,
+            "skill_id": "statistics_dispersion",
+            "chapter": "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
+            "type": "exam_short_answer",
+            "correct_answer": "4,5",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: 4,5\n\nGIẢI THÍCH:\nTính giá trị trung bình của mẫu:\n| Nhóm | $[160; 164)$ | $[164; 168)$ | $[168; 172)$ | $[172; 176)$ | $[176; 180)$ |\n|---|---|---|---|---|---|\n| Tần số | 3 | 8 | 18 | 12 | 9 |\n| GTĐD | 162 | 166 | 170 | 174 | 178 |\n\nGiá trị trung bình là $\\bar{x} = \\frac{8564}{50} = 171,28$.\n\nTính độ lệch chuẩn:\n| Nhóm | Tần số $(f)$ | Giá trị giữa $(x)$ | $(x - \\bar{x})^2$ | $f \\cdot (x - \\bar{x})^2$ |\n|---|---|---|---|---|\n| $[160; 164)$ | 3 | 162 | $(162 - 171,28)^2 = 86,1584$ | $258,4752$ |\n| $[164; 168)$ | 8 | 166 | $(166 - 171,28)^2 = 27,8784$ | $223,0272$ |\n| $[168; 172)$ | 18 | 170 | $(170 - 171,28)^2 = 1,6384$ | $29,4912$ |\n| $[172; 176)$ | 12 | 174 | $(174 - 171,28)^2 = 7,3784$ | $88,5408$ |\n| $[176; 180)$ | 9 | 178 | $(178 - 171,28)^2 = 45,1584$ | $406,4256$ |\n\nVậy độ lệch chuẩn là $\\sigma = \\sqrt{ \\frac{ \\sum f \\cdot (x - \\bar{x})^2 }{N} } = \\sqrt{\\frac{1005,96}{50}} = \\sqrt{20,1192} \\approx 4,5$."
     },
-    "answer": "ĐÁP ÁN: 4,5\n\nGIẢI THÍCH:\nTính giá trị trung bình của mẫu:\n| Nhóm | $[160; 164)$ | $[164; 168)$ | $[168; 172)$ | $[172; 176)$ | $[176; 180)$ |\n|---|---|---|---|---|---|\n| Tần số | 3 | 8 | 18 | 12 | 9 |\n| GTĐD | 162 | 166 | 170 | 174 | 178 |\n\nGiá trị trung bình là $\\bar{x} = \\frac{8564}{50} = 171,28$.\n\nTính độ lệch chuẩn:\n| Nhóm | Tần số $(f)$ | Giá trị giữa $(x)$ | $(x - \\bar{x})^2$ | $f \\cdot (x - \\bar{x})^2$ |\n|---|---|---|---|---|\n| $[160; 164)$ | 3 | 162 | $(162 - 171,28)^2 = 86,1584$ | $258,4752$ |\n| $[164; 168)$ | 8 | 166 | $(166 - 171,28)^2 = 27,8784$ | $223,0272$ |\n| $[168; 172)$ | 18 | 170 | $(170 - 171,28)^2 = 1,6384$ | $29,4912$ |\n| $[172; 176)$ | 12 | 174 | $(174 - 171,28)^2 = 7,3784$ | $88,5408$ |\n| $[176; 180)$ | 9 | 178 | $(178 - 171,28)^2 = 45,1584$ | $406,4256$ |\n\nVậy độ lệch chuẩn là $\\sigma = \\sqrt{ \\frac{ \\sum f \\cdot (x - \\bar{x})^2 }{N} } = \\sqrt{\\frac{1005,96}{50}} = \\sqrt{20,1192} \\approx 4,5$."
-  },
-  {
-    "id": "exam_de7plus_de05_p3_q19",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 19 [Phần 3 - Trả lời ngắn]:\n\nMột người gửi tiết kiệm một khoản tiền cố định theo thể thức lãi kép $0,5\\%$/tháng. Giả sử trong nhiều tháng lãi suất không đổi và người đó không rút tiền ra. Sau ít nhất bao nhiêu tháng gửi tiết kiệm số tiền có được vượt quá $1,1$ lần số tiền gửi ban đầu?",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 19,
-      "difficulty_part": 3,
-      "skill_id": "exponential_logarithmic_applications",
-      "chapter": "Hàm số lũy thừa, mũ và logarit",
-      "type": "exam_short_answer",
-      "correct_answer": "20",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p3_q19",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 19 [Phần 3 - Trả lời ngắn]:\n\nMột người gửi tiết kiệm một khoản tiền cố định theo thể thức lãi kép $0,5\\%$/tháng. Giả sử trong nhiều tháng lãi suất không đổi và người đó không rút tiền ra. Sau ít nhất bao nhiêu tháng gửi tiết kiệm số tiền có được vượt quá $1,1$ lần số tiền gửi ban đầu?",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 19,
+            "difficulty_part": 3,
+            "skill_id": "exponential_logarithmic_applications",
+            "chapter": "Hàm số lũy thừa, mũ và logarit",
+            "type": "exam_short_answer",
+            "correct_answer": "20",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: 20\n\nGIẢI THÍCH:\nTa có: $A = P(1+r)^n$, với $A$ là số tiền cuối cùng, $P$ là số tiền ban đầu, $r$ lãi suất mỗi kỳ ($0,5\\%$), $n$ số kỳ (số tháng).\nTa cần tìm $n$ sao cho $A > 1,1P \\Leftrightarrow P(1+r)^n > 1,1P \\Leftrightarrow (1 + 0,5\\%)^n > 1,1 \\Leftrightarrow n > \\log_{(1+0,5\\%)} 1,1 \\Leftrightarrow n > 19,08$.\nVậy số tháng cần tìm là $20$ tháng."
     },
-    "answer": "ĐÁP ÁN: 20\n\nGIẢI THÍCH:\nTa có: $A = P(1+r)^n$, với $A$ là số tiền cuối cùng, $P$ là số tiền ban đầu, $r$ lãi suất mỗi kỳ ($0,5\\%$), $n$ số kỳ (số tháng).\nTa cần tìm $n$ sao cho $A > 1,1P \\Leftrightarrow P(1+r)^n > 1,1P \\Leftrightarrow (1 + 0,5\\%)^n > 1,1 \\Leftrightarrow n > \\log_{(1+0,5\\%)} 1,1 \\Leftrightarrow n > 19,08$.\nVậy số tháng cần tìm là $20$ tháng."
-  },
-  {
-    "id": "exam_de7plus_de05_p3_q20",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 20 [Phần 3 - Trả lời ngắn]:\n\nBạn Hoa cần gấp một hộp quà có dạng hình lăng trụ tứ giác đều với diện tích toàn phần là $200\\,cm^2$. Hộp quà mà bạn Hoa gấp được có thể tích lớn nhất bằng bao nhiêu centimét khối (làm tròn kết quả đến hàng đơn vị)?",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 20,
-      "difficulty_part": 3,
-      "skill_id": "derivative_applications_optimization",
-      "chapter": "Đạo hàm",
-      "type": "exam_short_answer",
-      "correct_answer": "192",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p3_q20",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 20 [Phần 3 - Trả lời ngắn]:\n\nBạn Hoa cần gấp một hộp quà có dạng hình lăng trụ tứ giác đều với diện tích toàn phần là $200\\,cm^2$. Hộp quà mà bạn Hoa gấp được có thể tích lớn nhất bằng bao nhiêu centimét khối (làm tròn kết quả đến hàng đơn vị)?",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 20,
+            "difficulty_part": 3,
+            "skill_id": "derivative_applications_optimization",
+            "chapter": "Đạo hàm",
+            "type": "exam_short_answer",
+            "correct_answer": "192",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: 192\n\nGIẢI THÍCH:\nGọi cạnh đáy của hộp quà là $x(cm)$, chiều cao của hộp quà là $h(cm)$, $(x > 0, h > 0)$.\nDiện tích toàn phần của hộp quà là $200\\,cm^2$\n$\\Rightarrow 4.x.h + 2x^2 = 200 \\Leftrightarrow h = \\frac{200 - 2x^2}{4x} = \\frac{100 - x^2}{2x}$\nThể tích của hộp quà là: $V = h.x^2 = \\frac{100 - x^2}{2x}.x^2 = \\frac{1}{2}(-x^3 + 100x)\\,(cm^3)$.\nThể tích của hộp quà lớn nhất khi $f(x) = -x^3 + 100x$ với $x > 0$.\nTa có $f'(x) = -3x^2 + 100 \\Rightarrow f'(x) = 0 \\Leftrightarrow x = \\frac{10}{\\sqrt{3}}$ (vì $x > 0$).\nBảng biến thiên của $f(x)$ với $x > 0$:\n\n| $x$ | $-\\infty$ | $\\frac{10}{\\sqrt{3}}$ | $+\\infty$ |\n|---|---|---|---|\n| $f'(x)$ | | + $0$ - | |\n| $f(x)$ | $0$ | $\\nearrow \\frac{2000}{3\\sqrt{3}} \\searrow$ | $-\\infty$ |\n\nDựa vào bảng biến thiên ta được $\\max f(x) = \\frac{2000}{3\\sqrt{3}} \\Rightarrow V_{\\max} = \\frac{1000}{3\\sqrt{3}} \\approx 192\\,(cm^3)$."
     },
-    "answer": "ĐÁP ÁN: 192\n\nGIẢI THÍCH:\nGọi cạnh đáy của hộp quà là $x(cm)$, chiều cao của hộp quà là $h(cm)$, $(x > 0, h > 0)$.\nDiện tích toàn phần của hộp quà là $200\\,cm^2$\n$\\Rightarrow 4.x.h + 2x^2 = 200 \\Leftrightarrow h = \\frac{200 - 2x^2}{4x} = \\frac{100 - x^2}{2x}$\nThể tích của hộp quà là: $V = h.x^2 = \\frac{100 - x^2}{2x}.x^2 = \\frac{1}{2}(-x^3 + 100x)\\,(cm^3)$.\nThể tích của hộp quà lớn nhất khi $f(x) = -x^3 + 100x$ với $x > 0$.\nTa có $f'(x) = -3x^2 + 100 \\Rightarrow f'(x) = 0 \\Leftrightarrow x = \\frac{10}{\\sqrt{3}}$ (vì $x > 0$).\nBảng biến thiên của $f(x)$ với $x > 0$:\n\n| $x$ | $-\\infty$ | $\\frac{10}{\\sqrt{3}}$ | $+\\infty$ |\n|---|---|---|---|\n| $f'(x)$ | | + $0$ - | |\n| $f(x)$ | $0$ | $\\nearrow \\frac{2000}{3\\sqrt{3}} \\searrow$ | $-\\infty$ |\n\nDựa vào bảng biến thiên ta được $\\max f(x) = \\frac{2000}{3\\sqrt{3}} \\Rightarrow V_{\\max} = \\frac{1000}{3\\sqrt{3}} \\approx 192\\,(cm^3)$."
-  },
-  {
-    "id": "exam_de7plus_de05_p3_q21",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 21 [Phần 3 - Trả lời ngắn]:\n\nMột người cần lập một mật khẩu là một dãy gồm 6 kí tự, trong đó có 1 kí tự thuộc tập hợp $\\{@; \\#\\}$, 1 kí tự thuộc tập hợp $\\{a; b; c\\}$, 1 kí tự thuộc tập hợp $\\{M, N\\}$, 3 kí tự còn lại là 3 chữ số đôi một khác nhau. Số cách tạo một mật khẩu như vậy có dạng là $\\overline{10abc00}$ ($a;b;c \\in \\mathbb{N}$). Giá trị $S = a+b+c$ bằng bao nhiêu?",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 21,
-      "difficulty_part": 3,
-      "skill_id": "combinatorics_probability",
-      "chapter": "Tổ hợp - Xác suất",
-      "type": "exam_short_answer",
-      "correct_answer": "17",
-      "has_image": false,
-      "image_path": ""
+    {
+        "id": "exam_de7plus_de05_p3_q21",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 21 [Phần 3 - Trả lời ngắn]:\n\nMột người cần lập một mật khẩu là một dãy gồm 6 kí tự, trong đó có 1 kí tự thuộc tập hợp $\\{@; \\#\\}$, 1 kí tự thuộc tập hợp $\\{a; b; c\\}$, 1 kí tự thuộc tập hợp $\\{M, N\\}$, 3 kí tự còn lại là 3 chữ số đôi một khác nhau. Số cách tạo một mật khẩu như vậy có dạng là $\\overline{10abc00}$ ($a;b;c \\in \\mathbb{N}$). Giá trị $S = a+b+c$ bằng bao nhiêu?",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 21,
+            "difficulty_part": 3,
+            "skill_id": "combinatorics_probability",
+            "chapter": "Tổ hợp - Xác suất",
+            "type": "exam_short_answer",
+            "correct_answer": "17",
+            "has_image": false,
+            "image_path": ""
+        },
+        "answer": "ĐÁP ÁN: 17\n\nGIẢI THÍCH:\nSố cách chọn 1 kí tự thuộc tập hợp $\\{@; \\#\\}$ là 2 (cách).\nSố cách chọn 1 kí tự thuộc tập hợp $\\{a; b; c\\}$ là 3 (cách).\nSố cách chọn 1 kí tự thuộc tập hợp $\\{M, N\\}$ là 2 (cách).\nSố cách chọn 3 kí tự là 3 chữ số đôi một khác nhau là $C_{10}^3$ (cách).\nSố cách sắp xếp 6 kí tự vừa chọn thành một dãy mật khẩu gồm 6 kí tự là $6!$ (cách).\nÁp dụng quy tắc nhân suy ra số cách tạo mật khẩu thoả mãn bài ra là $2 \\cdot 3 \\cdot 2 \\cdot C_{10}^3 \\cdot 6! = 1036800$ (cách)\nVậy $\\begin{cases} a = 3 \\\\ b = 6 \\\\ c = 8 \\end{cases} \\Rightarrow S = 17$."
     },
-    "answer": "ĐÁP ÁN: 17\n\nGIẢI THÍCH:\nSố cách chọn 1 kí tự thuộc tập hợp $\\{@; \\#\\}$ là 2 (cách).\nSố cách chọn 1 kí tự thuộc tập hợp $\\{a; b; c\\}$ là 3 (cách).\nSố cách chọn 1 kí tự thuộc tập hợp $\\{M, N\\}$ là 2 (cách).\nSố cách chọn 3 kí tự là 3 chữ số đôi một khác nhau là $C_{10}^3$ (cách).\nSố cách sắp xếp 6 kí tự vừa chọn thành một dãy mật khẩu gồm 6 kí tự là $6!$ (cách).\nÁp dụng quy tắc nhân suy ra số cách tạo mật khẩu thoả mãn bài ra là $2 \\cdot 3 \\cdot 2 \\cdot C_{10}^3 \\cdot 6! = 1036800$ (cách)\nVậy $\\begin{cases} a = 3 \\\\ b = 6 \\\\ c = 8 \\end{cases} \\Rightarrow S = 17$."
-  },
-  {
-    "id": "exam_de7plus_de05_p3_q22",
-    "content": "ĐỀ 7+ (Đề số 5) - CÂU 22 [Phần 3 - Trả lời ngắn]:\n\nMột cổng dạng hình parabol với chiều cao $8\\,m$, chiều rộng chân đế $8\\,m$ (hình vẽ). Người ta căng hai sợi dây trang trí $AB, CD$ nằm ngang, đồng thời chia cổng thành ba phần sao cho hai phần ở phía trên có diện tích bằng nhau. Tỉ số $\\frac{CD}{AB}$ bằng bao nhiêu (làm tròn kết quả đến hàng phần trăm)?",
-    "metadata": {
-      "exam_id": "de7plus_de05",
-      "year": 2025,
-      "exam_source": "Đề 7+ (Đề số 5)",
-      "question_number": 22,
-      "difficulty_part": 3,
-      "skill_id": "integral_applications_area",
-      "chapter": "Nguyên hàm và Tích phân",
-      "type": "exam_short_answer",
-      "correct_answer": "0,79",
-      "has_image": true,
-      "image_path": "data/exams/images/de7plus_de05/q22.png"
-    },
-    "answer": "ĐÁP ÁN: 0,79\n\nGIẢI THÍCH:\n**Bài toán phụ:** Cho hình phẳng giới hạn bởi Parabol và đường thẳng như hình vẽ:\nKhi đó $S_{Parabol} = \\frac{4}{3}Rh$.\nChứng minh: Gắn hệ trục toạ độ như hình vẽ\nTa có: Phương trình của Parabol $y = \\frac{h}{R^2}x^2 - h$\n$S_{Parabol} = \\int_{-R}^R \\left( 0 - \\frac{h}{R^2}x^2 + h \\right) dx = \\left. \\left( -\\frac{h}{R^2} \\cdot \\frac{1}{3} x^3 + hx \\right) \\right|_{-R}^R = -\\frac{h}{R^2} \\cdot \\frac{R^3}{3} + hR - \\frac{h}{R^2} \\cdot \\frac{R^3}{3} + hR = \\frac{4}{3}Rh$.\n\nÁp dụng vào bài toán\nCổng chào có dạng Parabol $(P)$ được gắn hệ trục toạ độ như hình vẽ.\nGiả sử phương trình của Parabol $(P)$ có dạng $y = ax^2 + bx + c$, $(a<0)$.\n$(P)$ đi qua các điểm có toạ độ $(0;8), (4;0)$ và $(-4;0)$.\nTa có hệ phương trình $\\begin{cases} a \\cdot 0^2 + b \\cdot 0 + c = 8 \\\\ a \\cdot 4^2 + b \\cdot 4 + c = 0 \\\\ a \\cdot (-4)^2 + b \\cdot (-4) + c = 0 \\end{cases} \\Leftrightarrow \\begin{cases} a = -\\frac{1}{2} \\\\ b = 0 \\\\ c = 8 \\end{cases}$.\nDo đó: $(P): y = -\\frac{1}{2}x^2 + 8$.\nGiả sử phương trình đường thẳng $AB$ là: $y = m$ $(0 < m < 8)$.\nPhương trình đường thẳng $CD$ là: $y = n$ $(0 < n < m)$.\nPhương trình hoành độ giao điểm của đường thẳng $AB$ và $(P)$ là:\n$-\\frac{1}{2}x^2 + 8 = m \\Leftrightarrow x = \\pm \\sqrt{16-2m}$.\nSuy ra diện tích hình phẳng giới hạn bởi Parabol và đường thẳng $AB$ là:\n$S_1 = \\frac{4}{3}\\sqrt{16-2m} \\cdot (8-m)$.\nPhương trình hoành độ giao điểm của đường thẳng $CD$ và $(P)$ là:\n$-\\frac{1}{2}x^2 + 8 = n \\Leftrightarrow x = \\pm \\sqrt{16-2n}$.\nSuy ra diện tích hình phẳng giới hạn bởi Parabol và đường thẳng $CD$ là:\n$S_2 = \\frac{4}{3}\\sqrt{16-2n} \\cdot (8-n)$.\nTheo bài ra hai phần ở phía trên có diện tích bằng nhau\n$\\Rightarrow \\frac{S_1}{S_2} = \\frac{1}{2} \\Rightarrow \\frac{\\sqrt{16-2m}(8-m)}{\\sqrt{16-2n}(8-n)} = \\frac{1}{2}$\n$\\Rightarrow \\frac{(\\sqrt{8-m})^3}{(\\sqrt{8-n})^3} = \\frac{1}{2} \\Rightarrow \\sqrt{\\frac{8-m}{8-n}} = \\frac{1}{\\sqrt[3]{2}}$\nMà $\\frac{AB}{CD} = \\frac{2\\sqrt{16-2m}}{2\\sqrt{16-2n}} = \\sqrt{\\frac{8-m}{8-n}} = \\frac{1}{\\sqrt[3]{2}} \\approx 0,79$."
-  }
+    {
+        "id": "exam_de7plus_de05_p3_q22",
+        "content": "ĐỀ 7+ (Đề số 5) - CÂU 22 [Phần 3 - Trả lời ngắn]:\n\nMột cổng dạng hình parabol với chiều cao $8\\,m$, chiều rộng chân đế $8\\,m$ (hình vẽ). Người ta căng hai sợi dây trang trí $AB, CD$ nằm ngang, đồng thời chia cổng thành ba phần sao cho hai phần ở phía trên có diện tích bằng nhau. Tỉ số $\\frac{CD}{AB}$ bằng bao nhiêu (làm tròn kết quả đến hàng phần trăm)?",
+        "metadata": {
+            "exam_id": "de7plus_de05",
+            "year": 2025,
+            "exam_source": "Đề 7+ (Đề số 5)",
+            "question_number": 22,
+            "difficulty_part": 3,
+            "skill_id": "integral_applications_area",
+            "chapter": "Nguyên hàm và Tích phân",
+            "type": "exam_short_answer",
+            "correct_answer": "0,79",
+            "has_image": true,
+            "image_path": "data/exams/images/de7plus_de05/q22.png"
+        },
+        "answer": "ĐÁP ÁN: 0,79\n\nGIẢI THÍCH:\n**Bài toán phụ:** Cho hình phẳng giới hạn bởi Parabol và đường thẳng như hình vẽ:\nKhi đó $S_{Parabol} = \\frac{4}{3}Rh$.\nChứng minh: Gắn hệ trục toạ độ như hình vẽ\nTa có: Phương trình của Parabol $y = \\frac{h}{R^2}x^2 - h$\n$S_{Parabol} = \\int_{-R}^R \\left( 0 - \\frac{h}{R^2}x^2 + h \\right) dx = \\left. \\left( -\\frac{h}{R^2} \\cdot \\frac{1}{3} x^3 + hx \\right) \\right|_{-R}^R = -\\frac{h}{R^2} \\cdot \\frac{R^3}{3} + hR - \\frac{h}{R^2} \\cdot \\frac{R^3}{3} + hR = \\frac{4}{3}Rh$.\n\nÁp dụng vào bài toán\nCổng chào có dạng Parabol $(P)$ được gắn hệ trục toạ độ như hình vẽ.\nGiả sử phương trình của Parabol $(P)$ có dạng $y = ax^2 + bx + c$, $(a<0)$.\n$(P)$ đi qua các điểm có toạ độ $(0;8), (4;0)$ và $(-4;0)$.\nTa có hệ phương trình $\\begin{cases} a \\cdot 0^2 + b \\cdot 0 + c = 8 \\\\ a \\cdot 4^2 + b \\cdot 4 + c = 0 \\\\ a \\cdot (-4)^2 + b \\cdot (-4) + c = 0 \\end{cases} \\Leftrightarrow \\begin{cases} a = -\\frac{1}{2} \\\\ b = 0 \\\\ c = 8 \\end{cases}$.\nDo đó: $(P): y = -\\frac{1}{2}x^2 + 8$.\nGiả sử phương trình đường thẳng $AB$ là: $y = m$ $(0 < m < 8)$.\nPhương trình đường thẳng $CD$ là: $y = n$ $(0 < n < m)$.\nPhương trình hoành độ giao điểm của đường thẳng $AB$ và $(P)$ là:\n$-\\frac{1}{2}x^2 + 8 = m \\Leftrightarrow x = \\pm \\sqrt{16-2m}$.\nSuy ra diện tích hình phẳng giới hạn bởi Parabol và đường thẳng $AB$ là:\n$S_1 = \\frac{4}{3}\\sqrt{16-2m} \\cdot (8-m)$.\nPhương trình hoành độ giao điểm của đường thẳng $CD$ và $(P)$ là:\n$-\\frac{1}{2}x^2 + 8 = n \\Leftrightarrow x = \\pm \\sqrt{16-2n}$.\nSuy ra diện tích hình phẳng giới hạn bởi Parabol và đường thẳng $CD$ là:\n$S_2 = \\frac{4}{3}\\sqrt{16-2n} \\cdot (8-n)$.\nTheo bài ra hai phần ở phía trên có diện tích bằng nhau\n$\\Rightarrow \\frac{S_1}{S_2} = \\frac{1}{2} \\Rightarrow \\frac{\\sqrt{16-2m}(8-m)}{\\sqrt{16-2n}(8-n)} = \\frac{1}{2}$\n$\\Rightarrow \\frac{(\\sqrt{8-m})^3}{(\\sqrt{8-n})^3} = \\frac{1}{2} \\Rightarrow \\sqrt{\\frac{8-m}{8-n}} = \\frac{1}{\\sqrt[3]{2}}$\nMà $\\frac{AB}{CD} = \\frac{2\\sqrt{16-2m}}{2\\sqrt{16-2n}} = \\sqrt{\\frac{8-m}{8-n}} = \\frac{1}{\\sqrt[3]{2}} \\approx 0,79$."
+    }
 ]

@@ -261,6 +261,18 @@ def build_system_prompt(context: str, question_type: str) -> str:
             "Bat buoc dat dap an cuoi cung vao the <answer>a-T,b-F,c-T,d-F</answer> voi T la Dung, F la Sai. "
             "Tuyet doi khong dung chu 'Dung/Sai', khong boc trong \\text{} hay bat ky format nao khac."
         )
+        if True:  # Always add visual extraction guide for True/False (may have images)
+            fmt += (
+                "\n\nDAC BIET KHI CO HINH VE (Visual Feature Extraction — BAT BUOC):"
+                "\nNeu menh de yeu cau danh gia mot do thi / bang bien thien / hinh ve:"
+                "\n  [TRICH XUAT THI GIAC] Truoc khi ket luan Dung/Sai, ban PHAI liet ke CU THE:"
+                "\n  1. Phuong trinh duong tiem can (ngang va dung) doc tu hinh."
+                "\n  2. Toa do cac diem dac trung: cuc dai, cuc tieu, giao diem truc hoanh, y-intercept."
+                "\n  3. Chieu bien thien (ham so tang/giam tren tung khoang)."
+                "\n  4. Dang bieu do (hyperbol? parabol? ham bac ba?) va tinh doi xung."
+                "\n  KHONG DUOC dung phat bieu 'Neu hinh khong the hien dung thi sai' — DO LA"
+                "\n  TRANH TRANH LUAN. Ban PHAI doc hinh va ket luan CHINH XAC."
+            )
     elif question_type == "exam_mcq":
         fmt = (
             "\n\nQUAN TRONG: Ban PHAI dat dap an dung vao the <answer>X</answer> voi X la A, B, C hoac D. "
@@ -278,19 +290,41 @@ def build_system_prompt(context: str, question_type: str) -> str:
         fmt = ""
 
     cot = (
-        "\n\nQUY TRINH SUY LUAN (BAT BUOC) — Chain of Thought:"
-        "\nTruoc khi dua ra dap an, ban PHAI suy luan tung buoc:"
+        "\n\nQUY TRINH SUY LUAN BAT BUOC — Agentic Tool-Calling:"
+        "\n⚠️  NGHIEM CAM: TUYET DOI KHONG duoc tu tinh nham bat ky phep toan nao."
+        "\nVoi MOI phep tinh, ban BAT BUOC phai goi Tool (Cong cu SymPy) de may tinh xu ly."
+        "\nCac truong hop BAT BUOC phai goi Tool:"
+        "\n  - Dao ham: goi compute_derivative"
+        "\n  - Tich phan: goi compute_integral"
+        "\n  - Giai phuong trinh: goi solve_equation"
+        "\n  - Giai bat phuong trinh (>, <, >=, <=): goi solve_inequality"
+        "\n  - Tinh logarit, mu, can bac n phuc tap: goi solve_equation hoac simplify_expression"
+        "\n  - Tinh gia tri bieu thuc: goi simplify_expression hoac evaluate_at_point"
+        "\nQuy trinh:"
         "\n  Buoc 1: Xac dinh dang bai va phuong phap giai."
-        "\n  Buoc 2: Neu bai co HINH VE hoac DO THI, bat buoc thuc hien day du 3 micro-buoc sau:"
-        "\n    [Mo ta] - Liet ke tat ca cac gia tri tren truc Ox va Oy bao gom ca dau am (-)."
-        "\n             - Xac dinh so nhanh do thi, hinh dang (parabol, duong thang, v.v.)."
-        "\n             - Tim cac duong tiem can neu co."
-        "\n    [Dinh vi] - CHI lay toa do cac diem nam CHINH XAC tren NUT LUOI TOA DO (giao cua cac duong ke luoi)."
-        "\n             - TUYET DOI KHONG uoc luong bang mat cac diem giao voi truc toa do neu chung khong nam ngay nut luoi (nghia la khong phai so nguyen). Hay tim cac diem khac tren nhanh do thi co toa do nguyen ro rang."
-        "\n             - Voi Parabol: uu tien doc toa do DINH va 1 diem bat ky di qua nut luoi."
-        "\n    [Xac nhan] - Viet phuong trinh do thi tu cac diem nguyen vua doc va thu lai de kiem tra tinh hop le."
-        "\n  Buoc 3: Thuc hien phep tinh / loai tru phuong an."
-        "\n  Buoc 4: Kiem tra lai dap an bang thu nguoc hoac dieu kien bien."
+        "\n  Buoc 2: Thiet lap bieu thuc / phuong trinh / bat phuong trinh can tinh."
+        "\n  Buoc 3: GOI TOOL de tinh. Doi ket qua chinh xac tu SymPy roi moi ket luan."
+        "\n  Buoc 4: Neu bai co HINH VE hoac DO THI — doc CAN THAN toa do tu hinh:"
+        "\n          a) Doc CHINH XAC vi tri tuong doi cua cac diem/duong co nhan (tren/duoi, trai/phai)."
+        "\n          b) Ghi lai it nhat 3 cap (x, y) CU THE doc tu hinh."
+        "\n          c) Doi chieu TUNG phuong an voi cac diem da doc."
+        "\n          KHONG BAO GIO ket luan chi dua vao cam giac hinh dang chung chung."
+        "\n  Buoc 5: Bai toan GTLN/GTNN/Toi uu hoa:"
+        "\n          a) Thiet lap ham f(t), goi compute_derivative de tinh f'(t)."
+        "\n          b) Goi solve_equation de giai f'(t)=0 tim nghiem t*."
+        "\n          c) Goi evaluate_at_point de tinh f(t*) chinh xac."
+        "\n  Buoc 6: Bai toan tang truong/phan bao/lai kep:"
+        "\n          a) Thiet lap bat phuong trinh, goi solve_inequality."
+        "\n          b) Doc ket qua bien thap phan tu SymPy."
+        "\n          c) Lam tron LEN den boi so nguyen cua chu ky (neu co chu ky roi rac)."
+        "\n  Buoc 7: Kiem tra lai dap an bang thu nguoc hoac dieu kien bien."
+        "\n  Buoc 8: QUY UOC LOGARIT KHI GOI SYMPY — BAT BUOC THUC HIEN:"
+        "\n          Trong toan pho thong Viet Nam, ky hieu 'log' hoac 'lg' MAC DINH la logarit co so 10."
+        "\n          Trong SymPy, ham log() MAC DINH la logarit tu nhien (co so e = ln)."
+        "\n          ==> De tranh sai, BAT BUOC mapping nhu sau khi goi SymPy:"
+        "\n              - 'log(x)'  trong de bai   ==> goi SymPy: log(x, 10)"
+        "\n              - 'lg(x)'   trong de bai   ==> goi SymPy: log(x, 10)"
+        "\n              - 'ln(x)'   trong de bai   ==> goi SymPy: log(x)       [giu nguyen]"
     )
 
     rag = (
@@ -311,7 +345,9 @@ def build_system_prompt(context: str, question_type: str) -> str:
     )
 
 
-# ── Generate answer ────────────────────────────────────────────────────────────
+# ── Generate answer (Agentic Tool-Calling) ────────────────────────────────────
+
+_TOOL_CALL_BUDGET = 8  # Số vòng gọi tool tối đa để tránh vòng lặp vô tận
 
 async def generate_with_trace(
     question: str,
@@ -319,12 +355,20 @@ async def generate_with_trace(
     question_type: str,
     image_path: str,
     solver_model: Optional[str] = None,
-    use_reflection: bool = False,
+    use_reflection: bool = False,  # Giữ param cho tương thích CLI, không dùng nữa
 ) -> tuple[str, str, bool, Optional[str]]:
-    """Returns (response, model_used, used_vision, reflection_log)."""
+    """Sinh câu trả lời dùng Agentic Tool-Calling (SymPy as Function Call).
+
+    LLM được bind sẵn các tool SymPy. Khi cần tính toán, LLM chủ động gọi
+    tool thay vì tự nhẩm. Vòng lặp: LLM → tool call → SymPy result → LLM → ... → đáp án.
+
+    Returns (response, model_used, used_vision, tool_call_log).
+    """
     from langchain_openai import ChatOpenAI
-    from langchain.schema import HumanMessage, SystemMessage
+    from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage, AIMessage
     from app.config import get_settings
+    from app.agents.tools import MATH_TOOL_LIST
+    import json
 
     settings = get_settings()
 
@@ -336,13 +380,23 @@ async def generate_with_trace(
     else:
         model = settings.VISION_LLM_MODEL if using_vision else settings.LLM_MODEL
 
-    temp = 1.0 if any(prefix in model for prefix in ["o1", "o3", "o4"]) else 0.1
-    llm = ChatOpenAI(
+    # o1/o3/o4 không hỗ trợ tool_choice với temperature != 1
+    is_reasoning_model = any(prefix in model for prefix in ["o1", "o3", "o4"])
+    temp = 1.0 if is_reasoning_model else 0.1
+
+    llm_base = ChatOpenAI(
         model=model,
         api_key=settings.OPENAI_API_KEY,
         temperature=temp,
     )
 
+    # Bind SymPy tools — reasoning models không hỗ trợ tool binding
+    if is_reasoning_model:
+        llm = llm_base
+    else:
+        llm = llm_base.bind_tools(MATH_TOOL_LIST)
+
+    # Xây dựng danh sách messages ban đầu
     if using_vision:
         b64, mt = img_data
         human_content = [
@@ -355,22 +409,62 @@ async def generate_with_trace(
     else:
         messages = [SystemMessage(content=system_prompt), HumanMessage(content=question)]
 
-    resp = await llm.ainvoke(messages)
-    
     from app.utils.cost_tracker import log_from_response
-    log_from_response(agent="Solver", model=model, response=resp)
-    
-    draft_response = resp.content
 
-    reflection_log = None
-    if use_reflection:
-        from app.agents.reflection import ReflectionEngine
-        engine = ReflectionEngine()
-        reflection_result = await engine.reflect(draft_response, question)
-        draft_response = reflection_result.build_full_response(include_thinking=False)
-        reflection_log = "\n".join(reflection_result.thinking_log) if reflection_result.thinking_log else None
+    # ── Agentic Tool-Calling Loop ─────────────────────────────────────────────
+    tool_call_log_lines: list[str] = ["🔧 Bắt đầu giải với Agentic SymPy Tool-Calling..."]
+    tool_map = {t.name: t for t in MATH_TOOL_LIST}
+    final_response = ""
 
-    return draft_response, model, using_vision, reflection_log
+    for turn in range(_TOOL_CALL_BUDGET + 1):
+        resp = await llm.ainvoke(messages)
+        log_from_response(agent="Solver", model=model, response=resp)
+
+        # Kiểm tra LLM có muốn gọi tool không
+        tool_calls = getattr(resp, "tool_calls", None)
+
+        if not tool_calls:
+            # Không còn tool call → đây là đáp án cuối cùng
+            final_response = resp.content
+            tool_call_log_lines.append(f"✅ Hoàn tất sau {turn} lượt gọi tool.")
+            break
+
+        # LLM muốn gọi tool → thực thi từng tool
+        messages.append(resp)  # Thêm AI message (chứa tool_calls) vào history
+        tool_call_log_lines.append(f"\n🔁 Lượt {turn + 1}: LLM yêu cầu {len(tool_calls)} tool call(s):")
+
+        for tc in tool_calls:
+            tool_name = tc.get("name", "")
+            tool_args = tc.get("args", {})
+            tool_call_id = tc.get("id", f"call_{turn}")
+
+            tool_fn = tool_map.get(tool_name)
+            if tool_fn is None:
+                tool_result_str = f"ERROR: Tool '{tool_name}' không tồn tại."
+            else:
+                try:
+                    tool_result_str = tool_fn.invoke(tool_args)
+                except Exception as e:
+                    tool_result_str = f"ERROR khi chạy {tool_name}: {e}"
+
+            tool_call_log_lines.append(
+                f"  📐 [{tool_name}] args={json.dumps(tool_args, ensure_ascii=False)}"
+                f"\n     → {tool_result_str}"
+            )
+
+            # Đưa kết quả tool vào messages để LLM đọc
+            messages.append(ToolMessage(
+                content=tool_result_str,
+                tool_call_id=tool_call_id,
+            ))
+
+    else:
+        # Đã hết budget mà LLM vẫn gọi tool → lấy content cuối
+        tool_call_log_lines.append(f"⚠️ Đã đạt giới hạn {_TOOL_CALL_BUDGET} lượt gọi tool. Lấy kết quả cuối.")
+        final_response = resp.content if resp.content else "[Không có đáp án]"
+
+    tool_call_log = "\n".join(tool_call_log_lines)
+    return final_response, model, using_vision, tool_call_log
 
 
 # ── MathJudge (inline, no asyncio.run conflict) ────────────────────────────────
@@ -559,11 +653,16 @@ def print_question_trace(
         print(f"\n📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]")
         print(f"   Format: {qtype} | CoT: ✅ | RAG framing: ✅")
 
-    # ── Reflection / SymPy Log ──
+    # -- Tool Calls / SymPy Log (thay the Reflection cũ) --
     if reflection_log:
-        print("\n⚙️  SYM-PY REFLECTION:")
+        print("\n[TOOL CALLS] SYM-PY AGENTIC:")
         print(SEP)
-        print(reflection_log)
+        # Safe print: avoid UnicodeEncodeError on Windows cp1258 terminal
+        safe_log = reflection_log.encode("utf-8", errors="replace").decode("utf-8")
+        try:
+            print(safe_log)
+        except UnicodeEncodeError:
+            print(safe_log.encode("ascii", errors="replace").decode("ascii"))
 
     # ── Response ──
     print(f"\n🤖 MODEL RESPONSE:")

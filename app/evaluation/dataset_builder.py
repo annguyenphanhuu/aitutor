@@ -239,40 +239,75 @@ async def generate_answer(
         format_instruction = (
             "\n\nQUAN TRONG: Cau hoi nay la dang Dung/Sai nhieu menh de. "
             "Bat buoc ket thuc cau tra loi bang dong: "
-            "'KET QUA: a-T,b-F,c-T,d-F' (T=Dung, F=Sai). "
-            "Vi du: KET QUA: a-T,b-F,c-T,d-F"
+            "'<answer>a-T,b-F,c-T,d-F</answer>' (T=Dung, F=Sai). "
+            "Bao boc dap an trong the <answer>...</answer>."
         )
+        if True:  # Always add visual extraction guide for True/False (may have images)
+            format_instruction += (
+                "\n\nDAC BIET KHI CO HINH VE (Visual Feature Extraction — BAT BUOC):"
+                "\nNeu menh de yeu cau danh gia mot do thi / bang bien thien / hinh ve:"
+                "\n  [TRICH XUAT THI GIAC] Truoc khi ket luan Dung/Sai, ban PHAI liet ke CU THE:"
+                "\n  1. Phuong trinh duong tiem can (ngang va dung) doc tu hinh."
+                "\n  2. Toa do cac diem dac trung: cuc dai, cuc tieu, giao diem truc hoanh, y-intercept."
+                "\n  3. Chieu bien thien (ham so tang/giam tren tung khoang)."
+                "\n  4. Dang bieu do (hyperbol? parabol? ham bac ba?) va tinh doi xung."
+                "\n  KHONG DUOC dung phat bieu 'Neu hinh khong the hien dung thi sai' — DO LA"
+                "\n  TRANH TRANH LUAN. Ban PHAI doc hinh va ket luan CHINH XAC."
+            )
     elif question_type == "exam_mcq":
         format_instruction = (
-            "\n\nQUAN TRONG: Bat dau cau tra loi bang 'Chon X.' "
+            "\n\nQUAN TRONG: Bao boc dap an trong the <answer>X</answer> "
             "voi X la dap an dung (A, B, C hoac D), sau do giai thich ngan gon."
+            "\nLuu y: Chu cai trong the <answer>X</answer> BAT BUOC phai trung khop "
+            "hoan toan voi chu cai ban da chon o cau ket luan cuoi cung cua phan giai thich."
         )
     elif question_type == "exam_short_answer":
         format_instruction = (
-            "\n\nQUAN TRONG: Ket thuc cau tra loi bang 'DAP AN: [gia tri so]'."
+            "\n\nQUAN TRONG: Bao boc gia tri so cuoi cung trong the <answer>...</answer>."
             " Neu ket qua la xac suat hoac phan tram, ghi duoi dang SO THAP PHAN (vi du: 0.56),"
             " KHONG ghi duoi dang phan tram (vi du: KHONG ghi 56)."
+            "\n  NEU BAI YEU CAU LAM TRON: ban PHAI lam tron ket qua TRUOC khi dua vao <answer>."
         )
     else:
         format_instruction = ""
 
     # ── CoT instruction — vision-aware ────────────────────────────────────────
     cot_instruction = (
-        "\n\nQUY TRINH SUY LUAN (BAT BUOC) — Chain of Thought:"
-        "\nTruoc khi dua ra dap an, ban PHAI suy luan tung buoc:"
+        "\n\nQUY TRINH SUY LUAN BAT BUOC — Agentic Tool-Calling:"
+        "\n⚠️  NGHIEM CAM: TUYET DOI KHONG duoc tu tinh nham bat ky phep toan nao."
+        "\nVoi MOI phep tinh, ban BAT BUOC phai goi Tool (Cong cu SymPy) de may tinh xu ly."
+        "\nCac truong hop BAT BUOC phai goi Tool:"
+        "\n  - Dao ham: goi compute_derivative"
+        "\n  - Tich phan: goi compute_integral"
+        "\n  - Giai phuong trinh: goi solve_equation"
+        "\n  - Giai bat phuong trinh (>, <, >=, <=): goi solve_inequality"
+        "\n  - Tinh logarit, mu, can bac n phuc tap: goi solve_equation hoac simplify_expression"
+        "\n  - Tinh gia tri bieu thuc: goi simplify_expression hoac evaluate_at_point"
+        "\nQuy trinh:"
         "\n  Buoc 1: Xac dinh dang bai va phuong phap giai."
-        "\n  Buoc 2: Neu bai co HINH VE hoac DO THI — doc CAN THAN toa do tu hinh:"
-        "\n          a) Doc CHINH XAC gia tri y tai x=0 tu do thi (nhin truc tung,"
-        "\n             kiem tra duong do thi cat truc y tai diem nao: y=0? y=1? y=-1?)."
-        "\n          b) Doc gia tri y tai cac diem dac biet khac: x=pi/2, x=pi, x=-pi/2..."
-        "\n          c) Ghi lai it nhat 3 cap (x, y) CU THE doc tu hinh."
-        "\n          d) Doi chieu TUNG phuong an voi cac diem da doc:"
-        "\n             - sin(0)=0, cos(0)=1, tan(0)=0, cot(0)=khong xac dinh"
-        "\n             - sin(pi/2)=1, cos(pi/2)=0, tan(pi/2)=khong xac dinh"
-        "\n          e) Loai bo phuong an NAO co gia tri KHONG KHOP voi hinh."
-        "\n          KHONG BAO GIO ket luan chi dua vao 'cam giac' hinh dang chung chung."
-        "\n  Buoc 3: Thuc hien phep tinh / loai tru phuong an."
-        "\n  Buoc 4: Kiem tra lai dap an bang thu nguoc hoac dieu kien bien."
+        "\n  Buoc 2: Thiet lap bieu thuc / phuong trinh / bat phuong trinh can tinh."
+        "\n  Buoc 3: GOI TOOL de tinh. Doi ket qua chinh xac tu SymPy roi moi ket luan."
+        "\n  Buoc 4: Neu bai co HINH VE hoac DO THI — doc CAN THAN toa do tu hinh:"
+        "\n          a) Doc CHINH XAC vi tri tuong doi cua cac diem/duong co nhan (tren/duoi, trai/phai)."
+        "\n          b) Ghi lai it nhat 3 cap (x, y) CU THE doc tu hinh."
+        "\n          c) Doi chieu TUNG phuong an voi cac diem da doc."
+        "\n          KHONG BAO GIO ket luan chi dua vao cam giac hinh dang chung chung."
+        "\n  Buoc 5: Bai toan GTLN/GTNN/Toi uu hoa:"
+        "\n          a) Thiet lap ham f(t), goi compute_derivative de tinh f'(t)."
+        "\n          b) Goi solve_equation de giai f'(t)=0 tim nghiem t*."
+        "\n          c) Goi evaluate_at_point de tinh f(t*) chinh xac."
+        "\n  Buoc 6: Bai toan tang truong/phan bao/lai kep:"
+        "\n          a) Thiet lap bat phuong trinh, goi solve_inequality."
+        "\n          b) Doc ket qua bien thap phan tu SymPy."
+        "\n          c) Lam tron LEN den boi so nguyen cua chu ky (neu co chu ky roi rac)."
+        "\n  Buoc 7: Kiem tra lai dap an bang thu nguoc hoac dieu kien bien."
+        "\n  Buoc 8: QUY UOC LOGARIT KHI GOI SYMPY — BAT BUOC THUC HIEN:"
+        "\n          Trong toan pho thong Viet Nam, ky hieu 'log' hoac 'lg' MAC DINH la logarit co so 10."
+        "\n          Trong SymPy, ham log() MAC DINH la logarit tu nhien (co so e = ln)."
+        "\n          ==> De tranh sai, BAT BUOC mapping nhu sau khi goi SymPy:"
+        "\n              - 'log(x)'  trong de bai   ==> goi SymPy: log(x, 10)"
+        "\n              - 'lg(x)'   trong de bai   ==> goi SymPy: log(x, 10)"
+        "\n              - 'ln(x)'   trong de bai   ==> goi SymPy: log(x)       [giu nguyen]"
     )
 
     # ── RAG-as-reference framing ──────────────────────────────────────────────
