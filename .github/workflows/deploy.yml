@@ -20,4 +20,4 @@ jobs:
         # BẠN CẦN THAY ĐỔI DÒNG DƯỚI ĐÂY:
         # 1. Thay "TEN_USER_HF_CUA_BAN" bằng Tên đăng nhập Hugging Face của bạn (ở 2 vị trí).
         # 2. Thay "AITutor-API" bằng Tên Space mà bạn vừa tạo trên Hugging Face.
-        run: git push --force https://PhanHuuAnNguyen:$HF_TOKEN@huggingface.co/spaces/PhanHuuAnNguyen/AITutor-API main
+        run: git push --force https://PhanHuuAnNguyen:$HF_TOKEN@huggingface.co/spaces/PhanHuuAnNguyen/AITutor-API HEAD:main
