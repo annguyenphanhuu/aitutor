@@ -31,8 +31,8 @@ COPY . .
 # Tạo thư mục data nếu chưa có
 RUN mkdir -p data
 
-# Expose port mà FastAPI sẽ chạy
-EXPOSE 8000
+# Expose port mà FastAPI sẽ chạy (Hugging Face yêu cầu port 7860)
+EXPOSE 7860
 
 # Lệnh khởi chạy server bằng Uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]

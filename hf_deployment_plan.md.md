@@ -1,14 +1,28 @@
-# Kế hoạch Triển khai AITutor lên Production (Miễn phí với CI/CD)
+# Kế hoạch Triển khai AITutor lên Production (AWS Free Tier & CI/CD)
 
-Kế hoạch này hướng dẫn chi tiết cách đưa dự án AITutor lên môi trường production hoàn toàn miễn phí, sử dụng **Neon.tech** (Cơ sở dữ liệu), **Hugging Face Spaces** (Backend API), kết hợp **AWS S3** (Lưu trữ ảnh đã có sẵn của bạn) và **GitHub Actions** (CI/CD Tự động).
+Kế hoạch này hướng dẫn chi tiết cách đưa dự án AITutor lên môi trường production, sử dụng **AWS RDS PostgreSQL** (Cơ sở dữ liệu - Gói Free Tier 12 tháng), **Hugging Face Spaces** (Backend API), kết hợp **AWS S3** (Lưu trữ file) và **GitHub Actions** (CI/CD Tự động).
 
-## Giai đoạn 1: Khởi tạo Cơ sở dữ liệu (Neon.tech)
+## Giai đoạn 1: Khởi tạo Cơ sở dữ liệu (AWS RDS PostgreSQL - Free Tier)
 
-1. Truy cập [Neon.tech](https://neon.tech/) và đăng ký tài khoản miễn phí.
-2. Tạo một Project mới.
-3. Trong bảng điều khiển (Dashboard), lấy chuỗi kết nối **Connection String** (định dạng URL).
-4. Copy chuỗi này và đổi phần đầu `postgres://` thành `postgresql+asyncpg://` (vì dự án của bạn đang dùng `asyncpg` trong SQLAlchemy, giống với cấu hình `.env` hiện tại).
-   - Ví dụ: `postgresql+asyncpg://user:pass@ep-restless-bird.ap-southeast-1.aws.neon.tech/neondb?sslmode=require`
+1. Đăng nhập vào [AWS Management Console](https://aws.amazon.com/console/) và truy cập dịch vụ **RDS**.
+2. Nhấn **Create database**.
+   - Method: **Standard create**.
+   - Engine options: **PostgreSQL**.
+   - Templates: Chọn **Free tier** (Rất quan trọng để không bị tính phí trong 12 tháng đầu tiên).
+3. Cấu hình thông tin (Settings):
+   - **DB instance identifier**: `aitutor-db`
+   - **Master username** & **Master password**: Đặt tên đăng nhập và mật khẩu (nhớ lưu lại cẩn thận).
+4. Cấu hình kết nối (Connectivity):
+   - **Public access**: Chọn **Yes** (Bắt buộc để backend trên Hugging Face có thể kết nối được tới database này).
+   - **VPC security group**: Chọn *Create new* và đặt tên (ví dụ: `rds-hf-sg`).
+5. Cuộn xuống cuối và nhấn **Create database**. Quá trình tạo sẽ mất vài phút.
+6. Khi trạng thái Database chuyển thành *Available*, click vào tên database. Ở tab **Connectivity & security**, sao chép giá trị **Endpoint**.
+7. Chỉnh sửa Inbound Rules của Security Group: 
+   - Nhấn vào tên Security Group trong phần VPC security groups.
+   - Chọn **Edit inbound rules**, thêm một rule mới: Type `PostgreSQL`, Source `Anywhere-IPv4` (`0.0.0.0/0`). Lưu lại để cho phép Hugging Face kết nối.
+8. Xây dựng chuỗi kết nối (Connection String):
+   - Định dạng: `postgresql+asyncpg://<username>:<password>@<endpoint>:5432/postgres`
+   - Ví dụ: `postgresql+asyncpg://postgres:matkhau123@aitutor-db.abc123xyz.ap-southeast-1.rds.amazonaws.com:5432/postgres`
 
 ## Giai đoạn 2: Điều chỉnh Source Code cho Hugging Face Spaces
 
@@ -41,7 +55,7 @@ Hugging Face Spaces bắt buộc ứng dụng phải chạy ở cổng **7860** 
    Hugging Face sẽ không đọc file `.env` của bạn vì tính bảo mật.
    Trong giao diện Space vừa tạo, chuyển sang tab **Settings** -> cuộn xuống phần **Variables and secrets** -> nhấn **New secret**.
    Bạn cần thêm toàn bộ các thông tin quan trọng từ file `.env` của dự án vào đây:
-   - `DATABASE_URL`: Chèn chuỗi lấy từ Neon.tech ở Bước 1.
+   - `DATABASE_URL`: Chèn chuỗi kết nối AWS RDS PostgreSQL vừa tạo ở Bước 1.
    - `OPENAI_API_KEY`: Khóa API của bạn.
    - Các biến AWS: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_BUCKET`, `AWS_REGION`.
    - Các biến Langfuse: `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST`.
