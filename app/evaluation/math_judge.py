@@ -369,8 +369,17 @@ class MathJudge:
         self.model = model
         self.skip_explanation = skip_explanation  # also skips step_clarity
 
-    async def judge_sample(self, sample: dict) -> dict:
-        """Judge một sample duy nhất, trả về scores + metadata."""
+    async def judge_sample(self, sample: dict, trace_id: Optional[str] = None) -> dict:
+        """Judge một sample duy nhất, trả về scores + metadata.
+
+        Parameters
+        ----------
+        sample : dict
+            Sample data chứa user_input, response, reference, _meta.
+        trace_id : str | None
+            Langfuse trace ID của response cần chấm. Nếu có, scores sẽ được
+            push lên Langfuse để hiển thị trên dashboard.
+        """
         meta          = sample.get("_meta", {})
         question_type = meta.get("type", "")
         correct_ans   = meta.get("correct_answer", "")
@@ -399,6 +408,26 @@ class MathJudge:
                 model=self.model,
             )
 
+        # ── Push scores lên Langfuse nếu có trace_id ──
+        if trace_id:
+            try:
+                from app.utils.langfuse_client import score_trace
+                score_trace(
+                    trace_id=trace_id,
+                    name="accuracy",
+                    value=float(accuracy),
+                    comment=f"type={question_type},skill={meta.get('skill_id', '')}",
+                )
+                if step_clarity is not None:
+                    score_trace(
+                        trace_id=trace_id,
+                        name="step_clarity",
+                        value=float(step_clarity),
+                        comment=f"judge_model={self.model}",
+                    )
+            except Exception as e:
+                logger.debug("MathJudge: Langfuse score push failed (ignoring): %s", e)
+
         return {
             "id":                  meta.get("id", ""),
             "skill_id":            meta.get("skill_id", ""),
@@ -407,6 +436,7 @@ class MathJudge:
             "correct_answer":      correct_ans,
             "accuracy":            accuracy,
             "step_clarity":        step_clarity,
+            "trace_id":            trace_id,
         }
 
     async def run(self, samples: list[dict]) -> list[dict]:

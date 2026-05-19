@@ -171,7 +171,8 @@ async def chat(
     trace = new_trace(
         name="chat",
         user_id=str(user_id),
-        metadata={"session_id": session_id, "mode": data.mode},
+        session_id=str(session_id),
+        metadata={"mode": data.mode},
         input_text=sanitized_message,
     )
 
@@ -182,6 +183,7 @@ async def chat(
         mode=data.mode,
         chat_history=chat_history,
         user_id=user_id,
+        langfuse_trace=trace,   # truyền trace xuống để các span con gắn vào
     )
     latency_ms = int((time.monotonic() - t0) * 1000)
 
@@ -190,8 +192,10 @@ async def chat(
         output=response.get("response", ""),
         metadata={
             "skill_id": response.get("skill_id"),
+            "skill_ids": response.get("skill_ids"),
             "mode_used": response.get("mode_used"),
             "latency_ms": latency_ms,
+            "intent": response.get("intent"),
         },
     )
 

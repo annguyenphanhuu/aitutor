@@ -276,6 +276,29 @@ class TeacherAgent(AgenticTeacherMixin):
         # ── Reflection Engine (Test-Time Compute, fallback khi FC tắt) ──
         self.reflection = ReflectionEngine(max_corrections=1)
 
+        # ── Langfuse Prompt Management ─────────────────────────────────
+        # Fetch system prompts từ Langfuse Cloud khi khởi động.
+        # Nếu Langfuse disabled hoặc lỗi network → tự động dùng fallback hardcode.
+        # Điều này cho phép Data Scientist chỉnh sửa prompt trên Langfuse UI
+        # mà không cần commit code hay deploy lại server.
+        from app.utils.langfuse_client import get_prompt
+        self._prompt_socratic = get_prompt(
+            "aitutor-socratic-v1",
+            fallback=TEACHER_SYSTEM_PROMPT_SOCRATIC,
+        )
+        self._prompt_exam = get_prompt(
+            "aitutor-exam-v1",
+            fallback=TEACHER_SYSTEM_PROMPT_EXAM,
+        )
+        self._prompt_answer = get_prompt(
+            "aitutor-answer-v1",
+            fallback=TEACHER_SYSTEM_PROMPT_ANSWER,
+        )
+        logger.debug(
+            "TeacherAgent prompts loaded: socratic=%d chars, exam=%d chars, answer=%d chars",
+            len(self._prompt_socratic), len(self._prompt_exam), len(self._prompt_answer),
+        )
+
     async def respond(
         self,
         question: str,
@@ -288,6 +311,7 @@ class TeacherAgent(AgenticTeacherMixin):
         formula_ids: Optional[list[str]] = None,
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
+        trace_id: Optional[str] = None,
     ) -> str:
         """Generate adaptive teaching response.
 
@@ -297,12 +321,24 @@ class TeacherAgent(AgenticTeacherMixin):
           3. LLM generation
           4. Reflection loop (SymPy verification + self-correction)
         """
-        # ── Step 1: GraphRAG Retrieval ─────────────────────────────
+        # ── Step 1: GraphRAG Retrieval ───────────────────────────
+        from app.utils.langfuse_client import new_span, end_span
+        rag_span = new_span(
+            name="rag.graph_retrieval",
+            trace_id=trace_id,
+            input_data={"query": question[:300], "skill_id": skill_id},
+        )
         rag_result = self.graph_retriever.retrieve(
             query=question,
             skill_id=skill_id,
             masteries=masteries or {},
         )
+        end_span(rag_span, output={
+            "num_main_docs": len(rag_result.main_docs),
+            "num_prereq_docs": len(rag_result.prereq_docs),
+            "weak_skills": [w["skill_id"] for w in rag_result.weak_skills],
+            "has_images": has_images(rag_result.all_docs),
+        })
         context = rag_result.build_context_text()
         normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
         skill_names_list = _format_skill_names(normalized_skill_ids)
@@ -322,9 +358,10 @@ class TeacherAgent(AgenticTeacherMixin):
             gaps_text = f"\n⚠️ HỌC SINH CÒN YẾU CÁC KIẾN THỨC NỀN: {gaps_list}. Hãy nhắc nhở ôn lại."
 
         # ── Step 3: Build messages ───────────────────────────────
+        # Dùng self._prompt_* (loaded từ Langfuse hoặc fallback về hardcode)
         if mode == "exam":
             system_prompt = (
-                TEACHER_SYSTEM_PROMPT_EXAM
+                self._prompt_exam
                 .replace("{context}", context)
                 .replace("{skill_names_list}", skill_names_list)
                 .replace("{formulas_list}", formulas_list)
@@ -333,7 +370,7 @@ class TeacherAgent(AgenticTeacherMixin):
             )
         elif mode == "answer":
             system_prompt = (
-                TEACHER_SYSTEM_PROMPT_ANSWER
+                self._prompt_answer
                 .replace("{context}", context)
                 .replace("{skill_names_list}", skill_names_list)
                 .replace("{formulas_list}", formulas_list)
@@ -342,7 +379,7 @@ class TeacherAgent(AgenticTeacherMixin):
             )
         else:
             system_prompt = (
-                TEACHER_SYSTEM_PROMPT_SOCRATIC
+                self._prompt_socratic
                 .replace("{context}", context)
                 .replace("{skill_names_list}", skill_names_list)
                 .replace("{formulas_list}", formulas_list)
@@ -393,6 +430,7 @@ class TeacherAgent(AgenticTeacherMixin):
                 question=question,
                 skill_id=skill_id,
                 mode=mode,
+                trace_id=trace_id,
             )
 
         # Reflection path: single LLM call → post-hoc SymPy verify (cheaper)
@@ -402,7 +440,8 @@ class TeacherAgent(AgenticTeacherMixin):
             name="teacher.llm_call",
             model=self.model_name,
             input_text=question[:400],
-            metadata={"mode": mode, "skill_id": skill_id},
+            metadata={"mode": mode, "skill_id": skill_id, "routing": "reflection"},
+            trace_id=trace_id,
         )
 
         response = await self.llm.ainvoke(messages)

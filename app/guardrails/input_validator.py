@@ -117,6 +117,28 @@ def validate_input(
                 user_id,
                 pattern.pattern[:60],
             )
+            # ── Log blocked attempt lên Langfuse ────────────────────────
+            try:
+                from app.utils.langfuse_client import new_trace, score_trace
+                block_trace = new_trace(
+                    name="guardrails.injection_blocked",
+                    user_id=str(user_id) if user_id else None,
+                    metadata={
+                        "reason": "prompt_injection",
+                        "pattern": pattern.pattern[:60],
+                        "message_preview": stripped[:100],
+                    },
+                )
+                if block_trace:
+                    score_trace(
+                        trace_id=block_trace.id,
+                        name="safety_pass",
+                        value=0.0,
+                        comment="injection_blocked",
+                        data_type="NUMERIC",
+                    )
+            except Exception:
+                pass  # Guardrails không được phép crash vì Langfuse
             return ValidationResult(
                 is_safe=False,
                 message=message,

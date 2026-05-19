@@ -69,7 +69,7 @@ class Orchestrator:
             temperature=0.0,
         )
 
-    async def classify_intent(self, message: str) -> dict:
+    async def classify_intent(self, message: str, trace_id: Optional[str] = None) -> dict:
         """Classify student message intent and related skill."""
         from app.utils.langfuse_client import new_generation, end_generation
         skills_list = "\n".join(
@@ -95,6 +95,7 @@ class Orchestrator:
             name="orchestrator.classify_intent",
             model=settings.LLM_MODEL,
             input_text=message[:300],
+            trace_id=trace_id,
         )
 
         # Dùng OpenAI Responses API với reasoning=high cho gpt-5.4
@@ -163,8 +164,11 @@ class Orchestrator:
         Returns dict with response, skill_id, mastery, mode_used.
         """
         chat_history = chat_history or []
+        # Lấy trace_id để truyền xuống các span con
+        trace_id: Optional[str] = getattr(langfuse_trace, "id", None)
+
         # Step 1: Classify intent
-        classification = await self.classify_intent(message)
+        classification = await self.classify_intent(message, trace_id=trace_id)
         intent = classification.get("intent", "explain")
         skill_id = classification.get("skill_id")
         skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
@@ -308,6 +312,7 @@ class Orchestrator:
                 formula_ids=formula_ids,
                 masteries=masteries,
                 p_mastery=current_mastery,
+                trace_id=trace_id,
             )
 
             skill_info = SKILLS.get(skill_id, {})
@@ -385,6 +390,7 @@ class Orchestrator:
                 formula_ids=formula_ids,
                 masteries=masteries,
                 p_mastery=current_mastery,
+                trace_id=trace_id,
             )
 
             skill_info = SKILLS.get(skill_id, {})

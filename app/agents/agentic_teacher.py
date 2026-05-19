@@ -46,6 +46,7 @@ class AgenticTeacherMixin:
         question: str,
         skill_id: Optional[str] = None,
         mode: str = "socratic",
+        trace_id: Optional[str] = None,
     ) -> str:
         """
         ReAct loop: LLM generate → tool call (nếu cần) → append result → lặp.
@@ -60,12 +61,15 @@ class AgenticTeacherMixin:
             skill_id để log cost.
         mode : str
             "socratic" | "exam" | "answer"
+        trace_id : str | None
+            Langfuse trace ID để gắn các span con vào trace cha.
 
         Returns
         -------
         str
             Final answer sau khi LLM không còn emit tool calls.
         """
+        from app.utils.langfuse_client import new_span, end_span, new_generation, end_generation
         max_rounds = settings.FUNCTION_CALLING_MAX_ROUNDS
         math_tools = _get_math_tools()
 
@@ -76,6 +80,14 @@ class AgenticTeacherMixin:
         tool_call_log: list[dict] = []
 
         for round_num in range(max_rounds + 1):
+            # ── Langfuse generation span cho mỗi LLM round ────────────────
+            agentic_gen = new_generation(
+                name=f"teacher.agentic_round_{round_num}",
+                model=settings.LLM_MODEL,
+                input_text=question[:300],
+                metadata={"mode": mode, "skill_id": skill_id, "round": round_num},
+                trace_id=trace_id,
+            )
             try:
                 response = await self.openai_client.chat.completions.create(
                     model=settings.LLM_MODEL,
@@ -85,6 +97,7 @@ class AgenticTeacherMixin:
                     temperature=0.3,
                 )
             except Exception as e:
+                end_generation(agentic_gen, output=f"ERROR: {e}")
                 logger.error("AgenticTeacher LLM call failed (round %d): %s", round_num, e)
                 raise
 
@@ -104,6 +117,9 @@ class AgenticTeacherMixin:
 
             # ── Final answer: no tool calls ───────────────────────────────
             if not msg.tool_calls:
+                end_generation(agentic_gen, output=(msg.content or "")[:500],
+                               input_tokens=usage.prompt_tokens if usage else 0,
+                               output_tokens=usage.completion_tokens if usage else 0)
                 if tool_call_log:
                     logger.info(
                         "🔧 AgenticTeacher: %d tool calls executed for skill=%s",
@@ -113,11 +129,20 @@ class AgenticTeacherMixin:
 
             # ── Guard: max rounds reached ─────────────────────────────────
             if round_num >= max_rounds:
+                end_generation(agentic_gen, output="[max rounds]",
+                               input_tokens=usage.prompt_tokens if usage else 0,
+                               output_tokens=usage.completion_tokens if usage else 0)
                 logger.warning(
                     "⚠️  AgenticTeacher: max rounds (%d) reached without final answer. "
                     "Returning partial content.", max_rounds,
                 )
                 return msg.content or "[Không thể hoàn thành sau nhiều bước tính toán]"
+
+            # End this round's generation span (has tool calls)
+            end_generation(agentic_gen,
+                           output=f"tool_calls: {[tc.function.name for tc in msg.tool_calls]}",
+                           input_tokens=usage.prompt_tokens if usage else 0,
+                           output_tokens=usage.completion_tokens if usage else 0)
 
             # ── Append assistant message với tool_calls ────────────────────
             current_messages.append({
@@ -141,17 +166,34 @@ class AgenticTeacherMixin:
                 tool_name = tool_call.function.name
                 tool_call_id = tool_call.id
 
+                # ── Langfuse span cho mỗi tool call ──
+                tool_span = new_span(
+                    name=f"tool.{tool_name}",
+                    trace_id=trace_id,
+                    input_data={
+                        "tool": tool_name,
+                        "arguments": tool_call.function.arguments[:300],
+                    },
+                )
+
                 if tool_name not in TOOL_NAMES:
                     tool_result = {"success": False, "error": f"Tool không tồn tại: {tool_name}"}
+                    end_span(tool_span, output=tool_result, level="ERROR")
                 else:
                     try:
                         kwargs = json.loads(tool_call.function.arguments)
                         tool_fn = math_tools[tool_name]
                         tool_result = tool_fn(**kwargs)
+                        end_span(tool_span, output={
+                            "success": tool_result.get("success"),
+                            "result_latex": tool_result.get("result_latex", "")[:200],
+                        })
                     except json.JSONDecodeError as e:
                         tool_result = {"success": False, "error": f"Tham số không hợp lệ: {e}"}
+                        end_span(tool_span, output=tool_result, level="ERROR")
                     except Exception as e:
                         tool_result = {"success": False, "error": str(e)}
+                        end_span(tool_span, output=tool_result, level="ERROR")
 
                 # Format kết quả cho LLM
                 result_text = _format_tool_result(tool_name, tool_result)
