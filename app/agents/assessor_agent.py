@@ -72,10 +72,11 @@ class AssessorAgent:
     """Agent that evaluates student answers."""
 
     def __init__(self):
+        temp = 1.0 if any(p in settings.LLM_MODEL_MINI for p in ["o1", "o3", "o4"]) else 0.1
         self.llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,
-            temperature=0.1,
+            temperature=temp,
         )
 
     async def assess(

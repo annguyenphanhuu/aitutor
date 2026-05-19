@@ -262,10 +262,11 @@ class TeacherAgent(AgenticTeacherMixin):
             api_key=settings.OPENAI_API_KEY,
             temperature=temp,
         )
+        vision_temp = 1.0 if any(prefix in settings.VISION_LLM_MODEL for prefix in ["o1", "o3", "o4"]) else 0.3
         self.vision_llm = ChatOpenAI(
             model=settings.VISION_LLM_MODEL,
             api_key=settings.OPENAI_API_KEY,
-            temperature=0.3,
+            temperature=vision_temp,
         )
         # OpenAI async client — dùng bởi AgenticTeacherMixin
         self.openai_client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
@@ -561,10 +562,11 @@ class TeacherAgent(AgenticTeacherMixin):
         oai_messages.append({"role": "user", "content": question})
 
         # ── Step 5: Stream tokens ───────────────────────────────────────
+        temp = 1.0 if any(prefix in self.model_name for prefix in ["o1", "o3", "o4"]) else 0.3
         stream = await self.openai_client.chat.completions.create(
             model=self.model_name,
             messages=oai_messages,
-            temperature=0.3,
+            temperature=temp,
             stream=True,
         )
 

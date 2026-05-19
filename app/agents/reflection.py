@@ -101,16 +101,18 @@ class ReflectionEngine:
 
     def __init__(self, max_corrections: int = 1):
         # Reflection-Correct: full model — rewriting math answers requires quality
+        temp_main = 1.0 if any(p in settings.LLM_MODEL for p in ["o1", "o3", "o4"]) else 0.0
         self.llm = ChatOpenAI(
             model=settings.LLM_MODEL,
             api_key=settings.OPENAI_API_KEY,
-            temperature=0.0,
+            temperature=temp_main,
         )
         # Reflection-Extract: mini model — structured JSON extraction only
+        temp_mini = 1.0 if any(p in settings.LLM_MODEL_MINI for p in ["o1", "o3", "o4"]) else 0.0
         self.extractor_llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,
-            temperature=0.0,
+            temperature=temp_mini,
         )
         self.max_corrections = max_corrections
 

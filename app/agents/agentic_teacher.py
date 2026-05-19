@@ -89,12 +89,13 @@ class AgenticTeacherMixin:
                 trace_id=trace_id,
             )
             try:
+                temp = 1.0 if any(p in settings.LLM_MODEL for p in ["o1", "o3", "o4"]) else 0.3
                 response = await self.openai_client.chat.completions.create(
                     model=settings.LLM_MODEL,
                     messages=current_messages,
                     tools=OPENAI_MATH_TOOLS,
                     tool_choice="auto",
-                    temperature=0.3,
+                    temperature=temp,
                 )
             except Exception as e:
                 end_generation(agentic_gen, output=f"ERROR: {e}")

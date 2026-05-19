@@ -63,10 +63,11 @@ class Orchestrator:
         # OpenAI Responses API client (hỗ trợ reasoning parameter cho gpt-5.4)
         self.openai_client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
         # Classifier: MINI — JSON intent classification, no deep reasoning needed
+        temp = 1.0 if any(p in settings.LLM_MODEL_MINI for p in ["o1", "o3", "o4"]) else 0.0
         self.classifier_llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,
-            temperature=0.0,
+            temperature=temp,
         )
 
     async def classify_intent(self, message: str, trace_id: Optional[str] = None) -> dict:
