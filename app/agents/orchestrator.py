@@ -175,10 +175,6 @@ class Orchestrator:
         formula_ids = classification.get("formula_ids") or []
         if not skill_id and skill_ids:
             skill_id = skill_ids[0]
-        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
-        formula_ids = classification.get("formula_ids") or []
-        if not skill_id and skill_ids:
-            skill_id = skill_ids[0]
 
         # Step 2: Get mastery info
         masteries = await get_all_masteries(db, user_id)
@@ -504,6 +500,10 @@ class Orchestrator:
         classification = await self.classify_intent(message)
         intent = classification.get("intent", "explain")
         skill_id = classification.get("skill_id")
+        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
+        formula_ids = classification.get("formula_ids") or []
+        if not skill_id and skill_ids:
+            skill_id = skill_ids[0]
 
         # ── Step 2: Mastery & auto mode ────────────────────────────────────
         masteries = await get_all_masteries(db, user_id)
