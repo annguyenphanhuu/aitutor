@@ -366,7 +366,7 @@ class CloudVisionOCR(OCRStrategy):
                         ]
                     }
                 ],
-                max_tokens=2500,
+                max_completion_tokens=2500,
                 temperature=0.1
             )
             return response.choices[0].message.content or ""
