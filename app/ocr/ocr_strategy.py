@@ -345,8 +345,8 @@ class CloudVisionOCR(OCRStrategy):
         if is_exam:
             prompt += (
                 "\nĐây là một trang đề thi. Hãy trình bày rõ ràng từng câu hỏi và các đáp án A, B, C, D. "
-                "QUAN TRỌNG: Nếu bạn thấy bắt đầu phần HƯỚNG DẪN GIẢI, LỜI GIẢI CHI TIẾT hoặc ĐÁP ÁN (không phải phần câu hỏi), "
-                "hãy thêm chính xác thẻ <END_OF_EXAM> vào cuối câu trả lời của bạn."
+                "CHỈ ĐƯỢC THÊM THẺ <END_OF_EXAM> NẾU BẠN CHẮC CHẮN NHÌN THẤY MỘT TIÊU ĐỀ LỚN CHUYỂN PHẦN NHƯ 'HƯỚNG DẪN GIẢI', 'ĐÁP ÁN CHI TIẾT'. "
+                "Tuyệt đối KHÔNG thêm thẻ này nếu chỉ thấy các từ 'đáp án', 'phương án' nằm bên trong nội dung của một câu hỏi bình thường."
             )
 
         try:

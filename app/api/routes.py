@@ -496,7 +496,7 @@ async def generate_quiz(
 ):
     """Generate quiz questions for a specific skill."""
     result = await create_quiz_session(
-        db, data.skill_id, data.difficulty, data.count, data.exam_format,
+        db, data.skill_id, data.difficulty, data.count,
         user_id=user_id,
     )
     if "error" in result:

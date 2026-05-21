@@ -111,6 +111,26 @@ class QuizQuestion(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
+class QuestionBank(Base):
+    __tablename__ = "question_bank"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    skill_id = Column(String(50), nullable=False)
+    cognitive_level = Column(String(50), nullable=True) # nhan_biet, thong_hieu, van_dung, van_dung_cao
+    difficulty = Column(Integer, default=1)           # 1-easy, 2-medium, 3-hard
+    question_type = Column(String(20), default="mcq") # mcq | true_false | short_answer
+    question_latex = Column(Text, nullable=False)
+    choices = Column(JSON, nullable=True)
+    correct_index = Column(Integer, nullable=True)
+    statements = Column(JSON, nullable=True)
+    correct_answer = Column(Text, nullable=True)
+    points = Column(Float, default=0.25)
+    explanation = Column(Text, nullable=True)
+    source = Column(String(200), nullable=True)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 class QuizSession(Base):
     __tablename__ = "quiz_sessions"
 

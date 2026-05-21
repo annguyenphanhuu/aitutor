@@ -121,12 +121,12 @@ class QuestionSplitter:
             chunk_results = await asyncio.gather(
                 *[self._split_chunk(chunk) for chunk in chunks]
             )
-            # Merge, bỏ duplicates theo question_number
+            # Merge, bỏ duplicates theo question_type + question_number
             merged = []
             seen = set()
             for chunk_qs in chunk_results:
                 for q in chunk_qs:
-                    key = q.get("question_number", "")
+                    key = (q.get("question_type", ""), q.get("question_number", ""))
                     if key not in seen:
                         seen.add(key)
                         merged.append(q)

@@ -80,7 +80,6 @@ class QuizGenerateRequest(BaseModel):
     formula_ids: list[str] = Field(default_factory=list)
     difficulty: int = 1         # 1-easy, 2-medium, 3-hard
     count: int = 5              # number of questions
-    exam_format: bool = False   # True = THPT QG mixed format
 
 
 class QuizQuestionOut(BaseModel):
@@ -104,7 +103,6 @@ class QuizSessionOut(BaseModel):
     questions: list[QuizQuestionOut]
     total_questions: int
     session_type: str
-    exam_format: bool = False
     max_score: float = 10.0
 
 

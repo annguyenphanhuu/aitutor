@@ -10,7 +10,7 @@ from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from app.db.models import QuizQuestion, QuizSession, SpacedRepetitionCard
+from app.db.models import QuizQuestion, QuizSession, SpacedRepetitionCard, QuestionBank
 from app.quiz.generator import generate_questions, generate_exam_questions
 from app.knowledge_tracing.service import update_mastery, get_or_create_mastery
 from app.knowledge_tracing.skill_graph import SKILLS
@@ -58,11 +58,9 @@ async def create_quiz_session(
     skill_id: str,
     difficulty: int = 1,
     count: int = 5,
-    exam_format: bool = False,
     user_id: int = 1,
 ) -> dict:
     """Generate questions and create a quiz session.
-    If exam_format=True, generates mixed questions matching THPT QG structure.
     If difficulty=0, uses adaptive engine to auto-select difficulty.
     """
     # ── Adaptive difficulty (when difficulty=0 or "auto") ──
@@ -77,10 +75,41 @@ async def create_quiz_session(
         adaptive_info = engine.get_adaptive_summary(skill_id, mastery_rec.p_mastery, recent, all_masteries)
         difficulty = adaptive_info["recommended_difficulty"]
 
-    if exam_format:
-        raw_questions = generate_exam_questions(skill_id, difficulty)
-    else:
-        raw_questions = generate_questions(skill_id, difficulty, count)
+    from sqlalchemy.sql.expression import func
+    
+    raw_questions = []
+    
+    res = await db.execute(
+        select(QuestionBank)
+        .where(QuestionBank.skill_id == skill_id)
+        .where(QuestionBank.difficulty == difficulty)
+        .where(QuestionBank.question_type == "mcq")
+        .where(QuestionBank.is_active == True)
+        .order_by(func.random())
+        .limit(count)
+    )
+    bank_questions = res.scalars().all()
+    
+    for bq in bank_questions:
+        raw_questions.append({
+            "skill_id": bq.skill_id,
+            "skill_ids": [bq.skill_id],
+            "difficulty": bq.difficulty,
+            "question_type": bq.question_type,
+            "question_latex": bq.question_latex,
+            "choices": bq.choices,
+            "correct_index": bq.correct_index,
+            "statements": bq.statements,
+            "correct_answer": bq.correct_answer,
+            "points": bq.points,
+            "explanation": bq.explanation,
+            "sympy_expr": "",
+        })
+    
+    missing = count - len(raw_questions)
+    if missing > 0:
+        gen_qs = generate_questions(skill_id, difficulty, missing)
+        raw_questions.extend(gen_qs)
 
     if not raw_questions:
         return {"error": "Không thể sinh câu hỏi cho kỹ năng này."}
@@ -128,8 +157,8 @@ async def create_quiz_session(
 
     session = QuizSession(
         user_id=user_id,
-        session_type="exam" if exam_format else "practice",
-        exam_format=exam_format,
+        session_type="practice",
+        exam_format=False,
         skill_ids=[skill_id],
         questions=session_questions,
         total_questions=len(db_questions),
@@ -166,7 +195,6 @@ async def create_quiz_session(
         "questions": questions_out,
         "total_questions": len(db_questions),
         "session_type": session.session_type,
-        "exam_format": exam_format,
         "max_score": max_score,
     }
 

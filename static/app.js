@@ -774,9 +774,6 @@ async function generateQuiz() {
     rArea.style.display = 'none';
     qArea.innerHTML = '<p class="quiz-loading">⏳ Đang sinh đề bài...</p>';
 
-    const examCb = document.getElementById('exam-format-cb');
-    const examFormat = examCb ? examCb.checked : false;
-
     try {
         const res = await fetch(`${API}/quiz/generate`, {
             method: 'POST',
@@ -784,8 +781,7 @@ async function generateQuiz() {
             body: JSON.stringify({
                 skill_id: quizState.selectedSkillId,
                 difficulty: quizState.selectedDifficulty,
-                count: examFormat ? 5 : 5,
-                exam_format: examFormat,
+                count: 5,
             }),
         });
         if (!res.ok) throw new Error('Không thể sinh đề.');
@@ -798,11 +794,8 @@ async function generateQuiz() {
         quizState.totalScore = 0;
         quizState.maxScore = data.max_score || 10;
         quizState.sessionType = 'practice';
-        quizState.examFormat = examFormat;
 
-        document.getElementById('quiz-title').textContent = examFormat
-            ? '📝 Đề Thi Theo Cấu Trúc THPT QG'
-            : data.adaptive
+        document.getElementById('quiz-title').textContent = data.adaptive
                 ? `📝 Bài Kiểm Tra (🎯 Adaptive: ${data.adaptive.difficulty_label})`
                 : '📝 Bài Kiểm Tra';
         renderQuizQuestion(0);
