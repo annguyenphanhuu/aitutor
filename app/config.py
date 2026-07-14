@@ -1,12 +1,17 @@
 """Application configuration loaded from environment variables."""
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
-import os
 
 
 class Settings(BaseSettings):
     """App settings from .env file."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     # LLM Models — 3 tiers
     OPENAI_API_KEY: str = ""
@@ -27,15 +32,10 @@ class Settings(BaseSettings):
 
     # App
     APP_TITLE: str = "AI Tutor - Gia sư Toán 12"
-    DEBUG: bool = True
 
     # ── Re-ranking ─────────────────────────────────────────────────────────
     RERANKER_ENABLED: bool = True
-    # "local" → cross-encoder/ms-marco-MiniLM-L-6-v2 (offline, ~68MB)
-    # "cohere" → Cohere Rerank API (requires COHERE_API_KEY)
-    # "disabled" → fallback to hybrid score only
-    RERANKER_MODEL: str = "local"
-    COHERE_API_KEY: str = ""
+    RERANKER_MODEL: str = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
     RERANKER_TOP_K: int = 5           # final docs returned to Teacher
     RERANKER_CANDIDATE_K: int = 20   # pool size for re-ranking
 
@@ -67,12 +67,6 @@ class Settings(BaseSettings):
     LANGFUSE_PUBLIC_KEY: str = ""
     LANGFUSE_SECRET_KEY: str = ""
     LANGFUSE_HOST: str = "https://cloud.langfuse.com"
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        extra = "ignore"  # Allow extra vars in .env (docker, infra, etc.)
-
 
 @lru_cache()
 def get_settings() -> Settings:

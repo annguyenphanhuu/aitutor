@@ -24,10 +24,10 @@ import json
 import logging
 from typing import Optional, Any
 
-from openai import AsyncOpenAI
 from app.config import get_settings
 from app.agents.tool_schemas import OPENAI_MATH_TOOLS, TOOL_NAMES, _get_math_tools
 from app.utils.cost_tracker import log_call
+from app.utils.llm import compatible_temperature
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -121,7 +121,7 @@ class AgenticTeacherMixin:
                 trace_id=trace_id,
             )
             try:
-                temp = 1.0 if any(p in model_name for p in ["o1", "o3", "o4"]) else 0.0
+                temp = compatible_temperature(model_name, 0.0)
                 tool_choice = "required" if require_tool and not tool_call_log else "auto"
                 response = await self.openai_client.chat.completions.create(
                     model=model_name,

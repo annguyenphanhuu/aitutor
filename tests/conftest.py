@@ -2,7 +2,7 @@
 Shared pytest fixtures for AITutor test suite.
 
 Provides:
-- Async DB session (in-memory SQLite)
+- Async DB session (in-memory SQLite, no Docker required)
 - Mock LLM / OpenAI client
 - Common test data
 """
@@ -10,8 +10,6 @@ Provides:
 import sys
 import os
 import pytest
-import asyncio
-from unittest.mock import AsyncMock, MagicMock, patch
 
 # ── Ensure project root is on sys.path ──────────────────────────────────────
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,10 +25,8 @@ def mock_settings(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test-fake-key-for-unit-tests")
     monkeypatch.setenv("LLM_MODEL", "gpt-4o")
     monkeypatch.setenv("EMBEDDING_MODEL", "text-embedding-3-small")
-    monkeypatch.setenv("DATABASE_URL", "postgresql+asyncpg://aitutor:aitutorpassword@localhost:5432/aitutordb")
+    monkeypatch.setenv("DATABASE_URL", "sqlite+aiosqlite:///:memory:")
     monkeypatch.setenv("CHROMA_PERSIST_DIR", "./test_chroma_db")
-    monkeypatch.setenv("DEBUG", "false")
-
     # Clear cached settings so they reload with new env vars
     from app.config import get_settings
     get_settings.cache_clear()
@@ -45,7 +41,7 @@ async def db_session():
     from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
     from app.db.database import Base
 
-    engine = create_async_engine("postgresql+asyncpg://aitutor:aitutorpassword@localhost:5432/aitutordb", echo=False)
+    engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=False)
     session_factory = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     async with engine.begin() as conn:
@@ -89,12 +85,3 @@ async def seeded_db(db_session):
 
     await db_session.flush()
     yield db_session, user
-
-
-# ── Event loop for async tests ──────────────────────────────────────────────
-@pytest.fixture(scope="session")
-def event_loop():
-    """Create a single event loop for the entire test session."""
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()

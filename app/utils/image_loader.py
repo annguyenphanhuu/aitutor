@@ -8,7 +8,6 @@ Flow:
 """
 
 import base64
-import os
 from pathlib import Path
 from typing import Optional
 

@@ -23,7 +23,6 @@ from __future__ import annotations
 import logging
 import re
 from abc import ABC, abstractmethod
-from typing import Optional
 
 from app.config import get_settings
 
@@ -136,7 +135,7 @@ def detect_solution_boundary(doc, max_pages: int) -> int:
         if len(raw) < _MIN_CHARS_FOR_SOLUTION_CHECK:
             continue
 
-        non_empty = [l for l in raw.splitlines() if l.strip()]
+        non_empty = [line for line in raw.splitlines() if line.strip()]
 
         # ── Signal 1: Header keyword rõ ràng ──────────────────────────
         first_lines = "\n".join(non_empty[:_SOLUTION_CHECK_LINES])
@@ -392,15 +391,16 @@ class LocalGOTOCR(OCRStrategy):
 
 # ── Factory ───────────────────────────────────────────────────────────────────
 
-def get_ocr_engine(engine: str = "cloud") -> OCRStrategy:
+def get_ocr_engine(engine: str | None = None) -> OCRStrategy:
     """Factory method — select OCR engine by name.
 
     Parameters
     ----------
     engine : str
-        "cloud" → GPT-4o-mini Vision (default)
+        "cloud" → GPT-4o-mini Vision (configured default)
         "local" → GOT-OCR2.0
     """
+    engine = engine or settings.OCR_ENGINE
     if engine == "local":
         return LocalGOTOCR()
     return CloudVisionOCR()

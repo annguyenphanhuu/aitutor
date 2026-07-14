@@ -52,7 +52,7 @@ class Reranker:
 
         try:
             from sentence_transformers import CrossEncoder  # noqa: PLC0415
-            model_name = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+            model_name = settings.RERANKER_MODEL
             logger.info("📦 Loading CrossEncoder model: %s", model_name)
             self._model = CrossEncoder(model_name, max_length=512)
             self._model_loaded = True
@@ -82,7 +82,7 @@ class Reranker:
             The student's search query.
         candidates : list[dict]
             Each dict must have 'content' and 'hybrid_score' keys.
-            (Output cua knowledge_base.search_all / search_theory)
+            (Output của knowledge_base.search_theory)
         k : int | None
             Number of top results to return.
             Defaults to settings.RERANKER_TOP_K.

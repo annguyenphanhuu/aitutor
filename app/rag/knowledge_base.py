@@ -157,15 +157,6 @@ class KnowledgeBase:
             doc_store=self._theory_store,
         )
 
-    def search_all(
-        self,
-        query: str,
-        k: int = 5,
-        alpha: float = 0.6,
-    ) -> list[dict]:
-        """Backward-compatible alias for the now theory-only knowledge base."""
-        return self.search_theory(query=query, k=k, alpha=alpha)
-
     def get_formulas_by_ids(self, formula_ids: list[str]) -> list[dict]:
         """Return formula registry entries by id."""
         from app.rag.formula_registry import get_formulas_by_ids

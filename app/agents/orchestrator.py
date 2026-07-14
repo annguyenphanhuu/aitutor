@@ -1,12 +1,10 @@
 """Orchestrator — routes requests to the appropriate agent."""
 
 from typing import Optional
+from dataclasses import dataclass
 from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage
 from sqlalchemy.ext.asyncio import AsyncSession
 from openai import AsyncOpenAI
-import re
-import time
 
 from app.config import get_settings
 from app.agents.teacher_agent import TeacherAgent
@@ -21,7 +19,7 @@ from app.knowledge_tracing.service import (
 )
 from app.knowledge_tracing.bkt import BKTModel
 from app.knowledge_tracing.skill_graph import SKILLS
-from app.utils.cost_tracker import log_from_response
+from app.utils.llm import compatible_temperature
 import json
 
 settings = get_settings()
@@ -51,6 +49,21 @@ CHỈ TRẢ VỀ JSON.
 """
 
 
+@dataclass(frozen=True)
+class RoutingContext:
+    """Normalized classifier and mastery data shared by all entry points."""
+
+    classification: dict
+    intent: str
+    skill_id: Optional[str]
+    skill_ids: list[str]
+    formula_ids: list[str]
+    masteries: dict[str, float]
+    current_mastery: float
+    mastery_level: str
+    mode: str
+
+
 class Orchestrator:
     """Routes student messages to the correct agent."""
 
@@ -63,7 +76,7 @@ class Orchestrator:
         # OpenAI Responses API client (hỗ trợ reasoning parameter cho gpt-5.4)
         self.openai_client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
         # Classifier: MINI — JSON intent classification, no deep reasoning needed
-        temp = 1.0 if any(p in settings.LLM_MODEL_MINI for p in ["o1", "o3", "o4"]) else 0.0
+        temp = compatible_temperature(settings.LLM_MODEL_MINI, 0.0)
         self.classifier_llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,
@@ -150,6 +163,39 @@ class Orchestrator:
 
         return result
 
+    async def _prepare_routing_context(
+        self,
+        db: AsyncSession,
+        message: str,
+        mode: str,
+        user_id: int,
+        trace_id: Optional[str] = None,
+    ) -> RoutingContext:
+        """Classify once and normalize mastery/mode for a request."""
+        classification = await self.classify_intent(message, trace_id=trace_id)
+        skill_id = classification.get("skill_id")
+        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
+        formula_ids = classification.get("formula_ids") or []
+        if not skill_id and skill_ids:
+            skill_id = skill_ids[0]
+
+        masteries = await get_all_masteries(db, user_id)
+        current_mastery = masteries.get(skill_id, 0.1) if skill_id else 0.1
+        resolved_mode = (
+            "exam" if current_mastery >= 0.7 else "socratic"
+        ) if mode == "auto" else mode
+        return RoutingContext(
+            classification=classification,
+            intent=classification.get("intent", "explain"),
+            skill_id=skill_id,
+            skill_ids=skill_ids,
+            formula_ids=formula_ids,
+            masteries=masteries,
+            current_mastery=current_mastery,
+            mastery_level=self.bkt.get_mastery_level(current_mastery),
+            mode=resolved_mode,
+        )
+
     async def handle_message(
         self,
         db: AsyncSession,
@@ -158,6 +204,7 @@ class Orchestrator:
         chat_history: Optional[list[dict]] = None,
         user_id: int = 1,
         langfuse_trace=None,     # Optional Langfuse trace từ routes.py
+        _routing_context: Optional[RoutingContext] = None,
     ) -> dict:
         """
         Main entry point: classify intent and route to the right agent.
@@ -168,23 +215,18 @@ class Orchestrator:
         # Lấy trace_id để truyền xuống các span con
         trace_id: Optional[str] = getattr(langfuse_trace, "id", None)
 
-        # Step 1: Classify intent
-        classification = await self.classify_intent(message, trace_id=trace_id)
-        intent = classification.get("intent", "explain")
-        skill_id = classification.get("skill_id")
-        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
-        formula_ids = classification.get("formula_ids") or []
-        if not skill_id and skill_ids:
-            skill_id = skill_ids[0]
-
-        # Step 2: Get mastery info
-        masteries = await get_all_masteries(db, user_id)
-        current_mastery = masteries.get(skill_id, 0.1) if skill_id else 0.1
-        mastery_level = self.bkt.get_mastery_level(current_mastery)
-
-        # Auto-select mode based on mastery
-        if mode == "auto":
-            mode = "exam" if current_mastery >= 0.7 else "socratic"
+        routing = _routing_context or await self._prepare_routing_context(
+            db, message, mode, user_id, trace_id
+        )
+        classification = routing.classification
+        intent = routing.intent
+        skill_id = routing.skill_id
+        skill_ids = routing.skill_ids
+        formula_ids = routing.formula_ids
+        masteries = routing.masteries
+        current_mastery = routing.current_mastery
+        mastery_level = routing.mastery_level
+        mode = routing.mode
 
         # Step 3: Route to agent
         if intent == "off_topic":
@@ -272,7 +314,7 @@ class Orchestrator:
             vis_data = await self._extract_and_visualize(message, chat_history=chat_history)
             skill_info = SKILLS.get(skill_id, {})
             response_text = (
-                f"📊 Đồ thị đã được tạo! Xem bên dưới."
+                "📊 Đồ thị đã được tạo! Xem bên dưới."
             )
             if vis_data is None:
                 response_text = (
@@ -428,21 +470,16 @@ class Orchestrator:
         if not combined_for_classify:
             combined_for_classify = "bài toán trong ảnh"
 
-        classification = await self.classify_intent(combined_for_classify)
-        intent = classification.get("intent", "explain")
-        skill_id = classification.get("skill_id")
-        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
-        formula_ids = classification.get("formula_ids") or []
-        if not skill_id and skill_ids:
-            skill_id = skill_ids[0]
-
-        # Step 2: Get mastery
-        masteries = await get_all_masteries(db, user_id)
-        current_mastery = masteries.get(skill_id, 0.1) if skill_id else 0.1
-        mastery_level = self.bkt.get_mastery_level(current_mastery)
-
-        if mode == "auto":
-            mode = "exam" if current_mastery >= 0.7 else "socratic"
+        routing = await self._prepare_routing_context(
+            db, combined_for_classify, mode, user_id
+        )
+        skill_id = routing.skill_id
+        skill_ids = routing.skill_ids
+        formula_ids = routing.formula_ids
+        masteries = routing.masteries
+        current_mastery = routing.current_mastery
+        mastery_level = routing.mastery_level
+        mode = routing.mode
 
         # Step 3: Prerequisite gaps
         prereq_gaps = []
@@ -498,20 +535,15 @@ class Orchestrator:
         chat_history = chat_history or []
 
         # ── Step 1: Classify intent (blocking, bắt buộc trước khi stream) ──
-        classification = await self.classify_intent(message)
-        intent = classification.get("intent", "explain")
-        skill_id = classification.get("skill_id")
-        skill_ids = classification.get("skill_ids") or ([skill_id] if skill_id else [])
-        formula_ids = classification.get("formula_ids") or []
-        if not skill_id and skill_ids:
-            skill_id = skill_ids[0]
-
-        # ── Step 2: Mastery & auto mode ────────────────────────────────────
-        masteries = await get_all_masteries(db, user_id)
-        current_mastery = masteries.get(skill_id, 0.1) if skill_id else 0.1
-        mastery_level = self.bkt.get_mastery_level(current_mastery)
-        if mode == "auto":
-            mode = "exam" if current_mastery >= 0.7 else "socratic"
+        routing = await self._prepare_routing_context(db, message, mode, user_id)
+        intent = routing.intent
+        skill_id = routing.skill_id
+        skill_ids = routing.skill_ids
+        formula_ids = routing.formula_ids
+        masteries = routing.masteries
+        current_mastery = routing.current_mastery
+        mastery_level = routing.mastery_level
+        mode = routing.mode
 
         skill_info = SKILLS.get(skill_id, {})
 
@@ -533,6 +565,7 @@ class Orchestrator:
                 result = await self.handle_message(
                     db=db, message=message, mode=mode,
                     chat_history=chat_history, user_id=user_id,
+                    _routing_context=routing,
                 )
                 full = result.get("response", "")
                 yield _json.dumps({"type": "token", "content": full}, ensure_ascii=False)

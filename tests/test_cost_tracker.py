@@ -10,7 +10,6 @@ Covers:
 - Session accumulator reset behaviour
 """
 
-import pytest
 from unittest.mock import MagicMock
 from app.utils.cost_tracker import (
     _get_price,

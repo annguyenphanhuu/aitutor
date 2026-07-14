@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from app.db.models import SpacedRepetitionCard, QuizQuestion
-from app.spaced_repetition.engine import sm2_update, quality_from_quiz
+from app.spaced_repetition.engine import sm2_update
 from app.quiz.generator import generate_questions
 from app.knowledge_tracing.skill_graph import SKILLS
 
@@ -145,9 +145,3 @@ async def review_card(db: AsyncSession, card_id: int, question_id: int, selected
 async def ensure_cards_for_attempted_skills(db: AsyncSession, skill_id: str, user_id: int = 1):
     """Create an SR card for a skill if student has attempted it (auto-track)."""
     await get_or_create_card(db, skill_id, user_id)
-
-
-async def get_warmup_questions(db: AsyncSession, user_id: int = 1) -> list[dict]:
-    """Get 1-2 warmup review questions from due cards (for login prompt)."""
-    due = await get_due_cards(db, user_id)
-    return due[:2]  # Return at most 2 warmup cards

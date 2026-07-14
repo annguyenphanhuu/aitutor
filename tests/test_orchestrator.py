@@ -23,7 +23,7 @@ def orchestrator():
          patch("app.agents.orchestrator.TeacherAgent"), \
          patch("app.agents.orchestrator.AssessorAgent"), \
          patch("app.agents.orchestrator.PlannerAgent"), \
-         patch("app.agents.orchestrator.VisualizerAgent") as mock_viz:
+         patch("app.agents.orchestrator.VisualizerAgent"):
         orch = Orchestrator()
         yield orch
 
@@ -163,7 +163,7 @@ class TestExtractAndVisualize:
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
         with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="x**2 - 3*x + 1"):
-            result = await orchestrator._extract_and_visualize("y = x^2 - 3x + 1")
+            await orchestrator._extract_and_visualize("y = x^2 - 3x + 1")
             orchestrator.visualizer.generate_function_plot.assert_called_with("x**2 - 3*x + 1")
 
     @pytest.mark.asyncio
@@ -172,7 +172,7 @@ class TestExtractAndVisualize:
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
         with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="sin(x)"):
-            result = await orchestrator._extract_and_visualize("f(x) = sin(x)")
+            await orchestrator._extract_and_visualize("f(x) = sin(x)")
             orchestrator.visualizer.generate_function_plot.assert_called_with("sin(x)")
 
     @pytest.mark.asyncio
@@ -181,7 +181,7 @@ class TestExtractAndVisualize:
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
         with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="x**3 - 3*x"):
-            result = await orchestrator._extract_and_visualize("đồ thị x^3 - 3x")
+            await orchestrator._extract_and_visualize("đồ thị x^3 - 3x")
             orchestrator.visualizer.generate_function_plot.assert_called_with("x**3 - 3*x")
 
     @pytest.mark.asyncio
@@ -190,7 +190,7 @@ class TestExtractAndVisualize:
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "plot"}
 
         with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="x**2"):
-            result = await orchestrator._extract_and_visualize("vẽ đồ thị hàm số x^2")
+            await orchestrator._extract_and_visualize("vẽ đồ thị hàm số x^2")
             orchestrator.visualizer.generate_function_plot.assert_called_with("x**2")
 
     @pytest.mark.asyncio
@@ -199,7 +199,7 @@ class TestExtractAndVisualize:
         orchestrator.visualizer.generate_function_plot.return_value = {"vis_type": "error"}
 
         with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="something random"):
-            result = await orchestrator._extract_and_visualize("something random")
+            await orchestrator._extract_and_visualize("something random")
             orchestrator.visualizer.generate_function_plot.assert_called_with("something random")
 
 

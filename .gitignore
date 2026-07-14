@@ -40,6 +40,11 @@ data/evaluation/*_samples.json
 data/evaluation/*_report.json
 data/evaluation/*_detailed_report.json
 data/evaluation/*.jsonl
+data/evaluation/*.txt
+data/exams/*.pdf
+data/exams/debug_ocr/
+data/exams/results/
+data/exams/images/????????????????????????????????/
 
 # Local logs, coverage, and build outputs
 *.log

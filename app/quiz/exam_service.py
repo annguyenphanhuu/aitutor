@@ -14,6 +14,8 @@ import glob
 import logging
 from typing import Any
 
+from app.quiz.grading import score_short_answer, score_true_false
+
 log = logging.getLogger(__name__)
 
 EXAMS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "exams")
@@ -40,19 +42,8 @@ def _download_single_exam_from_s3(exam_id: str) -> bool:
         from app.config import get_settings
         if not get_settings().S3_ENABLED:
             return False
-        import boto3
-        from app.config import get_settings as gs
-        cfg = gs()
-        client = boto3.client(
-            "s3",
-            region_name=cfg.AWS_REGION,
-            aws_access_key_id=cfg.AWS_ACCESS_KEY_ID or None,
-            aws_secret_access_key=cfg.AWS_SECRET_ACCESS_KEY or None,
-        )
-        os.makedirs(EXAMS_DIR, exist_ok=True)
-        local_path = os.path.join(EXAMS_DIR, f"{exam_id}.json")
-        s3_key     = f"exams/{exam_id}.json"
-        client.download_file(cfg.S3_BUCKET, s3_key, local_path)
+        from app.utils.s3 import get_s3
+        get_s3().download_exam(f"{exam_id}.json")
         log.info(f"[S3] Đã tải {exam_id}.json từ S3")
         return True
     except Exception as e:
@@ -344,8 +335,6 @@ def _grade_true_false(correct_str: str, answers: dict | None) -> tuple[float, fl
     Returns (earned, max, detail_list)
     """
     max_pts = 1.0
-    scoring_table = {0: 0.0, 1: 0.1, 2: 0.25, 3: 0.5, 4: 1.0}
-
     # Parse correct answers
     correct_map = {}
     for part in correct_str.split(","):
@@ -376,7 +365,10 @@ def _grade_true_false(correct_str: str, answers: dict | None) -> tuple[float, fl
             "is_correct": is_right,
         })
 
-    earned = scoring_table.get(correct_count, 0.0)
+    earned, _ = score_true_false(
+        [answers.get(label) for label in correct_map],
+        list(correct_map.values()),
+    )
     return earned, max_pts, details
 
 
@@ -386,19 +378,14 @@ def _grade_short_answer(correct: str, answer: str | None) -> tuple[float, float,
     if not answer:
         return 0.0, max_pts, False
 
-    def normalize(s: str) -> str:
-        s = s.strip().replace(",", ".").replace(" ", "")
-        # Try as float to handle 1.0 == 1
-        try:
-            v = float(s)
-            if v == int(v):
-                return str(int(v))
-            return str(v)
-        except ValueError:
-            return s.lower()
-
-    is_correct = normalize(answer) == normalize(correct)
-    return (max_pts if is_correct else 0.0), max_pts, is_correct
+    earned, is_correct = score_short_answer(
+        answer,
+        correct,
+        max_points=max_pts,
+        numeric_tolerance=0.0,
+        remove_spaces=True,
+    )
+    return earned, max_pts, is_correct
 
 
 def grade_exam(exam_id: str, answers: dict) -> dict | None:

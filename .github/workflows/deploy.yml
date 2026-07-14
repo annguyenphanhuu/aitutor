@@ -6,10 +6,29 @@ on:
   workflow_dispatch: # Bật nút kích hoạt thủ công từ giao diện GitHub
 
 jobs:
-  sync-to-hub:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install Python dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run Python tests
+        run: python -m pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run frontend tests
+        run: node --test tests/frontend_chat_visualization.test.cjs
+
+  sync-to-hub:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
           

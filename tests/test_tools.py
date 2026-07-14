@@ -12,7 +12,6 @@ Covers:
 - MATH_TOOLS registry
 """
 
-import pytest
 from app.agents.tools import (
     compute_derivative,
     compute_integral,

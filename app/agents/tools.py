@@ -33,8 +33,7 @@ import sympy as sp
 from sympy import (
     symbols, diff, integrate, simplify, latex,
     sin, cos, tan, exp, log, sqrt, oo,
-    solve, solve_univariate_inequality, Eq, Rational, pi, E,
-    limit as sp_limit,
+    solve, solve_univariate_inequality, Eq, pi, E,
 )
 from sympy.parsing.sympy_parser import (
     parse_expr,
@@ -43,7 +42,6 @@ from sympy.parsing.sympy_parser import (
     convert_xor,
 )
 from langchain_core.tools import tool
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -230,7 +228,7 @@ def solve_inequality(inequality_str: str, var: str = "n") -> dict:
     """
     try:
         import sympy as sp
-        from sympy import Symbol, log, N
+        from sympy import Symbol, N
         v = Symbol(var, real=True)
         # Parse with the variable substituted
         local = dict(_LOCAL_DICT)
@@ -352,25 +350,8 @@ def evaluate_at_point(expr_str: str, var: str = "x", value: str = "0") -> dict:
 
 # ── Tool Collections ─────────────────────────────────────────────────────────
 
-# List of LangChain tool wrappers used by the Agentic Solver. Keep the public
-# function names above undecorated so direct Python callers receive dictionaries.
-compute_derivative_tool = tool(compute_derivative)
-compute_integral_tool = tool(compute_integral)
-solve_equation_tool = tool(solve_equation)
-solve_inequality_tool = tool(solve_inequality)
-simplify_expression_tool = tool(simplify_expression)
-evaluate_at_point_tool = tool(evaluate_at_point)
-
-MATH_TOOL_LIST = [
-    compute_derivative_tool,
-    compute_integral_tool,
-    solve_equation_tool,
-    solve_inequality_tool,
-    simplify_expression_tool,
-    evaluate_at_point_tool,
-]
-
-# Legacy dict registry — kept for backward compatibility with ReflectionEngine
+# Canonical registry of plain functions. Direct Python callers receive
+# dictionaries; LangChain/OpenAI wrappers are derived from it below.
 MATH_TOOLS = {
     "compute_derivative": compute_derivative,
     "compute_integral": compute_integral,
@@ -380,11 +361,9 @@ MATH_TOOLS = {
     "evaluate_at_point": evaluate_at_point,
 }
 
+MATH_TOOL_LIST = [tool(fn) for fn in MATH_TOOLS.values()]
+
 TOOL_DESCRIPTIONS = {
-    "compute_derivative":  "Tính đạo hàm chính xác (symbolic). Params: expr_str, var='x', order=1",
-    "compute_integral":    "Tính tích phân (xác định/bất định). Params: expr_str, var='x', lower='', upper=''",
-    "solve_equation":      "Giải phương trình. Params: equation_str, var='x'",
-    "solve_inequality":    "Giải bất phương trình (>, <, >=, <=). Params: inequality_str, var='n'",
-    "simplify_expression": "Rút gọn biểu thức. Params: expr_str",
-    "evaluate_at_point":   "Tính giá trị tại 1 điểm. Params: expr_str, var='x', value='0'",
+    name: (fn.__doc__ or name).strip().splitlines()[0]
+    for name, fn in MATH_TOOLS.items()
 }

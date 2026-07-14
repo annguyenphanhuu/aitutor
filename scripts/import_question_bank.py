@@ -1,7 +1,4 @@
 import asyncio
-import json
-import os
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import async_session, engine
 from app.db.models import Base, QuestionBank
 

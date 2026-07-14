@@ -2,19 +2,17 @@
 
 Quản lý toàn bộ thao tác S3:
   - download_exams()    → tải exams/*.json về data/exams/
+  - download_exam()     → tải một exam JSON cụ thể
   - download_theory()   → tải knowledge/theory.json về data/theory.json
   - upload_exam()       → push một file đề thi lên S3
   - upload_all_exams()  → push toàn bộ data/exams/ lên S3
-  - backup_db()         → backup data/tutor.db lên backups/tutor_YYYYMMDD.db
   - list_exams()        → liệt kê các đề thi trên S3
   - status()            → so sánh local vs S3
 """
 
 import boto3
-import json
 import os
 import logging
-from datetime import datetime
 from botocore.exceptions import ClientError, NoCredentialsError
 
 from app.config import get_settings
@@ -28,12 +26,10 @@ BASE_DIR   = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")
 DATA_DIR   = os.path.join(BASE_DIR, "data")
 EXAMS_DIR  = os.path.join(DATA_DIR, "exams")
 THEORY_FILE = os.path.join(DATA_DIR, "theory.json")
-DB_FILE     = os.path.join(DATA_DIR, "tutor.db")
 
 # ── S3 key prefixes ───────────────────────────────────────────────────────────
 S3_EXAMS_PREFIX   = "exams/"
 S3_THEORY_KEY     = "knowledge/theory.json"
-S3_BACKUPS_PREFIX = "backups/"
 
 
 class S3StorageService:
@@ -78,7 +74,7 @@ class S3StorageService:
             if code == "404":
                 return {"ok": False, "message": f"❌ Bucket '{self._bucket}' không tồn tại"}
             if code in ("403", "401"):
-                return {"ok": False, "message": f"❌ Không có quyền truy cập bucket. Kiểm tra IAM policy"}
+                return {"ok": False, "message": "❌ Không có quyền truy cập bucket. Kiểm tra IAM policy"}
             return {"ok": False, "message": f"❌ Lỗi S3: {e}"}
         except Exception as e:
             return {"ok": False, "message": f"❌ Lỗi kết nối: {e}"}
@@ -129,6 +125,21 @@ class S3StorageService:
             raise
 
         return downloaded
+
+    def download_exam(self, filename: str, force: bool = False) -> bool:
+        """Download one top-level exam JSON; return whether it was downloaded."""
+        if os.path.basename(filename) != filename or not filename.endswith(".json"):
+            raise ValueError("filename must be a top-level .json exam file")
+
+        os.makedirs(EXAMS_DIR, exist_ok=True)
+        local_path = os.path.join(EXAMS_DIR, filename)
+        if not force and os.path.exists(local_path):
+            return False
+
+        key = f"{S3_EXAMS_PREFIX}{filename}"
+        log.info("[S3] Đang tải: %s → %s", key, local_path)
+        self._get_client().download_file(self._bucket, key, local_path)
+        return True
 
     def download_theory(self, force: bool = False) -> bool:
         """
@@ -205,25 +216,6 @@ class S3StorageService:
         log.info(f"[S3] Upload theory.json → s3://{self._bucket}/{S3_THEORY_KEY}")
         client.upload_file(THEORY_FILE, self._bucket, S3_THEORY_KEY)
         return S3_THEORY_KEY
-
-    def backup_db(self) -> str:
-        """
-        Upload data/tutor.db lên S3 với tên có timestamp.
-
-        Returns:
-            S3 key của file backup.
-        """
-        client = self._get_client()
-
-        if not os.path.exists(DB_FILE):
-            raise FileNotFoundError(f"Không tìm thấy: {DB_FILE}")
-
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        s3_key    = f"{S3_BACKUPS_PREFIX}tutor_{timestamp}.db"
-
-        log.info(f"[S3] Backup DB → s3://{self._bucket}/{s3_key}")
-        client.upload_file(DB_FILE, self._bucket, s3_key)
-        return s3_key
 
     # ── List / Status ─────────────────────────────────────────────────────────
 

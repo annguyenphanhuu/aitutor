@@ -29,21 +29,15 @@ from __future__ import annotations
 import re
 import json
 import logging
-from typing import Optional
-
 from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage, AIMessage
+from langchain.schema import HumanMessage, SystemMessage
 
 from app.config import get_settings
 from app.agents.tools import (
     MATH_TOOLS,
-    TOOL_DESCRIPTIONS,
-    compute_derivative,
-    compute_integral,
-    solve_equation,
-    simplify_expression,
 )
 from app.utils.cost_tracker import log_from_response
+from app.utils.llm import compatible_temperature
 from app.evaluation.hallucination_tracker import ReflectionMetrics
 
 logger = logging.getLogger(__name__)
@@ -72,7 +66,7 @@ Nếu không có phép tính nào cần kiểm tra, trả về: []
 
 CHỈ TRẢ VỀ JSON ARRAY, không giải thích."""
 
-CORRECTION_PROMPT = """Bạn vừa giải một bài toán nhưng hệ thống phát hiện sai sót:
+CORRECTION_PROMPT = r"""Bạn vừa giải một bài toán nhưng hệ thống phát hiện sai sót:
 
 --- BÀI GIẢI GỐC ---
 {draft}
@@ -101,14 +95,14 @@ class ReflectionEngine:
 
     def __init__(self, max_corrections: int = 1):
         # Reflection-Correct: full model — rewriting math answers requires quality
-        temp_main = 1.0 if any(p in settings.LLM_MODEL for p in ["o1", "o3", "o4"]) else 0.0
+        temp_main = compatible_temperature(settings.LLM_MODEL, 0.0)
         self.llm = ChatOpenAI(
             model=settings.LLM_MODEL,
             api_key=settings.OPENAI_API_KEY,
             temperature=temp_main,
         )
         # Reflection-Extract: mini model — structured JSON extraction only
-        temp_mini = 1.0 if any(p in settings.LLM_MODEL_MINI for p in ["o1", "o3", "o4"]) else 0.0
+        temp_mini = compatible_temperature(settings.LLM_MODEL_MINI, 0.0)
         self.extractor_llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,
@@ -156,7 +150,6 @@ class ReflectionEngine:
 
         # ── Step 2: Run SymPy verification ────────────────────────────
         verifications: list[dict] = []
-        has_errors = False
 
         for ext in extractions:
             tool_name = ext.get("operation", "")
@@ -202,9 +195,8 @@ class ReflectionEngine:
         verification_summary = self._build_verification_summary(verifications)
 
         if verification_summary:
-            has_errors = True
             thinking_log.append(f"❌ Phát hiện {len(verifications)} kết quả cần đối chiếu.")
-            thinking_log.append(f"📝 Tiến hành yêu cầu LLM tự sửa...")
+            thinking_log.append("📝 Tiến hành yêu cầu LLM tự sửa...")
 
             # ── Step 4: Self-correction ───────────────────────────────
             corrected = await self._self_correct(

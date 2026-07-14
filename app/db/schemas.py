@@ -1,6 +1,6 @@
 """Pydantic schemas for API requests and responses."""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 from datetime import datetime
 
@@ -45,25 +45,21 @@ class AssessmentResponse(BaseModel):
 
 # ── Study Plan ───────────────────────────────────────────
 class StudyPlanResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     recommendations: list
     created_at: datetime
     is_active: bool
 
-    class Config:
-        from_attributes = True
-
-
 # ── Skill Mastery ────────────────────────────────────────
 class SkillMasteryResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     skill_id: str
     skill_name: str
     p_mastery: float
     total_attempts: int
     correct_attempts: int
-
-    class Config:
-        from_attributes = True
-
 
 # ── Dashboard ────────────────────────────────────────────
 class DashboardResponse(BaseModel):
@@ -81,9 +77,12 @@ class QuizGenerateRequest(BaseModel):
     formula_ids: list[str] = Field(default_factory=list)
     difficulty: int = 1         # 1-easy, 2-medium, 3-hard
     count: int = 5              # number of questions
+    exam_format: bool = False   # 3 MCQ + 1 True/False + 1 short answer
 
 
 class QuizQuestionOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     question_type: str = "mcq"  # mcq | true_false | short_answer
     question_latex: str
@@ -94,10 +93,6 @@ class QuizQuestionOut(BaseModel):
     formula_ids: list[str] = Field(default_factory=list)
     difficulty: int
     points: float = 0.25
-
-    class Config:
-        from_attributes = True
-
 
 class QuizSessionOut(BaseModel):
     session_id: int
@@ -171,15 +166,13 @@ class DiagnosticResultResponse(BaseModel):
 
 # ── Spaced Repetition ────────────────────────────────────
 class ReviewCardOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     card_id: int
     skill_id: str
     skill_name: str
     question: QuizQuestionOut
     days_overdue: int
-
-    class Config:
-        from_attributes = True
-
 
 class ReviewDueResponse(BaseModel):
     due_count: int
@@ -239,6 +232,8 @@ class InsightOut(BaseModel):
 
 # ── Conversation Memory ──────────────────────────────────
 class ChatMessageOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     role: str
     content: str
@@ -247,21 +242,15 @@ class ChatMessageOut(BaseModel):
     formula_ids: list[str] = Field(default_factory=list)
     timestamp: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
-
-
 class ConversationSessionOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     title: Optional[str] = None
     is_active: bool = True
     created_at: Optional[datetime] = None
     last_active: Optional[datetime] = None
     message_count: int = 0
-
-    class Config:
-        from_attributes = True
-
 
 class ConversationHistoryResponse(BaseModel):
     session: ConversationSessionOut

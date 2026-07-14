@@ -9,7 +9,6 @@ Covers:
 - build_few_shot_prompt() — prompt string generation
 """
 
-import pytest
 from app.agents.few_shot_store import (
     PedagogicalExample,
     get_mastery_tier,

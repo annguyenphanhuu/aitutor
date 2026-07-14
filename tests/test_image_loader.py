@@ -10,12 +10,7 @@ Covers:
 - make_image_path() — path generation helper
 """
 
-import pytest
 import base64
-import tempfile
-import os
-from pathlib import Path
-from unittest.mock import MagicMock
 
 from langchain.schema import Document
 from app.utils.image_loader import (

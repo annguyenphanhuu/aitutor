@@ -39,9 +39,14 @@ import sys
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from app.utils.llm import compatible_temperature
+
+if TYPE_CHECKING:
+    from app.rag.query_expander import QueryExpansion
 
 logging.basicConfig(
     level=logging.WARNING,   # Tắt INFO noise; script tự in trace
@@ -175,7 +180,7 @@ def retrieve_with_trace(
     """
     from app.rag.knowledge_base import get_knowledge_base
     from app.rag.reranker import get_reranker
-    from app.rag.query_expander import expand_question, QueryExpansion
+    from app.rag.query_expander import expand_question
     from app.rag.graph_rag import build_search_queries, merge_search_results
 
     kb = get_knowledge_base()
@@ -376,11 +381,10 @@ async def _invoke_llm_simple(
     img_data = _resolve_image(image_path) if image_path else None
     using_vision = img_data is not None
 
-    is_reasoning = any(p in model for p in ["o1", "o3", "o4"])
     llm = ChatOpenAI(
         model=model,
         api_key=settings.OPENAI_API_KEY,
-        temperature=1.0 if is_reasoning else 0.1,
+        temperature=compatible_temperature(model, 0.1),
     )
 
     if using_vision:
@@ -440,7 +444,6 @@ async def generate_with_trace(
     question_type: str,
     image_path: str,
     solver_model: Optional[str] = None,
-    use_reflection: bool = False,  # unused — routing handled externally
 ) -> tuple[str, str, bool, Optional[str]]:
     """Sinh câu trả lời dùng Agentic Tool-Calling (SymPy as Function Call).
 
@@ -449,7 +452,7 @@ async def generate_with_trace(
     Returns (response, model_used, used_vision, tool_call_log).
     """
     from langchain_openai import ChatOpenAI
-    from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage, AIMessage
+    from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
     from app.config import get_settings
     from app.agents.tools import MATH_TOOL_LIST
     import json
@@ -464,14 +467,10 @@ async def generate_with_trace(
     else:
         model = settings.VISION_LLM_MODEL if using_vision else settings.LLM_MODEL
 
-    # o1/o3/o4 không hỗ trợ tool_choice với temperature != 1
-    is_reasoning_model = any(prefix in model for prefix in ["o1", "o3", "o4"])
-    temp = 1.0 if is_reasoning_model else 0.1
-
     llm_base = ChatOpenAI(
         model=model,
         api_key=settings.OPENAI_API_KEY,
-        temperature=temp,
+        temperature=compatible_temperature(model, 0.1),
     )
 
     # Bind SymPy tools for every solver model. Modern reasoning models support
@@ -689,7 +688,6 @@ def print_question_trace(
     }.get(qtype, qtype)
 
     acc     = judge.get("accuracy", 0)
-    clarity = judge.get("step_clarity", 0)
     acc_icon = "✅" if acc >= 0.8 else ("⚠️" if acc >= 0.5 else "❌")
 
     print(f"\n{SEP2}")
@@ -753,7 +751,7 @@ def print_question_trace(
                 break
             print(line)
     else:
-        print(f"\n📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]")
+        print("\n📋 SYSTEM PROMPT: [dùng --verbose-prompt để xem đầy đủ]")
         print(f"   Format: {qtype} | CoT: ✅ | RAG framing: ✅")
 
     # -- SymPy Log (Agentic Tool Calls or Reflection) --
@@ -767,14 +765,14 @@ def print_question_trace(
             print(safe_log.encode("ascii", errors="replace").decode("ascii"))
 
     # ── Response ──
-    print(f"\n🤖 MODEL RESPONSE:")
+    print("\n🤖 MODEL RESPONSE:")
     print(SEP)
     print(response[:2000])
     if len(response) > 2000:
         print("  ... [truncated — xem file trace để đọc đủ]")
 
     # ── Scores ──
-    print(f"\n📊 SCORES:")
+    print("\n📊 SCORES:")
     print(SEP)
     print(f"  Đáp án đúng  : {correct}")
     print(f"  {acc_icon} MathJudge Accuracy        : {acc:.2f}")
@@ -784,7 +782,7 @@ def print_question_trace(
     if examiner and not examiner.get("error"):
         ws = examiner.get("weighted_score", 0)
         ws_icon = "✅" if ws >= 0.7 else ("⚠️" if ws >= 0.5 else "❌")
-        print(f"\n  🎓 LLM EXAMINER (rubric 4 chiều):")
+        print("\n  🎓 LLM EXAMINER (rubric 4 chiều):")
         print(f"     {ws_icon} Weighted Score       : {ws:.2f}")
         print(f"     {'✅' if examiner.get('accuracy',0)>=0.8 else '❌'} Accuracy (kết quả)  : {examiner.get('accuracy',0):.2f}")
         print(f"     {'✅' if examiner.get('method',0)>=0.7 else '❌'}  Method (phương pháp): {examiner.get('method',0):.2f}")
@@ -803,7 +801,7 @@ def print_question_trace(
 
     # RAGAS retrieval only
     if ragas_scores:
-        print(f"\n  📡 RAG RETRIEVAL (RAGAS):")
+        print("\n  📡 RAG RETRIEVAL (RAGAS):")
         if "error" in ragas_scores:
             print(f"     ⚠️  RAGAS error: {ragas_scores['error'][:80]}")
         else:
@@ -900,8 +898,6 @@ async def main(args):
 
         # ── Classify: heavy_math → Agentic, else → Reflection ──
         use_agentic = is_heavy_math(clean_q, q["skill_id"])
-        pipeline_label = "Agentic" if use_agentic else "Reflection"
-
         # ── Build prompt ──
         system_prompt = build_system_prompt(context_text, q["type"], use_agentic=use_agentic)
 

@@ -10,9 +10,7 @@ Covers:
 - quality_from_quiz() conversion
 """
 
-import pytest
-from datetime import datetime, timedelta
-from unittest.mock import patch
+from datetime import datetime
 from app.spaced_repetition.engine import sm2_update, quality_from_quiz
 
 

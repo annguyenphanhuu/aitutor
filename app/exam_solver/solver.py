@@ -78,9 +78,9 @@ class ExamSolver:
         "cloud" → GPT-4o-mini Vision | "local" → GOT-OCR2.0
     """
 
-    def __init__(self, ocr_engine: str = "cloud"):
-        self.ocr = get_ocr_engine(ocr_engine)
-        self.ocr_engine_name = ocr_engine
+    def __init__(self, ocr_engine: str | None = None):
+        self.ocr_engine_name = ocr_engine or settings.OCR_ENGINE
+        self.ocr = get_ocr_engine(self.ocr_engine_name)
         self.splitter = QuestionSplitter()
         self.teacher = TeacherAgent(model=settings.EXAM_SOLVER_MODEL)
         self._semaphore = asyncio.Semaphore(settings.SOLVE_CONCURRENCY)
@@ -427,7 +427,7 @@ CHỈ TRẢ VỀ JSON."""
         n_errors = sum(1 for s in solutions if s.error)
         total = len(solutions)
 
-        report = f"# 📝 Lời Giải Đề Thi\n\n"
+        report = "# 📝 Lời Giải Đề Thi\n\n"
         report += f"**Tổng số câu:** {total}"
         if n_errors:
             report += f" (⚠️ {n_errors} câu gặp lỗi)"

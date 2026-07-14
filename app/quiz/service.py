@@ -10,46 +10,11 @@ from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from app.db.models import QuizQuestion, QuizSession, SpacedRepetitionCard, QuestionBank
-from app.quiz.generator import generate_questions, generate_exam_questions
+from app.db.models import QuizQuestion, QuizSession, QuestionBank
+from app.quiz.generator import generate_questions
+from app.quiz.grading import score_short_answer, score_true_false
 from app.knowledge_tracing.service import update_mastery, get_or_create_mastery
 from app.knowledge_tracing.skill_graph import SKILLS
-
-
-# ── True/False Scoring (THPT QG rules) ───────────────────
-TF_SCORE_TABLE = {
-    0: 0.0,
-    1: 0.1,
-    2: 0.25,
-    3: 0.5,
-    4: 1.0,
-}
-
-
-def _score_true_false(student_answers: list[bool], correct_answers: list[bool]) -> tuple[float, int]:
-    """
-    Score a True/False question per THPT QG rules.
-    Returns (points_earned, num_correct_statements).
-    """
-    num_correct = sum(s == c for s, c in zip(student_answers, correct_answers))
-    points = TF_SCORE_TABLE.get(num_correct, 0.0)
-    return points, num_correct
-
-
-def _score_short_answer(student_answer: str, correct_answer: str) -> tuple[float, bool]:
-    """
-    Score a short-answer question. Tries numeric comparison with tolerance.
-    Returns (points_earned, is_correct).
-    """
-    try:
-        student_val = float(student_answer.replace(",", ".").strip())
-        correct_val = float(correct_answer.replace(",", ".").strip())
-        is_correct = abs(student_val - correct_val) < 0.01
-    except (ValueError, TypeError):
-        # Fallback: exact string match
-        is_correct = student_answer.strip().lower() == correct_answer.strip().lower()
-
-    return (0.5 if is_correct else 0.0), is_correct
 
 
 # ── Create Quiz Session ──────────────────────────────────
@@ -60,8 +25,12 @@ async def create_quiz_session(
     count: int = 5,
     user_id: int = 1,
     chapter: str | None = None,
+    exam_format: bool = False,
 ) -> dict:
     """Generate questions and create a quiz session.
+
+    ``exam_format=True`` generates the THPT mix 3 MCQ + 1 True/False +
+    1 short-answer question. Otherwise ``count`` MCQs are generated.
     If difficulty=0, uses adaptive engine to auto-select difficulty.
     """
     import random
@@ -91,45 +60,50 @@ async def create_quiz_session(
 
     from sqlalchemy.sql.expression import func
     
-    raw_questions = []
-    
-    res = await db.execute(
-        select(QuestionBank)
-        .where(QuestionBank.skill_id.in_(skill_ids_to_query))
-        .where(QuestionBank.difficulty == difficulty)
-        .where(QuestionBank.question_type == "mcq")
-        .where(QuestionBank.is_active == True)
-        .order_by(func.random())
-        .limit(count)
+    requested_by_type = (
+        {"mcq": 3, "true_false": 1, "short_answer": 1}
+        if exam_format
+        else {"mcq": count}
     )
-    bank_questions = res.scalars().all()
-    
-    for bq in bank_questions:
-        raw_questions.append({
-            "skill_id": bq.skill_id,
-            "skill_ids": [bq.skill_id],
-            "difficulty": bq.difficulty,
-            "question_type": bq.question_type,
-            "question_latex": bq.question_latex,
-            "choices": bq.choices,
-            "correct_index": bq.correct_index,
-            "statements": bq.statements,
-            "correct_answer": bq.correct_answer,
-            "points": bq.points,
-            "explanation": bq.explanation,
-            "sympy_expr": "",
-        })
-    
-    missing = count - len(raw_questions)
-    if missing > 0:
-        skill_counts = {}
+    raw_questions = []
+
+    for question_type, requested_count in requested_by_type.items():
+        res = await db.execute(
+            select(QuestionBank)
+            .where(QuestionBank.skill_id.in_(skill_ids_to_query))
+            .where(QuestionBank.difficulty == difficulty)
+            .where(QuestionBank.question_type == question_type)
+            .where(QuestionBank.is_active.is_(True))
+            .order_by(func.random())
+            .limit(requested_count)
+        )
+        bank_questions = list(res.scalars().all())
+
+        for bq in bank_questions:
+            raw_questions.append({
+                "skill_id": bq.skill_id,
+                "skill_ids": [bq.skill_id],
+                "difficulty": bq.difficulty,
+                "question_type": bq.question_type,
+                "question_latex": bq.question_latex,
+                "choices": bq.choices,
+                "correct_index": bq.correct_index,
+                "statements": bq.statements,
+                "correct_answer": bq.correct_answer,
+                "points": bq.points,
+                "explanation": bq.explanation,
+                "sympy_expr": "",
+            })
+
+        missing = requested_count - len(bank_questions)
         for _ in range(missing):
-            s = random.choice(skill_ids_to_query)
-            skill_counts[s] = skill_counts.get(s, 0) + 1
-            
-        for s, c in skill_counts.items():
-            gen_qs = generate_questions(s, difficulty, c)
-            raw_questions.extend(gen_qs)
+            generated_skill = random.choice(skill_ids_to_query)
+            raw_questions.extend(generate_questions(
+                generated_skill,
+                difficulty,
+                count=1,
+                question_type=question_type,
+            ))
 
     if not raw_questions:
         return {"error": "Không thể sinh câu hỏi cho kỹ năng này."}
@@ -177,8 +151,8 @@ async def create_quiz_session(
 
     session = QuizSession(
         user_id=user_id,
-        session_type="practice",
-        exam_format=False,
+        session_type="exam" if exam_format else "practice",
+        exam_format=exam_format,
         skill_ids=skill_ids_to_query,
         questions=session_questions,
         total_questions=len(db_questions),
@@ -266,13 +240,13 @@ async def submit_quiz_answer(
     elif q_type == "true_false":
         correct_bools = [s["correct"] for s in question.statements]
         student_bools = tf_answers or [False, False, False, False]
-        points_earned, num_correct = _score_true_false(student_bools, correct_bools)
+        points_earned, num_correct = score_true_false(student_bools, correct_bools)
         is_correct = (num_correct == 4)
         response_extra["correct_statements"] = correct_bools
 
     elif q_type == "short_answer":
         student_text = text_answer or ""
-        points_earned, is_correct = _score_short_answer(student_text, question.correct_answer or "")
+        points_earned, is_correct = score_short_answer(student_text, question.correct_answer or "")
         response_extra["correct_answer"] = question.correct_answer
 
     # Update session question list

@@ -4,6 +4,7 @@ from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from app.config import get_settings
 from app.knowledge_tracing.skill_graph import SKILLS
+from app.utils.llm import compatible_temperature
 import json
 
 settings = get_settings()
@@ -42,7 +43,7 @@ class PlannerAgent:
 
     def __init__(self):
         # MINI: structured study plan from mastery data, no deep reasoning
-        temp = 1.0 if any(p in settings.LLM_MODEL_MINI for p in ["o1", "o3", "o4"]) else 0.4
+        temp = compatible_temperature(settings.LLM_MODEL_MINI, 0.4)
         self.llm = ChatOpenAI(
             model=settings.LLM_MODEL_MINI,
             api_key=settings.OPENAI_API_KEY,

@@ -68,7 +68,7 @@ async def get_insights(db: AsyncSession, user_id: int = 1) -> list[dict]:
     result = await db.execute(
         select(func.count(InteractionLog.id)).where(
             InteractionLog.user_id == user_id,
-            InteractionLog.is_correct == True,
+            InteractionLog.is_correct.is_(True),
         )
     )
     correct_interactions = result.scalar() or 0
@@ -93,7 +93,7 @@ async def get_insights(db: AsyncSession, user_id: int = 1) -> list[dict]:
     result = await db.execute(
         select(func.count(QuizSession.id)).where(
             QuizSession.user_id == user_id,
-            QuizSession.is_completed == True,
+            QuizSession.is_completed.is_(True),
         )
     )
     completed_quizzes = result.scalar() or 0
@@ -103,7 +103,7 @@ async def get_insights(db: AsyncSession, user_id: int = 1) -> list[dict]:
             select(func.avg(QuizSession.correct_count * 100.0 / QuizSession.total_questions))
             .where(
                 QuizSession.user_id == user_id,
-                QuizSession.is_completed == True,
+                QuizSession.is_completed.is_(True),
             )
         )
         avg_score = result.scalar() or 0

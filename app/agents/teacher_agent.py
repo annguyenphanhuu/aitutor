@@ -14,20 +14,22 @@ from typing import Optional
 import base64
 import logging
 import re
+from dataclasses import dataclass
 
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage, AIMessage
 from openai import AsyncOpenAI
 from app.config import get_settings
-from app.rag.graph_rag import GraphRAGRetriever
-from app.agents.reflection import ReflectionEngine, extract_thinking_block
+from app.rag.graph_rag import GraphRAGResult, GraphRAGRetriever
+from app.agents.reflection import ReflectionEngine
 from app.agents.few_shot_store import build_few_shot_prompt, get_mastery_tier
 from app.agents.agentic_teacher import AgenticTeacherMixin, _normalize_messages
+from app.agents.context_utils import format_formulas, format_skill_names, normalize_skill_ids
 from app.utils.cost_tracker import log_from_response
 from app.utils.image_loader import build_multimodal_content, has_images
 from app.knowledge_tracing.skill_graph import SKILLS
-from app.rag.formula_registry import get_formulas_by_ids
 from app.utils.answer_format import answer_format_instruction, ensure_answer_tag
+from app.utils.llm import compatible_temperature
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -127,35 +129,6 @@ def needs_visual_feature_pass(
         return True
     combined = f"{ocr_text}\n{user_text}".lower()
     return any(keyword in combined for keyword in _VISUAL_ANALYSIS_KEYWORDS)
-
-
-def _normalize_skill_ids(
-    skill_id: Optional[str] = None,
-    skill_ids: Optional[list[str]] = None,
-) -> list[str]:
-    normalized: list[str] = []
-    for sid in skill_ids or []:
-        if sid and sid not in normalized:
-            normalized.append(sid)
-    if skill_id and skill_id not in normalized:
-        normalized.insert(0, skill_id)
-    return normalized
-
-
-def _format_skill_names(skill_ids: list[str]) -> str:
-    if not skill_ids:
-        return "chua xac dinh"
-    return ", ".join(
-        f"{SKILLS.get(skill_id, {}).get('name', skill_id)} ({skill_id})"
-        for skill_id in skill_ids
-    )
-
-
-def _format_formulas(formula_ids: Optional[list[str]]) -> str:
-    formulas = get_formulas_by_ids(formula_ids or [])
-    if not formulas:
-        return "Khong co cong thuc trong tam duoc gan metadata."
-    return "\n\n".join(formula.get("content", "") for formula in formulas)
 
 
 TEACHER_SYSTEM_PROMPT_SOCRATIC = """Bạn là một gia sư Toán 12 giỏi, theo phương pháp Socratic.
@@ -305,6 +278,18 @@ MỨC ĐỘ THÀNH THẠO: {mastery_level}
 """
 
 
+@dataclass(frozen=True)
+class TeacherPromptContext:
+    """All retrieval-derived values needed to build a Teacher prompt."""
+
+    rag_result: GraphRAGResult
+    context: str
+    skill_names: str
+    formulas: str
+    few_shot: str
+    gaps: str
+
+
 class TeacherAgent(AgenticTeacherMixin):
     """Agent that explains math concepts and guides student learning.
 
@@ -320,14 +305,14 @@ class TeacherAgent(AgenticTeacherMixin):
 
     def __init__(self, model: Optional[str] = None):
         self.model_name = model or settings.LLM_MODEL
-        temp = 1.0 if any(prefix in self.model_name for prefix in ["o1", "o3", "o4"]) else 0.3
+        temp = compatible_temperature(self.model_name, 0.3)
         
         self.llm = ChatOpenAI(
             model=self.model_name,
             api_key=settings.OPENAI_API_KEY,
             temperature=temp,
         )
-        vision_temp = 1.0 if any(prefix in settings.VISION_LLM_MODEL for prefix in ["o1", "o3", "o4"]) else 0.3
+        vision_temp = compatible_temperature(settings.VISION_LLM_MODEL, 0.3)
         self.vision_llm = ChatOpenAI(
             model=settings.VISION_LLM_MODEL,
             api_key=settings.OPENAI_API_KEY,
@@ -364,6 +349,82 @@ class TeacherAgent(AgenticTeacherMixin):
             "TeacherAgent prompts loaded: socratic=%d chars, exam=%d chars, answer=%d chars",
             len(self._prompt_socratic), len(self._prompt_exam), len(self._prompt_answer),
         )
+
+    def _prepare_prompt_context(
+        self,
+        search_query: str,
+        *,
+        skill_id: Optional[str],
+        skill_ids: Optional[list[str]],
+        formula_ids: Optional[list[str]],
+        masteries: Optional[dict[str, float]],
+        p_mastery: float,
+        prerequisite_gaps: Optional[list[dict]],
+    ) -> TeacherPromptContext:
+        """Retrieve RAG context and derive the shared pedagogical metadata."""
+        rag_result = self.graph_retriever.retrieve(
+            query=search_query,
+            skill_id=skill_id,
+            masteries=masteries or {},
+        )
+        chapter = SKILLS.get(skill_id, {}).get("chapter") if skill_id else None
+        gaps = rag_result.build_gap_warning()
+        if not gaps and prerequisite_gaps:
+            gap_names = ", ".join(gap["skill_name"] for gap in prerequisite_gaps)
+            gaps = (
+                "\n⚠️ HỌC SINH CÒN YẾU CÁC KIẾN THỨC NỀN: "
+                f"{gap_names}. Hãy nhắc nhở ôn lại."
+            )
+
+        normalized_skill_ids = normalize_skill_ids(skill_ids, skill_id)
+        return TeacherPromptContext(
+            rag_result=rag_result,
+            context=rag_result.build_context_text(),
+            skill_names=format_skill_names(normalized_skill_ids),
+            formulas=format_formulas(formula_ids),
+            few_shot=build_few_shot_prompt(p_mastery, chapter),
+            gaps=gaps,
+        )
+
+    def _build_system_prompt(
+        self,
+        prepared: TeacherPromptContext,
+        *,
+        mode: str,
+        mastery_level: str,
+        question_type: Optional[str] = None,
+    ) -> str:
+        """Render the selected prompt with one consistent substitution path."""
+        template = {
+            "exam": self._prompt_exam,
+            "answer": self._prompt_answer,
+        }.get(mode, self._prompt_socratic)
+        replacements = {
+            "{context}": prepared.context,
+            "{skill_names_list}": prepared.skill_names,
+            "{formulas_list}": prepared.formulas,
+            "{mastery_level}": mastery_level,
+            "{prerequisite_gaps}": prepared.gaps,
+            "{few_shot_block}": prepared.few_shot,
+        }
+        for placeholder, value in replacements.items():
+            template = template.replace(placeholder, value or "")
+
+        format_instruction = answer_format_instruction(question_type)
+        if format_instruction:
+            template = f"{template}\n\n{format_instruction}"
+        return template
+
+    @staticmethod
+    def _history_messages(chat_history: Optional[list[dict]]) -> list:
+        """Convert the bounded chat history to LangChain messages."""
+        messages = []
+        for item in (chat_history or [])[-MAX_HISTORY_MESSAGES:]:
+            if item.get("role") == "user":
+                messages.append(HumanMessage(content=item["content"]))
+            elif item.get("role") == "assistant":
+                messages.append(AIMessage(content=item["content"]))
+        return messages
 
     async def _extract_visual_evidence(
         self,
@@ -440,11 +501,16 @@ class TeacherAgent(AgenticTeacherMixin):
             trace_id=trace_id,
             input_data={"query": question[:300], "skill_id": skill_id},
         )
-        rag_result = self.graph_retriever.retrieve(
-            query=question,
+        prepared = self._prepare_prompt_context(
+            question,
             skill_id=skill_id,
-            masteries=masteries or {},
+            skill_ids=skill_ids,
+            formula_ids=formula_ids,
+            masteries=masteries,
+            p_mastery=p_mastery,
+            prerequisite_gaps=prerequisite_gaps,
         )
+        rag_result = prepared.rag_result
         end_span(rag_span, output={
             "num_main_docs": len(rag_result.main_docs),
             "num_prereq_docs": len(rag_result.prereq_docs),
@@ -452,71 +518,13 @@ class TeacherAgent(AgenticTeacherMixin):
             "has_images": has_images(rag_result.all_docs),
             "search_queries": rag_result.search_queries,
         })
-        context = rag_result.build_context_text()
-        normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
-        skill_names_list = _format_skill_names(normalized_skill_ids)
-        formulas_list = _format_formulas(formula_ids)
-        graph_gap_warning = rag_result.build_gap_warning()
-
-        # ── Step 2: Dynamic Few-Shot ──────────────────────────────
-        skill_info = SKILLS.get(skill_id, {}) if skill_id else {}
-        chapter = skill_info.get("chapter")
-        few_shot_block = build_few_shot_prompt(p_mastery, chapter)
-
-        # ── Merge prerequisite warnings ───────────────────────────
-        gaps_text = graph_gap_warning
-        if not gaps_text and prerequisite_gaps:
-            # Fallback to the old-style gap list
-            gaps_list = ", ".join([g["skill_name"] for g in prerequisite_gaps])
-            gaps_text = f"\n⚠️ HỌC SINH CÒN YẾU CÁC KIẾN THỨC NỀN: {gaps_list}. Hãy nhắc nhở ôn lại."
-
-        # ── Step 3: Build messages ───────────────────────────────
-        # Dùng self._prompt_* (loaded từ Langfuse hoặc fallback về hardcode)
-        if mode == "exam":
-            system_prompt = (
-                self._prompt_exam
-                .replace("{context}", context)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{few_shot_block}", few_shot_block)
-            )
-        elif mode == "answer":
-            system_prompt = (
-                self._prompt_answer
-                .replace("{context}", context)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{few_shot_block}", few_shot_block)
-            )
-        else:
-            system_prompt = (
-                self._prompt_socratic
-                .replace("{context}", context)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{prerequisite_gaps}", gaps_text or "")
-                .replace("{few_shot_block}", few_shot_block)
-            )
-
-        format_instruction = answer_format_instruction(question_type)
-        if format_instruction:
-            # Runtime constraint is appended even when the base prompt comes
-            # from Langfuse, so remote prompt drift cannot remove the contract.
-            system_prompt = f"{system_prompt}\n\n{format_instruction}"
-
-        messages = [SystemMessage(content=system_prompt)]
-
-        # Inject chat history (sliding window: last N messages)
-        if chat_history:
-            recent_history = chat_history[-MAX_HISTORY_MESSAGES:]
-            for h in recent_history:
-                if h.get("role") == "user":
-                    messages.append(HumanMessage(content=h["content"]))
-                elif h.get("role") == "assistant":
-                    messages.append(AIMessage(content=h["content"]))
+        system_prompt = self._build_system_prompt(
+            prepared,
+            mode=mode,
+            mastery_level=mastery_level,
+            question_type=question_type,
+        )
+        messages = [SystemMessage(content=system_prompt), *self._history_messages(chat_history)]
 
         # ── Build HumanMessage: text-only hoặc multimodal ──────────
         all_docs = rag_result.all_docs
@@ -620,56 +628,20 @@ class TeacherAgent(AgenticTeacherMixin):
         trade-off chấp nhận được vì UX streaming quan trọng hơn với path này.
         """
         # ── Step 1: GraphRAG (blocking — cần xong trước khi bắt đầu stream) ──
-        rag_result = self.graph_retriever.retrieve(
-            query=question,
+        prepared = self._prepare_prompt_context(
+            question,
             skill_id=skill_id,
-            masteries=masteries or {},
+            skill_ids=skill_ids,
+            formula_ids=formula_ids,
+            masteries=masteries,
+            p_mastery=p_mastery,
+            prerequisite_gaps=prerequisite_gaps,
         )
-        context = rag_result.build_context_text()
-        normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
-        skill_names_list = _format_skill_names(normalized_skill_ids)
-        formulas_list = _format_formulas(formula_ids)
-        graph_gap_warning = rag_result.build_gap_warning()
-
-        # ── Step 2: Dynamic Few-Shot ─────────────────────────────────
-        skill_info = SKILLS.get(skill_id, {}) if skill_id else {}
-        chapter = skill_info.get("chapter")
-        few_shot_block = build_few_shot_prompt(p_mastery, chapter)
-
-        gaps_text = graph_gap_warning
-        if not gaps_text and prerequisite_gaps:
-            gaps_list = ", ".join([g["skill_name"] for g in prerequisite_gaps])
-            gaps_text = f"\n⚠️ HỌC SINH CÒN YẾU CÁC KIẾN THỨC NỀN: {gaps_list}. Hãy nhắc nhở ôn lại."
-
-        # ── Step 3: Build system prompt ───────────────────────────────
-        if mode == "exam":
-            system_prompt = (
-                TEACHER_SYSTEM_PROMPT_EXAM
-                .replace("{context}", context)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{few_shot_block}", few_shot_block)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-            )
-        elif mode == "answer":
-            system_prompt = (
-                TEACHER_SYSTEM_PROMPT_ANSWER
-                .replace("{context}", context)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{few_shot_block}", few_shot_block)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-            )
-        else:
-            system_prompt = (
-                TEACHER_SYSTEM_PROMPT_SOCRATIC
-                .replace("{context}", context)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{prerequisite_gaps}", gaps_text or "")
-                .replace("{few_shot_block}", few_shot_block)
-            )
+        system_prompt = self._build_system_prompt(
+            prepared,
+            mode=mode,
+            mastery_level=mastery_level,
+        )
 
         # ── Step 4: Build OpenAI messages (dùng AsyncOpenAI vì LangChain không hỗ trợ stream=True dễ) ──
         oai_messages: list[dict] = [{"role": "system", "content": system_prompt}]
@@ -684,7 +656,7 @@ class TeacherAgent(AgenticTeacherMixin):
         oai_messages.append({"role": "user", "content": question})
 
         # ── Step 5: Stream tokens ───────────────────────────────────────
-        temp = 1.0 if any(prefix in self.model_name for prefix in ["o1", "o3", "o4"]) else 0.3
+        temp = compatible_temperature(self.model_name, 0.3)
         stream = await self.openai_client.chat.completions.create(
             model=self.model_name,
             messages=oai_messages,
@@ -727,70 +699,22 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── GraphRAG: search bằng ocr_text (LaTeX) ─────────────────────
         search_query = ocr_text if ocr_text else (user_text or "bài toán")
-        rag_result = self.graph_retriever.retrieve(
-            query=search_query,
+        prepared = self._prepare_prompt_context(
+            search_query,
             skill_id=skill_id,
-            masteries=masteries or {},
+            skill_ids=skill_ids,
+            formula_ids=formula_ids,
+            masteries=masteries,
+            p_mastery=p_mastery,
+            prerequisite_gaps=prerequisite_gaps,
         )
-        context = rag_result.build_context_text()
-        normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
-        skill_names_list = _format_skill_names(normalized_skill_ids)
-        formulas_list = _format_formulas(formula_ids)
-
-        # ── Dynamic Few-Shot ───────────────────────────────────────────
-        skill_info = SKILLS.get(skill_id, {}) if skill_id else {}
-        chapter = skill_info.get("chapter")
-        few_shot_block = build_few_shot_prompt(p_mastery, chapter)
-
-        # ── Prerequisite gaps ──────────────────────────────────────
-        gaps_text = rag_result.build_gap_warning()
-        if not gaps_text and prerequisite_gaps:
-            gaps_list = ", ".join([g["skill_name"] for g in prerequisite_gaps])
-            gaps_text = f"\n⚠️ HỌC SINH CÒN YẾU CÁC KIẾN THỨC NỀN: {gaps_list}. Hãy nhắc nhở ôn lại."
-
-        # ── Chọn system prompt theo mode ───────────────────────────
-        if mode == "exam":
-            system_prompt = (
-                TEACHER_SYSTEM_PROMPT_EXAM
-                .replace("{context}", context)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{few_shot_block}", few_shot_block)
-            )
-        elif mode == "answer":
-            system_prompt = (
-                TEACHER_SYSTEM_PROMPT_ANSWER
-                .replace("{context}", context)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{few_shot_block}", few_shot_block)
-            )
-        else:
-            system_prompt = (
-                TEACHER_SYSTEM_PROMPT_SOCRATIC
-                .replace("{context}", context)
-                .replace("{skill_names_list}", skill_names_list)
-                .replace("{formulas_list}", formulas_list)
-                .replace("{mastery_level}", mastery_level)
-                .replace("{prerequisite_gaps}", gaps_text or "")
-                .replace("{few_shot_block}", few_shot_block)
-            )
-
-        format_instruction = answer_format_instruction(question_type)
-        if format_instruction:
-            system_prompt = f"{system_prompt}\n\n{format_instruction}"
-
-        # ── Build messages với history ─────────────────────────────
-        messages = [SystemMessage(content=system_prompt)]
-        if chat_history:
-            recent = chat_history[-MAX_HISTORY_MESSAGES:]
-            for h in recent:
-                if h.get("role") == "user":
-                    messages.append(HumanMessage(content=h["content"]))
-                elif h.get("role") == "assistant":
-                    messages.append(AIMessage(content=h["content"]))
+        system_prompt = self._build_system_prompt(
+            prepared,
+            mode=mode,
+            mastery_level=mastery_level,
+            question_type=question_type,
+        )
+        messages = [SystemMessage(content=system_prompt), *self._history_messages(chat_history)]
 
         # ── Build HumanMessage: focused images + OCR + user text ───────
         image_inputs = [(image_bytes, image_mime, image_label)]

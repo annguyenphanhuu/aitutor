@@ -19,9 +19,7 @@ from __future__ import annotations
 
 import io
 import logging
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Optional
+from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
@@ -51,14 +49,6 @@ class ExtractedImage:
     @property
     def aspect_ratio(self) -> float:
         return self.width / max(self.height, 1)
-
-
-@dataclass
-class PageContent:
-    """Combined text + images for a single page."""
-    page_num: int
-    text: str                                 # OCR/extracted text
-    images: list[ExtractedImage] = field(default_factory=list)
 
 
 def classify_image(img: ExtractedImage, page_width: float, page_height: float) -> str:
@@ -269,76 +259,3 @@ def _cluster_drawings(
         result.append(m)
 
     return result
-
-
-def extract_page_contents(
-    pdf_bytes: bytes,
-    max_pages: int = 10,
-) -> list[PageContent]:
-    """Extract both text and images per page.
-
-    Returns combined PageContent objects for downstream processing.
-    """
-    try:
-        import fitz
-    except ImportError:
-        return []
-
-    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
-    n_pages = min(len(doc), max_pages)
-    images = extract_images_from_pdf(pdf_bytes, max_pages=max_pages)
-
-    # Group images by page
-    images_by_page: dict[int, list[ExtractedImage]] = {}
-    for img in images:
-        images_by_page.setdefault(img.page_num, []).append(img)
-
-    pages: list[PageContent] = []
-    for page_num in range(n_pages):
-        page = doc[page_num]
-        text = page.get_text("text")  # Native text extraction (for text-based PDFs)
-        page_images = images_by_page.get(page_num, [])
-
-        pages.append(PageContent(
-            page_num=page_num,
-            text=text,
-            images=page_images,
-        ))
-
-    doc.close()
-    return pages
-
-
-async def save_extracted_images(
-    images: list[ExtractedImage],
-    output_dir: str | Path,
-    prefix: str = "exam",
-) -> list[dict]:
-    """Save extracted images to disk and return metadata.
-
-    Returns list of dicts with file paths and metadata for each image.
-    """
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    saved = []
-    for img in images:
-        filename = f"{prefix}_p{img.page_num + 1}_img{img.index}_{img.label}.png"
-        filepath = output_dir / filename
-
-        with open(filepath, "wb") as f:
-            f.write(img.image_bytes)
-
-        saved.append({
-            "filename": filename,
-            "filepath": str(filepath),
-            "page": img.page_num + 1,
-            "label": img.label,
-            "width": img.width,
-            "height": img.height,
-            "bbox": img.bbox,
-            "size_bytes": len(img.image_bytes),
-        })
-
-    logger.info("💾 Saved %d images to %s", len(saved), output_dir)
-    return saved

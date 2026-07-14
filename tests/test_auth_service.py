@@ -8,10 +8,9 @@ Covers:
 """
 
 import pytest
-from app.auth.service import login_or_register, get_current_user_id
+from app.auth.service import login_or_register
 from app.db.models import User
 from sqlalchemy import select
-from fastapi import HTTPException
 
 
 # ━━ login_or_register() ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -83,7 +82,6 @@ class TestGetCurrentUserId:
     async def test_no_header_returns_default(self):
         """Without X-User-Id, should return 1 for backward compat."""
         # This is a FastAPI dependency; we test the logic directly
-        from unittest.mock import AsyncMock, MagicMock
         # Call without header → default=1
         # Note: can't easily test Depends() directly, testing the core logic
         result = 1  # Default when x_user_id=None

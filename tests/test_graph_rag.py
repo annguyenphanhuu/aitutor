@@ -9,7 +9,6 @@ Covers:
 - GraphRAGResult.build_gap_warning() — gap warning builder
 """
 
-import pytest
 from langchain.schema import Document
 from app.rag.graph_rag import GraphRAGResult
 

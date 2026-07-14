@@ -35,7 +35,6 @@ from langchain.schema import Document
 from app.rag.knowledge_base import KnowledgeBase, get_knowledge_base
 from app.knowledge_tracing.skill_graph import (
     SKILLS,
-    get_deep_prerequisites,
     find_weak_prerequisites,
 )
 

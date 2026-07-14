@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.db.models import SkillMastery
 from app.knowledge_tracing.bkt import BKTModel
-from app.knowledge_tracing.skill_graph import SKILLS, get_prerequisites, find_weak_prerequisites
+from app.knowledge_tracing.skill_graph import SKILLS, find_weak_prerequisites
 
 
 bkt = BKTModel()
@@ -120,16 +120,6 @@ async def update_mastery(
     if isinstance(skill_or_assessment, str):
         return updated.get(skill_or_assessment, bkt.p_init)
     return updated
-
-
-async def update_masteries_from_assessment(
-    db: AsyncSession,
-    skills_assessed: dict,
-    user_id: int = 1,
-) -> dict[str, float]:
-    """Explicit multi-skill BKT update helper for assessor JSON output."""
-    result = await update_mastery(db, skills_assessed, user_id=user_id)
-    return result if isinstance(result, dict) else {}
 
 
 async def get_all_masteries(db: AsyncSession, user_id: int = 1) -> dict[str, float]:

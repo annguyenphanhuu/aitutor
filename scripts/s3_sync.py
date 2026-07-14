@@ -8,7 +8,6 @@ Cách dùng:
   python scripts/s3_sync.py download-exams  # download đề thi từ S3 về local
   python scripts/s3_sync.py upload-theory   # upload theory.json lên S3
   python scripts/s3_sync.py download-theory # download theory.json từ S3
-  python scripts/s3_sync.py backup-db       # backup tutor.db lên S3
   python scripts/s3_sync.py push            # upload-exams + upload-theory
   python scripts/s3_sync.py pull            # download-exams + download-theory (force)
 """
@@ -159,19 +158,6 @@ def cmd_download_theory(s3, args):
         sys.exit(1)
 
 
-def cmd_backup_db(s3, args):
-    """Backup tutor.db lên S3."""
-    print("\n💾 Backup database lên S3...\n")
-    try:
-        key = s3.backup_db()
-        print(f"  ✅  Đã backup → s3://{s3._bucket}/{key}\n")
-    except FileNotFoundError:
-        print("  ⚠️  Không tìm thấy data/tutor.db\n")
-    except Exception as e:
-        print(f"  ❌ Lỗi: {e}\n")
-        sys.exit(1)
-
-
 def cmd_push(s3, args):
     """Upload toàn bộ (exams + theory) lên S3."""
     print("\n🚀 Push tất cả lên S3...\n")
@@ -198,7 +184,6 @@ COMMANDS = {
     "download-exams":  cmd_download_exams,
     "upload-theory":   cmd_upload_theory,
     "download-theory": cmd_download_theory,
-    "backup-db":       cmd_backup_db,
     "push":            cmd_push,
     "pull":            cmd_pull,
 }
@@ -216,7 +201,6 @@ Các lệnh:
   download-exams   Download đề thi từ S3 về local
   upload-theory    Upload theory.json lên S3
   download-theory  Download theory.json từ S3
-  backup-db        Backup tutor.db lên S3 với timestamp
   push             upload-exams + upload-theory (tất cả)
   pull             download-exams + download-theory (force)
         """,
@@ -236,7 +220,7 @@ Các lệnh:
 
     print("═" * 55)
     print("  AITutor  ·  S3 Sync CLI")
-    print(f"  Bucket: aitutor-bucket-vn  ·  Region: ap-southeast-1")
+    print("  Bucket: aitutor-bucket-vn  ·  Region: ap-southeast-1")
     print("═" * 55)
 
     s3 = get_s3()

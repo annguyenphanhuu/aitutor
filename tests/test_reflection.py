@@ -10,7 +10,6 @@ Covers:
 - ReflectionResult.build_full_response()
 """
 
-import pytest
 from app.agents.reflection import (
     ReflectionResult,
     strip_thinking_tags,

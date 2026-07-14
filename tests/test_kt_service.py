@@ -20,7 +20,7 @@ from app.knowledge_tracing.service import (
     identify_gaps,
     get_recent_results,
 )
-from app.db.models import SkillMastery, InteractionLog
+from app.db.models import InteractionLog
 
 
 # ━━ get_or_create_mastery() ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

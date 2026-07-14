@@ -389,7 +389,6 @@ class MathJudge:
         question_type = meta.get("type", "")
         correct_ans   = meta.get("correct_answer", "")
         response      = sample.get("response", "")
-        reference     = sample.get("reference", "")
         question      = sample.get("user_input", "")
 
         # ── Accuracy (no LLM) ──

@@ -1,7 +1,7 @@
 """Cost tracker — log token usage and estimated USD cost to console."""
 
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 logger = logging.getLogger("cost")

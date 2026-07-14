@@ -18,7 +18,6 @@ No real OpenAI calls are made — all LLM/embedding/RAGAS calls are mocked.
 
 import json
 import pytest
-import tempfile
 import threading
 from pathlib import Path
 from unittest.mock import MagicMock, patch, AsyncMock
@@ -372,7 +371,7 @@ class TestDatasetBuilder:
         assert loaded[0]["reference"]  == sample_ragas_samples[0]["reference"]
 
     def test_save_creates_parent_dirs(self, tmp_path):
-        from app.evaluation.dataset_builder import save_samples, load_samples
+        from app.evaluation.dataset_builder import save_samples
         nested = str(tmp_path / "a" / "b" / "c" / "out.json")
         save_samples([], nested)
         assert Path(nested).exists()
@@ -398,7 +397,7 @@ class TestDatasetBuilder:
     def test_retrieve_contexts_returns_list_of_strings(self):
         from app.evaluation.dataset_builder import retrieve_contexts
         mock_kb = MagicMock()
-        mock_kb.search_all.return_value = [
+        mock_kb.search_theory.return_value = [
             {"content": "Nội dung 1", "hybrid_score": 0.8},
             {"content": "Nội dung 2", "hybrid_score": 0.7},
         ]
@@ -455,7 +454,6 @@ class TestRAGASEvaluator:
         return evaluator, mock_result
 
     def test_report_contains_required_keys(self, sample_ragas_samples):
-        from app.evaluation.ragas_evaluator import RAGASEvaluator
         scores = {
             "context_precision": 0.80,
             "context_recall":    0.72,
@@ -657,7 +655,7 @@ class TestReflectionIntegration:
                      return_value={"success": True, "result_latex": "4"}
                  )
              }):
-            result = await engine.reflect(
+            await engine.reflect(
                 draft="Ta có: 2+2=5.",
                 question="Tính 2+2.",
             )

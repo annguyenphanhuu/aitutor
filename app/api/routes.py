@@ -14,13 +14,11 @@ import time
 
 from app.db.database import get_db
 from app.db.models import (
-    SkillMastery, InteractionLog, StudyPlan,
+    InteractionLog, StudyPlan,
     ConversationSession, ChatMessage, ChatVisualization,
 )
 from app.db.schemas import (
     ChatRequest, ChatResponse,
-    AssessmentRequest, AssessmentResponse,
-    SkillMasteryResponse, StudyPlanResponse,
     QuizGenerateRequest, QuizAnswerRequest,
     DiagnosticAnswerRequest,
     ReviewSubmitRequest,
@@ -29,16 +27,16 @@ from app.db.schemas import (
 from app.agents.orchestrator import Orchestrator
 from app.agents.planner_agent import PlannerAgent
 from app.knowledge_tracing.service import get_mastery_profile, get_all_masteries
-from app.knowledge_tracing.skill_graph import SKILLS, get_chapters, get_skills_by_chapter
+from app.knowledge_tracing.skill_graph import SKILLS, get_chapters
 from app.knowledge_tracing.bkt import BKTModel
 from app.ocr.ocr_strategy import get_ocr_engine
 from app.quiz.service import create_quiz_session, submit_quiz_answer, get_quiz_result
 from app.quiz.diagnostic import start_diagnostic, answer_diagnostic, get_diagnostic_result
-from app.quiz.exam_service import list_exams, load_exam, grade_exam, grade_exam_and_update
+from app.quiz.exam_service import list_exams, load_exam, grade_exam_and_update
 from app.spaced_repetition.service import get_due_cards, review_card, ensure_cards_for_attempted_skills
 from app.analytics.insights import get_insights
 from app.auth.service import login_or_register, get_current_user_id
-from app.guardrails.input_validator import validate_input
+from app.guardrails.input_validator import mask_pii, validate_input
 from app.guardrails.rate_limiter import get_rate_limiter
 import logging
 
@@ -68,6 +66,50 @@ async def _save_chat_visualization(
         message_id=message.id,
         payload=visualization,
     ))
+
+
+async def _get_or_create_chat_session(
+    db: AsyncSession,
+    *,
+    user_id: int,
+    session_id: Optional[int],
+    title: str,
+) -> ConversationSession:
+    """Return a user-owned session or create a new one."""
+    if session_id is not None:
+        result = await db.execute(
+            select(ConversationSession).where(
+                ConversationSession.id == session_id,
+                ConversationSession.user_id == user_id,
+            )
+        )
+        session = result.scalar_one_or_none()
+        if session is None:
+            raise HTTPException(status_code=404, detail="Session not found")
+        session.last_active = datetime.utcnow()
+        return session
+
+    session = ConversationSession(user_id=user_id, title=title)
+    db.add(session)
+    await db.flush()
+    return session
+
+
+async def _load_chat_history(
+    db: AsyncSession,
+    session_id: int,
+) -> list[dict]:
+    """Load the bounded conversation history in chronological order."""
+    result = await db.execute(
+        select(ChatMessage)
+        .where(ChatMessage.session_id == session_id)
+        .order_by(ChatMessage.timestamp.asc())
+        .limit(MAX_HISTORY_LOAD)
+    )
+    return [
+        {"role": message.role, "content": message.content}
+        for message in result.scalars().all()
+    ]
 
 
 # ── Auth ─────────────────────────────────────────────────
@@ -142,37 +184,17 @@ async def chat(
     sanitized_message = validation.message
 
     # ── Session management ────────────────────────────────────────────
-    session_id = data.session_id
-
-    if session_id:
-        # Continue existing session
-        result = await db.execute(
-            select(ConversationSession).where(ConversationSession.id == session_id)
-        )
-        session = result.scalar_one_or_none()
-        if not session:
-            raise HTTPException(status_code=404, detail="Session not found")
-        session.last_active = datetime.utcnow()
-    else:
-        # Create new session with title from first message
-        title = sanitized_message[:80] + ("..." if len(sanitized_message) > 80 else "")
-        session = ConversationSession(user_id=user_id, title=title)
-        db.add(session)
-        await db.flush()
-        session_id = session.id
+    title = sanitized_message[:80] + ("..." if len(sanitized_message) > 80 else "")
+    session = await _get_or_create_chat_session(
+        db,
+        user_id=user_id,
+        session_id=data.session_id,
+        title=title,
+    )
+    session_id = session.id
 
     # ── Load chat history ─────────────────────────────────────────
-    history_result = await db.execute(
-        select(ChatMessage)
-        .where(ChatMessage.session_id == session_id)
-        .order_by(ChatMessage.timestamp.asc())
-        .limit(MAX_HISTORY_LOAD)
-    )
-    history_rows = history_result.scalars().all()
-    chat_history = [
-        {"role": h.role, "content": h.content}
-        for h in history_rows
-    ]
+    chat_history = await _load_chat_history(db, session_id)
 
     # ── Save user message ─────────────────────────────────────────
     user_msg = ChatMessage(
@@ -189,7 +211,7 @@ async def chat(
         user_id=str(user_id),
         session_id=str(session_id),
         metadata={"mode": data.mode},
-        input_text=sanitized_message,
+        input_text=mask_pii(sanitized_message),
     )
 
     t0 = time.monotonic()
@@ -229,7 +251,7 @@ async def chat(
     # Log the interaction (backward compatible)
     log = InteractionLog(
         user_id=user_id,
-        question=data.message,
+        question=mask_pii(sanitized_message),
         agent_response=response["response"],
         skill_id=response.get("skill_id"),
         response_mode=response.get("mode_used", "socratic"),
@@ -270,33 +292,17 @@ async def chat_stream(
     sanitized_message = validation.message
 
     # ── Session management ─────────────────────────────────────────
-    session_id = data.session_id
-    if session_id:
-        result = await db.execute(
-            select(ConversationSession).where(ConversationSession.id == session_id)
-        )
-        session = result.scalar_one_or_none()
-        if not session:
-            raise HTTPException(status_code=404, detail="Session not found")
-        session.last_active = datetime.utcnow()
-    else:
-        title = sanitized_message[:80] + ("..." if len(sanitized_message) > 80 else "")
-        session = ConversationSession(user_id=user_id, title=title)
-        db.add(session)
-        await db.flush()
-        session_id = session.id
+    title = sanitized_message[:80] + ("..." if len(sanitized_message) > 80 else "")
+    session = await _get_or_create_chat_session(
+        db,
+        user_id=user_id,
+        session_id=data.session_id,
+        title=title,
+    )
+    session_id = session.id
 
     # ── Load chat history ──────────────────────────────────────────
-    history_result = await db.execute(
-        select(ChatMessage)
-        .where(ChatMessage.session_id == session_id)
-        .order_by(ChatMessage.timestamp.asc())
-        .limit(MAX_HISTORY_LOAD)
-    )
-    chat_history = [
-        {"role": h.role, "content": h.content}
-        for h in history_result.scalars().all()
-    ]
+    chat_history = await _load_chat_history(db, session_id)
 
     # ── Save user message ngay (trước khi stream bắt đầu) ──────────────
     db.add(ChatMessage(session_id=session_id, role="user", content=sanitized_message))
@@ -361,7 +367,7 @@ async def chat_stream(
                     )
                     save_db.add(InteractionLog(
                         user_id=user_id,
-                        question=data.message,
+                        question=mask_pii(sanitized_message),
                         agent_response=full_response,
                         skill_id=skill_id_cap,
                         response_mode=mode_used_cap or "stream",
@@ -441,36 +447,17 @@ async def upload_image(
         ocr_text = "\n\n".join(parts)
 
     # ── Step 2: Session management ────────────────────────────────
-    sid = session_id
-    if sid:
-        result = await db.execute(
-            select(ConversationSession).where(ConversationSession.id == sid)
-        )
-        session = result.scalar_one_or_none()
-        if not session:
-            sid = None
-
-    if not sid:
-        title = user_text[:80] if user_text else (ocr_text[:60] + "…")
-        session = ConversationSession(user_id=user_id, title=f"📸 {title}")
-        db.add(session)
-        await db.flush()
-        sid = session.id
-    else:
-        from datetime import datetime
-        session.last_active = datetime.utcnow()
+    title = user_text[:80] if user_text else (ocr_text[:60] + "…")
+    session = await _get_or_create_chat_session(
+        db,
+        user_id=user_id,
+        session_id=session_id,
+        title=f"📸 {title}",
+    )
+    sid = session.id
 
     # ── Step 3: Load chat history ─────────────────────────────────
-    history_result = await db.execute(
-        select(ChatMessage)
-        .where(ChatMessage.session_id == sid)
-        .order_by(ChatMessage.timestamp.asc())
-        .limit(MAX_HISTORY_LOAD)
-    )
-    chat_history = [
-        {"role": h.role, "content": h.content}
-        for h in history_result.scalars().all()
-    ]
+    chat_history = await _load_chat_history(db, sid)
 
     # ── Step 4: Gọi orchestrator với ảnh đầu + OCR gộp ───────────
     # Nếu nhiều ảnh, gửi ảnh đầu + OCR gộp (LLM sẽ có full context)
@@ -507,7 +494,7 @@ async def upload_image(
 
     db.add(InteractionLog(
         user_id=user_id,
-        question=user_content,
+        question=mask_pii(user_content),
         agent_response=response["response"],
         skill_id=response.get("skill_id"),
         response_mode=response.get("mode_used", "hybrid_vision"),
@@ -534,6 +521,7 @@ async def generate_quiz(
         count=data.count,
         user_id=user_id,
         chapter=data.chapter,
+        exam_format=data.exam_format,
     )
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
@@ -655,7 +643,7 @@ async def get_dashboard(
     # Get active study plan
     result = await db.execute(
         select(StudyPlan)
-        .where(StudyPlan.user_id == user_id, StudyPlan.is_active == True)
+        .where(StudyPlan.user_id == user_id, StudyPlan.is_active.is_(True))
         .order_by(desc(StudyPlan.created_at))
         .limit(1)
     )
@@ -706,7 +694,7 @@ async def generate_plan(
 
     # Deactivate old plans
     result = await db.execute(
-        select(StudyPlan).where(StudyPlan.user_id == user_id, StudyPlan.is_active == True)
+        select(StudyPlan).where(StudyPlan.user_id == user_id, StudyPlan.is_active.is_(True))
     )
     for old_plan in result.scalars().all():
         old_plan.is_active = False
@@ -822,10 +810,17 @@ async def list_sessions(
 
 
 @router.get("/session/{session_id}/history")
-async def get_session_history(session_id: int, db: AsyncSession = Depends(get_db)):
+async def get_session_history(
+    session_id: int,
+    db: AsyncSession = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
+):
     """Get full chat history for a session."""
     result = await db.execute(
-        select(ConversationSession).where(ConversationSession.id == session_id)
+        select(ConversationSession).where(
+            ConversationSession.id == session_id,
+            ConversationSession.user_id == user_id,
+        )
     )
     session = result.scalar_one_or_none()
     if not session:
@@ -868,9 +863,18 @@ async def get_session_history(session_id: int, db: AsyncSession = Depends(get_db
 
 
 @router.delete("/session/{session_id}")
-async def delete_session(session_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_session(
+    session_id: int,
+    db: AsyncSession = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
+):
     """Delete a specific chat session and its messages."""
-    result = await db.execute(select(ConversationSession).where(ConversationSession.id == session_id))
+    result = await db.execute(
+        select(ConversationSession).where(
+            ConversationSession.id == session_id,
+            ConversationSession.user_id == user_id,
+        )
+    )
     session = result.scalar_one_or_none()
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
@@ -978,8 +982,6 @@ async def build_eval_dataset(limit: int = 20):
     import asyncio
     from app.evaluation.dataset_builder import (
         load_exam_questions,
-        build_ragas_samples,
-        save_samples,
     )
 
     questions = load_exam_questions(exam_dir="data/exams", limit=limit)
@@ -1201,7 +1203,7 @@ async def list_ocr_engines():
         device = got.device_info
         engines.append({
             "id": "local",
-            "name": f"🖥️ Local OCR (GOT-OCR2.0)",
+            "name": "🖥️ Local OCR (GOT-OCR2.0)",
             "description": f"Miễn phí, offline. Device: {device}.",
             "available": available,
             "recommended": False,

@@ -11,8 +11,6 @@ Covers:
 - SpacedRepetitionCard model — field defaults
 """
 
-import pytest
-from datetime import datetime
 from app.db.models import (
     User,
     SkillMastery,

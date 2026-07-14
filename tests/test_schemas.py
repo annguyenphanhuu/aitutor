@@ -17,37 +17,23 @@ Covers:
 """
 
 import pytest
-from datetime import datetime
 from pydantic import ValidationError
 from app.db.schemas import (
     ChatRequest,
     ChatResponse,
     AssessmentRequest,
     AssessmentResponse,
-    StudyPlanResponse,
-    SkillMasteryResponse,
-    DashboardResponse,
     QuizGenerateRequest,
     QuizQuestionOut,
-    QuizSessionOut,
     QuizAnswerRequest,
-    QuizAnswerResponse,
-    QuizResultResponse,
-    DiagnosticStartResponse,
     DiagnosticAnswerRequest,
-    DiagnosticAnswerResponse,
     DiagnosticResultResponse,
-    ReviewCardOut,
-    ReviewDueResponse,
     ReviewSubmitRequest,
-    ReviewSubmitResponse,
     VisualizationData,
     RoadmapNodeOut,
-    RoadmapResponse,
     InsightOut,
     ChatMessageOut,
     ConversationSessionOut,
-    ConversationHistoryResponse,
 )
 
 

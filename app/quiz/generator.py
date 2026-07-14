@@ -4,8 +4,8 @@ import random
 import sympy as sp
 from sympy import (
     symbols, diff, integrate, simplify, latex, Rational,
-    sin, cos, tan, exp, log, sqrt, oo,
-    solve, Eq,
+    sin, cos, exp, sqrt,
+    solve,
 )
 
 
@@ -371,9 +371,9 @@ class ProbabilityQuizGenerator(BaseQuizGenerator):
         favorable = random.randint(1, total - 1)
         prob = Rational(favorable, total)
         scenarios = {
-            6: f"Gieo xúc xắc. Tính xác suất để mặt xuất hiện chia hết cho số nào đó",
-            36: f"Gieo hai xúc xắc cùng lúc",
-            52: f"Rút ngẫu nhiên 1 lá bài từ bộ 52 lá",
+            6: "Gieo xúc xắc. Tính xác suất để mặt xuất hiện chia hết cho số nào đó",
+            36: "Gieo hai xúc xắc cùng lúc",
+            52: "Rút ngẫu nhiên 1 lá bài từ bộ 52 lá",
         }
         context = scenarios.get(total, f"Trong {total} phần tử, chọn ngẫu nhiên 1 phần tử")
         q = f"{context}. Biết có {favorable} kết quả thuận lợi trong tổng {total} kết quả. Tính xác suất."
@@ -444,7 +444,6 @@ class SequenceQuizGenerator(BaseQuizGenerator):
     def _mixed(self) -> dict:
         u1 = random.randint(1, 5)
         d = random.randint(1, 4)
-        n_val = random.randint(8, 15)
         # Find n such that u_n > threshold
         threshold = random.randint(30, 60)
         n_solution = sp.ceiling((threshold - u1) / d) + 1
@@ -593,7 +592,6 @@ class FunctionSurveyQuizGenerator(BaseQuizGenerator):
         c = random.randint(-5, 5)
         f = a * x**2 + b * x + c
         x0 = random.choice([-2, -1, 0, 1, 2])
-        y0 = f.subs(x, x0)
         slope = diff(f, x).subs(x, x0)
         q = f"Viết phương trình tiếp tuyến của $y = {latex(f)}$ tại $x_0 = {x0}$. Tìm hệ số góc."
         expl = f"$y' = {latex(diff(f, x))}$, $y'({x0}) = {latex(slope)}$"
@@ -850,7 +848,6 @@ def _generate_true_false(gen: BaseQuizGenerator, skill_id: str, difficulty: int)
     random.shuffle(statements)
 
     q_text = f"Cho hàm số $f(x) = {latex(f)}$. Xét tính Đúng/Sai của các mệnh đề sau:"
-    correct_bools = [s[1] for s in statements]
     expl = f"Đạo hàm: $f'(x) = {latex(f_prime_correct)}$. Cực trị: {actual_count} điểm. $f(0) = {latex(f_at_0)}$."
 
     return gen._make_true_false(

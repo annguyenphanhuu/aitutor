@@ -13,7 +13,6 @@ Covers:
 - find_weak_prerequisites()
 """
 
-import pytest
 from app.knowledge_tracing.skill_graph import (
     SKILLS,
     get_skill,
@@ -203,9 +202,10 @@ class TestGetChapters:
         assert len(chapters) == len(set(chapters))
 
     def test_expected_count(self):
-        """There should be 6 chapters."""
+        """Chapter count must stay in sync with the canonical skill graph."""
         chapters = get_chapters()
-        assert len(chapters) == 6
+        expected = {info["chapter"] for info in SKILLS.values()}
+        assert set(chapters) == expected
 
 
 # ━━ find_weak_prerequisites() ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

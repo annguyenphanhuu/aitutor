@@ -126,7 +126,7 @@ def validate_input(
                     metadata={
                         "reason": "prompt_injection",
                         "pattern": pattern.pattern[:60],
-                        "message_preview": stripped[:100],
+                        "message_preview": mask_pii(stripped[:100]),
                     },
                 )
                 if block_trace:

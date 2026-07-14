@@ -19,7 +19,6 @@ Covers:
 - GENERATORS registry
 """
 
-import pytest
 import random
 from app.quiz.generator import (
     generate_questions,

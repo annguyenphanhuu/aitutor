@@ -11,7 +11,6 @@ Covers:
 - Convergence behaviour (repeated correct → mastery increases)
 """
 
-import pytest
 from app.knowledge_tracing.bkt import BKTModel
 
 
@@ -264,8 +263,6 @@ class TestBatchUpdateMasteryFromExam:
     def test_empty_skill_id_is_skipped(self):
         """Items with empty or None skill_id should be silently ignored."""
         from collections import defaultdict
-        bkt = BKTModel()
-
         exam_items = [
             {"skill_id": "", "is_correct": True},
             {"skill_id": None, "is_correct": True},
@@ -293,7 +290,6 @@ class TestBatchUpdateMasteryFromExam:
 
     def test_attempt_counters_increment_correctly(self):
         """total_attempts and correct_attempts should count all answers per skill."""
-        bkt = BKTModel()
         answers = [True, False, True, True]  # 3 correct, 1 incorrect
 
         total = len(answers)

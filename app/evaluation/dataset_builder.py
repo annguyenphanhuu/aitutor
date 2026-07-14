@@ -16,7 +16,6 @@ Usage:
 from __future__ import annotations
 
 import asyncio
-import base64
 import json
 import logging
 import argparse
@@ -28,50 +27,12 @@ from langchain.schema import HumanMessage, SystemMessage
 
 from app.config import get_settings
 from app.rag.knowledge_base import get_knowledge_base
+from app.utils.answer_format import answer_format_instruction, ensure_answer_tag
+from app.utils.image_loader import get_image_mime, load_image_base64
+from app.utils.llm import compatible_temperature
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
-
-# Project root — used to resolve relative image paths in exam JSON
-_PROJECT_ROOT = Path(__file__).parent.parent.parent
-
-
-# ── Image helpers ─────────────────────────────────────────────────────────────
-
-def _resolve_image_path(image_path: str) -> Optional[Path]:
-    """Resolve image_path (relative to project root) to an absolute Path.
-
-    Returns None if the path is empty or the file does not exist.
-    """
-    if not image_path:
-        return None
-    p = _PROJECT_ROOT / image_path
-    if not p.exists():
-        logger.warning("Image not found: %s", p)
-        return None
-    return p
-
-
-def _encode_image_b64(path: Path) -> Optional[str]:
-    """Read an image file and return its base64-encoded string."""
-    try:
-        return base64.b64encode(path.read_bytes()).decode("utf-8")
-    except Exception as e:
-        logger.warning("Failed to encode image %s: %s", path, e)
-        return None
-
-
-def _image_media_type(path: Path) -> str:
-    """Guess MIME type from file extension."""
-    ext = path.suffix.lower()
-    return {
-        ".png":  "image/png",
-        ".jpg":  "image/jpeg",
-        ".jpeg": "image/jpeg",
-        ".gif":  "image/gif",
-        ".webp": "image/webp",
-    }.get(ext, "image/png")
-
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -151,12 +112,11 @@ def retrieve_contexts(
         # Step 1: Query Expansion
         expansion = expand_question(question)
 
-        # Step 2: Multi-query hybrid search. ``search_all`` is a compatibility
-        # alias for the theory-only KB and keeps older evaluation integrations.
+        # Step 2: Multi-query hybrid search over the theory collection.
         rewritten_query = expansion.rag_query if not expansion.error else ""
         search_queries = build_search_queries(question, rewritten_query)
         candidates = merge_search_results([
-            kb.search_all(search_query, k=pool_k, alpha=0.55)
+            kb.search_theory(search_query, k=pool_k, alpha=0.55)
             for search_query in search_queries
         ])
 
@@ -235,13 +195,11 @@ async def generate_answer(
     using_vision: bool = False
 
     if image_path:
-        resolved = _resolve_image_path(image_path)
-        if resolved:
-            b64_image = _encode_image_b64(resolved)
-            if b64_image:
-                media_type = _image_media_type(resolved)
-                using_vision = True
-                logger.info("  -> Vision mode: %s (%s)", resolved.name, media_type)
+        b64_image = load_image_base64(image_path)
+        if b64_image:
+            media_type = get_image_mime(image_path)
+            using_vision = True
+            logger.info("  -> Vision mode: %s (%s)", Path(image_path).name, media_type)
 
     # ── Choose model ─────────────────────────────────────────────────────────
     chosen_model = model or (
@@ -251,45 +209,31 @@ async def generate_answer(
     llm = ChatOpenAI(
         model=chosen_model,
         api_key=settings.OPENAI_API_KEY,
-        temperature=0.1,
+        temperature=compatible_temperature(chosen_model, 0.1),
     )
 
     # ── Build type-specific format instruction ────────────────────────────────
+    format_instruction = answer_format_instruction(question_type)
+    if format_instruction:
+        format_instruction = "\n\n" + format_instruction
+
     if question_type == "exam_true_false":
-        format_instruction = (
-            "\n\nQUAN TRONG: Cau hoi nay la dang Dung/Sai nhieu menh de. "
-            "Bat buoc ket thuc cau tra loi bang dong: "
-            "'<answer>a-T,b-F,c-T,d-F</answer>' (T=Dung, F=Sai). "
-            "Bao boc dap an trong the <answer>...</answer>."
-        )
-        if True:  # Always add visual extraction guide for True/False (may have images)
-            format_instruction += (
-                "\n\nDAC BIET KHI CO HINH VE (Visual Feature Extraction — BAT BUOC):"
-                "\nNeu menh de yeu cau danh gia mot do thi / bang bien thien / hinh ve:"
-                "\n  [TRICH XUAT THI GIAC] Truoc khi ket luan Dung/Sai, ban PHAI liet ke CU THE:"
-                "\n  1. Phuong trinh duong tiem can (ngang va dung) doc tu hinh."
-                "\n  2. Toa do cac diem dac trung: cuc dai, cuc tieu, giao diem truc hoanh, y-intercept."
-                "\n  3. Chieu bien thien (ham so tang/giam tren tung khoang)."
-                "\n  4. Dang bieu do (hyperbol? parabol? ham bac ba?) va tinh doi xung."
-                "\n  KHONG DUOC dung phat bieu 'Neu hinh khong the hien dung thi sai' — DO LA"
-                "\n  TRANH TRANH LUAN. Ban PHAI doc hinh va ket luan CHINH XAC."
-            )
-    elif question_type == "exam_mcq":
-        format_instruction = (
-            "\n\nQUAN TRONG: Bao boc dap an trong the <answer>X</answer> "
-            "voi X la dap an dung (A, B, C hoac D), sau do giai thich ngan gon."
-            "\nLuu y: Chu cai trong the <answer>X</answer> BAT BUOC phai trung khop "
-            "hoan toan voi chu cai ban da chon o cau ket luan cuoi cung cua phan giai thich."
+        format_instruction += (
+            "\n\nDAC BIET KHI CO HINH VE (Visual Feature Extraction — BAT BUOC):"
+            "\nNeu menh de yeu cau danh gia mot do thi / bang bien thien / hinh ve:"
+            "\n  [TRICH XUAT THI GIAC] Truoc khi ket luan Dung/Sai, ban PHAI liet ke CU THE:"
+            "\n  1. Phuong trinh duong tiem can (ngang va dung) doc tu hinh."
+            "\n  2. Toa do cac diem dac trung: cuc dai, cuc tieu, giao diem truc hoanh, y-intercept."
+            "\n  3. Chieu bien thien (ham so tang/giam tren tung khoang)."
+            "\n  4. Dang bieu do (hyperbol? parabol? ham bac ba?) va tinh doi xung."
+            "\n  KHONG DUOC dung phat bieu 'Neu hinh khong the hien dung thi sai' — DO LA"
+            "\n  TRANH TRANH LUAN. Ban PHAI doc hinh va ket luan CHINH XAC."
         )
     elif question_type == "exam_short_answer":
-        format_instruction = (
-            "\n\nQUAN TRONG: Bao boc gia tri so cuoi cung trong the <answer>...</answer>."
-            " Neu ket qua la xac suat hoac phan tram, ghi duoi dang SO THAP PHAN (vi du: 0.56),"
+        format_instruction += (
+            "\nNeu ket qua la xac suat hoac phan tram, ghi duoi dang SO THAP PHAN (vi du: 0.56),"
             " KHONG ghi duoi dang phan tram (vi du: KHONG ghi 56)."
-            "\n  NEU BAI YEU CAU LAM TRON: ban PHAI lam tron ket qua TRUOC khi dua vao <answer>."
         )
-    else:
-        format_instruction = ""
 
     # ── CoT instruction — vision-aware ────────────────────────────────────────
     cot_instruction = (
@@ -376,7 +320,7 @@ async def generate_answer(
         ]
 
     response = await llm.ainvoke(messages)
-    return response.content
+    return ensure_answer_tag(response.content, question_type)
 
 
 async def build_ragas_samples(

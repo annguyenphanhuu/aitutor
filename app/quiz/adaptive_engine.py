@@ -10,7 +10,7 @@ Algorithm:
 """
 
 from app.knowledge_tracing.bkt import BKTModel
-from app.knowledge_tracing.skill_graph import SKILLS, get_prerequisites, get_deep_prerequisites
+from app.knowledge_tracing.skill_graph import SKILLS
 
 bkt = BKTModel()
 

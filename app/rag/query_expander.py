@@ -73,11 +73,6 @@ def _load_taxonomy() -> tuple[list[str], list[str]]:
     return chapters, skill_ids
 
 
-def clear_taxonomy_cache() -> None:
-    """Clear taxonomy cache (chủ yếu dùng sau khi cập nhật registry trong test)."""
-    _load_taxonomy.cache_clear()
-
-
 def _normalize_taxonomy_key(value: object) -> str:
     """Normalize whitespace/dash/case để đối chiếu metadata nhất quán."""
     text = str(value).replace("–", "-").replace("—", "-")

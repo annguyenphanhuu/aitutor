@@ -28,13 +28,6 @@ def _formula_index() -> dict[str, dict]:
     }
 
 
-def get_formula_by_id(formula_id: str) -> dict | None:
-    """Return one formula by id, or None if it is unknown."""
-    if not formula_id:
-        return None
-    return _formula_index().get(formula_id)
-
-
 def get_formulas_by_ids(formula_ids: list[str] | tuple[str, ...] | None) -> list[dict]:
     """Return formulas in the same order as the requested ids."""
     if not formula_ids:
@@ -64,8 +57,3 @@ def list_formulas() -> list[dict]:
 def list_formula_ids() -> list[str]:
     """Return every known formula id."""
     return list(_formula_index().keys())
-
-
-def clear_formula_cache() -> None:
-    """Clear the cached registry, useful for tests after editing formulas.json."""
-    _formula_index.cache_clear()

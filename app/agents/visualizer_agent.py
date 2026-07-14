@@ -5,7 +5,7 @@ import numpy as np
 
 try:
     import sympy as sp
-    from sympy import symbols, lambdify, latex, simplify
+    from sympy import symbols, lambdify, latex
     from sympy.parsing.sympy_parser import (
         parse_expr,
         standard_transformations,
@@ -119,7 +119,7 @@ class VisualizerAgent:
         # Desmos uses its own LaTeX-like expression format
         desmos_expr = expr_clean.replace("**", "^").replace("*", "")
 
-        calc_url = f"https://www.desmos.com/calculator"
+        calc_url = "https://www.desmos.com/calculator"
 
         return {
             "vis_type": "desmos",

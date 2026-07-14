@@ -5,13 +5,6 @@ FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Cài đặt các thư viện hệ thống cần thiết cho PostgreSQL driver (psycopg2) và các tiện ích
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
 # Thiết lập thư mục làm việc
 WORKDIR /app
 
@@ -20,7 +13,7 @@ COPY requirements.txt .
 
 # Cài đặt PyTorch phiên bản CPU trước để tránh tải bản CUDA 2.5GB siêu nặng
 RUN pip install --upgrade pip && \
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 # Cài đặt các dependencies còn lại
 RUN pip install --no-cache-dir -r requirements.txt

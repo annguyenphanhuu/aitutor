@@ -6,11 +6,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
-import sys
-
-# Thêm thư mục gốc của project vào sys.path để tránh lỗi ModuleNotFoundError
-# khi chạy bằng `python app/main.py`
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.config import get_settings
 from app.db.database import init_db
@@ -82,10 +77,16 @@ app.include_router(router)
 if os.path.exists(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# Serve data files (exam images, etc.)
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
-if os.path.exists(DATA_DIR):
-    app.mount("/data", StaticFiles(directory=DATA_DIR), name="data")
+# Only expose exam images, never databases, logs, or evaluation artifacts.
+EXAM_IMAGES_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "data", "exams", "images"
+)
+if os.path.exists(EXAM_IMAGES_DIR):
+    app.mount(
+        "/data/exams/images",
+        StaticFiles(directory=EXAM_IMAGES_DIR),
+        name="exam-images",
+    )
 
 
 @app.get("/")
