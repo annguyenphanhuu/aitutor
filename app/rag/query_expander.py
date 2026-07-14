@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -29,42 +30,58 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-# ── Taxonomy: danh sách chapter và skill_id có trong KB ───────────────────────
-# Cập nhật khi thêm lý thuyết mới vào ChromaDB / theory.json
+# Taxonomy không được hard-code ở đây. Skill graph và metadata của các registry
+# nội dung là nguồn dữ liệu gốc; nhờ vậy QueryExpander không bị lệch khi KB đổi.
+_DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 
-KNOWN_CHAPTERS: list[str] = [
-    "Hàm số",
-    "Đạo hàm",
-    "Nguyên hàm - Tích phân",
-    "Nguyên hàm và Tích phân",
-    "Hình học không gian",
-    "Xác suất",
-    "Thống kê",
-    "Dãy số",
-    "Hàm số Lũy thừa, Mũ và Logarit",
-    "Hàm số lượng giác và phương trình lượng giác",
-    "Lượng giác",
-    "Tổ hợp - Xác suất",
-    "Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm",
-]
 
-KNOWN_SKILL_IDS: list[str] = [
-    "derivative_applications",   # Ứng dụng đạo hàm: cực trị, đơn điệu, tối ưu
-    "function_survey",           # Khảo sát hàm số, tiệm cận, đồ thị
-    "primitive_basic",           # Nguyên hàm cơ bản
-    "integral_applications",     # Ứng dụng tích phân: diện tích, thể tích
-    "geometry_line_plane",       # Đường thẳng, mặt phẳng trong không gian
-    "geometry_sphere",           # Mặt cầu
-    "geometry_vector",           # Vectơ, tích vô hướng
-    "probability_basic",         # Xác suất có điều kiện, Bayes
-    "statistics_descriptive",    # Thống kê mô tả: trung bình, phương sai
-    "statistics_inference",      # Thống kê suy luận
-    "statistics_dispersion",     # Khoảng biến thiên, tứ phân vị, phương sai ghép nhóm
-    "sequence_basic",            # Dãy số: cấp số cộng, nhân
-    "logarithm_exponential",     # Hàm mũ, logarit
-    "trig_graph",                # Đồ thị lượng giác
-    "trig_equation",             # Phương trình lượng giác
-]
+@lru_cache(maxsize=1)
+def _load_taxonomy() -> tuple[list[str], list[str]]:
+    """Load chapter/skill whitelist từ skill graph và dữ liệu RAG thực tế."""
+    from app.knowledge_tracing.skill_graph import SKILLS, get_chapters
+    from app.rag.formula_registry import list_formulas
+
+    chapters = list(get_chapters())
+    skill_ids = list(SKILLS)
+
+    def add_metadata(metadata: object) -> None:
+        if not isinstance(metadata, dict):
+            return
+        chapter = str(metadata.get("chapter", "")).strip()
+        skill_id = str(metadata.get("skill_id", "")).strip()
+        if chapter and chapter not in chapters:
+            chapters.append(chapter)
+        if skill_id and skill_id not in skill_ids:
+            skill_ids.append(skill_id)
+
+    # Formula registry là nguồn chuẩn cho formulas.json.
+    for formula in list_formulas():
+        if isinstance(formula, dict):
+            add_metadata(formula.get("metadata"))
+
+    # theory.json là source-of-truth trước khi được ingest vào ChromaDB.
+    theory_path = _DATA_DIR / "theory.json"
+    try:
+        raw_theory = json.loads(theory_path.read_text(encoding="utf-8"))
+        if isinstance(raw_theory, list):
+            for document in raw_theory:
+                if isinstance(document, dict):
+                    add_metadata(document.get("metadata"))
+    except (OSError, json.JSONDecodeError) as exc:
+        logger.warning("Không thể load taxonomy từ %s: %s", theory_path, exc)
+
+    return chapters, skill_ids
+
+
+def clear_taxonomy_cache() -> None:
+    """Clear taxonomy cache (chủ yếu dùng sau khi cập nhật registry trong test)."""
+    _load_taxonomy.cache_clear()
+
+
+def _normalize_taxonomy_key(value: object) -> str:
+    """Normalize whitespace/dash/case để đối chiếu metadata nhất quán."""
+    text = str(value).replace("–", "-").replace("—", "-")
+    return re.sub(r"\s+", " ", text).strip().casefold()
 
 # ── Prompt template ────────────────────────────────────────────────────────────
 
@@ -153,15 +170,20 @@ class QueryExpander:
     def __init__(self, model: str = "gpt-4o-mini", api_key: str = ""):
         self.model = model
         self.api_key = api_key
-        self._known_chapters_lower = {c.lower(): c for c in KNOWN_CHAPTERS}
-        self._known_skills_lower   = {s.lower(): s for s in KNOWN_SKILL_IDS}
+        self.known_chapters, self.known_skill_ids = _load_taxonomy()
+        self._known_chapters_lower = {
+            _normalize_taxonomy_key(c): c for c in self.known_chapters
+        }
+        self._known_skills_lower = {
+            _normalize_taxonomy_key(s): s for s in self.known_skill_ids
+        }
 
     def _build_prompt(self, question: str) -> str:
         formula_ids = _load_formula_ids()
         return _EXPAND_PROMPT.format(
             question=question[:800],  # truncate dài quá
-            chapters="\n".join(f"  - {c}" for c in KNOWN_CHAPTERS),
-            skill_ids="\n".join(f"  - {s}" for s in KNOWN_SKILL_IDS),
+            chapters="\n".join(f"  - {c}" for c in self.known_chapters),
+            skill_ids="\n".join(f"  - {s}" for s in self.known_skill_ids),
             formula_ids="\n".join(f"  - {f}" for f in formula_ids) if formula_ids else "  (chưa có)",
         )
 
@@ -170,9 +192,15 @@ class QueryExpander:
         Validate output LLM — chỉ giữ values nằm trong whitelist.
         Tránh hallucinate chapter/skill không tồn tại gây boost nhầm.
         """
+        def list_field(name: str) -> list:
+            value = raw.get(name, [])
+            return list(value) if isinstance(value, (list, tuple, set)) else []
+
         valid_chapters = []
-        for c in raw.get("chapters", []):
-            c_lower = str(c).lower().strip()
+        for c in list_field("chapters"):
+            c_lower = _normalize_taxonomy_key(c)
+            if not c_lower:
+                continue
             # Exact match
             if c_lower in self._known_chapters_lower:
                 valid_chapters.append(self._known_chapters_lower[c_lower])
@@ -184,26 +212,30 @@ class QueryExpander:
                         break
 
         valid_skills = []
-        for s in raw.get("skill_ids", []):
-            s_lower = str(s).lower().strip()
+        for s in list_field("skill_ids"):
+            s_lower = _normalize_taxonomy_key(s)
             if s_lower in self._known_skills_lower:
                 valid_skills.append(self._known_skills_lower[s_lower])
 
         formula_whitelist = set(_load_formula_ids())
         valid_formulas = [
-            f for f in raw.get("formula_ids", [])
+            str(f).strip() for f in list_field("formula_ids")
             if str(f).strip() in formula_whitelist
         ]
 
-        # Lấy rag_query do LLM tạo ra — bỏ qua nếu rỗng / không có
-        rag_query = str(raw.get("rag_query", "")).strip()
+        # Chỉ chấp nhận một chuỗi truy vấn ngắn. Không biến list/dict do model
+        # trả sai schema thành query rác và không để prompt dài lọt vào retrieval.
+        raw_rag_query = raw.get("rag_query", "")
+        rag_query = ""
+        if isinstance(raw_rag_query, str):
+            rag_query = re.sub(r"\s+", " ", raw_rag_query).strip()[:400]
 
         return QueryExpansion(
             chapters=list(dict.fromkeys(valid_chapters)),   # dedup, giữ thứ tự
             skill_ids=list(dict.fromkeys(valid_skills)),
             formula_ids=list(dict.fromkeys(valid_formulas)),
             rag_query=rag_query,
-            reasoning=raw.get("reasoning", ""),
+            reasoning=str(raw.get("reasoning", ""))[:500],
         )
 
     def expand(self, question: str) -> QueryExpansion:
@@ -255,7 +287,7 @@ def get_query_expander() -> QueryExpander:
         from app.config import get_settings
         s = get_settings()
         _expander = QueryExpander(
-            model="gpt-4o-mini",   # dùng model nhỏ, tiết kiệm chi phí
+            model=s.LLM_MODEL_NANO,
             api_key=s.OPENAI_API_KEY,
         )
     return _expander

@@ -13,6 +13,7 @@ Supports Vision (multimodal) in two modes:
 from typing import Optional
 import base64
 import logging
+import re
 
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage, AIMessage
@@ -26,6 +27,7 @@ from app.utils.cost_tracker import log_from_response
 from app.utils.image_loader import build_multimodal_content, has_images
 from app.knowledge_tracing.skill_graph import SKILLS
 from app.rag.formula_registry import get_formulas_by_ids
+from app.utils.answer_format import answer_format_instruction, ensure_answer_tag
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -49,6 +51,23 @@ _HEAVY_MATH_KEYWORDS = [
     "sau bao nhiêu", "xác suất",
 ]
 
+_CALCULATION_KEYWORDS = [
+    "giá trị", "kết quả", "số nghiệm", "đạo hàm", "cực trị",
+    "lớn nhất", "nhỏ nhất", "thay vào",
+    "phương trình", "bất phương trình", "khoảng cách", "góc", "thể tích",
+    "diện tích", "trung bình", "phương sai", "độ lệch chuẩn",
+]
+
+_STRONG_CALCULATION_KEYWORDS = [
+    "tính", "bao nhiêu", "rút gọn", "giải phương trình", "giải bất phương trình",
+]
+
+_MATH_OPERATION_RE = re.compile(
+    r"(?:\d\s*(?:[+*/^=<>]|-(?=\s*\d))|"
+    r"(?:sin|cos|tan|log|ln|sqrt)\s*\(|[∫√])",
+    flags=re.IGNORECASE,
+)
+
 
 def _is_heavy_math(question: str, skill_id: Optional[str]) -> bool:
     """Return True if this question needs Agentic Tool-Calling.
@@ -62,6 +81,52 @@ def _is_heavy_math(question: str, skill_id: Optional[str]) -> bool:
         return True
     q_lower = question.lower()
     return any(kw in q_lower for kw in _HEAVY_MATH_KEYWORDS)
+
+
+def requires_math_tool(question: str, skill_id: Optional[str] = None) -> bool:
+    """Return True when an answer should not be produced without SymPy."""
+    if _is_heavy_math(question, skill_id):
+        return True
+    q_lower = question.lower()
+    if any(keyword in q_lower for keyword in _STRONG_CALCULATION_KEYWORDS):
+        return True
+    if _MATH_OPERATION_RE.search(question):
+        return True
+    has_math_value = bool(re.search(r"\d|[=<>^]", question))
+    return has_math_value and any(keyword in q_lower for keyword in _CALCULATION_KEYWORDS)
+
+
+_VISUAL_ANALYSIS_KEYWORDS = (
+    "đồ thị", "biểu đồ", "bảng biến thiên", "hình vẽ", "hình bên", "trục hoành",
+    "trục tung", "tiệm cận", "cực đại", "cực tiểu", "graph", "chart",
+)
+
+VISUAL_EVIDENCE_PROMPT = """Bạn là bộ đọc bằng chứng thị giác cho bài Toán.
+Không giải bài và không chọn đáp án. Chỉ ghi lại những gì thực sự nhìn thấy.
+
+Nếu là đồ thị/biểu đồ/bảng biến thiên, hãy lần lượt trích xuất:
+1. Tên và chiều các trục; tỉ lệ mỗi vạch chia; miền hiển thị.
+2. Giao điểm với trục, điểm được đánh dấu và ít nhất 3 cặp tọa độ đọc được.
+3. Cực trị, khoảng tăng/giảm, tiệm cận, tính đối xứng hoặc chu kỳ nếu nhìn rõ.
+4. Nếu có nhiều hình/phương án, ánh xạ từng hình với nhãn A/B/C/D theo đúng vị trí.
+5. Mọi chi tiết mờ/không chắc phải ghi rõ "không chắc", tuyệt đối không tự bịa tọa độ.
+
+Nếu là hình học hoặc bảng số liệu, mô tả nhãn điểm, quan hệ, kích thước và dữ liệu
+theo cùng nguyên tắc: quan sát trước, không suy diễn thay cho bước giải.
+"""
+
+
+def needs_visual_feature_pass(
+    ocr_text: str,
+    user_text: str = "",
+    image_labels: Optional[list[str]] = None,
+) -> bool:
+    """Detect visuals that benefit from a dedicated evidence-extraction pass."""
+    labels = {str(label).lower() for label in (image_labels or [])}
+    if labels.intersection({"graph", "table", "diagram"}):
+        return True
+    combined = f"{ocr_text}\n{user_text}".lower()
+    return any(keyword in combined for keyword in _VISUAL_ANALYSIS_KEYWORDS)
 
 
 def _normalize_skill_ids(
@@ -300,6 +365,51 @@ class TeacherAgent(AgenticTeacherMixin):
             len(self._prompt_socratic), len(self._prompt_exam), len(self._prompt_answer),
         )
 
+    async def _extract_visual_evidence(
+        self,
+        images: list[tuple[bytes, str, str]],
+        ocr_text: str,
+        user_text: str,
+    ) -> str:
+        """Run a focused perception pass before asking the VLM to solve."""
+        content: list[dict] = [{
+            "type": "text",
+            "text": (
+                "OCR/câu hỏi chỉ dùng để định hướng vùng cần đọc; ảnh mới là nguồn "
+                f"bằng chứng chính.\n\nOCR:\n{ocr_text[:3000]}\n\nYêu cầu:\n{user_text[:1000]}"
+            ),
+        }]
+        for index, (raw, mime_type, label) in enumerate(images[:4], start=1):
+            encoded = base64.b64encode(raw).decode("utf-8")
+            content.extend([
+                {"type": "text", "text": f"[Hình {index} — loại dự kiến: {label}]"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:{mime_type};base64,{encoded}",
+                        "detail": "high",
+                    },
+                },
+            ])
+
+        try:
+            response = await self.vision_llm.ainvoke([
+                SystemMessage(content=VISUAL_EVIDENCE_PROMPT),
+                HumanMessage(content=content),
+            ])
+            log_from_response(
+                agent="Teacher-VisualEvidence",
+                model=settings.VISION_LLM_MODEL,
+                response=response,
+                extra=f"images={len(images[:4])}",
+            )
+            return str(response.content).strip()
+        except Exception as exc:
+            # The main vision solve still has the original images, so this pass
+            # is an accuracy enhancement rather than a new failure point.
+            logger.warning("Visual evidence extraction failed: %s", exc)
+            return ""
+
     async def respond(
         self,
         question: str,
@@ -313,6 +423,7 @@ class TeacherAgent(AgenticTeacherMixin):
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
         trace_id: Optional[str] = None,
+        question_type: Optional[str] = None,
     ) -> str:
         """Generate adaptive teaching response.
 
@@ -339,6 +450,7 @@ class TeacherAgent(AgenticTeacherMixin):
             "num_prereq_docs": len(rag_result.prereq_docs),
             "weak_skills": [w["skill_id"] for w in rag_result.weak_skills],
             "has_images": has_images(rag_result.all_docs),
+            "search_queries": rag_result.search_queries,
         })
         context = rag_result.build_context_text()
         normalized_skill_ids = _normalize_skill_ids(skill_id, skill_ids)
@@ -389,6 +501,12 @@ class TeacherAgent(AgenticTeacherMixin):
                 .replace("{few_shot_block}", few_shot_block)
             )
 
+        format_instruction = answer_format_instruction(question_type)
+        if format_instruction:
+            # Runtime constraint is appended even when the base prompt comes
+            # from Langfuse, so remote prompt drift cannot remove the contract.
+            system_prompt = f"{system_prompt}\n\n{format_instruction}"
+
         messages = [SystemMessage(content=system_prompt)]
 
         # Inject chat history (sliding window: last N messages)
@@ -417,22 +535,25 @@ class TeacherAgent(AgenticTeacherMixin):
         # ── Step 4: LLM Generation — Hybrid routing ──────────────────────────
         # Route heavy-math questions to Agentic Tool-Calling;
         # use cheaper Reflection pipeline for all other questions.
+        require_tool = requires_math_tool(question, skill_id)
         use_agentic = (
             settings.USE_FUNCTION_CALLING  # global override (e.g. for A/B testing)
-            or _is_heavy_math(question, skill_id)
+            or require_tool
         )
 
         if use_agentic:
             # Agentic path: LLM → tool call → … → final answer
             oai_messages = _normalize_messages(messages)
             logger.info("🧠 TeacherAgent [Agentic] skill=%s", skill_id)
-            return await self.respond_agentic(
+            agentic_answer = await self.respond_agentic(
                 messages=oai_messages,
                 question=question,
                 skill_id=skill_id,
                 mode=mode,
                 trace_id=trace_id,
+                require_tool=require_tool,
             )
+            return ensure_answer_tag(agentic_answer, question_type)
 
         # Reflection path: single LLM call → post-hoc SymPy verify (cheaper)
         logger.info("📝 TeacherAgent [Reflection] skill=%s", skill_id)
@@ -475,7 +596,8 @@ class TeacherAgent(AgenticTeacherMixin):
         if reflection_result.was_corrected:
             logger.info("🔄 Reflection corrected the answer (skill=%s)", skill_id)
 
-        return reflection_result.build_full_response(include_thinking=True)
+        final_response = reflection_result.build_full_response(include_thinking=True)
+        return ensure_answer_tag(final_response, question_type)
 
     async def respond_stream(
         self,
@@ -592,6 +714,9 @@ class TeacherAgent(AgenticTeacherMixin):
         formula_ids: Optional[list[str]] = None,
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
+        question_type: Optional[str] = None,
+        image_label: str = "figure",
+        additional_images: Optional[list[tuple[bytes, str, str]]] = None,
     ) -> str:
         """
         Hybrid Vision: gửi ảnh gốc + LaTeX OCR + câu hỏi user vào LLM trong một call.
@@ -653,6 +778,10 @@ class TeacherAgent(AgenticTeacherMixin):
                 .replace("{few_shot_block}", few_shot_block)
             )
 
+        format_instruction = answer_format_instruction(question_type)
+        if format_instruction:
+            system_prompt = f"{system_prompt}\n\n{format_instruction}"
+
         # ── Build messages với history ─────────────────────────────
         messages = [SystemMessage(content=system_prompt)]
         if chat_history:
@@ -663,29 +792,66 @@ class TeacherAgent(AgenticTeacherMixin):
                 elif h.get("role") == "assistant":
                     messages.append(AIMessage(content=h["content"]))
 
-        # ── Build HumanMessage: image + ocr_text + user_text ───────
-        b64 = base64.b64encode(image_bytes).decode("utf-8")
-        image_data_url = f"data:{image_mime};base64,{b64}"
+        # ── Build HumanMessage: focused images + OCR + user text ───────
+        image_inputs = [(image_bytes, image_mime, image_label)]
+        image_inputs.extend((additional_images or [])[:3])
+
+        visual_evidence = ""
+        if needs_visual_feature_pass(
+            ocr_text,
+            user_text,
+            [label for _, _, label in image_inputs],
+        ):
+            visual_evidence = await self._extract_visual_evidence(
+                image_inputs,
+                ocr_text,
+                user_text,
+            )
 
         text_parts = []
         if ocr_text and not ocr_text.startswith("["):
             text_parts.append(f"[Nội dung bài toán từ ảnh (LaTeX)]\n{ocr_text}")
         if user_text:
             text_parts.append(f"[Câu hỏi của học sinh]\n{user_text}")
+        if visual_evidence:
+            text_parts.append(
+                "[Bằng chứng từ lượt đọc hình độc lập — cần đối chiếu lại với ảnh]\n"
+                f"{visual_evidence}"
+            )
         if not text_parts:
             text_parts.append("Hãy giải giúp em bài toán trong ảnh trên.")
 
-        human_content = [
-            {
-                "type": "image_url",
-                "image_url": {"url": image_data_url, "detail": "high"},
-            },
-            {
+        human_content: list[dict] = []
+        for index, (raw, mime_type, label) in enumerate(image_inputs, start=1):
+            b64 = base64.b64encode(raw).decode("utf-8")
+            human_content.extend([{
                 "type": "text",
-                "text": "\n\n".join(text_parts),
-            },
-        ]
+                "text": f"[Hình {index} — {label}]",
+            }, {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:{mime_type};base64,{b64}",
+                    "detail": "high",
+                },
+            }])
+        human_content.append({
+            "type": "text",
+            "text": "\n\n".join(text_parts),
+        })
         messages.append(HumanMessage(content=human_content))
+
+        tool_question = f"{ocr_text}\n{user_text}".strip() or search_query
+        if requires_math_tool(tool_question, skill_id):
+            logger.info("🧠 TeacherAgent [Vision+Agentic] skill=%s", skill_id)
+            draft = await self.respond_agentic(
+                messages=_normalize_messages(messages),
+                question=tool_question,
+                skill_id=skill_id,
+                mode=mode,
+                require_tool=True,
+                model_override=settings.VISION_LLM_MODEL,
+            )
+            return ensure_answer_tag(draft, question_type)
 
         response = await self.vision_llm.ainvoke(messages)
         draft = response.content
@@ -701,7 +867,8 @@ class TeacherAgent(AgenticTeacherMixin):
         # ── Reflection — verify math with SymPy ───────────────────
         reflection_result = await self.reflection.reflect(
             draft=draft,
-            question=search_query,
+            question=tool_question,
         )
 
-        return reflection_result.build_full_response(include_thinking=True)
+        final_response = reflection_result.build_full_response(include_thinking=True)
+        return ensure_answer_tag(final_response, question_type)

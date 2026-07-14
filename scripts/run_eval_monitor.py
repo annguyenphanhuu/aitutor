@@ -176,6 +176,7 @@ def retrieve_with_trace(
     from app.rag.knowledge_base import get_knowledge_base
     from app.rag.reranker import get_reranker
     from app.rag.query_expander import expand_question, QueryExpansion
+    from app.rag.graph_rag import build_search_queries, merge_search_results
 
     kb = get_knowledge_base()
     reranker = get_reranker()
@@ -192,13 +193,15 @@ def retrieve_with_trace(
     if expansion.error:
         logger.warning("QueryExpander failed: %s — falling back to raw query", expansion.error)
 
-    # ── Step 2: Candidate retrieval ────────────────────────────────────────────
-    # Query Rewriting: dùng rag_query (thuật ngữ học thuật) thay cho câu hỏi gốc.
-    # Lý do: Câu hỏi gốc dạng "bài toán thực tế" (kho hàng, nước chảy...)
-    # có vector embedding xa với lý thuyết toán học → retrieval kém chính xác.
-    # rag_query do LLM tạo ra chứa đúng thuật ngữ học thuật → vector gần hơn với KB.
-    search_query = expansion.rag_query if (not expansion.error and expansion.rag_query) else question
-    candidates = kb.search_theory(search_query, k=pool_k, alpha=0.55)
+    # ── Step 2: Multi-query retrieval ──────────────────────────────────────────
+    # Search cả rewrite học thuật lẫn câu gốc để rewrite giúp bài toán thực tế
+    # nhưng không trở thành một điểm lỗi duy nhất của pipeline.
+    rewritten_query = expansion.rag_query if not expansion.error else ""
+    search_queries = build_search_queries(question, rewritten_query)
+    candidates = merge_search_results([
+        kb.search_theory(search_query, k=pool_k, alpha=0.55)
+        for search_query in search_queries
+    ])
 
     # ── Step 2.5: Inject explicit formulas từ QueryExpansion ───────────────────
     if not expansion.error and expansion.formula_ids:
@@ -248,27 +251,11 @@ def retrieve_with_trace(
             r["hybrid_score"] = min(r.get("hybrid_score", 0) + bonus, 1.0)
             r["_boosted"] = True
 
-    ranked = reranker.rerank(question, candidates, k=k)
+    ranked = reranker.rerank(rewritten_query or question, candidates, k=k)
     return ranked, expansion
 
 
 # ── heavy_math classifier ──────────────────────────────────────────────────────
-
-# Skills that require heavy symbolic computation — use Agentic Tool-Calling
-_HEAVY_MATH_SKILLS = {
-    "integral_applications", "primitive_basic", "primitive_advanced",
-    "solve_inequality", "exponential_growth", "compound_interest",
-    "combinatorics_probability", "solve_equation", "optimization",
-    "probability_complex",
-}
-
-# Keywords in question text that signal heavy computation
-_HEAVY_MATH_KEYWORDS = [
-    "tích phân", "nguyên hàm", "∫", "diện tích", "thể tích vật tròn xoay",
-    "lãi kép", "lãi suất", "tăng trưởng", "phân bào", "vi khuẩn nhân đôi",
-    "sau bao nhiêu", "xác suất",
-]
-
 
 def is_heavy_math(question: str, skill_id: str) -> bool:
     """Return True nếu câu hỏi cần Agentic Tool-Calling (phép tính nặng).
@@ -277,10 +264,8 @@ def is_heavy_math(question: str, skill_id: str) -> bool:
     - skill_id nằm trong _HEAVY_MATH_SKILLS, HOẶC
     - Câu hỏi chứa từ khóa liên quan đến tích phân/lãi kép/tăng trưởng...
     """
-    if skill_id and any(s in skill_id.lower() for s in _HEAVY_MATH_SKILLS):
-        return True
-    q_lower = question.lower()
-    return any(kw in q_lower for kw in _HEAVY_MATH_KEYWORDS)
+    from app.agents.teacher_agent import requires_math_tool
+    return requires_math_tool(question, skill_id)
 
 
 # ── Build prompt (mirrors dataset_builder.py) ──────────────────────────────────
@@ -418,6 +403,7 @@ async def generate_with_reflection(
     system_prompt: str,
     image_path: str,
     solver_model: Optional[str] = None,
+    question_type: str = "",
 ) -> tuple[str, str, bool, Optional[str]]:
     """Pipeline bản thường: LLM giải → SymPy Reflection kiểm chứng hậu kỳ.
 
@@ -428,6 +414,7 @@ async def generate_with_reflection(
     """
     from app.config import get_settings
     from app.agents.reflection import ReflectionEngine
+    from app.utils.answer_format import ensure_answer_tag
 
     settings = get_settings()
     img_data = _resolve_image(image_path) if image_path else None
@@ -443,7 +430,8 @@ async def generate_with_reflection(
     # Format reflection log tương tự bản thường cũ
     reflection_log = "\n".join(result.thinking_log)
 
-    return result.final_answer, model, using_vision, reflection_log
+    final_answer = ensure_answer_tag(result.final_answer, question_type)
+    return final_answer, model, using_vision, reflection_log
 
 
 async def generate_with_trace(
@@ -486,11 +474,11 @@ async def generate_with_trace(
         temperature=temp,
     )
 
-    # Bind SymPy tools — reasoning models không hỗ trợ tool binding
-    if is_reasoning_model:
-        llm = llm_base
-    else:
-        llm = llm_base.bind_tools(MATH_TOOL_LIST)
+    # Bind SymPy tools for every solver model. Modern reasoning models support
+    # function calling; skipping binding here was the main path that still let
+    # them calculate mentally while the trace was labelled "Agentic".
+    llm_auto = llm_base.bind_tools(MATH_TOOL_LIST)
+    llm_required = llm_base.bind_tools(MATH_TOOL_LIST, tool_choice="required")
 
     # Xây dựng danh sách messages ban đầu
     if using_vision:
@@ -511,8 +499,10 @@ async def generate_with_trace(
     tool_call_log_lines: list[str] = ["🔧 Bắt đầu giải với Agentic SymPy Tool-Calling..."]
     tool_map = {t.name: t for t in MATH_TOOL_LIST}
     final_response = ""
+    executed_tool = False
 
     for turn in range(_TOOL_CALL_BUDGET + 1):
+        llm = llm_required if not executed_tool else llm_auto
         resp = await llm.ainvoke(messages)
         log_from_response(agent="Solver", model=model, response=resp)
 
@@ -520,6 +510,17 @@ async def generate_with_trace(
         tool_calls = getattr(resp, "tool_calls", None)
 
         if not tool_calls:
+            if not executed_tool:
+                if turn < _TOOL_CALL_BUDGET:
+                    messages.extend([
+                        resp,
+                        HumanMessage(content="Bạn chưa gọi SymPy. Hãy gọi tool trước khi kết luận."),
+                    ])
+                    tool_call_log_lines.append("⚠️ Từ chối draft tự tính vì chưa có tool call.")
+                    continue
+                final_response = "Không thể xác minh phép tính vì mô hình chưa gọi công cụ SymPy."
+                tool_call_log_lines.append("❌ Dừng: đã hết lượt nhưng chưa có tool call nào.")
+                break
             # Không còn tool call → đây là đáp án cuối cùng
             final_response = resp.content
             tool_call_log_lines.append(f"✅ Hoàn tất sau {turn} lượt gọi tool.")
@@ -539,7 +540,12 @@ async def generate_with_trace(
                 tool_result_str = f"ERROR: Tool '{tool_name}' không tồn tại."
             else:
                 try:
-                    tool_result_str = tool_fn.invoke(tool_args)
+                    tool_result = tool_fn.invoke(tool_args)
+                    tool_result_str = (
+                        tool_result
+                        if isinstance(tool_result, str)
+                        else json.dumps(tool_result, ensure_ascii=False)
+                    )
                 except Exception as e:
                     tool_result_str = f"ERROR khi chạy {tool_name}: {e}"
 
@@ -553,12 +559,15 @@ async def generate_with_trace(
                 content=tool_result_str,
                 tool_call_id=tool_call_id,
             ))
+            executed_tool = True
 
     else:
-        # Đã hết budget mà LLM vẫn gọi tool → lấy content cuối
-        tool_call_log_lines.append(f"⚠️ Đã đạt giới hạn {_TOOL_CALL_BUDGET} lượt gọi tool. Lấy kết quả cuối.")
-        final_response = resp.content if resp.content else "[Không có đáp án]"
+        # Đã hết budget mà LLM vẫn gọi tool: không dựng một đáp án chưa được tổng hợp.
+        tool_call_log_lines.append(f"⚠️ Đã đạt giới hạn {_TOOL_CALL_BUDGET} lượt gọi tool mà chưa có kết luận.")
+        final_response = "Đã xác minh phép tính bằng SymPy nhưng chưa thể tổng hợp đáp án trong giới hạn lượt gọi."
 
+    from app.utils.answer_format import ensure_answer_tag
+    final_response = ensure_answer_tag(final_response, question_type)
     tool_call_log = "\n".join(tool_call_log_lines)
     return final_response, model, using_vision, tool_call_log
 
@@ -904,7 +913,11 @@ async def main(args):
             )
         else:
             response, model_used, using_vision, reflection_log = await generate_with_reflection(
-                q["question"], system_prompt, img_path, args.solver_model,
+                q["question"],
+                system_prompt,
+                img_path,
+                args.solver_model,
+                question_type=q["type"],
             )
 
         # ── Build sample for judges ──

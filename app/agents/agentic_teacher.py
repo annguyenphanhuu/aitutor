@@ -32,6 +32,24 @@ from app.utils.cost_tracker import log_call
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
+MATH_TOOL_POLICY = """
+QUY TẮC DÙNG CÔNG CỤ TOÁN (BẮT BUỘC):
+- Không tự tính nhẩm hoặc tự suy ra kết quả số/ký hiệu khi có thể dùng công cụ SymPy.
+- Mọi phép tính, rút gọn, giải phương trình/bất phương trình, đạo hàm, tích phân
+  và thay giá trị đều phải được thực hiện bằng một tool phù hợp trước khi kết luận.
+- Chỉ dùng kết quả do tool trả về trong đáp án cuối; nếu tool lỗi, sửa tham số và gọi lại.
+""".strip()
+
+
+def normalize_tool_result(result: object) -> dict:
+    """Normalize legacy string tool outputs for logging and prompt formatting."""
+    if isinstance(result, dict):
+        return result
+    text = str(result)
+    if text.startswith("ERROR"):
+        return {"success": False, "error": text}
+    return {"success": True, "result_latex": text}
+
 
 class AgenticTeacherMixin:
     """
@@ -47,6 +65,8 @@ class AgenticTeacherMixin:
         skill_id: Optional[str] = None,
         mode: str = "socratic",
         trace_id: Optional[str] = None,
+        require_tool: bool = False,
+        model_override: Optional[str] = None,
     ) -> str:
         """
         ReAct loop: LLM generate → tool call (nếu cần) → append result → lặp.
@@ -72,9 +92,21 @@ class AgenticTeacherMixin:
         from app.utils.langfuse_client import new_span, end_span, new_generation, end_generation
         max_rounds = settings.FUNCTION_CALLING_MAX_ROUNDS
         math_tools = _get_math_tools()
+        model_name = model_override or getattr(self, "model_name", settings.LLM_MODEL)
 
         # Convert LangChain message objects → OpenAI dict format nếu cần
         current_messages = _normalize_messages(messages)
+        if require_tool:
+            system_message = next(
+                (message for message in current_messages if message.get("role") == "system"),
+                None,
+            )
+            if system_message is None:
+                current_messages.insert(0, {"role": "system", "content": MATH_TOOL_POLICY})
+            else:
+                system_message["content"] = (
+                    f"{system_message.get('content', '')}\n\n{MATH_TOOL_POLICY}"
+                )
 
         # Accumulate tool call trace để log / debug
         tool_call_log: list[dict] = []
@@ -83,18 +115,19 @@ class AgenticTeacherMixin:
             # ── Langfuse generation span cho mỗi LLM round ────────────────
             agentic_gen = new_generation(
                 name=f"teacher.agentic_round_{round_num}",
-                model=settings.LLM_MODEL,
+                model=model_name,
                 input_text=question[:300],
                 metadata={"mode": mode, "skill_id": skill_id, "round": round_num},
                 trace_id=trace_id,
             )
             try:
-                temp = 1.0 if any(p in settings.LLM_MODEL for p in ["o1", "o3", "o4"]) else 0.3
+                temp = 1.0 if any(p in model_name for p in ["o1", "o3", "o4"]) else 0.0
+                tool_choice = "required" if require_tool and not tool_call_log else "auto"
                 response = await self.openai_client.chat.completions.create(
-                    model=settings.LLM_MODEL,
+                    model=model_name,
                     messages=current_messages,
                     tools=OPENAI_MATH_TOOLS,
-                    tool_choice="auto",
+                    tool_choice=tool_choice,
                     temperature=temp,
                 )
             except Exception as e:
@@ -107,7 +140,7 @@ class AgenticTeacherMixin:
             if usage:
                 log_call(
                     agent=f"AgenticTeacher-R{round_num}",
-                    model=settings.LLM_MODEL,
+                    model=model_name,
                     input_tokens=usage.prompt_tokens,
                     output_tokens=usage.completion_tokens,
                     extra=f"mode={mode},skill={skill_id},round={round_num}",
@@ -118,6 +151,32 @@ class AgenticTeacherMixin:
 
             # ── Final answer: no tool calls ───────────────────────────────
             if not msg.tool_calls:
+                if require_tool and not tool_call_log:
+                    if round_num < max_rounds:
+                        end_generation(
+                            agentic_gen,
+                            output="[rejected: missing required tool call]",
+                            input_tokens=usage.prompt_tokens if usage else 0,
+                            output_tokens=usage.completion_tokens if usage else 0,
+                        )
+                        current_messages.extend([
+                            {"role": "assistant", "content": msg.content or ""},
+                            {
+                                "role": "user",
+                                "content": (
+                                    "Bạn chưa gọi công cụ. Hãy bỏ kết quả tự tính, gọi tool SymPy "
+                                    "phù hợp rồi mới đưa đáp án."
+                                ),
+                            },
+                        ])
+                        continue
+                    end_generation(
+                        agentic_gen,
+                        output="[failed: no required tool call]",
+                        input_tokens=usage.prompt_tokens if usage else 0,
+                        output_tokens=usage.completion_tokens if usage else 0,
+                    )
+                    return "[Không thể tạo đáp án đã được công cụ toán xác minh]"
                 end_generation(agentic_gen, output=(msg.content or "")[:500],
                                input_tokens=usage.prompt_tokens if usage else 0,
                                output_tokens=usage.completion_tokens if usage else 0)
@@ -184,7 +243,7 @@ class AgenticTeacherMixin:
                     try:
                         kwargs = json.loads(tool_call.function.arguments)
                         tool_fn = math_tools[tool_name]
-                        tool_result = tool_fn(**kwargs)
+                        tool_result = normalize_tool_result(tool_fn(**kwargs))
                         end_span(tool_span, output={
                             "success": tool_result.get("success"),
                             "result_latex": tool_result.get("result_latex", "")[:200],

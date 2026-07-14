@@ -143,6 +143,7 @@ def retrieve_contexts(
 
         from app.rag.reranker import get_reranker
         from app.rag.query_expander import expand_question
+        from app.rag.graph_rag import build_search_queries, merge_search_results
 
         reranker = get_reranker()
         pool_k = settings.RERANKER_CANDIDATE_K if settings.RERANKER_ENABLED else k * 2
@@ -150,20 +151,39 @@ def retrieve_contexts(
         # Step 1: Query Expansion
         expansion = expand_question(question)
 
-        # Step 2: Hybrid search (no metadata filter)
-        candidates = kb.search_theory(question, k=pool_k, alpha=0.55)
+        # Step 2: Multi-query hybrid search. ``search_all`` is a compatibility
+        # alias for the theory-only KB and keeps older evaluation integrations.
+        rewritten_query = expansion.rag_query if not expansion.error else ""
+        search_queries = build_search_queries(question, rewritten_query)
+        candidates = merge_search_results([
+            kb.search_all(search_query, k=pool_k, alpha=0.55)
+            for search_query in search_queries
+        ])
+
+        if not expansion.error and expansion.formula_ids:
+            known_ids = {str(candidate.get("id", "")) for candidate in candidates}
+            for formula in kb.get_formulas_by_ids(expansion.formula_ids):
+                if str(formula.get("id", "")) not in known_ids:
+                    candidates.append({
+                        "id": formula["id"],
+                        "content": formula["content"],
+                        "metadata": formula.get("metadata", {}),
+                        "hybrid_score": 1.0,
+                    })
 
         # Step 3: Light soft boost from expansion
-        SKILL_BOOST   = 0.06
-        CHAPTER_BOOST = 0.04
+        SKILL_BOOST   = 0.12
+        CHAPTER_BOOST = 0.07
         expanded_skills   = {s.lower() for s in expansion.skill_ids}
-        expanded_chapters = {c.lower() for c in expansion.chapters}
+        def normalize_chapter(value: str) -> str:
+            return value.replace("–", "-").replace("—", "-").lower().strip()
+        expanded_chapters = {normalize_chapter(c) for c in expansion.chapters}
 
         for r in candidates:
             bonus = 0.0
             meta  = r.get("metadata", {})
             chunk_skill   = str(meta.get("skill_id", "")).lower().strip()
-            chunk_chapter = str(meta.get("chapter",  "")).lower().strip()
+            chunk_chapter = normalize_chapter(str(meta.get("chapter", "")))
 
             if chunk_skill and chunk_skill in expanded_skills:
                 bonus += SKILL_BOOST
@@ -177,7 +197,7 @@ def retrieve_contexts(
                 r["hybrid_score"] = min(r.get("hybrid_score", 0) + bonus, 1.0)
 
         # Step 4: Rerank
-        ranked = reranker.rerank(question, candidates, k=k)
+        ranked = reranker.rerank(rewritten_query or question, candidates, k=k)
         return [r["content"] for r in ranked]
     except Exception as e:
         logger.warning("RAG retrieval failed for question: %s", e)

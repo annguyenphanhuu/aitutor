@@ -34,6 +34,7 @@ from app.ocr.question_splitter import QuestionSplitter
 from app.agents.teacher_agent import TeacherAgent
 from app.knowledge_tracing.service import get_all_masteries
 from app.knowledge_tracing.skill_graph import SKILLS
+from app.exam_solver.visual_context import select_question_visuals
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -193,7 +194,12 @@ class ExamSolver:
 
         async def _solve_with_semaphore(q: dict) -> QuestionSolution:
             async with self._semaphore:
-                result = await self._solve_single(q, masteries, page_images)
+                result = await self._solve_single(
+                    q,
+                    masteries,
+                    page_images,
+                    extracted_images,
+                )
                 progress_counter["done"] += 1
                 if on_progress:
                     on_progress(
@@ -223,6 +229,7 @@ class ExamSolver:
         question: dict,
         masteries: dict[str, float],
         page_images: dict[int, bytes] | None = None,
+        extracted_images: list | None = None,
     ) -> QuestionSolution:
         """Solve a single question: classify → RAG → Teacher.
 
@@ -248,27 +255,31 @@ class ExamSolver:
                 skill_id = skill_ids[0]
 
             # Route: Vision (has_figure) or Text-only
-            if has_figure and page_images and figure_pages:
-                # Get the first relevant page image
-                img_bytes = None
-                for pg in figure_pages:
-                    if pg in page_images:
-                        img_bytes = page_images[pg]
-                        break
-                # Fallback: try all pages if specific page not found
-                if not img_bytes and page_images:
-                    img_bytes = next(iter(page_images.values()))
+            if has_figure and page_images:
+                visuals = select_question_visuals(
+                    figure_pages=figure_pages,
+                    page_images=page_images,
+                    extracted_images=extracted_images,
+                )
 
-                if img_bytes:
+                if visuals:
+                    primary_visual = visuals[0]
                     logger.info(
-                        "🖼️ %s: Vision solve (figure on page %s)",
-                        q_num, figure_pages,
+                        "🖼️ %s: Vision solve (%d focused visual(s), pages=%s, labels=%s)",
+                        q_num,
+                        len(visuals),
+                        sorted({visual.page_num for visual in visuals}),
+                        [visual.label for visual in visuals],
                     )
                     response = await self.teacher.respond_with_image(
-                        image_bytes=img_bytes,
-                        image_mime="image/png",
+                        image_bytes=primary_visual.image_bytes,
+                        image_mime=primary_visual.mime_type,
                         ocr_text=content,
-                        user_text=f"Giải {q_num}. Chỉ giải câu này, không giải câu khác.",
+                        user_text=(
+                            f"Giải {q_num}. Chỉ giải câu này, không giải câu khác. "
+                            f"Mô tả hình từ bước tách đề: "
+                            f"{question.get('figure_description') or 'không có'}."
+                        ),
                         mode="answer",
                         mastery_level="proficient",
                         skill_id=skill_id,
@@ -276,6 +287,12 @@ class ExamSolver:
                         formula_ids=formula_ids,
                         masteries=masteries,
                         p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
+                        question_type=question["question_type"],
+                        image_label=primary_visual.label,
+                        additional_images=[
+                            (visual.image_bytes, visual.mime_type, visual.label)
+                            for visual in visuals[1:]
+                        ],
                     )
                 else:
                     # No image available, fallback to text
@@ -288,6 +305,7 @@ class ExamSolver:
                         formula_ids=formula_ids,
                         masteries=masteries,
                         p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
+                        question_type=question["question_type"],
                     )
             else:
                 # Text-only solve (cheaper, faster)
@@ -300,6 +318,7 @@ class ExamSolver:
                     formula_ids=formula_ids,
                     masteries=masteries,
                     p_mastery=masteries.get(skill_id, 0.5) if skill_id else 0.5,
+                    question_type=question["question_type"],
                 )
 
             skill_info = SKILLS.get(skill_id, {}) if skill_id else {}

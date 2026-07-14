@@ -87,10 +87,18 @@ def _safe_parse(expr_str: str) -> sp.Expr:
     )
 
 
-# ── Tool Functions (decorated with @tool for LangChain function-calling) ────────
+def _symbol_for(var: str) -> sp.Symbol:
+    """Return the exact Symbol instance used by ``_safe_parse``."""
+    known = _LOCAL_DICT.get(var)
+    return known if isinstance(known, sp.Symbol) else symbols(var, real=True)
 
-@tool
-def compute_derivative(expr_str: str, var: str = "x", order: int = 1) -> str:
+
+# ── Tool Functions ────────────────────────────────────────────────────────────
+# Public functions return structured dictionaries. LangChain wrappers are built
+# separately at the bottom so direct callers, Reflection and Function Calling
+# all share the same stable contract.
+
+def compute_derivative(expr_str: str, var: str = "x", order: int = 1) -> dict:
     """Tính đạo hàm bậc N của một biểu thức toán học bằng SymPy (chính xác tuyệt đối).
     Dùng khi bài toán yêu cầu tính f'(x), f''(x), hoặc đạo hàm bất kỳ.
 
@@ -104,27 +112,28 @@ def compute_derivative(expr_str: str, var: str = "x", order: int = 1) -> str:
     """
     try:
         expr = _safe_parse(expr_str)
-        v = symbols(var)
+        v = _symbol_for(var)
         result = diff(expr, v, order)
         result = simplify(result)
-        result_latex = latex(result)
-        result_float = None
+        payload = {
+            "success": True,
+            "input": expr_str,
+            "operation": "derivative",
+            "result_sympy": str(result),
+            "result_latex": f"${latex(result)}$",
+        }
         if result.is_number:
             try:
-                result_float = float(result.evalf())
+                payload["result_float"] = str(float(result.evalf()))
             except Exception:
                 pass
-        return (
-            f"SymPy result: d^{order}/d{var}^{order}({expr_str}) = {result_latex}"
-            + (f" ~ {result_float:.6f}" if result_float is not None else "")
-        )
+        return payload
     except Exception as e:
         logger.warning("Tool compute_derivative failed: %s", e)
-        return f"ERROR: {e}"
+        return {"success": False, "input": expr_str, "error": str(e)}
 
 
-@tool
-def compute_integral(expr_str: str, var: str = "x", lower: str = "", upper: str = "") -> str:
+def compute_integral(expr_str: str, var: str = "x", lower: str = "", upper: str = "") -> dict:
     """Tính tích phân xác định hoặc bất định bằng SymPy (chính xác tuyệt đối).
     Dùng khi bài toán yêu cầu tính ∫f(x)dx hoặc ∫[a,b]f(x)dx.
 
@@ -139,36 +148,37 @@ def compute_integral(expr_str: str, var: str = "x", lower: str = "", upper: str 
     """
     try:
         expr = _safe_parse(expr_str)
-        v = symbols(var)
+        v = _symbol_for(var)
 
         if lower and upper:
             a = _safe_parse(str(lower))
             b = _safe_parse(str(upper))
             result = integrate(expr, (v, a, b))
-            op_str = f"∫[{lower},{upper}] {expr_str} d{var}"
+            operation = "definite_integral"
         else:
             result = integrate(expr, v)
-            op_str = f"∫ {expr_str} d{var}"
+            operation = "indefinite_integral"
 
         result = simplify(result)
-        result_latex = latex(result)
-        result_float = None
+        payload = {
+            "success": True,
+            "input": expr_str,
+            "operation": operation,
+            "result_sympy": str(result),
+            "result_latex": f"${latex(result)}$",
+        }
         if result.is_number:
             try:
-                result_float = float(result.evalf())
+                payload["result_float"] = str(float(result.evalf()))
             except Exception:
                 pass
-        return (
-            f"SymPy result: {op_str} = {result_latex}"
-            + (f" ~ {result_float:.6f}" if result_float is not None else "")
-        )
+        return payload
     except Exception as e:
         logger.warning("Tool compute_integral failed: %s", e)
-        return f"ERROR: {e}"
+        return {"success": False, "input": expr_str, "error": str(e)}
 
 
-@tool
-def solve_equation(equation_str: str, var: str = "x") -> str:
+def solve_equation(equation_str: str, var: str = "x") -> dict:
     """Giải phương trình toán học bằng SymPy (chính xác tuyệt đối).
     Dùng khi cần tìm giá trị của biến thỏa mãn phương trình.
     Input có thể là 'f(x) = g(x)' hoặc chỉ 'f(x)' (ngầm = 0).
@@ -181,7 +191,7 @@ def solve_equation(equation_str: str, var: str = "x") -> str:
         Tập nghiệm chính xác và giá trị thập phân.
     """
     try:
-        v = symbols(var)
+        v = _symbol_for(var)
         if "=" in equation_str:
             lhs_str, rhs_str = equation_str.split("=", 1)
             lhs = _safe_parse(lhs_str.strip())
@@ -192,26 +202,20 @@ def solve_equation(equation_str: str, var: str = "x") -> str:
             expr = _safe_parse(equation_str)
             solutions = solve(expr, v)
 
-        if not solutions:
-            return f"SymPy result: Phương trình '{equation_str}' vô nghiệm."
-
-        parts = []
-        for s in solutions:
-            s_latex = latex(s)
-            try:
-                s_float = float(s.evalf())
-                parts.append(f"{s_latex} ~ {s_float:.6f}")
-            except Exception:
-                parts.append(s_latex)
-
-        return f"SymPy result: {var} in {{{', '.join(parts)}}}"
+        return {
+            "success": True,
+            "input": equation_str,
+            "operation": "solve_equation",
+            "solutions_sympy": [str(solution) for solution in solutions],
+            "solutions": [f"${latex(solution)}$" for solution in solutions],
+            "count": len(solutions),
+        }
     except Exception as e:
         logger.warning("Tool solve_equation failed: %s", e)
-        return f"ERROR: {e}"
+        return {"success": False, "input": equation_str, "error": str(e)}
 
 
-@tool
-def solve_inequality(inequality_str: str, var: str = "n") -> str:
+def solve_inequality(inequality_str: str, var: str = "n") -> dict:
     """Giải bất phương trình toán học bằng SymPy (chính xác tuyệt đối).
     PHẢI dùng khi bài hỏi 'sau bao nhiêu giờ/phút/ngày' hoặc
     bất kỳ bài toán nào có dạng f(n) > C hoặc f(n) < C, f(n) >= C.
@@ -256,23 +260,32 @@ def solve_inequality(inequality_str: str, var: str = "n") -> str:
                         boundary_floats.append((latex(atom), float(N(atom))))
                     except Exception:
                         pass
-                bound_str = "; ".join(
-                    f"{la} ~ {fl:.6f}" for la, fl in boundary_floats
-                )
-                return (
-                    f"SymPy result: Bpt '{inequality_str}' nghiem: {latex(solution)}"
-                    + (f" | Bien: {bound_str}" if bound_str else "")
-                    + "\nLUU Y: Neu bai toan co chu ky roi rac (vi du vi khuan phan bao moi 20 phut), "
-                    "hay lam tron bien LEN den boi so nguyen gan nhat cua chu ky do."
-                )
-        return f"ERROR: Không nhận dạng được dấu bất phương trình trong: {inequality_str}"
+                return {
+                    "success": True,
+                    "input": inequality_str,
+                    "operation": "solve_inequality",
+                    "result_sympy": str(solution),
+                    "result_latex": f"${latex(solution)}$",
+                    "boundaries": [
+                        {"latex": boundary_latex, "float": boundary_float}
+                        for boundary_latex, boundary_float in boundary_floats
+                    ],
+                    "note": (
+                        "Nếu bài toán có chu kỳ rời rạc, làm tròn biên lên "
+                        "đến bội số nguyên gần nhất của chu kỳ."
+                    ),
+                }
+        return {
+            "success": False,
+            "input": inequality_str,
+            "error": f"Không nhận dạng được dấu bất phương trình trong: {inequality_str}",
+        }
     except Exception as e:
         logger.warning("Tool solve_inequality failed: %s", e)
-        return f"ERROR: {e}"
+        return {"success": False, "input": inequality_str, "error": str(e)}
 
 
-@tool
-def simplify_expression(expr_str: str) -> str:
+def simplify_expression(expr_str: str) -> dict:
     """Rút gọn / tính toán một biểu thức toán học bằng SymPy.
     Dùng để kiểm tra hoặc tính giá trị cuối cùng của một biểu thức phức tạp.
 
@@ -285,21 +298,24 @@ def simplify_expression(expr_str: str) -> str:
     try:
         expr = _safe_parse(expr_str)
         result = simplify(expr)
-        result_latex = latex(result)
-        extra = ""
+        payload = {
+            "success": True,
+            "input": expr_str,
+            "operation": "simplify",
+            "result_sympy": str(result),
+            "result_latex": f"${latex(result)}$",
+        }
         if result.is_number:
             try:
-                result_float = float(result.evalf())
-                extra = f" ~ {result_float:.6f}"
+                payload["result_float"] = str(float(result.evalf()))
             except Exception:
                 pass
-        return f"SymPy result: simplify({expr_str}) = {result_latex}{extra}"
+        return payload
     except Exception as e:
-        return f"ERROR: {e}"
+        return {"success": False, "input": expr_str, "error": str(e)}
 
 
-@tool
-def evaluate_at_point(expr_str: str, var: str = "x", value: str = "0") -> str:
+def evaluate_at_point(expr_str: str, var: str = "x", value: str = "0") -> dict:
     """Tính giá trị của một biểu thức tại một điểm cụ thể bằng SymPy.
     Dùng khi cần tính f(a) với giá trị cụ thể của biến.
 
@@ -313,43 +329,55 @@ def evaluate_at_point(expr_str: str, var: str = "x", value: str = "0") -> str:
     """
     try:
         expr = _safe_parse(expr_str)
-        v = symbols(var)
+        v = _symbol_for(var)
         val = _safe_parse(value)
         result = expr.subs(v, val)
         result = simplify(result)
-        result_latex = latex(result)
-        extra = ""
+        payload = {
+            "success": True,
+            "input": expr_str,
+            "operation": "evaluate_at_point",
+            "result_sympy": str(result),
+            "result_latex": f"${latex(result)}$",
+        }
         if result.is_number:
             try:
-                result_float = float(result.evalf())
-                extra = f" ~ {result_float:.6f}"
+                payload["result_float"] = str(float(result.evalf()))
             except Exception:
                 pass
-        return f"SymPy result: {expr_str} at {var}={value} = {result_latex}{extra}"
+        return payload
     except Exception as e:
-        return f"ERROR: {e}"
+        return {"success": False, "input": expr_str, "error": str(e)}
 
 
 # ── Tool Collections ─────────────────────────────────────────────────────────
 
-# List of @tool objects for llm.bind_tools() — used by the Agentic Solver
+# List of LangChain tool wrappers used by the Agentic Solver. Keep the public
+# function names above undecorated so direct Python callers receive dictionaries.
+compute_derivative_tool = tool(compute_derivative)
+compute_integral_tool = tool(compute_integral)
+solve_equation_tool = tool(solve_equation)
+solve_inequality_tool = tool(solve_inequality)
+simplify_expression_tool = tool(simplify_expression)
+evaluate_at_point_tool = tool(evaluate_at_point)
+
 MATH_TOOL_LIST = [
-    compute_derivative,
-    compute_integral,
-    solve_equation,
-    solve_inequality,
-    simplify_expression,
-    evaluate_at_point,
+    compute_derivative_tool,
+    compute_integral_tool,
+    solve_equation_tool,
+    solve_inequality_tool,
+    simplify_expression_tool,
+    evaluate_at_point_tool,
 ]
 
 # Legacy dict registry — kept for backward compatibility with ReflectionEngine
 MATH_TOOLS = {
-    "compute_derivative":  compute_derivative.func if hasattr(compute_derivative, "func") else compute_derivative,
-    "compute_integral":    compute_integral.func if hasattr(compute_integral, "func") else compute_integral,
-    "solve_equation":      solve_equation.func if hasattr(solve_equation, "func") else solve_equation,
-    "solve_inequality":    solve_inequality.func if hasattr(solve_inequality, "func") else solve_inequality,
-    "simplify_expression": simplify_expression.func if hasattr(simplify_expression, "func") else simplify_expression,
-    "evaluate_at_point":   evaluate_at_point.func if hasattr(evaluate_at_point, "func") else evaluate_at_point,
+    "compute_derivative": compute_derivative,
+    "compute_integral": compute_integral,
+    "solve_equation": solve_equation,
+    "solve_inequality": solve_inequality,
+    "simplify_expression": simplify_expression,
+    "evaluate_at_point": evaluate_at_point,
 }
 
 TOOL_DESCRIPTIONS = {

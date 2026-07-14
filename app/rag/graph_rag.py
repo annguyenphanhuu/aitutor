@@ -47,6 +47,74 @@ MAX_PREREQUISITE_QUERIES = 3           # Limit extra searches to control cost
 PREREQUISITE_DOCS_PER_QUERY = 2        # Docs retrieved per prerequisite query
 
 
+def build_search_queries(original_query: str, rewritten_query: str = "") -> list[str]:
+    """Build a deduplicated multi-query set for robust theory retrieval.
+
+    The raw question preserves problem-specific language while the rewrite
+    supplies academic vocabulary. Searching both avoids making retrieval fully
+    dependent on one LLM-generated rewrite.
+    """
+    queries: list[str] = []
+    seen: set[str] = set()
+    for query in (rewritten_query, original_query):
+        cleaned = " ".join(str(query).split()).strip()
+        key = cleaned.casefold()
+        if cleaned and key not in seen:
+            queries.append(cleaned)
+            seen.add(key)
+    return queries
+
+
+def merge_search_results(result_sets: list[list[dict]]) -> list[dict]:
+    """Fuse multi-query results by document id while preserving best score."""
+    merged: dict[str, dict] = {}
+    order: list[str] = []
+
+    for query_index, results in enumerate(result_sets):
+        for rank, result in enumerate(results, start=1):
+            doc_id = str(result.get("id") or result.get("content", "")[:200])
+            if not doc_id:
+                continue
+            if doc_id not in merged:
+                merged[doc_id] = dict(result)
+                merged[doc_id]["_matched_query_indexes"] = [query_index]
+                # Small reciprocal-rank signal rewards documents found by both
+                # the rewritten and original query without overwhelming scores.
+                merged[doc_id]["_query_fusion_score"] = 1.0 / (60 + rank)
+                order.append(doc_id)
+            else:
+                current = merged[doc_id]
+                current["hybrid_score"] = max(
+                    float(current.get("hybrid_score", 0.0)),
+                    float(result.get("hybrid_score", 0.0)),
+                )
+                current["vector_score"] = max(
+                    float(current.get("vector_score", 0.0)),
+                    float(result.get("vector_score", 0.0)),
+                )
+                current["bm25_score"] = max(
+                    float(current.get("bm25_score", 0.0)),
+                    float(result.get("bm25_score", 0.0)),
+                )
+                current["_query_fusion_score"] += 1.0 / (60 + rank)
+                current["_matched_query_indexes"].append(query_index)
+
+    # The fusion signal is intentionally capped at 0.04. It breaks close ties
+    # in favour of docs retrieved by both formulations but remains a soft hint.
+    for result in merged.values():
+        fusion_bonus = min(float(result.pop("_query_fusion_score", 0.0)), 0.04)
+        result["hybrid_score"] = min(
+            float(result.get("hybrid_score", 0.0)) + fusion_bonus,
+            1.0,
+        )
+
+    return sorted(
+        (merged[doc_id] for doc_id in order),
+        key=lambda item: item.get("hybrid_score", 0.0),
+        reverse=True,
+    )
+
+
 class GraphRAGRetriever:
     """Graph-enhanced retriever: main query + prerequisite gap queries.
 
@@ -106,11 +174,35 @@ class GraphRAGRetriever:
         # QueryExpander infers chapters/skills from question content
         expansion = expand_question(query)
 
-        # Query Rewriting: dùng rag_query (thuật ngữ học thuật) thay cho câu hỏi gốc.
-        # Lý do: Câu hỏi gốc dạng bài toán thực tế có vector embedding xa với lý thuyết.
-        # rag_query có các thuật ngữ đúng hơn nên vector gần KB hơn.
-        search_query = expansion.rag_query if (not expansion.error and expansion.rag_query) else query
-        candidates = self.kb.search_theory(search_query, k=pool_k, alpha=self.alpha)
+        # Multi-query rewriting: tìm bằng cả thuật ngữ học thuật và câu gốc.
+        # Điều này cải thiện bài toán thực tế nhưng vẫn fallback an toàn nếu rewrite
+        # thiếu một chi tiết quan trọng hoặc QueryExpander lỗi.
+        rewritten_query = expansion.rag_query if not expansion.error else ""
+        search_queries = build_search_queries(query, rewritten_query)
+        result_sets = [
+            self.kb.search_theory(search_query, k=pool_k, alpha=self.alpha)
+            for search_query in search_queries
+        ]
+        candidates = merge_search_results(result_sets)
+
+        # Formula được QueryExpander chọn là exact-match evidence; đưa thẳng vào
+        # candidate pool để không phụ thuộc embedding của ký hiệu toán học.
+        if not expansion.error and expansion.formula_ids:
+            known_ids = {str(candidate.get("id", "")) for candidate in candidates}
+            for formula in self.kb.get_formulas_by_ids(expansion.formula_ids):
+                formula_id = str(formula.get("id", ""))
+                if formula_id and formula_id not in known_ids:
+                    candidates.append({
+                        "id": formula_id,
+                        "content": formula.get("content", ""),
+                        "metadata": formula.get("metadata", {}),
+                        "hybrid_score": 1.0,
+                        "vector_score": 1.0,
+                        "bm25_score": 1.0,
+                        "_boosted": True,
+                        "_matched_query_indexes": [],
+                    })
+                    known_ids.add(formula_id)
 
         # Soft boost đủ mạnh (0.12/0.07) để docs đúng skill/chapter luôn vào pool.
         SKILL_BOOST   = 0.12
@@ -139,7 +231,10 @@ class GraphRAGRetriever:
                 r["hybrid_score"] = min(r.get("hybrid_score", 0) + bonus, 1.0)
                 r["_boosted"] = True
 
-        main_results = reranker.rerank(query, candidates, k=self.k)
+        # Rerank theo rewrite học thuật nếu có; CrossEncoder so khớp tốt hơn với
+        # tài liệu lý thuyết so với bối cảnh kể chuyện của bài toán thực tế.
+        rerank_query = rewritten_query or query
+        main_results = reranker.rerank(rerank_query, candidates, k=self.k)
 
         # Debug log: count boosted docs
         n_boosted = sum(1 for r in main_results if r.get("_boosted"))
@@ -227,6 +322,8 @@ class GraphRAGRetriever:
             main_docs=deduped_main,
             prereq_docs=deduped_prereq,
             weak_skills=weak_skills,
+            search_queries=search_queries,
+            query_expansion=expansion,
         )
 
 
@@ -238,10 +335,14 @@ class GraphRAGResult:
         main_docs: list[Document],
         prereq_docs: list[Document],
         weak_skills: list[dict],
+        search_queries: Optional[list[str]] = None,
+        query_expansion: object = None,
     ):
         self.main_docs = main_docs
         self.prereq_docs = prereq_docs
         self.weak_skills = weak_skills
+        self.search_queries = search_queries or []
+        self.query_expansion = query_expansion
 
     @property
     def all_docs(self) -> list[Document]:

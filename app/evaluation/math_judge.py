@@ -138,8 +138,13 @@ def judge_mcq_accuracy(response: str, correct_answer: str) -> float:
     if correct not in {"A", "B", "C", "D"}:
         return 0.0
 
+    # Dùng chung post-processor với production để các kết luận rõ ràng như
+    # "Đáp án đúng là B" được sửa thành contract chuẩn trước khi chấm.
+    from app.utils.answer_format import ensure_answer_tag
+    normalized_response = ensure_answer_tag(response, "mcq")
+
     # Ưu tiên số 1: Tìm đúng thẻ <answer>X</answer>
-    m = re.search(r"<answer>\s*([ABCD])\s*</answer>", response, re.IGNORECASE)
+    m = re.search(r"<answer>\s*([ABCD])\s*</answer>", normalized_response, re.IGNORECASE)
     if m:
         return 1.0 if m.group(1).upper() == correct else 0.0
 

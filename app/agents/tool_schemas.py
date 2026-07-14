@@ -111,6 +111,34 @@ OPENAI_MATH_TOOLS: list[dict] = [
     {
         "type": "function",
         "function": {
+            "name": "solve_inequality",
+            "description": (
+                "Giải bất phương trình chính xác bằng SymPy. Bắt buộc dùng cho "
+                "bài tăng trưởng, lãi kép hoặc câu hỏi tìm thời điểm nhỏ nhất/lớn nhất."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "inequality_str": {
+                        "type": "string",
+                        "description": (
+                            "Bất phương trình theo cú pháp SymPy, ví dụ "
+                            "'5 * 2**(n/20) > 2000' hoặc '2**n >= 400'."
+                        ),
+                    },
+                    "var": {
+                        "type": "string",
+                        "description": "Ẩn cần giải. Mặc định 'n'.",
+                        "default": "n",
+                    },
+                },
+                "required": ["inequality_str"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "simplify_expression",
             "description": (
                 "Rút gọn / đơn giản hóa một biểu thức toán học bằng SymPy. "
