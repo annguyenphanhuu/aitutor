@@ -15,7 +15,7 @@ import time
 from app.db.database import get_db
 from app.db.models import (
     SkillMastery, InteractionLog, StudyPlan,
-    ConversationSession, ChatMessage,
+    ConversationSession, ChatMessage, ChatVisualization,
 )
 from app.db.schemas import (
     ChatRequest, ChatResponse,
@@ -52,6 +52,22 @@ bkt = BKTModel()
 
 # Maximum chat history messages to load from DB
 MAX_HISTORY_LOAD = 20
+
+
+async def _save_chat_visualization(
+    db: AsyncSession,
+    message: ChatMessage,
+    visualization: Optional[dict],
+) -> None:
+    """Persist a rich chat payload after its ChatMessage has received an id."""
+    if not visualization:
+        return
+    await db.flush()
+    db.add(ChatVisualization(
+        session_id=message.session_id,
+        message_id=message.id,
+        payload=visualization,
+    ))
 
 
 # ── Auth ─────────────────────────────────────────────────
@@ -208,6 +224,7 @@ async def chat(
         mode_used=response.get("mode_used"),
     )
     db.add(assistant_msg)
+    await _save_chat_visualization(db, assistant_msg, response.get("visualization"))
 
     # Log the interaction (backward compatible)
     log = InteractionLog(
@@ -292,6 +309,7 @@ async def chat_stream(
         full_response = ""
         skill_id_cap = None
         mode_used_cap = None
+        visualization_cap = None
 
         try:
             async for frame_json in orchestrator.handle_message_stream(
@@ -309,6 +327,12 @@ async def chat_stream(
                         mode_used_cap = frame.get("mode_used")
                     elif ftype == "done":
                         full_response = frame.get("full_response", "")
+                        # Final metadata is authoritative for non-streamable
+                        # intents (e.g. visualize), whose mode can differ from
+                        # the preliminary meta frame.
+                        skill_id_cap = frame.get("skill_id", skill_id_cap)
+                        mode_used_cap = frame.get("mode_used", mode_used_cap)
+                        visualization_cap = frame.get("visualization")
                 except Exception:
                     pass
 
@@ -324,13 +348,17 @@ async def chat_stream(
             from app.db.database import async_session
             async with async_session() as save_db:
                 async with save_db.begin():
-                    save_db.add(ChatMessage(
+                    assistant_message = ChatMessage(
                         session_id=captured_session_id,
                         role="assistant",
                         content=full_response,
                         skill_id=skill_id_cap,
                         mode_used=mode_used_cap,
-                    ))
+                    )
+                    save_db.add(assistant_message)
+                    await _save_chat_visualization(
+                        save_db, assistant_message, visualization_cap,
+                    )
                     save_db.add(InteractionLog(
                         user_id=user_id,
                         question=data.message,
@@ -465,13 +493,17 @@ async def upload_image(
         user_content += f"\n{user_text}"
     db.add(ChatMessage(session_id=sid, role="user", content=user_content))
 
-    db.add(ChatMessage(
+    assistant_message = ChatMessage(
         session_id=sid,
         role="assistant",
         content=response["response"],
         skill_id=response.get("skill_id"),
         mode_used=response.get("mode_used"),
-    ))
+    )
+    db.add(assistant_message)
+    await _save_chat_visualization(
+        db, assistant_message, response.get("visualization"),
+    )
 
     db.add(InteractionLog(
         user_id=user_id,
@@ -496,8 +528,12 @@ async def generate_quiz(
 ):
     """Generate quiz questions for a specific skill."""
     result = await create_quiz_session(
-        db, data.skill_id, data.difficulty, data.count,
+        db, 
+        skill_id=data.skill_id, 
+        difficulty=data.difficulty, 
+        count=data.count,
         user_id=user_id,
+        chapter=data.chapter,
     )
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
@@ -802,6 +838,15 @@ async def get_session_history(session_id: int, db: AsyncSession = Depends(get_db
     )
     messages = msg_result.scalars().all()
 
+    visualization_result = await db.execute(
+        select(ChatVisualization)
+        .where(ChatVisualization.session_id == session_id)
+    )
+    visualizations = {
+        item.message_id: item.payload
+        for item in visualization_result.scalars().all()
+    }
+
     return {
         "session": {
             "id": session.id,
@@ -814,6 +859,7 @@ async def get_session_history(session_id: int, db: AsyncSession = Depends(get_db
                 "role": m.role,
                 "content": m.content,
                 "skill_id": m.skill_id,
+                "visualization": visualizations.get(m.id),
                 "timestamp": m.timestamp.isoformat() if m.timestamp else None,
             }
             for m in messages
@@ -829,6 +875,7 @@ async def delete_session(session_id: int, db: AsyncSession = Depends(get_db)):
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
 
+    await db.execute(delete(ChatVisualization).where(ChatVisualization.session_id == session_id))
     await db.execute(delete(ChatMessage).where(ChatMessage.session_id == session_id))
     await db.execute(delete(ConversationSession).where(ConversationSession.id == session_id))
     await db.commit()
@@ -843,6 +890,7 @@ async def clear_all_sessions(db: AsyncSession = Depends(get_db), user_id: int = 
     session_ids = [row[0] for row in result.all()]
 
     if session_ids:
+        await db.execute(delete(ChatVisualization).where(ChatVisualization.session_id.in_(session_ids)))
         await db.execute(delete(ChatMessage).where(ChatMessage.session_id.in_(session_ids)))
         await db.execute(delete(ConversationSession).where(ConversationSession.user_id == user_id))
         await db.commit()

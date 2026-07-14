@@ -381,6 +381,7 @@ async function loadSessionHistory(sessionId) {
         if (data.messages && data.messages.length > 0) {
             data.messages.forEach(m => {
                 addBubble(m.role, m.content, m.skill_id);
+                if (m.visualization) renderVisualization(m.visualization);
             });
             container.scrollTop = container.scrollHeight;
         } else {
@@ -480,9 +481,7 @@ async function sendMessage() {
             if (data.session_id) currentSessionId = data.session_id;
             if (data.ocr_text) addOcrInfo(data.ocr_text);
             addBubble('assistant', data.response, data.skill_name);
-            if (data.visualization && data.visualization.vis_type === 'plot') {
-                renderPlotlyChart(data.visualization);
-            }
+            if (data.visualization) renderVisualization(data.visualization);
         } else {
             // ── Text-only: Streaming SSE ───────────────────────────
             await sendMessageStream(capturedText);
@@ -562,6 +561,9 @@ async function sendMessageStream(capturedText) {
                         fullText = frame.full_response || fullText;
                         bodyEl.innerHTML = formatText(fullText);
                         renderKatex(bodyEl);
+                        if (frame.visualization) {
+                            renderVisualization(frame.visualization);
+                        }
                         container.scrollTop = container.scrollHeight;
                     } else if (frame.type === 'error') {
                         bodyEl.innerHTML = `<span style="color:var(--red)">⚠️ ${esc(frame.message)}</span>`;
@@ -659,8 +661,39 @@ function addTyping() {
 //  PLOTLY VISUALIZATION
 // ═══════════════════════════════════════════════════
 
+function renderVisualization(visData) {
+    if (!visData || typeof visData !== 'object') return false;
+    if (visData.vis_type === 'plot') {
+        renderPlotlyChart(visData);
+        return true;
+    }
+
+    renderVisualizationError('Định dạng trực quan hóa chưa được hỗ trợ.');
+    return false;
+}
+
+
+function renderVisualizationError(message) {
+    const container = document.getElementById('chat-messages');
+    const wrapper = document.createElement('div');
+    wrapper.className = 'message assistant';
+    wrapper.innerHTML = `
+        <div class="msg-avatar">📊</div>
+        <div class="msg-body chart-error">⚠️ ${esc(message)}</div>
+    `;
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+}
+
+
 function renderPlotlyChart(visData) {
     const container = document.getElementById('chat-messages');
+
+    if (!visData.data || !Array.isArray(visData.data.traces)) {
+        renderVisualizationError('Dữ liệu đồ thị từ máy chủ không hợp lệ.');
+        return;
+    }
+
     const wrapper = document.createElement('div');
     wrapper.className = 'message assistant';
 
@@ -682,18 +715,30 @@ function renderPlotlyChart(visData) {
     container.appendChild(wrapper);
     container.scrollTop = container.scrollHeight;
 
-    // Render Plotly
-    if (typeof Plotly !== 'undefined' && visData.data) {
+    // Never leave a silent blank bubble when the CDN or payload fails.
+    if (typeof Plotly === 'undefined') {
+        chartDiv.classList.add('chart-error');
+        chartDiv.textContent = '⚠️ Không tải được thư viện hiển thị đồ thị. Vui lòng tải lại trang.';
+    } else {
         const layout = {
             ...visData.data.layout,
             autosize: true,
             height: 360,
         };
-        Plotly.newPlot(chartDiv, visData.data.traces, layout, {
-            responsive: true,
-            displayModeBar: true,
-            modeBarButtonsToRemove: ['lasso2d', 'select2d'],
-        });
+        try {
+            const plotPromise = Plotly.newPlot(chartDiv, visData.data.traces, layout, {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+            });
+            Promise.resolve(plotPromise).catch(() => {
+                chartDiv.classList.add('chart-error');
+                chartDiv.textContent = '⚠️ Không thể dựng đồ thị từ dữ liệu đã nhận.';
+            });
+        } catch (_) {
+            chartDiv.classList.add('chart-error');
+            chartDiv.textContent = '⚠️ Không thể dựng đồ thị từ dữ liệu đã nhận.';
+        }
     }
 
     // Render KaTeX in caption
@@ -717,36 +762,31 @@ async function showQuizPanel() {
         const data = await res.json();
         grid.innerHTML = '';
 
-        // Group by chapter
-        const chapters = {};
-        for (const skill of data.skills) {
-            if (!chapters[skill.chapter]) chapters[skill.chapter] = [];
-            chapters[skill.chapter].push(skill);
+        // Group by chapter - We only show chapters now, not specific skills
+        const chapters = data.chapters || [];
+        
+        const section = document.createElement('div');
+        section.className = 'skill-chapter';
+        
+        for (const chapter of chapters) {
+            const btn = document.createElement('button');
+            btn.className = 'skill-btn';
+            btn.textContent = chapter;
+            btn.dataset.chapter = chapter;
+            btn.onclick = () => selectChapter(chapter, btn);
+            section.appendChild(btn);
         }
-
-        for (const [chapter, skills] of Object.entries(chapters)) {
-            const section = document.createElement('div');
-            section.className = 'skill-chapter';
-            section.innerHTML = `<h4 class="skill-chapter-title">${chapter}</h4>`;
-            for (const skill of skills) {
-                const btn = document.createElement('button');
-                btn.className = 'skill-btn';
-                btn.textContent = skill.name;
-                btn.dataset.skillId = skill.id;
-                btn.onclick = () => selectSkill(skill.id, btn);
-                section.appendChild(btn);
-            }
-            grid.appendChild(section);
-        }
+        grid.appendChild(section);
     } catch (e) {
-        grid.innerHTML = '<p style="color:#f87171">Không thể tải danh sách kỹ năng.</p>';
+        grid.innerHTML = '<p style="color:#f87171">Không thể tải danh sách chương.</p>';
     }
 }
 
-function selectSkill(skillId, btn) {
+function selectChapter(chapter, btn) {
     document.querySelectorAll('.skill-btn.selected').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    quizState.selectedSkillId = skillId;
+    quizState.selectedChapter = chapter;
+    quizState.selectedSkillId = null; // Clear out skill_id
     document.getElementById('modal-submit-btn').disabled = false;
 }
 
@@ -775,14 +815,20 @@ async function generateQuiz() {
     qArea.innerHTML = '<p class="quiz-loading">⏳ Đang sinh đề bài...</p>';
 
     try {
+        const payload = {
+            difficulty: quizState.selectedDifficulty,
+            count: 5,
+        };
+        if (quizState.selectedChapter) {
+            payload.chapter = quizState.selectedChapter;
+        } else if (quizState.selectedSkillId) {
+            payload.skill_id = quizState.selectedSkillId;
+        }
+
         const res = await fetch(`${API}/quiz/generate`, {
             method: 'POST',
             headers: authHeaders(),
-            body: JSON.stringify({
-                skill_id: quizState.selectedSkillId,
-                difficulty: quizState.selectedDifficulty,
-                count: 5,
-            }),
+            body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error('Không thể sinh đề.');
         const data = await res.json();

@@ -86,6 +86,22 @@ class ChatMessage(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
 
 
+class ChatVisualization(Base):
+    """Rich visualization payload attached to an assistant chat message.
+
+    Kept in a separate table so ``create_all()`` can add it to an existing
+    deployment without an ``ALTER TABLE chat_messages`` migration.
+    """
+
+    __tablename__ = "chat_visualizations"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    session_id = Column(Integer, nullable=False, index=True)
+    message_id = Column(Integer, nullable=False, unique=True, index=True)
+    payload = Column(JSON, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 # ── Quiz & Diagnostic ───────────────────────────────
 class QuizQuestion(Base):
     __tablename__ = "quiz_questions"

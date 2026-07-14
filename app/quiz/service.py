@@ -55,24 +55,38 @@ def _score_short_answer(student_answer: str, correct_answer: str) -> tuple[float
 # ── Create Quiz Session ──────────────────────────────────
 async def create_quiz_session(
     db: AsyncSession,
-    skill_id: str,
+    skill_id: str | None = None,
     difficulty: int = 1,
     count: int = 5,
     user_id: int = 1,
+    chapter: str | None = None,
 ) -> dict:
     """Generate questions and create a quiz session.
     If difficulty=0, uses adaptive engine to auto-select difficulty.
     """
+    import random
+    
+    skill_ids_to_query = []
+    if chapter:
+        skill_ids_to_query = [sid for sid, info in SKILLS.items() if info["chapter"] == chapter]
+    elif skill_id:
+        skill_ids_to_query = [skill_id]
+        
+    if not skill_ids_to_query:
+        return {"error": "Không có kỹ năng hoặc chương nào được chọn."}
+        
+    rep_skill_id = skill_id or skill_ids_to_query[0]
+
     # ── Adaptive difficulty (when difficulty=0 or "auto") ──
     adaptive_info = None
     if difficulty == 0:
         from app.quiz.adaptive_engine import get_adaptive_engine
         from app.knowledge_tracing.service import get_or_create_mastery as _get_mastery, get_recent_results, get_all_masteries
         engine = get_adaptive_engine()
-        mastery_rec = await _get_mastery(db, skill_id, user_id)
-        recent = await get_recent_results(db, skill_id, user_id, limit=10)
+        mastery_rec = await _get_mastery(db, rep_skill_id, user_id)
+        recent = await get_recent_results(db, rep_skill_id, user_id, limit=10)
         all_masteries = await get_all_masteries(db, user_id)
-        adaptive_info = engine.get_adaptive_summary(skill_id, mastery_rec.p_mastery, recent, all_masteries)
+        adaptive_info = engine.get_adaptive_summary(rep_skill_id, mastery_rec.p_mastery, recent, all_masteries)
         difficulty = adaptive_info["recommended_difficulty"]
 
     from sqlalchemy.sql.expression import func
@@ -81,7 +95,7 @@ async def create_quiz_session(
     
     res = await db.execute(
         select(QuestionBank)
-        .where(QuestionBank.skill_id == skill_id)
+        .where(QuestionBank.skill_id.in_(skill_ids_to_query))
         .where(QuestionBank.difficulty == difficulty)
         .where(QuestionBank.question_type == "mcq")
         .where(QuestionBank.is_active == True)
@@ -108,8 +122,14 @@ async def create_quiz_session(
     
     missing = count - len(raw_questions)
     if missing > 0:
-        gen_qs = generate_questions(skill_id, difficulty, missing)
-        raw_questions.extend(gen_qs)
+        skill_counts = {}
+        for _ in range(missing):
+            s = random.choice(skill_ids_to_query)
+            skill_counts[s] = skill_counts.get(s, 0) + 1
+            
+        for s, c in skill_counts.items():
+            gen_qs = generate_questions(s, difficulty, c)
+            raw_questions.extend(gen_qs)
 
     if not raw_questions:
         return {"error": "Không thể sinh câu hỏi cho kỹ năng này."}
@@ -159,7 +179,7 @@ async def create_quiz_session(
         user_id=user_id,
         session_type="practice",
         exam_format=False,
-        skill_ids=[skill_id],
+        skill_ids=skill_ids_to_query,
         questions=session_questions,
         total_questions=len(db_questions),
         max_score=max_score,

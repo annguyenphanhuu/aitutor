@@ -8,8 +8,10 @@ Covers:
 - Orchestrator._extract_and_visualize() — math expression extraction
 """
 
+import json
+
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 from app.agents.orchestrator import Orchestrator
 
 
@@ -199,3 +201,51 @@ class TestExtractAndVisualize:
         with patch.object(orchestrator, "_extract_plottable_expr_llm", return_value="something random"):
             result = await orchestrator._extract_and_visualize("something random")
             orchestrator.visualizer.generate_function_plot.assert_called_with("something random")
+
+
+class TestHandleMessageStreamVisualization:
+
+    @pytest.mark.asyncio
+    async def test_done_frame_keeps_visualization_payload(self, orchestrator):
+        visualization = {
+            "vis_type": "plot",
+            "data": {
+                "traces": [{"x": [-1, 0, 1], "y": [1, 0, 1]}],
+                "layout": {"title": "y = x²"},
+            },
+        }
+        result = {
+            "response": "Đồ thị đã được tạo! Xem bên dưới.",
+            "skill_id": "function_graph_recognition",
+            "skill_ids": ["function_graph_recognition"],
+            "formula_ids": [],
+            "skill_name": "Nhận dạng đồ thị hàm số",
+            "mastery_level": 0.1,
+            "mode_used": "visualize",
+            "visualization": visualization,
+        }
+
+        orchestrator.classify_intent = AsyncMock(return_value={
+            "intent": "visualize",
+            "skill_id": "function_graph_recognition",
+        })
+        orchestrator.handle_message = AsyncMock(return_value=result)
+
+        with patch(
+            "app.agents.orchestrator.get_all_masteries",
+            new=AsyncMock(return_value={}),
+        ):
+            frames = [
+                json.loads(frame)
+                async for frame in orchestrator.handle_message_stream(
+                    db=MagicMock(),
+                    message="vẽ đồ thị hàm số đó",
+                    chat_history=[
+                        {"role": "assistant", "content": "Ví dụ y = x^2"},
+                    ],
+                )
+            ]
+
+        assert [frame["type"] for frame in frames] == ["meta", "token", "done"]
+        assert frames[-1]["visualization"] == visualization
+        assert frames[-1]["mode_used"] == "visualize"

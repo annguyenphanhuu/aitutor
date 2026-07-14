@@ -75,8 +75,9 @@ class DashboardResponse(BaseModel):
 
 # ── Quiz ─────────────────────────────────────────────
 class QuizGenerateRequest(BaseModel):
-    skill_id: str
+    skill_id: Optional[str] = None
     skill_ids: Optional[list[str]] = None
+    chapter: Optional[str] = None
     formula_ids: list[str] = Field(default_factory=list)
     difficulty: int = 1         # 1-easy, 2-medium, 3-hard
     count: int = 5              # number of questions

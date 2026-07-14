@@ -536,7 +536,20 @@ class Orchestrator:
                 )
                 full = result.get("response", "")
                 yield _json.dumps({"type": "token", "content": full}, ensure_ascii=False)
-                yield _json.dumps({"type": "done", "full_response": full}, ensure_ascii=False)
+                # The done frame is the contract boundary for non-text response data.
+                # Keep the complete result metadata here so SSE clients receive the
+                # same visualization payload as clients of POST /api/chat.
+                yield _json.dumps({
+                    "type": "done",
+                    "full_response": full,
+                    "skill_id": result.get("skill_id"),
+                    "skill_ids": result.get("skill_ids") or [],
+                    "formula_ids": result.get("formula_ids") or [],
+                    "skill_name": result.get("skill_name"),
+                    "mastery_level": result.get("mastery_level"),
+                    "mode_used": result.get("mode_used", mode),
+                    "visualization": result.get("visualization"),
+                }, ensure_ascii=False)
             except Exception as e:
                 yield _json.dumps({"type": "error", "message": str(e)}, ensure_ascii=False)
             return
