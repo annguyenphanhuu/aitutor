@@ -355,6 +355,93 @@ class TestPerturb:
         assert result is not None
 
 
+# ━━ Distractor quality (đáp án nhiễu phải hợp lý theo loại câu hỏi) ━━━━━━
+
+class TestDistractorQuality:
+
+    def test_count_question_choices_are_nonnegative_integers(self):
+        """Câu 'có bao nhiêu điểm cực trị' không được có đáp án âm/phân số."""
+        gen = FunctionSurveyQuizGenerator()
+        for seed in range(30):
+            random.seed(seed)
+            q = gen._find_extrema_cubic()
+            vals = [int(c.strip("$")) for c in q["choices"]]
+            assert all(v >= 0 for v in vals), f"Negative count choice: {q['choices']}"
+            assert len(set(vals)) == 4
+
+    def test_cubic_extrema_answer_is_0_or_2(self):
+        """Hàm bậc 3 chỉ có 0 hoặc 2 cực trị — không bao giờ là 1."""
+        gen = FunctionSurveyQuizGenerator()
+        for seed in range(30):
+            random.seed(seed)
+            q = gen._find_extrema_cubic()
+            correct = int(q["choices"][q["correct_index"]].strip("$"))
+            assert correct in (0, 2), f"Cubic cannot have {correct} extrema"
+
+    def test_fractional_has_no_extrema(self):
+        gen = FunctionSurveyQuizGenerator()
+        random.seed(1)
+        q = gen._fractional_extrema()
+        correct = int(q["choices"][q["correct_index"]].strip("$"))
+        assert correct == 0
+        vals = [int(c.strip("$")) for c in q["choices"]]
+        assert all(v >= 0 for v in vals)
+
+    def test_validity_rules(self):
+        import sympy as sp
+        from app.quiz.generator import _is_valid_distractor
+        x = sp.Symbol("x")
+        two = sp.Integer(2)
+        assert not _is_valid_distractor(sp.Integer(-1), "count", two)
+        assert not _is_valid_distractor(sp.Rational(1, 2), "count", two)
+        assert _is_valid_distractor(sp.Integer(3), "count", two)
+        assert not _is_valid_distractor(sp.Integer(2), "count", two)  # trùng đáp án đúng
+        assert not _is_valid_distractor(sp.Rational(3, 2), "probability", sp.Rational(1, 3))
+        assert not _is_valid_distractor(sp.Integer(-2), "nonneg", sp.sqrt(5))
+        assert _is_valid_distractor(x + 1, "expression", x + 2)
+        assert not _is_valid_distractor(x + 1, "value", sp.Integer(3))  # chứa biến
+
+    def test_template_distractors_used_first(self):
+        """Nhiễu do template cung cấp (lỗi sai điển hình) được ưu tiên."""
+        import sympy as sp
+        from app.quiz.generator import BaseQuizGenerator
+        q = BaseQuizGenerator._make_mcq(
+            sp.Integer(4), "s", "q?", "e", 1,
+            answer_kind="count", distractors=[0, 1, 2])
+        assert set(q["choices"]) == {"$0$", "$1$", "$2$", "$4$"}
+        assert q["choices"][q["correct_index"]] == "$4$"
+
+    def test_numeric_choices_sorted_ascending(self):
+        import sympy as sp
+        from app.quiz.generator import BaseQuizGenerator
+        q = BaseQuizGenerator._make_mcq(
+            sp.Integer(4), "s", "q?", "e", 1,
+            answer_kind="count", distractors=[2, 0, 1])
+        assert q["choices"] == ["$0$", "$1$", "$2$", "$4$"]
+
+    def test_true_false_extrema_statement_consistent(self):
+        """Mệnh đề Đúng/Sai về số cực trị phải khớp nhãn đúng/sai của nó."""
+        import re
+        for seed in range(40):
+            random.seed(seed)
+            qs = generate_questions("function_survey", difficulty=1, count=1,
+                                    question_type="true_false")
+            assert qs, "true_false generation failed"
+            q = qs[0]
+            _validate_true_false(q)
+            expl = q["explanation"]
+            m_actual = re.search(r"Cực trị: (\d+) điểm", expl)
+            assert m_actual
+            actual = int(m_actual.group(1))
+            for s in q["statements"]:
+                m = re.match(r"Hàm số có (\d+) điểm cực trị", s["text"])
+                if m:
+                    claimed = int(m.group(1))
+                    assert (claimed == actual) == s["correct"], (
+                        f"Statement '{s['text']}' labeled {s['correct']} "
+                        f"but actual count is {actual}")
+
+
 # ━━ GENERATORS registry ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 class TestGeneratorsRegistry:
