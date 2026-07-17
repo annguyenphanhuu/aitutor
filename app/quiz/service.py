@@ -210,13 +210,24 @@ async def submit_quiz_answer(
     user_id: int = 1,
 ) -> dict:
     """Submit student's answer. Handles all 3 question types with THPT QG scoring."""
-    # Get session
+    # Get session (scoped to the requesting user — chống IDOR)
     result = await db.execute(
-        select(QuizSession).where(QuizSession.id == session_id)
+        select(QuizSession).where(
+            QuizSession.id == session_id,
+            QuizSession.user_id == user_id,
+        )
     )
     session = result.scalar_one_or_none()
     if not session:
         return {"error": "Không tìm thấy phiên kiểm tra."}
+
+    # Question must belong to this session
+    questions = list(session.questions)
+    q_info = next((q for q in questions if q["question_id"] == question_id), None)
+    if q_info is None:
+        return {"error": "Câu hỏi không thuộc phiên kiểm tra này."}
+    if q_info.get("answered"):
+        return {"error": "Câu hỏi này đã được trả lời."}
 
     # Get question
     result = await db.execute(
@@ -239,9 +250,13 @@ async def submit_quiz_answer(
 
     elif q_type == "true_false":
         correct_bools = [s["correct"] for s in question.statements]
-        student_bools = tf_answers or [False, False, False, False]
+        # Không trả lời = không điểm (đồng bộ với cách chấm đề thi)
+        student_bools = (
+            tf_answers if tf_answers is not None
+            else [None] * len(correct_bools)
+        )
         points_earned, num_correct = score_true_false(student_bools, correct_bools)
-        is_correct = (num_correct == 4)
+        is_correct = (num_correct == len(correct_bools))
         response_extra["correct_statements"] = correct_bools
 
     elif q_type == "short_answer":
@@ -250,13 +265,9 @@ async def submit_quiz_answer(
         response_extra["correct_answer"] = question.correct_answer
 
     # Update session question list
-    questions = list(session.questions)
-    for q in questions:
-        if q["question_id"] == question_id:
-            q["answered"] = True
-            q["is_correct"] = is_correct
-            q["points_earned"] = points_earned
-            break
+    q_info["answered"] = True
+    q_info["is_correct"] = is_correct
+    q_info["points_earned"] = points_earned
 
     # CRITICAL: SQLAlchemy does NOT auto-detect mutations in JSON columns.
     from sqlalchemy.orm.attributes import flag_modified
@@ -311,10 +322,13 @@ async def submit_quiz_answer(
 
 
 # ── Get Quiz Result ──────────────────────────────────────
-async def get_quiz_result(db: AsyncSession, session_id: int) -> dict:
+async def get_quiz_result(db: AsyncSession, session_id: int, user_id: int = 1) -> dict:
     """Get the final result of a completed quiz session with THPT QG breakdown."""
     result = await db.execute(
-        select(QuizSession).where(QuizSession.id == session_id)
+        select(QuizSession).where(
+            QuizSession.id == session_id,
+            QuizSession.user_id == user_id,
+        )
     )
     session = result.scalar_one_or_none()
     if not session:
@@ -339,7 +353,7 @@ async def get_quiz_result(db: AsyncSession, session_id: int) -> dict:
             for sid in q_skill_ids:
                 if sid not in skill_stats:
                     skill_info = SKILLS.get(sid, {})
-                    mastery_rec = await get_or_create_mastery(db, sid)
+                    mastery_rec = await get_or_create_mastery(db, sid, user_id)
                     skill_stats[sid] = {
                         "skill_id": sid,
                         "skill_name": skill_info.get("name", sid),

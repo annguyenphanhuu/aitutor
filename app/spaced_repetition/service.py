@@ -92,10 +92,23 @@ async def get_due_cards(db: AsyncSession, user_id: int = 1) -> list[dict]:
     return due_list
 
 
-async def review_card(db: AsyncSession, card_id: int, question_id: int, selected_index: int) -> dict:
-    """Submit a review result for a card and update SM-2 parameters."""
+async def review_card(
+    db: AsyncSession,
+    card_id: int,
+    question_id: int,
+    selected_index: int,
+    user_id: int = 1,
+) -> dict:
+    """Submit a review result for a card and update SM-2 parameters.
+
+    Card lookup is scoped to ``user_id`` so users cannot review each
+    other's cards.
+    """
     result = await db.execute(
-        select(SpacedRepetitionCard).where(SpacedRepetitionCard.id == card_id)
+        select(SpacedRepetitionCard).where(
+            SpacedRepetitionCard.id == card_id,
+            SpacedRepetitionCard.user_id == user_id,
+        )
     )
     card = result.scalar_one_or_none()
     if not card:

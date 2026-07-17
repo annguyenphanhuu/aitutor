@@ -20,6 +20,14 @@ log = logging.getLogger(__name__)
 
 EXAMS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "exams")
 
+# exam_id comes from the URL path — restrict to safe filename characters
+# to prevent path traversal (e.g. "../../secrets").
+_EXAM_ID_RE = re.compile(r"^[A-Za-z0-9_\-]+$")
+
+
+def _is_valid_exam_id(exam_id: str) -> bool:
+    return bool(exam_id and _EXAM_ID_RE.match(exam_id))
+
 
 def _sync_from_s3_if_enabled(force: bool = False) -> None:
     """Nếu S3_ENABLED, kéo các file đề thi còn thiếu từ S3 về local (non-blocking)."""
@@ -290,6 +298,8 @@ def load_exam(exam_id: str) -> dict | None:
 
     Fallback: nếu file không có local, thử tải từ S3 (khi S3_ENABLED=true).
     """
+    if not _is_valid_exam_id(exam_id):
+        return None
     filepath = os.path.join(EXAMS_DIR, f"{exam_id}.json")
     if not os.path.exists(filepath):
         # Thử pull từ S3 trước khi bỏ cuộc
@@ -400,6 +410,8 @@ def grade_exam(exam_id: str, answers: dict) -> dict | None:
     }
     Fallback: nếu file không có local, thử tải từ S3 (khi S3_ENABLED=true).
     """
+    if not _is_valid_exam_id(exam_id):
+        return None
     filepath = os.path.join(EXAMS_DIR, f"{exam_id}.json")
     if not os.path.exists(filepath):
         if not _download_single_exam_from_s3(exam_id):

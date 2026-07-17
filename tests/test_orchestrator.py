@@ -18,8 +18,7 @@ from app.agents.orchestrator import Orchestrator
 @pytest.fixture
 def orchestrator():
     """Create an orchestrator with mocked LLM dependencies."""
-    with patch("app.agents.orchestrator.ChatOpenAI"), \
-         patch("app.agents.orchestrator.AsyncOpenAI"), \
+    with patch("app.agents.orchestrator.AsyncOpenAI"), \
          patch("app.agents.orchestrator.TeacherAgent"), \
          patch("app.agents.orchestrator.AssessorAgent"), \
          patch("app.agents.orchestrator.PlannerAgent"), \
@@ -150,6 +149,56 @@ class TestFormatAssessment:
         }
         result = orchestrator._format_assessment(assessment)
         assert "50%" in result
+
+
+# ━━ _find_original_question() ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+class TestFindOriginalQuestion:
+    """Socratic multi-turn: grading must target the problem, not a prior score card."""
+
+    SOCRATIC_MSG = (
+        "Muốn tìm cực trị của f(x)=x^3-3x+1, em hãy tính f'(x) trước nhé."
+    )
+    ASSESSMENT_MSG = (
+        "✅ **Điểm: 100%**\n\n**Nhận xét:** Bài làm đúng.\n"
+        "**Lời giải đúng:**\nf'(x)=3x^2-3, điểm tới hạn x=-1 và x=1."
+    )
+
+    def test_skips_previous_assessment_output(self, orchestrator):
+        history = [
+            {"role": "user", "content": "Hướng dẫn em tìm cực trị của f(x)=x^3-3x+1"},
+            {"role": "assistant", "content": self.SOCRATIC_MSG},
+            {"role": "user", "content": "Em tính được f'(x)=3x^2-3"},
+            {"role": "assistant", "content": self.ASSESSMENT_MSG},
+        ]
+        result = orchestrator._find_original_question(
+            history, "Vậy x=-1 là cực tiểu, x=1 là cực đại?"
+        )
+        assert result == self.SOCRATIC_MSG
+
+    def test_uses_last_assistant_message_when_not_assessment(self, orchestrator):
+        history = [
+            {"role": "assistant", "content": "Đề bài: tính f'(x) của f(x)=x^2"},
+        ]
+        assert (
+            orchestrator._find_original_question(history, "fallback")
+            == "Đề bài: tính f'(x) của f(x)=x^2"
+        )
+
+    def test_falls_back_to_message_when_no_usable_history(self, orchestrator):
+        history = [
+            {"role": "assistant", "content": self.ASSESSMENT_MSG},
+        ]
+        assert orchestrator._find_original_question(history, "câu của em") == "câu của em"
+        assert orchestrator._find_original_question([], "câu của em") == "câu của em"
+
+    def test_incorrect_assessment_output_also_skipped(self, orchestrator):
+        history = [
+            {"role": "assistant", "content": self.SOCRATIC_MSG},
+            {"role": "assistant", "content": "❌ **Điểm: 30%**\n\n**Nhận xét:** Sai."},
+        ]
+        result = orchestrator._find_original_question(history, "fallback")
+        assert result == self.SOCRATIC_MSG
 
 
 # ━━ _extract_and_visualize() ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

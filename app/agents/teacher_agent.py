@@ -11,6 +11,7 @@ Supports Vision (multimodal) in two modes:
 """
 
 from typing import Optional
+import asyncio
 import base64
 import logging
 import re
@@ -501,7 +502,10 @@ class TeacherAgent(AgenticTeacherMixin):
             trace_id=trace_id,
             input_data={"query": question[:300], "skill_id": skill_id},
         )
-        prepared = self._prepare_prompt_context(
+        # Retrieval + rerank là CPU/IO blocking — chạy trong thread riêng
+        # để không chặn event loop của các request khác.
+        prepared = await asyncio.to_thread(
+            self._prepare_prompt_context,
             question,
             skill_id=skill_id,
             skill_ids=skill_ids,
@@ -627,8 +631,10 @@ class TeacherAgent(AgenticTeacherMixin):
         NOTE: Reflection/SymPy verify bị bỏ qua trong stream mode — đây là
         trade-off chấp nhận được vì UX streaming quan trọng hơn với path này.
         """
-        # ── Step 1: GraphRAG (blocking — cần xong trước khi bắt đầu stream) ──
-        prepared = self._prepare_prompt_context(
+        # ── Step 1: GraphRAG (cần xong trước khi bắt đầu stream) ──
+        # Chạy trong thread riêng để không chặn event loop.
+        prepared = await asyncio.to_thread(
+            self._prepare_prompt_context,
             question,
             skill_id=skill_id,
             skill_ids=skill_ids,
@@ -699,7 +705,8 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── GraphRAG: search bằng ocr_text (LaTeX) ─────────────────────
         search_query = ocr_text if ocr_text else (user_text or "bài toán")
-        prepared = self._prepare_prompt_context(
+        prepared = await asyncio.to_thread(
+            self._prepare_prompt_context,
             search_query,
             skill_id=skill_id,
             skill_ids=skill_ids,

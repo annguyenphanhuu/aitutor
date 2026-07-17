@@ -2006,7 +2006,15 @@ function formatText(text) {
             .replace(/&lt;/g, '<')
             .replace(/&gt;/g, '>');
     });
-    return thinkingHTML + s;
+
+    const finalHtml = thinkingHTML + s;
+    // Sanitize: nội dung LLM/OCR có thể chứa HTML thô — chặn XSS trước khi
+    // gán vào innerHTML. Fallback khi CDN DOMPurify không tải được: giữ nguyên
+    // (hành vi cũ) vì chat vẫn phải hiển thị được.
+    if (typeof DOMPurify !== 'undefined') {
+        return DOMPurify.sanitize(finalHtml);
+    }
+    return finalHtml;
 }
 
 function renderKatex(element) {
@@ -2196,11 +2204,11 @@ async function processExamFile(file) {
     formData.append('ocr_engine', examSolverState.selectedEngine);
 
     try {
+        const ocrHeaders = {};
+        if (currentUserId) ocrHeaders['X-User-Id'] = currentUserId;
         const response = await fetch(`${API}/exam-solver/ocr`, {
             method: 'POST',
-            headers: {
-                'X-User-Id': localStorage.getItem('userId') || '1',
-            },
+            headers: ocrHeaders,
             body: formData,
         });
 
@@ -2245,11 +2253,11 @@ async function confirmAndSolveExam() {
     formData.append('raw_ocr_text', editedText);
 
     try {
+        const solveHeaders = {};
+        if (currentUserId) solveHeaders['X-User-Id'] = currentUserId;
         const response = await fetch(`${API}/exam-solver/solve`, {
             method: 'POST',
-            headers: {
-                'X-User-Id': localStorage.getItem('userId') || '1',
-            },
+            headers: solveHeaders,
             body: formData,
         });
 

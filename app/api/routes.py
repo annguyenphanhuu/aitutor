@@ -99,16 +99,17 @@ async def _load_chat_history(
     db: AsyncSession,
     session_id: int,
 ) -> list[dict]:
-    """Load the bounded conversation history in chronological order."""
+    """Load the newest MAX_HISTORY_LOAD messages in chronological order."""
     result = await db.execute(
         select(ChatMessage)
         .where(ChatMessage.session_id == session_id)
-        .order_by(ChatMessage.timestamp.asc())
+        .order_by(ChatMessage.timestamp.desc(), ChatMessage.id.desc())
         .limit(MAX_HISTORY_LOAD)
     )
+    newest_first = list(result.scalars().all())
     return [
         {"role": message.role, "content": message.content}
-        for message in result.scalars().all()
+        for message in reversed(newest_first)
     ]
 
 
@@ -556,9 +557,13 @@ async def submit_answer(
 
 
 @router.get("/quiz/result/{session_id}")
-async def quiz_result(session_id: int, db: AsyncSession = Depends(get_db)):
-    """Get the results of a completed quiz session."""
-    result = await get_quiz_result(db, session_id)
+async def quiz_result(
+    session_id: int,
+    db: AsyncSession = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
+):
+    """Get the results of a completed quiz session (owner only)."""
+    result = await get_quiz_result(db, session_id, user_id)
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
     return result
@@ -613,9 +618,15 @@ async def review_due(
 
 
 @router.post("/review/submit")
-async def review_submit(data: ReviewSubmitRequest, db: AsyncSession = Depends(get_db)):
-    """Submit a review result for a spaced repetition card."""
-    result = await review_card(db, data.card_id, data.question_id, data.selected_index)
+async def review_submit(
+    data: ReviewSubmitRequest,
+    db: AsyncSession = Depends(get_db),
+    user_id: int = Depends(get_current_user_id),
+):
+    """Submit a review result for a spaced repetition card (owner only)."""
+    result = await review_card(
+        db, data.card_id, data.question_id, data.selected_index, user_id=user_id,
+    )
     if "error" in result:
         raise HTTPException(status_code=400, detail=result["error"])
     return result
@@ -790,13 +801,20 @@ async def list_sessions(
     )
     sessions = result.scalars().all()
 
+    # Đếm message của tất cả session trong MỘT query (tránh N+1)
+    session_ids = [s.id for s in sessions]
+    counts: dict[int, int] = {}
+    if session_ids:
+        count_result = await db.execute(
+            select(ChatMessage.session_id, func.count(ChatMessage.id))
+            .where(ChatMessage.session_id.in_(session_ids))
+            .group_by(ChatMessage.session_id)
+        )
+        counts = {row[0]: row[1] for row in count_result.all()}
+
     out = []
     for s in sessions:
-        count_result = await db.execute(
-            select(func.count(ChatMessage.id))
-            .where(ChatMessage.session_id == s.id)
-        )
-        msg_count = count_result.scalar() or 0
+        msg_count = counts.get(s.id, 0)
         out.append({
             "id": s.id,
             "title": s.title,
@@ -973,23 +991,36 @@ async def ragas_report():
         raise HTTPException(status_code=500, detail=f"Lỗi đọc report: {e}")
 
 
+# Giữ reference các background task để chúng không bị garbage-collect giữa chừng
+_background_tasks: set = set()
+
+
 @router.post("/evaluation/build-dataset")
-async def build_eval_dataset(limit: int = 20):
+async def build_eval_dataset(
+    limit: int = 20,
+    user_id: int = Depends(get_current_user_id),
+):
     """
     Trigger xây dựng RAGAS dataset từ exam JSON (background task).
     Trả về ngay lập tức, dataset được lưu vào data/ragas_dataset.json.
     """
-    import asyncio
     from app.evaluation.dataset_builder import (
         load_exam_questions,
     )
+
+    # Rate limit — endpoint này phát sinh nhiều call LLM
+    allowed, reason = get_rate_limiter().is_allowed(user_id)
+    if not allowed:
+        raise HTTPException(status_code=429, detail=reason)
 
     questions = load_exam_questions(exam_dir="data/exams", limit=limit)
     if not questions:
         raise HTTPException(status_code=400, detail="Không tìm thấy câu hỏi exam")
 
-    # Chạy trong background
-    asyncio.create_task(_build_dataset_task(questions))
+    # Chạy trong background (giữ reference để task không bị GC)
+    task = asyncio.create_task(_build_dataset_task(questions))
+    _background_tasks.add(task)
+    task.add_done_callback(_background_tasks.discard)
 
     return {
         "status": "building",
@@ -1052,6 +1083,11 @@ async def solve_exam(
       data: {"type": "done", "result": {...}}
       data: {"type": "error", "message": "..."}
     """
+    # ── Rate limiting (mỗi lần giải đề tốn nhiều lượt gọi LLM) ─────────
+    allowed, reason = get_rate_limiter().is_allowed(user_id)
+    if not allowed:
+        raise HTTPException(status_code=429, detail=reason)
+
     # Validate file type
     mime = file.content_type or ""
     if mime.startswith("image/"):
@@ -1075,16 +1111,17 @@ async def solve_exam(
         """SSE event generator — streams progress updates per question."""
         from app.exam_solver.solver import ExamSolver, ExamSolverResult
 
+        solve_task: Optional[asyncio.Task] = None
         try:
             yield f"data: {json.dumps({'type': 'ocr', 'message': f'Đang OCR đề thi (engine: {ocr_engine})...'})}\n\n"
 
             solver = ExamSolver(ocr_engine=ocr_engine)
 
-            # Progress tracking via list (mutable in closure)
-            progress_events: list[str] = []
+            # Progress events flow through a queue so they stream in realtime
+            progress_queue: asyncio.Queue[str] = asyncio.Queue()
 
             def on_progress(current: int, total: int, question_num: str):
-                progress_events.append(
+                progress_queue.put_nowait(
                     json.dumps({
                         "type": "progress",
                         "current": current,
@@ -1093,7 +1130,7 @@ async def solve_exam(
                     })
                 )
 
-            result: ExamSolverResult = await solver.solve(
+            solve_task = asyncio.create_task(solver.solve(
                 file_bytes=file_bytes,
                 file_type=file_type,
                 mime_type=mime,
@@ -1101,11 +1138,17 @@ async def solve_exam(
                 db=db,
                 on_progress=on_progress,
                 raw_ocr_text=raw_ocr_text,
-            )
+            ))
 
-            # Emit progress events that accumulated during solving
-            for evt in progress_events:
+            # Yield progress events as they arrive while solving runs
+            while not solve_task.done() or not progress_queue.empty():
+                try:
+                    evt = await asyncio.wait_for(progress_queue.get(), timeout=0.5)
+                except asyncio.TimeoutError:
+                    continue
                 yield f"data: {evt}\n\n"
+
+            result: ExamSolverResult = await solve_task
 
             # Emit final result
             result_dict = {
@@ -1137,6 +1180,10 @@ async def solve_exam(
             import traceback
             logger.error("Exam Solver error: %s\n%s", e, traceback.format_exc())
             yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+        finally:
+            # Client disconnect cancels this generator — stop the solve task too
+            if solve_task is not None and not solve_task.done():
+                solve_task.cancel()
 
     return StreamingResponse(
         event_generator(),
@@ -1156,6 +1203,10 @@ async def extract_ocr_only(
     user_id: int = Depends(get_current_user_id),
 ):
     """Only perform OCR on the exam file."""
+    allowed, reason = get_rate_limiter().is_allowed(user_id)
+    if not allowed:
+        raise HTTPException(status_code=429, detail=reason)
+
     mime = file.content_type or ""
     if mime.startswith("image/"):
         file_type = "image"

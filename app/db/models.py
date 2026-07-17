@@ -76,7 +76,7 @@ class ChatMessage(Base):
     __tablename__ = "chat_messages"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    session_id = Column(Integer, nullable=False)     # FK to conversation_sessions.id
+    session_id = Column(Integer, nullable=False, index=True)  # FK to conversation_sessions.id
     role = Column(String(20), nullable=False)         # "user" | "assistant"
     content = Column(Text, nullable=False)
     skill_id = Column(String(50), nullable=True)

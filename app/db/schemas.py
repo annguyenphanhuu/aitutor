@@ -75,8 +75,8 @@ class QuizGenerateRequest(BaseModel):
     skill_ids: Optional[list[str]] = None
     chapter: Optional[str] = None
     formula_ids: list[str] = Field(default_factory=list)
-    difficulty: int = 1         # 1-easy, 2-medium, 3-hard
-    count: int = 5              # number of questions
+    difficulty: int = Field(default=1, ge=0, le=3)   # 0-adaptive, 1-easy, 2-medium, 3-hard
+    count: int = Field(default=5, ge=1, le=20)       # number of questions
     exam_format: bool = False   # 3 MCQ + 1 True/False + 1 short answer
 
 

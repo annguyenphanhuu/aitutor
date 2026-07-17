@@ -2,7 +2,6 @@
 
 from typing import Optional
 from dataclasses import dataclass
-from langchain_openai import ChatOpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 from openai import AsyncOpenAI
 
@@ -19,7 +18,6 @@ from app.knowledge_tracing.service import (
 )
 from app.knowledge_tracing.bkt import BKTModel
 from app.knowledge_tracing.skill_graph import SKILLS
-from app.utils.llm import compatible_temperature
 import json
 
 settings = get_settings()
@@ -75,13 +73,6 @@ class Orchestrator:
         self.bkt = BKTModel()
         # OpenAI Responses API client (hỗ trợ reasoning parameter cho gpt-5.4)
         self.openai_client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
-        # Classifier: MINI — JSON intent classification, no deep reasoning needed
-        temp = compatible_temperature(settings.LLM_MODEL_MINI, 0.0)
-        self.classifier_llm = ChatOpenAI(
-            model=settings.LLM_MODEL_MINI,
-            api_key=settings.OPENAI_API_KEY,
-            temperature=temp,
-        )
 
     async def classify_intent(self, message: str, trace_id: Optional[str] = None) -> dict:
         """Classify student message intent and related skill."""
@@ -107,15 +98,14 @@ class Orchestrator:
         # ── Langfuse generation span ───────────────────────────────────────
         gen = new_generation(
             name="orchestrator.classify_intent",
-            model=settings.LLM_MODEL,
+            model=settings.LLM_MODEL_MINI,
             input_text=message[:300],
             trace_id=trace_id,
         )
 
-        # Dùng OpenAI Responses API với reasoning=high cho gpt-5.4
+        # MINI tier: phân loại intent là task đơn giản, không cần reasoning sâu
         response = await self.openai_client.responses.create(
-            model=settings.LLM_MODEL,
-            reasoning={"effort": "high"},
+            model=settings.LLM_MODEL_MINI,
             input=[
                 {
                     "role": "user",
@@ -366,18 +356,14 @@ class Orchestrator:
             }
 
         elif intent == "assess" and classification.get("is_answer_submission"):
-            # Try to find the original question from chat history
-            original_question = message
-            for h in reversed(chat_history):
-                if h.get("role") == "assistant":
-                    original_question = h["content"]
-                    break
+            original_question = self._find_original_question(chat_history, message)
 
             assessment = await self.assessor.assess(
                 question=original_question,
                 student_answer=message,
                 skill_ids=skill_ids,
                 formula_ids=formula_ids,
+                chat_history=chat_history,
             )
 
             # Update mastery based on correctness
@@ -621,6 +607,29 @@ class Orchestrator:
 
         yield _json.dumps({"type": "done", "full_response": full_response}, ensure_ascii=False)
 
+    @staticmethod
+    def _is_assessment_output(content: str) -> bool:
+        """Detect a previous grading message produced by _format_assessment."""
+        head = content.lstrip()[:40]
+        return head.startswith(("✅", "❌")) and "Điểm:" in head
+
+    @classmethod
+    def _find_original_question(cls, chat_history: list[dict], fallback: str) -> str:
+        """Recover the original problem statement for grading.
+
+        Previous grading outputs must be skipped: after one assessment turn,
+        the most recent assistant message is a score card, not the problem —
+        grading against it produced wrong verdicts in multi-turn Socratic flows.
+        """
+        for h in reversed(chat_history):
+            if h.get("role") != "assistant":
+                continue
+            content = h.get("content") or ""
+            if cls._is_assessment_output(content):
+                continue
+            return content
+        return fallback
+
     def _format_plan(self, plan: dict) -> str:
         """Format study plan into readable text."""
         lines = [f"📋 **{plan.get('summary', 'Kế hoạch học tập')}**\n"]
@@ -726,7 +735,7 @@ Examples of valid replies:
 
         try:
             response = await self.openai_client.responses.create(
-                model="gpt-5.4-nano-2026-03-17",  # NANO: simple extraction task
+                model=settings.LLM_MODEL_NANO,  # NANO: simple extraction task
                 input=[
                     {"role": "system", "content": self.EXPR_EXTRACTOR_PROMPT},
                     {"role": "user",   "content": user_content},
