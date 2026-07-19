@@ -1,0 +1,239 @@
+"""Tests routing + parity cho LangGraph engine (app/graph/*).
+
+Pattern mock giống test_orchestrator.py: patch các class agent tại
+``app.graph.nodes.*`` TRƯỚC khi khởi tạo TutorNodes/GraphTutorEngine.
+"""
+
+from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+
+from app.agents.contracts import (
+    GradingExtraction,
+    IntentClassification,
+    PedagogyAssessment,
+    SkillVerdict,
+)
+from app.graph.nodes import find_original_question, route_gradable, route_intent
+from app.graph.state import SessionSnapshot
+
+
+# ── Pure routing functions ──────────────────────────────────────────────
+
+
+class TestRouteIntent:
+    def _state(self, intent, is_submission=False):
+        return {
+            "intent": intent,
+            "classification": IntentClassification(
+                intent=intent, is_answer_submission=is_submission
+            ),
+        }
+
+    def test_assess_with_submission_goes_to_grading(self):
+        assert route_intent(self._state("assess", True)) == "grade_extract"
+
+    def test_assess_without_submission_goes_to_teach(self):
+        # Bug gốc lớp 1: "thầy em bảo X đúng không" không được vào grading
+        assert route_intent(self._state("assess", False)) == "teach"
+
+    def test_explain_goes_to_teach(self):
+        assert route_intent(self._state("explain")) == "teach"
+
+    def test_answer_goes_to_teach(self):
+        assert route_intent(self._state("answer")) == "teach"
+
+    @pytest.mark.parametrize(
+        "intent", ["off_topic", "plan", "quiz", "review", "diagnostic", "visualize"]
+    )
+    def test_static_intents_route_to_own_node(self, intent):
+        assert route_intent(self._state(intent)) == intent
+
+    def test_missing_intent_defaults_to_teach(self):
+        assert route_intent({}) == "teach"
+
+
+class TestRouteGradable:
+    def test_gradable_goes_to_verify(self):
+        state = {"extraction": GradingExtraction(gradable=True)}
+        assert route_gradable(state) == "grade_verify"
+
+    def test_abstain_goes_to_teach(self):
+        # Bug gốc lớp 2: extractor abstain → giải thích thay vì chấm
+        state = {
+            "extraction": GradingExtraction(
+                gradable=False, abstain_reason="third_party_claim"
+            )
+        }
+        assert route_gradable(state) == "teach"
+
+    def test_missing_extraction_goes_to_teach(self):
+        assert route_gradable({}) == "teach"
+
+
+class TestFindOriginalQuestion:
+    def test_skips_assessment_outputs(self):
+        history = [
+            {"role": "assistant", "content": "Giải phương trình x² = 4"},
+            {"role": "user", "content": "x = 2"},
+            {"role": "assistant", "content": "✅ **Điểm: 100%**\n..."},
+        ]
+        assert find_original_question(history, "fallback") == "Giải phương trình x² = 4"
+
+    def test_fallback_when_no_history(self):
+        assert find_original_question([], "fallback") == "fallback"
+
+
+# ── Graph end-to-end với agent đã mock ──────────────────────────────────
+
+
+@pytest.fixture
+def engine():
+    """GraphTutorEngine với mọi agent/LLM được mock (không gọi mạng)."""
+    with patch("app.graph.nodes.TeacherAgent") as MockTeacher, \
+         patch("app.graph.nodes.PlannerAgent") as MockPlanner, \
+         patch("app.graph.nodes.VisualizerAgent") as MockVisualizer, \
+         patch("app.graph.nodes.GradingExtractor") as MockExtractor, \
+         patch("app.graph.nodes.AsyncOpenAI"), \
+         patch("app.graph.nodes.ChatOpenAI") as MockChat:
+        MockTeacher.return_value.respond = AsyncMock(return_value="Giải thích của thầy")
+        MockPlanner.return_value.create_plan = AsyncMock(return_value={
+            "summary": "Kế hoạch", "priorities": [], "encouragement": ""
+        })
+        MockVisualizer.return_value.generate_function_plot = MagicMock(
+            return_value={"vis_type": "plot", "data": {}}
+        )
+        MockExtractor.return_value.extract = AsyncMock(
+            return_value=GradingExtraction(gradable=False, abstain_reason="other")
+        )
+        MockChat.return_value.with_structured_output.return_value.ainvoke = AsyncMock(
+            return_value={"raw": None, "parsed": IntentClassification(), "parsing_error": None}
+        )
+
+        from app.graph.service import GraphTutorEngine
+        yield GraphTutorEngine()
+
+
+def _stub_classifier(engine, classification: IntentClassification):
+    engine.nodes.classifier_llm = MagicMock()
+    engine.nodes.classifier_llm.ainvoke = AsyncMock(
+        return_value={"raw": None, "parsed": classification, "parsing_error": None}
+    )
+
+
+def _stub_feedback(engine, assessment: PedagogyAssessment):
+    engine.nodes.feedback_llm = MagicMock()
+    engine.nodes.feedback_llm.ainvoke = AsyncMock(
+        return_value={"raw": None, "parsed": assessment, "parsing_error": None}
+    )
+
+
+class TestGraphParity:
+    """So khớp key + giá trị result dict với contract của Orchestrator cũ."""
+
+    async def test_off_topic_result_keys(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(intent="off_topic"))
+        result = await engine.handle_message(db=db_session, message="hôm nay trời đẹp quá")
+        assert set(result.keys()) == {
+            "response", "skill_id", "skill_name", "mastery_level", "mode_used"
+        }
+        assert result["mode_used"] == "off_topic"
+        assert result["skill_id"] is None
+
+    async def test_explain_result_keys(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(
+            intent="explain", skill_id="derivative_basic",
+            skill_ids=["derivative_basic"],
+        ))
+        result = await engine.handle_message(db=db_session, message="đạo hàm là gì?")
+        assert set(result.keys()) == {
+            "response", "skill_id", "skill_ids", "formula_ids",
+            "skill_name", "mastery_level", "mode_used", "visualization",
+        }
+        assert result["response"] == "Giải thích của thầy"
+        assert result["mode_used"] in ("socratic", "exam")
+
+    async def test_answer_result_has_no_visualization_key(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(
+            intent="answer", skill_id="derivative_basic",
+            skill_ids=["derivative_basic"],
+        ))
+        result = await engine.handle_message(db=db_session, message="đáp án là gì?")
+        assert "visualization" not in result
+        assert result["mode_used"] == "answer"
+
+    async def test_quiz_result(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(intent="quiz"))
+        result = await engine.handle_message(db=db_session, message="cho em làm quiz")
+        assert result["skill_id"] == "derivative_basic"
+        assert result["mode_used"] == "quiz"
+        assert "Bài kiểm tra" in result["response"]
+
+    async def test_plan_review_diagnostic(self, engine, db_session):
+        for intent, marker in [
+            ("plan", "📋"), ("review", "Ôn tập chống quên lãng"), ("diagnostic", "Chẩn Đoán"),
+        ]:
+            _stub_classifier(engine, IntentClassification(intent=intent))
+            result = await engine.handle_message(db=db_session, message="...")
+            assert marker in result["response"]
+            assert result["mode_used"] == intent
+
+    async def test_mode_auto_resolves_socratic_for_low_mastery(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(
+            intent="explain", skill_id="derivative_basic",
+            skill_ids=["derivative_basic"],
+        ))
+        result = await engine.handle_message(
+            db=db_session, message="giúp em bài này", mode="auto"
+        )
+        assert result["mode_used"] == "socratic"
+
+    async def test_explicit_mode_respected(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(intent="explain"))
+        result = await engine.handle_message(
+            db=db_session, message="giúp em", mode="exam"
+        )
+        assert result["mode_used"] == "exam"
+
+
+class TestGraphGradingFlow:
+    async def test_abstain_routes_to_teach(self, engine, db_session):
+        """assess + is_answer_submission=true nhưng extractor abstain → teach."""
+        _stub_classifier(engine, IntentClassification(
+            intent="assess", is_answer_submission=True,
+            skill_id="integral_definite", skill_ids=["integral_definite"],
+        ))
+        # extractor fixture mặc định trả gradable=False
+        result = await engine.handle_message(
+            db=db_session, message="Thầy em bảo ∫x²dx = x³/2 + C, đúng chứ?"
+        )
+        assert result["mode_used"] != "assess"
+        assert "Điểm:" not in result["response"]
+        assert result["response"] == "Giải thích của thầy"
+
+    async def test_gradable_flow_produces_score_card(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(
+            intent="assess", is_answer_submission=True,
+            skill_id="integral_definite", skill_ids=["integral_definite"],
+        ))
+        engine.nodes.extractor.extract = AsyncMock(return_value=GradingExtraction(
+            gradable=True, task_kind="antiderivative",
+            problem_statement="Tính ∫x²dx",
+            problem_expr="x**2", candidate_expr="x**3/3",
+            confidence=0.95,
+        ))
+        _stub_feedback(engine, PedagogyAssessment(
+            is_correct=True, score=1.0, confidence=0.9, error_type="none",
+            skills_assessed={"integral_definite": SkillVerdict(passed=True, feedback="Tốt")},
+            feedback="Chính xác!", correct_solution="∫x²dx = x³/3 + C",
+        ))
+        result = await engine.handle_message(
+            db=db_session, message="Em tính được ∫x²dx = x³/3 + C, đúng không ạ?"
+        )
+        assert result["mode_used"] == "assess"
+        assert set(result.keys()) == {
+            "response", "skill_id", "skill_ids", "formula_ids",
+            "skill_name", "mastery_level", "mode_used",
+        }
+        assert "✅" in result["response"]
+        assert "100%" in result["response"]

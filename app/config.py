@@ -43,6 +43,13 @@ class Settings(BaseSettings):
     USE_FUNCTION_CALLING: bool = False   # Bật qua .env sau khi A/B test
     FUNCTION_CALLING_MAX_ROUNDS: int = 5  # Giới hạn vòng lặp tool-call
 
+    # ── LangGraph Orchestration ───────────────────────────────────────────
+    # Engine LangGraph (app/graph/*) thay Orchestrator if/elif.
+    # Rollback tức thì: đặt USE_LANGGRAPH=false trong .env
+    USE_LANGGRAPH: bool = True
+    # Ngưỡng confidence tối thiểu để verdict LLM-only được ghi vào BKT
+    GRADING_CONFIDENCE_THRESHOLD: float = 0.75
+
     # ── Guardrails / Safety ───────────────────────────────────────────────
     GUARDRAILS_ENABLED: bool = True
     RATE_LIMIT_PER_MINUTE: int = 30

@@ -6,9 +6,10 @@ THPT QG scoring:
 - Short answer (Phần 3): scored per question (typically 0.5đ)
 """
 
-from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+
+from app.utils.time_utils import utcnow
 
 from app.db.models import QuizQuestion, QuizSession, QuestionBank
 from app.quiz.generator import generate_questions
@@ -283,7 +284,7 @@ async def submit_quiz_answer(
     answered_count = sum(1 for q in questions if q["answered"])
     if answered_count >= session.total_questions:
         session.is_completed = True
-        session.completed_at = datetime.utcnow()
+        session.completed_at = utcnow()
 
     # Update mastery via BKT
     new_mastery = None

@@ -75,12 +75,14 @@ def log_call(
     _session.call_count += 1
 
     extra_str = f" | {extra}" if extra else ""
-    log_msg = (
-        f"💸 [{agent}] {model}  "
-        f"in={input_tokens} out={output_tokens} → ${cost:.5f}{extra_str}  "
-        f"(session: {_session.call_count} calls, ${_session.total_cost_usd:.4f})"
+    # Dùng logging thay print: trên console Windows codepage hẹp (vd cp1258),
+    # print emoji raise UnicodeEncodeError và làm crash request đang xử lý;
+    # logging nuốt lỗi emit nội bộ nên không bao giờ phá request.
+    logger.info(
+        "💸 [%s] %s  in=%d out=%d → $%.5f%s  (session: %d calls, $%.4f)",
+        agent, model, input_tokens, output_tokens, cost, extra_str,
+        _session.call_count, _session.total_cost_usd,
     )
-    print(log_msg)
     return cost
 
 

@@ -50,8 +50,9 @@ async def lifespan(app: FastAPI):
     lf = get_langfuse()
     if lf:
         lf.flush()
-    print(f"\n[BYE] {session_summary()}")
-    print("[BYE] Shutting down")
+    # logging thay print: summary chứa emoji, print crash trên console cp1258
+    logging.getLogger(__name__).info("[BYE] %s", session_summary())
+    logging.getLogger(__name__).info("[BYE] Shutting down")
 
 
 app = FastAPI(

@@ -4,15 +4,16 @@ services:
     container_name: aitutor-postgres
     restart: always
     environment:
-      POSTGRES_USER: aitutor
-      POSTGRES_PASSWORD: aitutorpassword
-      POSTGRES_DB: aitutordb
+      # Đặt POSTGRES_* trong .env để đổi credentials; default chỉ dành cho local dev
+      POSTGRES_USER: ${POSTGRES_USER:-aitutor}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aitutorpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-aitutordb}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U aitutor -d aitutordb"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aitutor} -d ${POSTGRES_DB:-aitutordb}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -30,7 +31,7 @@ services:
       - .env
     environment:
       # Cấu hình trỏ database về container db thay vì localhost
-      - DATABASE_URL=postgresql+asyncpg://aitutor:aitutorpassword@db:5432/aitutordb
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-aitutor}:${POSTGRES_PASSWORD:-aitutorpassword}@db:5432/${POSTGRES_DB:-aitutordb}
     volumes:
       - ./data:/app/data       # Ánh xạ thư mục data để lưu vector database và file upload
       - ./static:/app/static   # Ánh xạ thư mục static cho giao diện Dashboard

@@ -1,8 +1,8 @@
 """SQLAlchemy ORM models."""
 
-from datetime import datetime
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, Text, JSON, UniqueConstraint
 from app.db.database import Base
+from app.utils.time_utils import utcnow
 
 
 # ── User ─────────────────────────────────────────────
@@ -12,8 +12,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(100), nullable=False, unique=True)
     display_name = Column(String(200), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    last_login = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
+    last_login = Column(DateTime, default=utcnow)
 
 
 class SkillMastery(Base):
@@ -26,7 +26,7 @@ class SkillMastery(Base):
     p_mastery = Column(Float, default=0.1)  # BKT mastery probability
     total_attempts = Column(Integer, default=0)
     correct_attempts = Column(Integer, default=0)
-    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_updated = Column(DateTime, default=utcnow, onupdate=utcnow)
 
     __table_args__ = (
         UniqueConstraint("user_id", "skill_id", name="uq_user_skill"),
@@ -47,7 +47,7 @@ class InteractionLog(Base):
     is_correct = Column(Boolean, nullable=True)
     error_type = Column(String(50), nullable=True)  # calculation, conceptual, procedural
     response_mode = Column(String(20), default="socratic")  # socratic, exam
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=utcnow)
 
 
 class StudyPlan(Base):
@@ -57,7 +57,7 @@ class StudyPlan(Base):
     user_id = Column(Integer, nullable=False, default=1)
     recommendations = Column(JSON, nullable=False)  # list of skill recommendations
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
 
 
 # ── Conversation Memory ─────────────────────────────
@@ -68,8 +68,8 @@ class ConversationSession(Base):
     user_id = Column(Integer, nullable=False, default=1)
     title = Column(String(200), nullable=True)       # auto-generated from first message
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    last_active = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
+    last_active = Column(DateTime, default=utcnow, onupdate=utcnow)
 
 
 class ChatMessage(Base):
@@ -83,7 +83,7 @@ class ChatMessage(Base):
     skill_ids = Column(JSON, nullable=True)
     formula_ids = Column(JSON, nullable=True)
     mode_used = Column(String(20), nullable=True)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=utcnow)
 
 
 class ChatVisualization(Base):
@@ -99,7 +99,26 @@ class ChatVisualization(Base):
     session_id = Column(Integer, nullable=False, index=True)
     message_id = Column(Integer, nullable=False, unique=True, index=True)
     payload = Column(JSON, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
+
+
+class SessionState(Base):
+    """Trạng thái hội thoại tường minh cho routing (LangGraph engine).
+
+    Lưu đề bài đang giải / cờ chờ-trả-lời thay cho việc tái dựng state
+    bằng cách quét text các lượt chat cũ. Bảng riêng (không thêm cột vào
+    conversation_sessions) để ``create_all()`` áp dụng được cho deployment
+    hiện có mà không cần ALTER TABLE — cùng lý do với ChatVisualization.
+    """
+
+    __tablename__ = "session_states"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    session_id = Column(Integer, nullable=False, unique=True, index=True)  # FK to conversation_sessions.id
+    current_problem = Column(Text, nullable=True)
+    awaiting_answer = Column(Boolean, default=False)
+    last_skill_ids = Column(JSON, nullable=True)
+    updated_at = Column(DateTime, default=utcnow, onupdate=utcnow)
 
 
 # ── Quiz & Diagnostic ───────────────────────────────
@@ -124,7 +143,7 @@ class QuizQuestion(Base):
     points = Column(Float, default=0.25)               # max points for this question
     explanation = Column(Text, nullable=True)           # Step-by-step solution
     sympy_expr = Column(Text, nullable=True)            # Original SymPy expression
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
 
 
 class QuestionBank(Base):
@@ -144,7 +163,7 @@ class QuestionBank(Base):
     explanation = Column(Text, nullable=True)
     source = Column(String(200), nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
 
 
 class QuizSession(Base):
@@ -162,7 +181,7 @@ class QuizSession(Base):
     max_score = Column(Float, default=10.0)                # max possible score
     current_index = Column(Integer, default=0)
     is_completed = Column(Boolean, default=False)
-    started_at = Column(DateTime, default=datetime.utcnow)
+    started_at = Column(DateTime, default=utcnow)
     completed_at = Column(DateTime, nullable=True)
 
 
@@ -176,10 +195,28 @@ class SpacedRepetitionCard(Base):
     easiness_factor = Column(Float, default=2.5)       # SM-2 EF (≥ 1.3)
     interval = Column(Integer, default=0)               # days until next review
     repetitions = Column(Integer, default=0)            # consecutive correct reviews
-    next_review = Column(DateTime, default=datetime.utcnow)
+    next_review = Column(DateTime, default=utcnow)
     last_reviewed = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utcnow)
 
     __table_args__ = (
         UniqueConstraint("user_id", "skill_id", name="uq_user_sr_skill"),
     )
+
+
+class SpacedRepetitionPendingQuestion(Base):
+    """Câu hỏi ôn tập đang chờ trả lời của một SR card.
+
+    Cho phép ``GET /review/due`` tái sử dụng câu hỏi đã sinh thay vì
+    INSERT một QuizQuestion mới mỗi lần gọi. Bảng riêng (không thêm cột
+    vào spaced_repetition_cards) để ``create_all()`` áp dụng được cho
+    deployment hiện có mà không cần ALTER TABLE — cùng lý do với
+    ChatVisualization.
+    """
+
+    __tablename__ = "sr_pending_questions"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    card_id = Column(Integer, nullable=False, unique=True, index=True)  # FK to spaced_repetition_cards.id
+    question_id = Column(Integer, nullable=False)  # FK to quiz_questions.id
+    created_at = Column(DateTime, default=utcnow)

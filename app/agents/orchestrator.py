@@ -195,6 +195,7 @@ class Orchestrator:
         user_id: int = 1,
         langfuse_trace=None,     # Optional Langfuse trace từ routes.py
         _routing_context: Optional[RoutingContext] = None,
+        **_,                     # session_id... — chỉ engine LangGraph dùng
     ) -> dict:
         """
         Main entry point: classify intent and route to the right agent.
@@ -507,6 +508,7 @@ class Orchestrator:
         mode: str = "auto",
         chat_history: Optional[list[dict]] = None,
         user_id: int = 1,
+        **_,                     # session_id... — chỉ engine LangGraph dùng
     ):
         """Streaming variant của handle_message dùng cho SSE endpoint.
 

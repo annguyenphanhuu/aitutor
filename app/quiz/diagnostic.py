@@ -1,6 +1,6 @@
 """Diagnostic test service for entry-level adaptive assessment."""
 
-from datetime import datetime
+from app.utils.time_utils import utcnow
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -171,7 +171,7 @@ async def answer_diagnostic(
 
     if is_completed:
         session.is_completed = True
-        session.completed_at = datetime.utcnow()
+        session.completed_at = utcnow()
 
     answered_count = sum(1 for item in questions if item["answered"])
     await db.flush()

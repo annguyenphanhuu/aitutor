@@ -6,8 +6,9 @@ User ID is passed via X-User-Id header from frontend (stored in localStorage).
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from datetime import datetime
 from fastapi import Header, HTTPException, Depends
+
+from app.utils.time_utils import utcnow
 
 from app.db.models import User
 from app.db.database import get_db
@@ -26,7 +27,7 @@ async def login_or_register(db: AsyncSession, username: str) -> dict:
 
     if user:
         # Existing user — update last login
-        user.last_login = datetime.utcnow()
+        user.last_login = utcnow()
         await db.flush()
         return {
             "user_id": user.id,

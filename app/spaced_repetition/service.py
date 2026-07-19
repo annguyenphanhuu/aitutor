@@ -1,10 +1,15 @@
 """Spaced Repetition Service — manages review cards and due scheduling."""
 
-from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
-from app.db.models import SpacedRepetitionCard, QuizQuestion
+from app.utils.time_utils import utcnow
+
+from app.db.models import (
+    SpacedRepetitionCard,
+    SpacedRepetitionPendingQuestion,
+    QuizQuestion,
+)
 from app.spaced_repetition.engine import sm2_update
 from app.quiz.generator import generate_questions
 from app.knowledge_tracing.skill_graph import SKILLS
@@ -27,7 +32,7 @@ async def get_or_create_card(db: AsyncSession, skill_id: str, user_id: int = 1) 
             easiness_factor=2.5,
             interval=0,
             repetitions=0,
-            next_review=datetime.utcnow(),
+            next_review=utcnow(),
         )
         db.add(card)
         await db.flush()
@@ -37,7 +42,7 @@ async def get_or_create_card(db: AsyncSession, skill_id: str, user_id: int = 1) 
 
 async def get_due_cards(db: AsyncSession, user_id: int = 1) -> list[dict]:
     """Get all cards that are due for review (next_review ≤ now)."""
-    now = datetime.utcnow()
+    now = utcnow()
     result = await db.execute(
         select(SpacedRepetitionCard).where(
             SpacedRepetitionCard.user_id == user_id,
@@ -51,27 +56,49 @@ async def get_due_cards(db: AsyncSession, user_id: int = 1) -> list[dict]:
         skill_info = SKILLS.get(card.skill_id, {})
         days_overdue = (now - card.next_review).days
 
-        # Generate a fresh review question for this skill
-        qs = generate_questions(card.skill_id, difficulty=1, count=1)
-        if not qs:
-            continue
-
-        q = qs[0]
-        q_skill_ids = q.get("skill_ids") or [q["skill_id"]]
-        # Save question to DB
-        dbq = QuizQuestion(
-            skill_id=q["skill_id"],
-            skill_ids=q_skill_ids,
-            formula_ids=q.get("formula_ids", []),
-            difficulty=q["difficulty"],
-            question_latex=q["question_latex"],
-            choices=q["choices"],
-            correct_index=q["correct_index"],
-            explanation=q.get("explanation", ""),
-            sympy_expr=q.get("sympy_expr", ""),
+        # Tái sử dụng câu hỏi pending của card (nếu có) — tránh INSERT
+        # một câu hỏi mới vào DB mỗi lần GET /review/due được gọi.
+        dbq = None
+        pending_result = await db.execute(
+            select(SpacedRepetitionPendingQuestion).where(
+                SpacedRepetitionPendingQuestion.card_id == card.id
+            )
         )
-        db.add(dbq)
-        await db.flush()
+        pending = pending_result.scalar_one_or_none()
+        if pending:
+            dbq = await db.get(QuizQuestion, pending.question_id)
+
+        if dbq is None:
+            # Generate a fresh review question for this skill
+            qs = generate_questions(card.skill_id, difficulty=1, count=1)
+            if not qs:
+                continue
+
+            q = qs[0]
+            q_skill_ids = q.get("skill_ids") or [q["skill_id"]]
+            dbq = QuizQuestion(
+                skill_id=q["skill_id"],
+                skill_ids=q_skill_ids,
+                formula_ids=q.get("formula_ids", []),
+                difficulty=q["difficulty"],
+                question_latex=q["question_latex"],
+                choices=q["choices"],
+                correct_index=q["correct_index"],
+                explanation=q.get("explanation", ""),
+                sympy_expr=q.get("sympy_expr", ""),
+            )
+            db.add(dbq)
+            await db.flush()
+
+            if pending:
+                # Question cũ đã mất — trỏ pending sang câu hỏi mới
+                pending.question_id = dbq.id
+            else:
+                db.add(SpacedRepetitionPendingQuestion(
+                    card_id=card.id,
+                    question_id=dbq.id,
+                ))
+            await db.flush()
 
         due_list.append({
             "card_id": card.id,
@@ -136,7 +163,14 @@ async def review_card(
     card.interval = update["interval"]
     card.repetitions = update["repetitions"]
     card.next_review = update["next_review"]
-    card.last_reviewed = datetime.utcnow()
+    card.last_reviewed = utcnow()
+
+    # Câu hỏi pending đã được dùng — xoá để lần ôn tới sinh câu mới
+    await db.execute(
+        delete(SpacedRepetitionPendingQuestion).where(
+            SpacedRepetitionPendingQuestion.card_id == card.id
+        )
+    )
 
     await db.flush()
 

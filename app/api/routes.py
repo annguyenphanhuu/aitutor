@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc, func, delete
-from datetime import datetime
 from pathlib import Path
 from pydantic import BaseModel
 from typing import Optional, List
@@ -38,6 +37,7 @@ from app.analytics.insights import get_insights
 from app.auth.service import login_or_register, get_current_user_id
 from app.guardrails.input_validator import mask_pii, validate_input
 from app.guardrails.rate_limiter import get_rate_limiter
+from app.utils.time_utils import utcnow
 import logging
 
 logger = logging.getLogger(__name__)
@@ -47,6 +47,24 @@ router = APIRouter(prefix="/api", tags=["tutor"])
 orchestrator = Orchestrator()
 planner = PlannerAgent()
 bkt = BKTModel()
+
+# ── LangGraph engine (feature flag USE_LANGGRAPH) ─────────────────────────
+# Lazy init: chỉ dựng graph engine khi flag bật để không nhân đôi chi phí
+# khởi tạo agent (TeacherAgent kéo GraphRAG retriever + reflection).
+_graph_engine = None
+
+
+def get_chat_engine():
+    """Chọn engine chat theo flag USE_LANGGRAPH (rollback tức thì qua .env)."""
+    global _graph_engine
+    from app.config import get_settings
+
+    if get_settings().USE_LANGGRAPH:
+        if _graph_engine is None:
+            from app.graph.service import GraphTutorEngine
+            _graph_engine = GraphTutorEngine()
+        return _graph_engine
+    return orchestrator
 
 # Maximum chat history messages to load from DB
 MAX_HISTORY_LOAD = 20
@@ -86,7 +104,7 @@ async def _get_or_create_chat_session(
         session = result.scalar_one_or_none()
         if session is None:
             raise HTTPException(status_code=404, detail="Session not found")
-        session.last_active = datetime.utcnow()
+        session.last_active = utcnow()
         return session
 
     session = ConversationSession(user_id=user_id, title=title)
@@ -216,13 +234,14 @@ async def chat(
     )
 
     t0 = time.monotonic()
-    response = await orchestrator.handle_message(
+    response = await get_chat_engine().handle_message(
         db=db,
         message=sanitized_message,
         mode=data.mode,
         chat_history=chat_history,
         user_id=user_id,
         langfuse_trace=trace,   # truyền trace xuống để các span con gắn vào
+        session_id=session_id,  # engine LangGraph dùng cho SessionState
     )
     latency_ms = int((time.monotonic() - t0) * 1000)
 
@@ -318,32 +337,45 @@ async def chat_stream(
         mode_used_cap = None
         visualization_cap = None
 
-        try:
-            async for frame_json in orchestrator.handle_message_stream(
-                db=db,
-                message=sanitized_message,
-                mode=data.mode,
-                chat_history=chat_history,
-                user_id=user_id,
-            ):
-                try:
-                    frame = json.loads(frame_json)
-                    ftype = frame.get("type")
-                    if ftype == "meta":
-                        skill_id_cap = frame.get("skill_id")
-                        mode_used_cap = frame.get("mode_used")
-                    elif ftype == "done":
-                        full_response = frame.get("full_response", "")
-                        # Final metadata is authoritative for non-streamable
-                        # intents (e.g. visualize), whose mode can differ from
-                        # the preliminary meta frame.
-                        skill_id_cap = frame.get("skill_id", skill_id_cap)
-                        mode_used_cap = frame.get("mode_used", mode_used_cap)
-                        visualization_cap = frame.get("visualization")
-                except Exception:
-                    pass
+        # FastAPI >= 0.106 đóng session `db` (dependency yield) TRƯỚC khi body
+        # của StreamingResponse chạy. Dùng lại `db` ở đây khiến SQLAlchemy mở
+        # transaction mới không bao giờ được commit: mastery/session-state ghi
+        # trong lúc stream bị mất, và trên Postgres transaction bỏ rơi giữ row
+        # lock làm treo các stream request sau. Phải mở session riêng và tự commit.
+        from app.db.database import async_session
 
-                yield f"data: {frame_json}\n\n"
+        try:
+            async with async_session() as stream_db:
+                async for frame_json in get_chat_engine().handle_message_stream(
+                    db=stream_db,
+                    message=sanitized_message,
+                    mode=data.mode,
+                    chat_history=chat_history,
+                    user_id=user_id,
+                    session_id=captured_session_id,
+                ):
+                    try:
+                        frame = json.loads(frame_json)
+                        ftype = frame.get("type")
+                        if ftype == "meta":
+                            skill_id_cap = frame.get("skill_id")
+                            mode_used_cap = frame.get("mode_used")
+                        elif ftype == "done":
+                            full_response = frame.get("full_response", "")
+                            # Final metadata is authoritative for non-streamable
+                            # intents (e.g. visualize), whose mode can differ from
+                            # the preliminary meta frame.
+                            skill_id_cap = frame.get("skill_id", skill_id_cap)
+                            mode_used_cap = frame.get("mode_used", mode_used_cap)
+                            visualization_cap = frame.get("visualization")
+                    except Exception:
+                        pass
+
+                    yield f"data: {frame_json}\n\n"
+
+                # Mastery/SessionState ghi trong lúc stream nằm trên stream_db —
+                # commit ở đây; exception phía trên → context manager rollback.
+                await stream_db.commit()
 
         except Exception as e:
             err = json.dumps({"type": "error", "message": str(e)}, ensure_ascii=False)

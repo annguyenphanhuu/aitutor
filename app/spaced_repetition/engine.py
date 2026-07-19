@@ -1,6 +1,8 @@
 """SM-2 Spaced Repetition Engine — implements the SuperMemo SM-2 algorithm."""
 
-from datetime import datetime, timedelta
+from datetime import timedelta
+
+from app.utils.time_utils import utcnow
 
 
 def sm2_update(
@@ -45,7 +47,7 @@ def sm2_update(
         new_interval = 1
         new_reps = 0
 
-    next_review = datetime.utcnow() + timedelta(days=new_interval)
+    next_review = utcnow() + timedelta(days=new_interval)
 
     return {
         "easiness": round(new_ef, 2),

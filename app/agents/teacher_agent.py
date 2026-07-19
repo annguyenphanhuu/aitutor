@@ -132,7 +132,7 @@ def needs_visual_feature_pass(
     return any(keyword in combined for keyword in _VISUAL_ANALYSIS_KEYWORDS)
 
 
-TEACHER_SYSTEM_PROMPT_SOCRATIC = """Bạn là một gia sư Toán 12 giỏi, theo phương pháp Socratic.
+TEACHER_SYSTEM_PROMPT_SOCRATIC = r"""Bạn là một gia sư Toán 12 giỏi, theo phương pháp Socratic.
 Vai trò: Dẫn dắt học sinh tự tìm ra đáp án thay vì giải thẳng.
 
 QUY TẮC:
@@ -183,7 +183,7 @@ MỨC ĐỘ THÀNH THẠO CỦA HỌC SINH VỚI KỸ NĂNG NÀY: {mastery_level
 {few_shot_block}
 """
 
-TEACHER_SYSTEM_PROMPT_EXAM = """Bạn là một gia sư Toán 12, chế độ luyện thi.
+TEACHER_SYSTEM_PROMPT_EXAM = r"""Bạn là một gia sư Toán 12, chế độ luyện thi.
 Vai trò: Giúp học sinh giải nhanh, làm đề thi hiệu quả.
 
 QUY TẮC:
@@ -231,7 +231,7 @@ MỨC ĐỘ THÀNH THẠO: {mastery_level}
 """
 
 
-TEACHER_SYSTEM_PROMPT_ANSWER = """Bạn là một gia sư Toán 12, chế độ cung cấp đáp án.
+TEACHER_SYSTEM_PROMPT_ANSWER = r"""Bạn là một gia sư Toán 12, chế độ cung cấp đáp án.
 Học sinh đã yêu cầu xem đáp án trực tiếp.
 
 NHIỆM VỤ:

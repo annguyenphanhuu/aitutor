@@ -1,9 +1,10 @@
-"""Ownership tests for the spaced repetition service."""
+"""Ownership and pending-question tests for the spaced repetition service."""
 
 import pytest
+from sqlalchemy import func, select
 
 from app.db.models import QuizQuestion
-from app.spaced_repetition.service import get_or_create_card, review_card
+from app.spaced_repetition.service import get_due_cards, get_or_create_card, review_card
 
 
 @pytest.fixture
@@ -41,3 +42,46 @@ async def test_review_card_rejects_other_user(db_session, sr_card_with_question)
 
     assert "error" in result
     assert card.repetitions == 0
+
+
+async def _count_questions(db_session) -> int:
+    result = await db_session.execute(select(func.count(QuizQuestion.id)))
+    return result.scalar() or 0
+
+
+@pytest.mark.asyncio
+async def test_get_due_cards_reuses_pending_question(db_session):
+    """Gọi GET /review/due nhiều lần không được sinh thêm câu hỏi mới."""
+    await get_or_create_card(db_session, "derivative_basic", user_id=1)
+
+    first = await get_due_cards(db_session, user_id=1)
+    count_after_first = await _count_questions(db_session)
+
+    second = await get_due_cards(db_session, user_id=1)
+    count_after_second = await _count_questions(db_session)
+
+    assert len(first) == 1
+    assert len(second) == 1
+    assert count_after_second == count_after_first
+    assert second[0]["question"]["id"] == first[0]["question"]["id"]
+
+
+@pytest.mark.asyncio
+async def test_pending_question_regenerates_after_review(db_session):
+    """Sau khi review xong, lần ôn tiếp theo phải có câu hỏi mới."""
+    card = await get_or_create_card(db_session, "derivative_basic", user_id=1)
+
+    due = await get_due_cards(db_session, user_id=1)
+    question_id = due[0]["question"]["id"]
+
+    result = await review_card(db_session, card.id, question_id, 0, user_id=1)
+    assert "error" not in result
+
+    # Đưa card về trạng thái due để ôn lại ngay trong test
+    from datetime import datetime, timedelta
+    card.next_review = datetime.utcnow() - timedelta(days=1)
+    await db_session.flush()
+
+    due_again = await get_due_cards(db_session, user_id=1)
+    assert len(due_again) == 1
+    assert due_again[0]["question"]["id"] != question_id
