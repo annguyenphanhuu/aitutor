@@ -105,6 +105,28 @@ def _extract_short_answer(text: str) -> Optional[str]:
     return matches[-1].replace(" ", "").replace(",", ".")
 
 
+def strip_answer_tag_for_chat(text: str, reveal: bool = True) -> str:
+    """Remove machine-facing ``<answer>`` tags before showing text in chat.
+
+    The tag exists for the evaluation pipeline (``math_judge``); leaking it
+    to students is a formatting bug. ``reveal=True`` converts the tag to a
+    human-readable "**Đáp án:** ..." line; ``reveal=False`` (socratic mode)
+    drops the tag *and* its content so the final answer stays hidden.
+    """
+    value = str(text or "")
+    if "<answer" not in value.lower():
+        return value
+
+    def _replace(match: re.Match) -> str:
+        inner = match.group(1).strip()
+        if not reveal or not inner:
+            return ""
+        return f"**Đáp án:** {inner}"
+
+    cleaned = _ANSWER_TAG_RE.sub(_replace, value)
+    return cleaned.strip()
+
+
 def ensure_answer_tag(response: str, question_type: str | None) -> str:
     """Canonicalize a model answer to exactly one leading ``<answer>`` tag.
 

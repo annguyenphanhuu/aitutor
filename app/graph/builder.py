@@ -20,6 +20,7 @@ def build_tutor_graph(nodes: TutorNodes):
     graph.add_node("classify", nodes.classify)
     graph.add_node("hydrate", nodes.hydrate)
     graph.add_node("off_topic", nodes.off_topic)
+    graph.add_node("social", nodes.social)
     graph.add_node("plan", nodes.plan)
     graph.add_node("quiz", nodes.quiz)
     graph.add_node("review", nodes.review)
@@ -40,6 +41,7 @@ def build_tutor_graph(nodes: TutorNodes):
         route_intent,
         {
             "off_topic": "off_topic",
+            "social": "social",
             "plan": "plan",
             "quiz": "quiz",
             "review": "review",
@@ -60,7 +62,7 @@ def build_tutor_graph(nodes: TutorNodes):
     graph.add_edge("grade_feedback", "grade_policy")
     graph.add_edge("grade_policy", "finalize")
 
-    for terminal in ("off_topic", "plan", "quiz", "review", "diagnostic", "visualize", "teach"):
+    for terminal in ("off_topic", "social", "plan", "quiz", "review", "diagnostic", "visualize", "teach"):
         graph.add_edge(terminal, "finalize")
 
     graph.add_edge("finalize", END)

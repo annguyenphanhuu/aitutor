@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 IntentName = Literal[
     "explain", "answer", "assess", "plan", "quiz",
     "review", "diagnostic", "visualize", "off_topic",
+    "greeting", "motivation",
 ]
 
 

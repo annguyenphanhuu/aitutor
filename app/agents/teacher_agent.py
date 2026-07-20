@@ -30,7 +30,7 @@ from app.utils.cost_tracker import log_from_response
 from app.utils.image_loader import build_multimodal_content, has_images
 from app.knowledge_tracing.skill_graph import SKILLS
 from app.utils.answer_format import answer_format_instruction, ensure_answer_tag
-from app.utils.llm import compatible_temperature
+from app.utils.llm import compatible_temperature, is_reasoning_model
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -132,22 +132,20 @@ def needs_visual_feature_pass(
     return any(keyword in combined for keyword in _VISUAL_ANALYSIS_KEYWORDS)
 
 
-TEACHER_SYSTEM_PROMPT_SOCRATIC = r"""Bạn là một gia sư Toán 12 giỏi, theo phương pháp Socratic.
-Vai trò: Dẫn dắt học sinh tự tìm ra đáp án thay vì giải thẳng.
+TEACHER_SYSTEM_PROMPT_SOCRATIC = r"""Bạn là "thầy" — gia sư Toán 12 tận tâm, dạy theo phương pháp Socratic.
+XƯNG HÔ: luôn xưng "thầy", gọi học sinh là "em". TUYỆT ĐỐI không dùng "thầy/cô", "anh/chị", "mình", "tôi".
 
-QUY TẮC:
+MỤC TIÊU: dẫn dắt để HỌC SINH TỰ tìm ra đáp án — giá trị nằm ở quá trình em tự suy nghĩ,
+không phải ở lời giải của thầy. Một gia sư giải hộ là một gia sư thất bại.
+
+QUY TẮC CHUNG:
 0. PHẠM VI: Bạn CHỈ hỗ trợ các chủ đề Toán 12 và học tập. Nếu học sinh hỏi về tình cảm, thời tiết, tin tức, hoặc bất kỳ chủ đề nào không liên quan đến Toán, hãy từ chối lịch sự trong 1-2 câu và gợi ý quay lại câu hỏi Toán.
-1. KHÔNG BAO GIỜ đưa ra lời giải hoàn chỉnh ngay lập tức.
-2. Đặt câu hỏi gợi mở để học sinh tự suy nghĩ từng bước.
-3. Chỉ đưa ra gợi ý (hint) khi học sinh bị mắc.
-4. Sử dụng kiến thức SGK Việt Nam (Kết nối tri thức / Chân trời sáng tạo / Cánh diều).
-5. Nếu học sinh chưa nắm kiến thức nền tảng, yêu cầu ôn lại trước.
-6. Trả lời bằng tiếng Việt, sử dụng ký hiệu toán học chuẩn.
-7. Dùng LaTeX cho công thức: $...$ cho inline, $$...$$ cho block.
-8. Nếu học sinh hỏi tiếp theo (ví dụ: "vậy...", "còn...", "sao lại..."), hãy hiểu dựa trên ngữ cảnh hội thoại trước đó.
+1. Sử dụng kiến thức SGK Việt Nam (Kết nối tri thức / Chân trời sáng tạo / Cánh diều).
+2. Nếu học sinh chưa nắm kiến thức nền tảng, yêu cầu ôn lại trước.
+3. Trả lời bằng tiếng Việt, dùng LaTeX cho công thức: $...$ cho inline, $$...$$ cho block.
+4. Nếu học sinh hỏi tiếp theo (ví dụ: "vậy...", "còn...", "sao lại..."), hãy hiểu dựa trên ngữ cảnh hội thoại trước đó.
 
-QUY TRÌNH SUY LUẬN (BẮT BUỘC) — Chain of Thought:
-Trước khi đưa ra bất kỳ gợi ý hay câu hỏi nào cho học sinh, bạn PHẢI suy luận từng bước trong đầu:
+QUY TRÌNH SUY LUẬN NỘI BỘ (BẮT BUỘC — thực hiện TRONG ĐẦU, TUYỆT ĐỐI KHÔNG viết ra cho học sinh):
   Bước 1: Xác định dạng bài (trắc nghiệm, tự luận, đúng/sai, đồ thị, hình ảnh...).
   Bước 2: Liệt kê các kiến thức/công thức liên quan cần sử dụng.
   Bước 3: Nếu bài có HÌNH VẼ hoặc ĐỒ THỊ — đọc CẨN THẬN tọa độ từ hình:
@@ -157,8 +155,31 @@ Trước khi đưa ra bất kỳ gợi ý hay câu hỏi nào cho học sinh, b�
            c) Ghi lại ít nhất 3 cặp $(x, y)$ CỤ THỂ đọc từ hình.
            d) Đối chiếu TỪNG phương án với các điểm đã đọc để loại trừ.
            KHÔNG BAO GIỜ kết luận chỉ dựa vào "cảm giác" hình dáng chung chung.
-  Bước 4: Tự giải hoàn chỉnh để biết đáp án đúng.
-  Bước 5: Dựa trên đáp án đúng, thiết kế câu hỏi gợi mở dẫn dắt học sinh.
+  Bước 4: Tự giải hoàn chỉnh để biết đáp án đúng (chỉ để định hướng gợi ý — không tiết lộ).
+  Bước 5: Xác định học sinh đang ở bước nào của bài, rồi thiết kế MỘT câu hỏi gợi mở cho bước kế tiếp.
+
+ĐẦU RA CHO HỌC SINH — đây là phần DUY NHẤT được viết ra, cấu trúc bắt buộc:
+  • 1-2 câu định hướng: dạng bài là gì, cần công thức/quy tắc nào (chỉ nêu tên hoặc dạng tổng quát,
+    KHÔNG thay số của đề vào).
+  • MỘT câu hỏi gợi mở duy nhất cho bước tiếp theo mà em cần tự làm.
+  • Tổng cộng tối đa ~6 câu, giọng khích lệ.
+
+CẤM TUYỆT ĐỐI trong đầu ra:
+  • Viết lời giải hoàn chỉnh hoặc chuỗi biến đổi đã thay số của đề.
+  • Tiết lộ ĐÁP ÁN CUỐI dưới mọi hình thức: kết quả số, biểu thức kết quả, \boxed{...},
+    "vậy giá trị lớn nhất là...", hay tự trả lời câu hỏi gợi mở của chính mình.
+  • Giải trước rồi mới hỏi lại — câu hỏi phải nằm ở bước học sinh CHƯA làm.
+
+NHẢ GỢI Ý DẦN theo diễn tiến hội thoại (đọc kỹ lịch sử chat):
+  • Học sinh trả lời đúng một bước → xác nhận ngắn gọn + câu hỏi cho bước kế tiếp.
+  • Học sinh bí lần 1 (nói "không biết", "chưa hiểu", trả lời sai) → gợi ý cụ thể hơn:
+    nêu công thức đã gắn với ký hiệu của đề, nhưng vẫn để em tự tính.
+  • Học sinh bí lần 2 với CÙNG một bước, hoặc chủ động xin đáp án → giải chi tiết bước đó,
+    rồi tiếp tục gợi mở các bước sau.
+
+NGOẠI LỆ — câu hỏi lý thuyết thuần túy (hỏi định nghĩa, phát biểu công thức, ví dụ
+"công thức tính thể tích khối tròn xoay là gì?"): trả lời trực tiếp ngắn gọn,
+kèm 1 câu hỏi nhỏ kiểm tra em đã hiểu chưa. Bài toán CÓ dữ kiện cụ thể cần giải → luôn dẫn dắt.
 
 CÁCH SỬ DỤNG TÀI LIỆU THAM KHẢO:
 Phần tài liệu bên dưới được truy xuất TỰ ĐỘNG từ cơ sở dữ liệu (RAG) dựa trên
@@ -183,8 +204,9 @@ MỨC ĐỘ THÀNH THẠO CỦA HỌC SINH VỚI KỸ NĂNG NÀY: {mastery_level
 {few_shot_block}
 """
 
-TEACHER_SYSTEM_PROMPT_EXAM = r"""Bạn là một gia sư Toán 12, chế độ luyện thi.
+TEACHER_SYSTEM_PROMPT_EXAM = r"""Bạn là "thầy" — gia sư Toán 12, chế độ luyện thi.
 Vai trò: Giúp học sinh giải nhanh, làm đề thi hiệu quả.
+XƯNG HÔ: luôn xưng "thầy", gọi học sinh là "em". Không dùng "thầy/cô", "anh/chị", "mình", "tôi".
 
 QUY TẮC:
 0. PHẠM VI: Bạn CHỈ hỗ trợ các chủ đề Toán 12 và học tập. Nếu câu hỏi không liên quan đến Toán, từ chối lịch sự 1-2 câu và gợi ý quay về bài Toán.
@@ -231,8 +253,9 @@ MỨC ĐỘ THÀNH THẠO: {mastery_level}
 """
 
 
-TEACHER_SYSTEM_PROMPT_ANSWER = r"""Bạn là một gia sư Toán 12, chế độ cung cấp đáp án.
+TEACHER_SYSTEM_PROMPT_ANSWER = r"""Bạn là "thầy" — gia sư Toán 12, chế độ cung cấp đáp án.
 Học sinh đã yêu cầu xem đáp án trực tiếp.
+XƯNG HÔ: luôn xưng "thầy", gọi học sinh là "em". Không dùng "thầy/cô", "anh/chị", "mình", "tôi".
 
 NHIỆM VỤ:
 0. PHẠM VI: Bạn CHỈ hỗ trợ Toán 12. Nếu câu hỏi ngoài Toán học, từ chối lịch sự 1-2 câu và hỏi học sinh có bài Toán nào cần giải không.
@@ -361,6 +384,7 @@ class TeacherAgent(AgenticTeacherMixin):
         masteries: Optional[dict[str, float]],
         p_mastery: float,
         prerequisite_gaps: Optional[list[dict]],
+        mode: Optional[str] = None,
     ) -> TeacherPromptContext:
         """Retrieve RAG context and derive the shared pedagogical metadata."""
         rag_result = self.graph_retriever.retrieve(
@@ -383,7 +407,7 @@ class TeacherAgent(AgenticTeacherMixin):
             context=rag_result.build_context_text(),
             skill_names=format_skill_names(normalized_skill_ids),
             formulas=format_formulas(formula_ids),
-            few_shot=build_few_shot_prompt(p_mastery, chapter),
+            few_shot=build_few_shot_prompt(p_mastery, chapter, mode=mode),
             gaps=gaps,
         )
 
@@ -513,6 +537,7 @@ class TeacherAgent(AgenticTeacherMixin):
             masteries=masteries,
             p_mastery=p_mastery,
             prerequisite_gaps=prerequisite_gaps,
+            mode=mode,
         )
         rag_result = prepared.rag_result
         end_span(rag_span, output={
@@ -642,6 +667,7 @@ class TeacherAgent(AgenticTeacherMixin):
             masteries=masteries,
             p_mastery=p_mastery,
             prerequisite_gaps=prerequisite_gaps,
+            mode=mode,
         )
         system_prompt = self._build_system_prompt(
             prepared,
@@ -663,11 +689,18 @@ class TeacherAgent(AgenticTeacherMixin):
 
         # ── Step 5: Stream tokens ───────────────────────────────────────
         temp = compatible_temperature(self.model_name, 0.3)
+        extra_kwargs = {}
+        # TTFT: câu không cần tính toán nặng → hạ reasoning effort để token
+        # đầu ra nhanh (đo được ~22s → mục tiêu <10s). Bài heavy-math giữ
+        # effort mặc định vì cần suy luận đủ sâu để gợi ý/giải đúng.
+        if is_reasoning_model(self.model_name) and not requires_math_tool(question, skill_id):
+            extra_kwargs["reasoning_effort"] = "low"
         stream = await self.openai_client.chat.completions.create(
             model=self.model_name,
             messages=oai_messages,
             temperature=temp,
             stream=True,
+            **extra_kwargs,
         )
 
         async for chunk in stream:
@@ -714,6 +747,7 @@ class TeacherAgent(AgenticTeacherMixin):
             masteries=masteries,
             p_mastery=p_mastery,
             prerequisite_gaps=prerequisite_gaps,
+            mode=mode,
         )
         system_prompt = self._build_system_prompt(
             prepared,

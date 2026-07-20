@@ -516,19 +516,24 @@ async function sendMessageStream(capturedText) {
             throw new Error(err.detail || `Lỗi server (${res.status})`);
         }
 
-        // Xóa typing dots, tạo bubble streaming
-        typingEl.remove();
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'message assistant';
-        const bodyId = 'stream-body-' + Date.now();
-        msgDiv.innerHTML = `
-            <div class="msg-avatar">🤖</div>
-            <div class="msg-body" id="${bodyId}"><span class="stream-cursor">▋</span></div>
-        `;
-        container.appendChild(msgDiv);
-        container.scrollTop = container.scrollHeight;
-
-        const bodyEl = document.getElementById(bodyId);
+        // Giữ typing indicator đến khi token đầu tiên về (TTFT của model
+        // reasoning có thể 10-20s — bubble trống với con trỏ ▋ trông như treo).
+        let bodyEl = null;
+        const ensureStreamBubble = () => {
+            if (bodyEl) return bodyEl;
+            typingEl.remove();
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message assistant';
+            const bodyId = 'stream-body-' + Date.now();
+            msgDiv.innerHTML = `
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-body" id="${bodyId}"><span class="stream-cursor">▋</span></div>
+            `;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+            bodyEl = document.getElementById(bodyId);
+            return bodyEl;
+        };
         let fullText = '';
 
         const reader = res.body.getReader();
@@ -553,24 +558,40 @@ async function sendMessageStream(capturedText) {
                     if (frame.type === 'meta') {
                         const sid = res.headers.get('X-Session-Id') || frame.session_id;
                         if (sid) currentSessionId = parseInt(sid) || currentSessionId;
+                        // Đã phân loại xong, gia sư bắt đầu soạn bài — báo trạng thái
+                        const label = typingEl.querySelector('.typing-status');
+                        if (!bodyEl && !label) {
+                            const status = document.createElement('span');
+                            status.className = 'typing-status';
+                            status.textContent = '💭 Thầy đang suy nghĩ...';
+                            const body = typingEl.querySelector('.msg-body');
+                            if (body) body.appendChild(status);
+                        }
                     } else if (frame.type === 'token') {
                         fullText += frame.content;
-                        bodyEl.innerHTML = formatText(fullText) + '<span class="stream-cursor">▋</span>';
+                        ensureStreamBubble().innerHTML = formatText(fullText) + '<span class="stream-cursor">▋</span>';
                         container.scrollTop = container.scrollHeight;
                     } else if (frame.type === 'done') {
                         fullText = frame.full_response || fullText;
-                        bodyEl.innerHTML = formatText(fullText);
-                        renderKatex(bodyEl);
+                        const el = ensureStreamBubble();
+                        el.innerHTML = formatText(fullText);
+                        renderKatex(el);
                         if (frame.visualization) {
                             renderVisualization(frame.visualization);
                         }
+                        if (frame.mode_used === 'quiz') {
+                            autoStartQuizFromChat(frame.skill_id);
+                        }
                         container.scrollTop = container.scrollHeight;
                     } else if (frame.type === 'error') {
-                        bodyEl.innerHTML = `<span style="color:var(--red)">⚠️ ${esc(frame.message)}</span>`;
+                        ensureStreamBubble().innerHTML = `<span style="color:var(--red)">⚠️ ${esc(frame.message)}</span>`;
                     }
                 } catch (_) { }
             }
         }
+
+        // Stream kết thúc mà không có token/done nào → dọn typing indicator
+        if (!bodyEl) typingEl.remove();
 
         // Lấy session_id từ header
         const sid = res.headers.get('X-Session-Id');
@@ -580,6 +601,15 @@ async function sendMessageStream(capturedText) {
         typingEl.remove();
         throw err;
     }
+}
+
+
+// Quiz-in-chat: intent "quiz" từ chat tự mở bài quiz với độ khó adaptive
+function autoStartQuizFromChat(skillId) {
+    quizState.selectedSkillId = skillId || 'derivative_basic';
+    quizState.selectedChapter = null;
+    quizState.selectedDifficulty = 0; // 0 = adaptive theo BKT
+    generateQuiz();
 }
 
 
@@ -1980,6 +2010,13 @@ function formatText(text) {
                 <div class="thinking-content">${lines}</div>
             </details>`;
         return '';
+    });
+
+    // ── Defense-in-depth: <answer> tag là định dạng máy (evaluation pipeline),
+    // backend đã strip nhưng nếu còn sót thì render thành dòng đáp án đọc được ──
+    text = text.replace(/<answer\b[^>]*>([\s\S]*?)<\/answer\s*>/gi, (_m, inner) => {
+        const val = inner.trim();
+        return val ? `**Đáp án:** ${val}` : '';
     });
 
     const stash = [];

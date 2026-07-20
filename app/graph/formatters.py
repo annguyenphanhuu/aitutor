@@ -10,13 +10,26 @@ from __future__ import annotations
 from app.agents.contracts import PedagogyAssessment
 
 OFF_TOPIC_TEXT = (
-    "Thầy hiểu em đang có chuyện bên ngoài, và điều đó hoàn toàn bình thường. 😊\n\n"
-    "Nhưng thầy là gia sư Toán 12 — thầy chỉ có thể đồng hành cùng em trên con đường chinh phục Toán thôi nhé.\n\n"
-    "Nếu em đang căng thẳng vì học hành, thầy rất sẵn sàng giúp em:\n"
-    "- 📋 Lập **kế hoạch ôn tập** phù hợp để bớt áp lực\n"
-    "- 🔍 **Chẩn đoán năng lực** để biết mình đang ở đâu\n"
-    "- 💡 Giải thích những phần Toán em chưa hiểu\n\n"
-    "Em muốn bắt đầu từ đâu?"
+    "Phần này nằm ngoài chuyên môn của thầy mất rồi — thầy là gia sư Toán 12, "
+    "nên chỉ giúp em tốt nhất được trong phạm vi Toán và việc ôn thi thôi nhé. 😊\n\n"
+    "Khi nào em cần giải thích một bài Toán, luyện quiz, hay lập kế hoạch ôn tập, "
+    "cứ nhắn thầy — mình bắt đầu ngay. Em đang học đến phần nào rồi?"
+)
+
+# Fallback cho node social khi LLM lỗi — bình thường social sinh text cá nhân hóa.
+GREETING_FALLBACK_TEXT = (
+    "Chào em! 😊 Thầy là gia sư Toán 12 của em đây.\n\n"
+    "Thầy có thể giải thích bài em chưa hiểu, cho em luyện quiz, "
+    "lập kế hoạch ôn tập, hoặc làm bài chẩn đoán để biết em đang ở đâu.\n\n"
+    "Em muốn bắt đầu từ phần nào?"
+)
+
+MOTIVATION_FALLBACK_TEXT = (
+    "Thầy hiểu cảm giác đó của em — ai ôn thi cũng có lúc thấy quá tải, "
+    "và điều đó không có nghĩa là em kém. 💪\n\n"
+    "Mất gốc hay điểm thấp bây giờ đều kịp cải thiện nếu mình đi từng bước nhỏ. "
+    "Em làm thử bài **chẩn đoán năng lực** để thầy biết em hổng ở đâu, "
+    "rồi thầy lập kế hoạch ôn vừa sức cho em nhé?"
 )
 
 REVIEW_TEXT = (
@@ -37,10 +50,10 @@ DIAGNOSTIC_TEXT = (
 
 def format_quiz_text(skill_name: str, target_skill: str, difficulty: int) -> str:
     return (
-        f"📝 **Bài kiểm tra: {skill_name}** (Độ khó: {difficulty})\n\n"
-        f"Sử dụng nút **📝 Làm quiz** trên giao diện để bắt đầu, "
-        f"hoặc gọi API: `POST /api/quiz/generate` với skill_id=`{target_skill}`.\n\n"
-        f"💡 Mình sẽ tự động đánh giá và cập nhật năng lực của em sau mỗi câu hỏi!"
+        f"📝 **Bài kiểm tra: {skill_name}**\n\n"
+        f"Được em! Thầy mở bài quiz cho em ngay bên dưới — độ khó sẽ tự điều chỉnh "
+        f"theo trình độ hiện tại của em.\n\n"
+        f"💡 Sau mỗi câu thầy sẽ chấm ngay và cập nhật hồ sơ năng lực cho em. Cố lên nhé! 💪"
     )
 
 

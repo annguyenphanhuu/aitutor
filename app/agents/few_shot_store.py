@@ -56,6 +56,10 @@ class PedagogicalExample:
     student_question: str    # What the student asked
     teacher_response: str    # Exemplary teacher answer
     style_notes: str         # Meta-description of the teaching style
+    # True nếu ví dụ KHÔNG tiết lộ lời giải/đáp án cuối — an toàn để bắt chước
+    # trong mode socratic. Ví dụ giải trọn vẹn mà inject vào mode socratic sẽ
+    # khiến LLM bắt chước giải thẳng (bug đã gặp trong live test).
+    socratic_safe: bool = False
 
 
 # ── Pre-seeded Examples ──────────────────────────────────────────────────────
@@ -64,6 +68,24 @@ class PedagogicalExample:
 
 _EXAMPLES: list[PedagogicalExample] = [
     # ─────────── BEGINNER ────────────
+    PedagogicalExample(
+        tier="beginner",
+        chapter="general",
+        student_question="Tìm giá trị lớn nhất của f(x) = x³ - 3x + 2 trên đoạn [0; 2]",
+        teacher_response=(
+            "Câu hỏi hay lắm em! 😊 Đây là dạng bài **tìm GTLN/GTNN trên một đoạn** — "
+            "mình sẽ đi từng bước nhỏ, em yên tâm nhé.\n\n"
+            "Quy tắc chung của dạng này gồm 3 bước: tìm các điểm làm đạo hàm bằng 0 trong đoạn, "
+            "tính giá trị hàm số tại các điểm đó **và tại hai đầu mút**, rồi so sánh.\n\n"
+            "Mình bắt đầu từ bước 1 nhé: em thử tính $f'(x)$ của hàm này xem ra bao nhiêu? "
+            "(Gợi ý: dùng công thức $(x^n)' = n x^{n-1}$ cho từng số hạng.)"
+        ),
+        style_notes=(
+            "Kiên nhẫn, nêu khung phương pháp tổng quát nhưng KHÔNG thay số giải hộ, "
+            "kết thúc bằng đúng MỘT câu hỏi cho bước đầu tiên"
+        ),
+        socratic_safe=True,
+    ),
     PedagogicalExample(
         tier="beginner",
         chapter="general",
@@ -114,6 +136,7 @@ _EXAMPLES: list[PedagogicalExample] = [
             "Em thử tính rồi gửi lại cho mình kiểm tra nhé!"
         ),
         style_notes="Gợi ý qua câu hỏi Socratic, nhắc công thức nhưng không giải hộ, mong đợi em tự làm",
+        socratic_safe=True,
     ),
     PedagogicalExample(
         tier="developing",
@@ -128,6 +151,7 @@ _EXAMPLES: list[PedagogicalExample] = [
             "Em tính cụ thể ra rồi gửi kết quả nhé. Nhớ rút gọn phân số!"
         ),
         style_notes="Cấu trúc hóa bước giải, dùng câu hỏi gợi mở, yêu cầu tự tính",
+        socratic_safe=True,
     ),
 
     # ─────────── PROFICIENT ────────────
@@ -178,41 +202,60 @@ def get_mastery_tier(p_mastery: float) -> str:
 def select_few_shot(
     p_mastery: float,
     chapter: Optional[str] = None,
+    socratic: bool = False,
 ) -> Optional[PedagogicalExample]:
     """Select the best few-shot example for the given mastery level.
 
     Tries to match both tier AND chapter.  Falls back to same-tier
     with chapter="general" if no chapter-specific example exists.
+
+    ``socratic=True`` restricts to examples that never reveal the final
+    answer (falls back to the closest socratic-safe tier if the exact
+    tier has none) — a full worked solution injected into socratic mode
+    makes the LLM mimic solving outright.
     """
     tier = get_mastery_tier(p_mastery)
+    pool = [ex for ex in _EXAMPLES if ex.socratic_safe] if socratic else _EXAMPLES
+    if not pool:
+        return None
 
-    # Try chapter-specific first
-    if chapter:
-        for ex in _EXAMPLES:
-            if ex.tier == tier and ex.chapter == chapter:
-                return ex
+    def _pick(target_tier: str) -> Optional[PedagogicalExample]:
+        if chapter:
+            for ex in pool:
+                if ex.tier == target_tier and ex.chapter == chapter:
+                    return ex
+        general_match = None
+        any_match = None
+        for ex in pool:
+            if ex.tier == target_tier:
+                if ex.chapter == "general":
+                    general_match = ex
+                any_match = ex
+        return general_match or any_match
 
-    # Fallback: same tier, any chapter (prefer "general")
-    general_match = None
-    any_match = None
-    for ex in _EXAMPLES:
-        if ex.tier == tier:
-            if ex.chapter == "general":
-                general_match = ex
-            any_match = ex
-
-    return general_match or any_match
+    match = _pick(tier)
+    if match is None and socratic:
+        # Tier chưa có ví dụ socratic-safe → dùng tier gần nhất có ví dụ
+        order = ["beginner", "developing", "proficient", "mastered"]
+        for other in sorted(order, key=lambda t: abs(order.index(t) - order.index(tier))):
+            match = _pick(other)
+            if match is not None:
+                break
+    return match
 
 
 def build_few_shot_prompt(
     p_mastery: float,
     chapter: Optional[str] = None,
+    mode: Optional[str] = None,
 ) -> str:
     """Build a few-shot instruction block for injection into System Prompt.
 
     Returns an empty string if no matching example is found.
+    ``mode="socratic"`` only injects examples that keep the answer hidden.
     """
-    example = select_few_shot(p_mastery, chapter)
+    socratic = mode == "socratic"
+    example = select_few_shot(p_mastery, chapter, socratic=socratic)
     if not example:
         return ""
 
@@ -224,11 +267,17 @@ def build_few_shot_prompt(
     }
 
     style_desc = tier_descriptions.get(example.tier, "")
+    socratic_note = (
+        "\nLƯU Ý: ví dụ chỉ minh họa GIỌNG ĐIỆU — vẫn tuân thủ tuyệt đối quy tắc Socratic: "
+        "không tiết lộ lời giải hoàn chỉnh hay đáp án cuối.\n"
+        if socratic
+        else ""
+    )
 
     return (
         f"\n\n── PHONG CÁCH SƯ PHẠM (Dynamic Few-Shot) ──\n"
         f"Mức độ thành thạo hiện tại: {example.tier.upper()} ({p_mastery:.0%})\n"
-        f"Phong cách yêu cầu: {style_desc}\n\n"
+        f"Phong cách yêu cầu: {style_desc}\n{socratic_note}\n"
         f"📝 VÍ DỤ MẪU — Hãy bắt chước giọng điệu và cách tiếp cận sau:\n"
         f"[Học sinh hỏi]: {example.student_question}\n"
         f"[Gia sư trả lời]:\n{example.teacher_response}\n"

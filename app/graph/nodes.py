@@ -19,7 +19,7 @@ import json
 import logging
 from typing import Optional
 
-from langchain.schema import HumanMessage, SystemMessage
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_openai import ChatOpenAI
 from langgraph.types import StreamWriter
@@ -45,6 +45,7 @@ from app.graph.state import SessionSnapshot, TutorState
 from app.knowledge_tracing.bkt import BKTModel
 from app.knowledge_tracing.service import get_all_masteries, get_mastery_profile, identify_gaps, update_mastery
 from app.knowledge_tracing.skill_graph import SKILLS
+from app.utils.answer_format import strip_answer_tag_for_chat
 from app.utils.cost_tracker import log_from_response
 from app.utils.llm import compatible_temperature
 
@@ -53,7 +54,8 @@ settings = get_settings()
 
 # Intent không stream token: node tính blocking, finalize emit 1 token frame + done giàu metadata
 NON_STREAM_INTENTS = frozenset(
-    {"off_topic", "plan", "quiz", "review", "diagnostic", "visualize", "assess"}
+    {"off_topic", "plan", "quiz", "review", "diagnostic", "visualize", "assess",
+     "greeting", "motivation"}
 )
 
 CLASSIFIER_SYSTEM_PROMPT = """Phân loại ý định của học sinh thành một trong các loại sau:
@@ -64,8 +66,15 @@ CLASSIFIER_SYSTEM_PROMPT = """Phân loại ý định của học sinh thành m�
 - "quiz": Muốn làm bài kiểm tra, luyện tập, ra đề (ví dụ: "cho em làm quiz", "ra đề thi đạo hàm", "cho bài tập luyện tập")
 - "review": Muốn ôn bài cũ, ôn tập lại (ví dụ: "ôn tập", "nhắc lại kiến thức cũ", "có gì cần ôn không")
 - "diagnostic": Muốn kiểm tra đầu vào, đánh giá năng lực (ví dụ: "test đầu vào", "đánh giá năng lực", "kiểm tra trình độ")
-- "visualize": Muốn xem đồ thị, biểu đồ, hình ảnh toán học (ví dụ: "vẽ đồ thị", "đồ thị hàm số", "minh họa hình học")
-- "off_topic": Câu hỏi/yêu cầu KHÔNG liên quan đến Toán học (ví dụ: tư vấn tình cảm, hỏi thời tiết, chuyện phiếm, chào hỏi đơn thuần, yêu cầu làm việc khác ngoài Toán)
+- "visualize": Yêu cầu CHÍNH là VẼ/hiển thị đồ thị hoặc hình minh họa (ví dụ: "vẽ đồ thị y = x²", "minh họa hình học cho em xem").
+  LƯU Ý: nếu học sinh HỎI về tính chất hoặc đọc thông tin từ đồ thị (đồng biến/nghịch biến,
+  cực trị, giao điểm, tiệm cận...) — kể cả khi tin nhắn có chữ "đồ thị" — thì đó là "explain", KHÔNG phải "visualize".
+- "greeting": Chào hỏi, giới thiệu bản thân, làm quen, hoặc nhờ gia sư giúp học Toán một cách chung chung
+  chưa có bài toán cụ thể (ví dụ: "chào thầy", "em tên Minh, em mất gốc toán, thầy giúp em với")
+- "motivation": Tâm sự chán nản, lo lắng, áp lực về việc học Toán hoặc thi cử, cần được động viên
+  (ví dụ: "em sợ trượt tốt nghiệp", "em học dốt toán quá, nản lắm rồi")
+- "off_topic": Câu hỏi/yêu cầu KHÔNG liên quan đến Toán học lẫn việc học (ví dụ: tư vấn tình cảm, hỏi thời tiết,
+  chuyện phiếm, nhờ dạy môn khác, yêu cầu làm việc khác ngoài Toán). Chào hỏi → "greeting"; tâm sự về việc học → "motivation".
 
 QUY TẮC QUAN TRỌNG về is_answer_submission:
 - is_answer_submission = true CHỈ KHI tin nhắn chứa lời giải hoặc đáp án do CHÍNH học sinh làm ra
@@ -80,6 +89,13 @@ Ví dụ phân loại:
 - "Bạn em nói đạo hàm của sin(x) là -cos(x), đúng không?" → intent="explain", is_answer_submission=false
 - "Em giải ra ∫x²dx = x³/3 + C, đúng chưa ạ?" → intent="assess", is_answer_submission=true
 - "Đáp án của em là x = 2 và x = -2" → intent="assess", is_answer_submission=true
+- "Vẽ đồ thị hàm số y = x³ - 3x + 2 giúp em" → intent="visualize"
+- "Nhìn đồ thị đó thì hàm số đồng biến trên khoảng nào ạ?" → intent="explain"
+  (hỏi về tính chất đọc từ đồ thị, không phải yêu cầu vẽ)
+- "Chào thầy ạ!" → intent="greeting"
+- "Em bị mất gốc toán, thầy giúp em được không?" → intent="greeting"
+- "Em nản quá, chắc trượt tốt nghiệp mất thầy ơi" → intent="motivation"
+- "Thầy ơi dạy em tiếng Anh với" → intent="off_topic"
 
 Đồng thời xác định:
 - skill_ids / skill_id: các kỹ năng Toán 12 liên quan
@@ -101,6 +117,8 @@ def route_intent(state: TutorState) -> str:
     classification = state.get("classification")
     if intent == "assess" and classification and classification.is_answer_submission:
         return "grade_extract"
+    if intent in ("greeting", "motivation"):
+        return "social"
     if intent in ("off_topic", "plan", "quiz", "review", "diagnostic", "visualize"):
         return intent
     return "teach"
@@ -164,6 +182,12 @@ class TutorNodes:
             temperature=mini_temp,
         ).with_structured_output(
             PedagogyAssessment, method="function_calling", include_raw=True
+        )
+        # Node social (greeting/motivation): text tự nhiên, cần ấm áp → temp cao hơn
+        self.social_llm = ChatOpenAI(
+            model=settings.LLM_MODEL_MINI,
+            api_key=settings.OPENAI_API_KEY,
+            temperature=compatible_temperature(settings.LLM_MODEL_MINI, 0.7),
         )
 
     # ── classify ─────────────────────────────────────────────────────────
@@ -301,6 +325,79 @@ class TutorNodes:
                 "skill_name": None,
                 "mastery_level": None,
                 "mode_used": "off_topic",
+            },
+        }
+
+    # ── social (greeting / motivation) ───────────────────────────────────
+
+    SOCIAL_SYSTEM_PROMPT = """Bạn là "thầy" — gia sư Toán 12 thân thiện, tận tâm của học sinh.
+Xưng hô: luôn xưng "thầy", gọi học sinh là "em". Không dùng "thầy/cô", "anh/chị", "mình", "tôi".
+
+Tình huống hiện tại: {situation}
+
+Nhiệm vụ: viết MỘT tin nhắn ngắn (3-6 câu), ấm áp và tự nhiên như gia sư thật đang nhắn tin.
+- Phản hồi CỤ THỂ theo nội dung học sinh vừa nhắn (nếu em xưng tên, hãy gọi tên em;
+  nếu em kể hoàn cảnh, hãy nhắc đến hoàn cảnh đó).
+- KHÔNG giảng bài toán ở đây. KHÔNG dùng danh sách gạch đầu dòng dài.
+- Có thể dùng 1-2 emoji nhẹ nhàng.
+- Kết thúc bằng một câu hỏi/gợi ý mở để em bắt đầu (ví dụ: hỏi em muốn học phần nào,
+  hay gợi ý làm bài chẩn đoán năng lực / lập kế hoạch ôn tập trên giao diện).
+"""
+
+    _SOCIAL_SITUATIONS = {
+        "greeting": (
+            "Học sinh đang chào hỏi / giới thiệu bản thân / nhờ thầy giúp học Toán chung chung. "
+            "Hãy chào lại nồng nhiệt, cho em biết thầy có thể: giải thích bài, luyện quiz, "
+            "lập kế hoạch ôn tập, chẩn đoán năng lực — rồi hỏi em muốn bắt đầu từ đâu."
+        ),
+        "motivation": (
+            "Học sinh đang chán nản / lo lắng / áp lực về việc học Toán hoặc kỳ thi. "
+            "Hãy đồng cảm chân thành trước (đừng sáo rỗng, đừng vội đưa giải pháp ngay câu đầu), "
+            "cho em thấy cảm giác đó là bình thường và mất gốc vẫn kịp cải thiện, "
+            "rồi đề xuất MỘT bước nhỏ khả thi: làm bài chẩn đoán năng lực để biết lỗ hổng ở đâu, "
+            "hoặc để thầy lập kế hoạch ôn tập vừa sức."
+        ),
+    }
+
+    async def social(self, state: TutorState, config: RunnableConfig) -> dict:
+        """Greeting/motivation: sinh phản hồi cá nhân hóa bằng LLM mini, fallback text tĩnh."""
+        intent = state.get("intent", "greeting")
+        situation = self._SOCIAL_SITUATIONS.get(intent, self._SOCIAL_SITUATIONS["greeting"])
+        fallback = (
+            formatters.MOTIVATION_FALLBACK_TEXT
+            if intent == "motivation"
+            else formatters.GREETING_FALLBACK_TEXT
+        )
+
+        messages = [SystemMessage(content=self.SOCIAL_SYSTEM_PROMPT.format(situation=situation))]
+        for h in (state.get("chat_history") or [])[-4:]:
+            content = (h.get("content") or "")[:500]
+            if h.get("role") == "user":
+                messages.append(HumanMessage(content=content))
+            elif h.get("role") == "assistant":
+                messages.append(AIMessage(content=content))
+        messages.append(HumanMessage(content=state["message"]))
+
+        response_text = fallback
+        try:
+            response = await self.social_llm.ainvoke(messages)
+            log_from_response(
+                agent="Social", model=settings.LLM_MODEL_MINI, response=response
+            )
+            if response.content and str(response.content).strip():
+                response_text = str(response.content).strip()
+        except Exception as exc:
+            logger.warning("Social node lỗi LLM, dùng fallback text: %s", exc)
+
+        return {
+            "response_text": response_text,
+            "mode_used": intent,
+            "result": {
+                "response": response_text,
+                "skill_id": None,
+                "skill_name": None,
+                "mastery_level": None,
+                "mode_used": intent,
             },
         }
 
@@ -536,6 +633,12 @@ Examples of valid replies:
                 trace_id=cfg.get("trace_id"),
             )
 
+        # Thẻ <answer> chỉ dành cho evaluation pipeline — không lộ ra chat.
+        # Socratic: bỏ luôn nội dung (đáp án cuối phải giữ kín).
+        response_text = strip_answer_tag_for_chat(
+            response_text, reveal=(mode != "socratic")
+        )
+
         skill_info = SKILLS.get(skill_id, {})
         result = {
             "response": response_text,
@@ -578,7 +681,8 @@ Examples of valid replies:
         extraction = state.get("extraction") or GradingExtraction()
         return {"verification": verify(extraction)}
 
-    GRADE_FEEDBACK_PROMPT = """Bạn là giám khảo chấm bài Toán 12.
+    GRADE_FEEDBACK_PROMPT = """Bạn là "thầy" — giám khảo chấm bài Toán 12.
+Trong feedback và lời giải: xưng "thầy", gọi học sinh là "em". Không dùng "thầy/cô", "anh/chị", "mình", "tôi".
 
 Bài toán yêu cầu các kỹ năng: {skill_names_list}
 

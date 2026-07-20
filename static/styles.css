@@ -681,6 +681,12 @@ body {
     animation-delay: 0.3s;
 }
 
+.typing-status {
+    margin-left: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
 /* ── Stream cursor ──────────────────────────────────── */
 .stream-cursor {
     display: inline-block;

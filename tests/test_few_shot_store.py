@@ -172,3 +172,39 @@ class TestBuildFewShotPrompt:
     def test_with_chapter(self):
         prompt = build_few_shot_prompt(p_mastery=0.1, chapter="Nguyên hàm và Tích phân")
         assert len(prompt) > 0
+
+
+# ━━ Socratic-safe selection ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+class TestSocraticSelection:
+    """Mode socratic không được inject ví dụ giải trọn vẹn (bug live test 2026-07-19)."""
+
+    def test_socratic_pool_exists(self):
+        assert any(ex.socratic_safe for ex in _EXAMPLES)
+
+    def test_socratic_beginner_example_hides_final_answer(self):
+        ex = select_few_shot(p_mastery=0.1, socratic=True)
+        assert ex is not None
+        assert ex.socratic_safe
+        # Ví dụ socratic không được chứa kết quả cuối dạng "Kết quả:" / GTLN cụ thể
+        assert "**Kết quả:**" not in ex.teacher_response
+
+    def test_socratic_falls_back_to_nearest_tier(self):
+        # mastered chưa có ví dụ socratic-safe riêng → vẫn phải trả về một ví dụ safe
+        ex = select_few_shot(p_mastery=0.9, socratic=True)
+        assert ex is not None
+        assert ex.socratic_safe
+
+    def test_non_socratic_keeps_direct_examples(self):
+        ex = select_few_shot(p_mastery=0.9, socratic=False)
+        assert ex is not None
+        assert ex.tier == "mastered"
+
+    def test_build_prompt_socratic_mode_adds_guard_note(self):
+        prompt = build_few_shot_prompt(p_mastery=0.1, mode="socratic")
+        assert "quy tắc Socratic" in prompt
+        assert "không tiết lộ" in prompt
+
+    def test_build_prompt_other_modes_unchanged(self):
+        prompt = build_few_shot_prompt(p_mastery=0.1, mode="exam")
+        assert "quy tắc Socratic" not in prompt

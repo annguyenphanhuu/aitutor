@@ -49,6 +49,10 @@ class TestRouteIntent:
     def test_static_intents_route_to_own_node(self, intent):
         assert route_intent(self._state(intent)) == intent
 
+    @pytest.mark.parametrize("intent", ["greeting", "motivation"])
+    def test_social_intents_route_to_social_node(self, intent):
+        assert route_intent(self._state(intent)) == "social"
+
     def test_missing_intent_defaults_to_teach(self):
         assert route_intent({}) == "teach"
 
@@ -139,6 +143,27 @@ class TestGraphParity:
         }
         assert result["mode_used"] == "off_topic"
         assert result["skill_id"] is None
+
+    async def test_greeting_uses_social_llm_response(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(intent="greeting"))
+        engine.nodes.social_llm = MagicMock()
+        engine.nodes.social_llm.ainvoke = AsyncMock(
+            return_value=MagicMock(content="Chào Minh! Thầy đây, em muốn học phần nào?")
+        )
+        result = await engine.handle_message(db=db_session, message="Em tên Minh, chào thầy ạ")
+        assert result["mode_used"] == "greeting"
+        assert "Chào Minh" in result["response"]
+        assert set(result.keys()) == {
+            "response", "skill_id", "skill_name", "mastery_level", "mode_used"
+        }
+
+    async def test_motivation_llm_error_falls_back_to_static_text(self, engine, db_session):
+        _stub_classifier(engine, IntentClassification(intent="motivation"))
+        engine.nodes.social_llm = MagicMock()
+        engine.nodes.social_llm.ainvoke = AsyncMock(side_effect=RuntimeError("boom"))
+        result = await engine.handle_message(db=db_session, message="em nản quá thầy ơi")
+        assert result["mode_used"] == "motivation"
+        assert "chẩn đoán năng lực" in result["response"]
 
     async def test_explain_result_keys(self, engine, db_session):
         _stub_classifier(engine, IntentClassification(

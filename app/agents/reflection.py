@@ -75,9 +75,11 @@ CORRECTION_PROMPT = r"""Bạn vừa giải một bài toán nhưng hệ thống 
 {verification_results}
 
 Hãy VIẾT LẠI bài giải hoàn chỉnh với các kết quả đúng.
-Giữ nguyên phong cách giảng dạy, chỉ sửa lại phần tính toán sai.
-QUAN TRỌNG: 
-1. BẮT BUỘC giữ nguyên định dạng thẻ <answer>...</answer> chứa đáp án cuối cùng như yêu cầu của câu hỏi ban đầu.
+Giữ nguyên phong cách giảng dạy và cách xưng hô (xưng "thầy", gọi học sinh là "em"),
+chỉ sửa lại phần tính toán sai.
+QUAN TRỌNG:
+1. NẾU bài giải gốc có thẻ <answer>...</answer> thì BẮT BUỘC giữ nguyên định dạng thẻ đó
+   chứa đáp án cuối cùng. NẾU bài giải gốc KHÔNG có thẻ <answer> thì KHÔNG tự thêm vào.
 2. NẾU câu hỏi ban đầu có yêu cầu LÀM TRÒN (ví dụ: làm tròn đến hàng phần chục, phần trăm), bạn PHẢI làm tròn kết quả từ SymPy thành số thập phân rồi mới đưa vào thẻ <answer>. KHÔNG đưa biểu thức căn (ví dụ $\sqrt{{6}}$) hay phân số vào thẻ <answer> nếu có yêu cầu làm tròn.
 Dùng LaTeX: $...$ inline, $$...$$ block.
 Trả lời bằng tiếng Việt."""
@@ -285,9 +287,10 @@ class ReflectionEngine:
         )
         messages = [
             SystemMessage(
-                content="Bạn là gia sư Toán 12. Hãy viết lại bài giải "
-                        "với kết quả tính toán CHÍNH XÁC từ SymPy. "
-                        "QUAN TRỌNG: Luôn phải giữ lại thẻ <answer>...</answer> chứa đáp án cuối cùng."
+                content="Bạn là \"thầy\" — gia sư Toán 12 (xưng \"thầy\", gọi học sinh là \"em\"). "
+                        "Hãy viết lại bài giải với kết quả tính toán CHÍNH XÁC từ SymPy. "
+                        "QUAN TRỌNG: nếu bài giải gốc có thẻ <answer>...</answer> thì giữ nguyên thẻ đó; "
+                        "nếu bài giải gốc không có thẻ <answer> thì KHÔNG tự thêm."
             ),
             HumanMessage(content=prompt),
         ]
