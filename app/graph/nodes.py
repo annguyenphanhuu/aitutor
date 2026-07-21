@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from typing import Optional
 
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
@@ -148,6 +149,120 @@ def find_original_question(chat_history: list[dict], fallback: str) -> str:
     return fallback
 
 
+# ── F-01: phát hiện học sinh bí lặp lại cùng một bước ────────────────────
+# Chính sách "bí lần 2 → giải chi tiết bước đó" trước đây CHỈ dựa vào LLM đọc
+# lịch sử. Trong luồng stream, reasoning_effort=low khiến LLM hay bỏ qua luật
+# này → học sinh mắc kẹt. Ta đếm số lượt bí liên tiếp một cách xác định rồi
+# ép một "worked micro-step" khi chạm ngưỡng.
+_STUCK_PATTERNS = (
+    "không biết", "ko biết", "khong biet", "k biết", "kg biết",
+    "chưa biết", "chưa hiểu", "chua hieu", "không hiểu", "khong hieu",
+    "vẫn bí", "van bi", "vẫn không", "van khong", "vẫn chưa",
+    "bí quá", "bí rồi", "chịu", "bó tay", "không làm được",
+    "không nghĩ ra", "chưa nghĩ ra", "nghĩ không ra", "không ra",
+    "giúp em với", "chỉ em với", "làm sao", "sao làm",
+)
+
+# Ngưỡng bắt buộc render worked micro-step (bí lần thứ 2 ở cùng bước)
+STUCK_THRESHOLD = 2
+
+
+def _is_stuck_message(text: str) -> bool:
+    """True nếu tin nhắn thể hiện học sinh đang bí / không biết làm tiếp."""
+    if not text:
+        return False
+    low = text.lower()
+    return any(p in low for p in _STUCK_PATTERNS)
+
+
+def count_consecutive_stuck(chat_history: list[dict], current_message: str) -> int:
+    """Đếm số lượt HỌC SINH bí liên tiếp tính đến tin nhắn hiện tại.
+
+    Đi ngược lịch sử, bỏ qua lượt assistant; dừng khi gặp một lượt học sinh
+    KHÔNG phải là câu 'bí'. Pure function — unit-test được.
+    """
+    if not _is_stuck_message(current_message):
+        return 0
+    count = 1
+    for h in reversed(chat_history or []):
+        role = h.get("role")
+        if role == "assistant":
+            continue
+        if role == "user":
+            if _is_stuck_message(h.get("content") or ""):
+                count += 1
+            else:
+                break
+    return count
+
+
+STUCK_DIRECTIVE = (
+    "⚠️ CHỈ THỊ SƯ PHẠM (ưu tiên cao nhất, GHI ĐÈ luật 'chỉ gợi ý'): "
+    "Học sinh đã nói không biết / vẫn bí {n} lần LIÊN TIẾP ở cùng một bước. "
+    "NGỪNG chỉ đưa gợi ý mơ hồ. Bây giờ BẮT BUỘC giải chi tiết TRỌN VẸN đúng "
+    "MỘT bước đang vướng: thay số THẬT của đề vào, viết ra kết quả CỤ THỂ của "
+    "riêng bước đó (tuyệt đối KHÔNG để ô '?', KHÔNG để trống, KHÔNG nói chung "
+    "chung), và giải thích ngắn gọn vì sao làm vậy. Sau đó hỏi MỘT câu gợi mở "
+    "cho bước KẾ TIẾP mà em chưa làm. Vẫn KHÔNG tiết lộ đáp án cuối của cả bài."
+)
+
+
+def build_stuck_directive(stuck_count: int) -> Optional[str]:
+    """Chỉ thị runtime ép worked micro-step khi học sinh bí >= ngưỡng.
+
+    Trả về None nếu chưa tới ngưỡng (không thêm gì vào prompt).
+    """
+    if stuck_count < STUCK_THRESHOLD:
+        return None
+    return STUCK_DIRECTIVE.format(n=stuck_count)
+
+
+# ── F-02: đại số nền không được gắn nhãn kỹ năng giải tích ────────────────
+# Skill graph chỉ có 6 nhóm kiến thức Toán 12; không có PT bậc hai / biến đổi
+# đại số nền. Classifier hay chọn nhãn gần nhất (vd derivative_basic cho
+# "giải x^2-5x+6=0") → sai mastery/BKT/RAG. Guard xác định: nếu tin nhắn là
+# đại số nền thuần và KHÔNG có ngữ cảnh giải tích thì gỡ nhãn giải tích.
+_CALCULUS_CHAPTERS = frozenset({"Đạo hàm", "Nguyên hàm và Tích phân"})
+
+_CALCULUS_CONTEXT_RE = re.compile(
+    r"đạo hàm|nguyên hàm|tích phân|∫|cực trị|cực đại|cực tiểu|đơn điệu|"
+    r"đồng biến|nghịch biến|tiếp tuyến|giới hạn|\blim\b|tiệm cận|khảo sát|"
+    r"biến thiên|f\s*'|y\s*'",
+    flags=re.IGNORECASE,
+)
+
+_QUADRATIC_RE = re.compile(r"x\s*(?:\^|\*\*)\s*2|x²|x2\b")
+
+_SOLVE_HINTS = (
+    "giải phương trình", "giải pt", "phương trình bậc", "tìm nghiệm",
+    "nghiệm của", "tìm x", "giải bất phương trình",
+)
+
+
+def _is_calculus_skill(skill_id: Optional[str]) -> bool:
+    info = SKILLS.get(skill_id) if skill_id else None
+    return bool(info and info.get("chapter") in _CALCULUS_CHAPTERS)
+
+
+def is_foundation_algebra(message: str) -> bool:
+    """True nếu tin nhắn là bài đại số NỀN (giải PT bậc nhất/bậc hai) và KHÔNG
+    kèm ngữ cảnh giải tích. Loại này không thuộc 6 chương Toán 12 → không nên
+    map sang kỹ năng đạo hàm/tích phân. Pure function — unit-test được.
+    """
+    if not message:
+        return False
+    if _CALCULUS_CONTEXT_RE.search(message):
+        return False
+    has_eq = "=" in message
+    quadratic = bool(_QUADRATIC_RE.search(message))
+    solving = any(h in message.lower() for h in _SOLVE_HINTS)
+    if quadratic and (has_eq or solving):
+        return True
+    if solving and has_eq and re.search(r"\bx\b", message, flags=re.IGNORECASE):
+        return True
+    return False
+
+
 def _cfg(config: RunnableConfig) -> dict:
     return config.get("configurable", {}) or {}
 
@@ -252,6 +367,16 @@ class TutorNodes:
         skill_ids = [s for s in classification.resolved_skill_ids() if s in SKILLS]
         skill_id = classification.skill_id if classification.skill_id in SKILLS else None
         skill_id = skill_id or (skill_ids[0] if skill_ids else None)
+
+        # F-02: đại số nền (PT bậc hai...) KHÔNG được gắn nhãn giải tích.
+        # Gỡ nhãn sai → skill_id=None (kiến thức nền chưa có trong graph) để
+        # không cập nhật nhầm mastery/BKT cho đạo hàm/tích phân.
+        if is_foundation_algebra(message) and _is_calculus_skill(skill_id):
+            logger.info(
+                "F-02 guard: gỡ nhãn giải tích '%s' cho tin nhắn đại số nền", skill_id
+            )
+            skill_ids = [s for s in skill_ids if not _is_calculus_skill(s)]
+            skill_id = skill_ids[0] if skill_ids else None
         return {
             "classification": classification,
             "intent": classification.intent,
@@ -271,15 +396,6 @@ class TutorNodes:
         session_id = cfg.get("session_id")
 
         masteries = await get_all_masteries(db, user_id)
-        skill_id = state.get("skill_id")
-        current_mastery = masteries.get(skill_id, 0.1) if skill_id else 0.1
-
-        requested_mode = state.get("requested_mode", "auto")
-        mode = (
-            ("exam" if current_mastery >= 0.7 else "socratic")
-            if requested_mode == "auto"
-            else requested_mode
-        )
 
         snapshot = SessionSnapshot()
         if session_id is not None:
@@ -291,13 +407,34 @@ class TutorNodes:
                     last_skill_ids=row.last_skill_ids or [],
                 )
 
+        # F-02/F-03: follow-up không tự nhận diện được skill (classifier trả None
+        # cho "vậy bước tiếp theo?", "vẫn không biết"...) → kế thừa skill của bài
+        # đang giải trong session thay vì để null (meta hiển thị đúng skill, RAG
+        # và mastery bám đúng bài).
+        skill_id = state.get("skill_id")
+        skill_ids = state.get("skill_ids") or []
+        inherited = False
+        if skill_id is None and snapshot.last_skill_ids:
+            skill_ids = list(snapshot.last_skill_ids)
+            skill_id = skill_ids[0]
+            inherited = True
+
+        current_mastery = masteries.get(skill_id, 0.1) if skill_id else 0.1
+
+        requested_mode = state.get("requested_mode", "auto")
+        mode = (
+            ("exam" if current_mastery >= 0.7 else "socratic")
+            if requested_mode == "auto"
+            else requested_mode
+        )
+
         writer = _writer_if_streaming(config, writer)
         if writer is not None:
             skill_info = SKILLS.get(skill_id, {})
             writer(json.dumps({
                 "type": "meta",
                 "skill_id": skill_id,
-                "skill_ids": state.get("skill_ids") or [],
+                "skill_ids": skill_ids,
                 "formula_ids": state.get("formula_ids") or [],
                 "skill_name": skill_info.get("name"),
                 "mastery_level": round(current_mastery, 3),
@@ -305,13 +442,17 @@ class TutorNodes:
                 "intent": state.get("intent"),
             }, ensure_ascii=False))
 
-        return {
+        result = {
             "masteries": masteries,
             "current_mastery": current_mastery,
             "mastery_level": self.bkt.get_mastery_level(current_mastery),
             "mode": mode,
             "session_state": snapshot,
         }
+        if inherited:
+            result["skill_id"] = skill_id
+            result["skill_ids"] = skill_ids
+        return result
 
     # ── các intent tĩnh ──────────────────────────────────────────────────
 
@@ -584,6 +725,15 @@ Examples of valid replies:
 
         mode = "answer" if intent == "answer" else state.get("mode", "socratic")
 
+        # F-01: học sinh bí lặp lại cùng một bước → ép worked micro-step.
+        # Chỉ áp cho socratic (answer/exam vốn đã đưa lời giải đầy đủ).
+        extra_directive = None
+        if mode == "socratic":
+            stuck_count = count_consecutive_stuck(chat_history, message)
+            extra_directive = build_stuck_directive(stuck_count)
+            if extra_directive:
+                logger.info("F-01: học sinh bí %d lần → ép worked micro-step", stuck_count)
+
         prereq_gaps = []
         if skill_id:
             prereq_gaps = await identify_gaps(db, skill_id, user_id)
@@ -613,6 +763,7 @@ Examples of valid replies:
                 formula_ids=formula_ids,
                 masteries=state.get("masteries") or {},
                 p_mastery=current_mastery,
+                extra_directive=extra_directive,
             ):
                 full_response += token
                 writer(json.dumps({"type": "token", "content": token}, ensure_ascii=False))
@@ -631,6 +782,7 @@ Examples of valid replies:
                 masteries=state.get("masteries") or {},
                 p_mastery=current_mastery,
                 trace_id=cfg.get("trace_id"),
+                extra_directive=extra_directive,
             )
 
         # Thẻ <answer> chỉ dành cho evaluation pipeline — không lộ ra chat.

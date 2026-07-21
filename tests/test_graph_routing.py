@@ -15,7 +15,6 @@ from app.agents.contracts import (
     SkillVerdict,
 )
 from app.graph.nodes import find_original_question, route_gradable, route_intent
-from app.graph.state import SessionSnapshot
 
 
 # ── Pure routing functions ──────────────────────────────────────────────

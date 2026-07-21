@@ -217,6 +217,11 @@ QUY TẮC:
 5. Dùng LaTeX cho công thức: $...$ cho inline, $$...$$ cho block.
 6. Trả lời bằng tiếng Việt.
 7. Nếu học sinh hỏi tiếp theo, hãy hiểu dựa trên ngữ cảnh hội thoại trước đó.
+8. ĐỘ DÀI (quan trọng — đây là chế độ luyện thi): với bài chỉ MỘT ý/một câu hỏi,
+   trình bày GỌN trong khoảng 8-12 dòng — đi thẳng vào phương pháp nhanh và đáp án.
+   KHÔNG chia thành quá nhiều bước, KHÔNG dùng nhiều đường kẻ phân cách "---",
+   KHÔNG lặp lại công thức đã nêu, và KHÔNG thêm phần "mẹo"/mở rộng SAU KHI đã kết luận.
+   Chỉ trình bày dài hơn khi bài có nhiều ý hoặc khi học sinh chủ động hỏi thêm.
 
 QUY TRÌNH SUY LUẬN (BẮT BUỘC) — Chain of Thought:
 Dù ở chế độ thi nhanh, bạn vẫn PHẢI suy luận có hệ thống trước khi đưa đáp án:
@@ -510,6 +515,7 @@ class TeacherAgent(AgenticTeacherMixin):
         p_mastery: float = 0.1,
         trace_id: Optional[str] = None,
         question_type: Optional[str] = None,
+        extra_directive: Optional[str] = None,
     ) -> str:
         """Generate adaptive teaching response.
 
@@ -553,6 +559,8 @@ class TeacherAgent(AgenticTeacherMixin):
             mastery_level=mastery_level,
             question_type=question_type,
         )
+        if extra_directive:
+            system_prompt = f"{system_prompt}\n\n{extra_directive}"
         messages = [SystemMessage(content=system_prompt), *self._history_messages(chat_history)]
 
         # ── Build HumanMessage: text-only hoặc multimodal ──────────
@@ -648,6 +656,7 @@ class TeacherAgent(AgenticTeacherMixin):
         formula_ids: Optional[list[str]] = None,
         masteries: Optional[dict[str, float]] = None,
         p_mastery: float = 0.1,
+        extra_directive: Optional[str] = None,
     ):
         """Async generator: stream tokens từng mảnh từ LLM (dùng cho SSE endpoint).
 
@@ -674,6 +683,8 @@ class TeacherAgent(AgenticTeacherMixin):
             mode=mode,
             mastery_level=mastery_level,
         )
+        if extra_directive:
+            system_prompt = f"{system_prompt}\n\n{extra_directive}"
 
         # ── Step 4: Build OpenAI messages (dùng AsyncOpenAI vì LangChain không hỗ trợ stream=True dễ) ──
         oai_messages: list[dict] = [{"role": "system", "content": system_prompt}]
