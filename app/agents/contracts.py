@@ -40,7 +40,15 @@ class IntentClassification(BaseModel):
         return [self.skill_id] if self.skill_id else []
 
 
-AbstainReason = Literal["third_party_claim", "no_final_answer", "no_problem_found", "other"]
+AbstainReason = Literal[
+    "third_party_claim",
+    "no_final_answer",
+    # Bước trung gian giữa hội thoại Socratic — em đang trả lời câu gợi mở của
+    # thầy, chưa nộp bài. Chấm ở đây sẽ trừ điểm oan và lộ đáp án cuối.
+    "intermediate_step",
+    "no_problem_found",
+    "other",
+]
 
 TaskKind = Literal["antiderivative", "derivative", "equation", "numeric", "other"]
 

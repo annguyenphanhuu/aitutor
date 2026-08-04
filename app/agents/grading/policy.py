@@ -97,4 +97,21 @@ def reconcile_assessment(
         updated.score = min(updated.score, 0.5)
         if updated.error_type == "none":
             updated.error_type = "conceptual"
+    # feedback do LLM viết theo verdict CŨ — giữ lại sẽ ra thẻ điểm tự mâu thuẫn
+    # ("❌ 50%" kèm "kết quả của em là đúng"). Thay bằng câu trung tính theo CAS.
+    updated.feedback = CAS_OVERRIDE_FEEDBACK[truth]
     return updated
+
+
+# Dùng khi CAS lật verdict của LLM — không nêu đáp án đúng để chế độ Socratic
+# vẫn giữ được lời giải (xem formatters.format_assessment).
+CAS_OVERRIDE_FEEDBACK = {
+    True: (
+        "Thầy kiểm chứng lại bằng công cụ tính toán thì kết quả của em ĐÚNG. "
+        "Em trình bày còn hơi khác cách quen thuộc, nhưng kết luận thì chuẩn rồi."
+    ),
+    False: (
+        "Thầy kiểm chứng lại bằng công cụ tính toán thì kết quả cuối của em CHƯA ĐÚNG. "
+        "Em rà lại phép tính ở bước cuối giúp thầy nhé."
+    ),
+}

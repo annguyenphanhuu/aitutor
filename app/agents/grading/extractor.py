@@ -38,6 +38,12 @@ Nhiệm vụ: từ tin nhắn của học sinh (và đề bài gốc nếu có),
    - "third_party_claim": học sinh thuật lại lời thầy/cô/bạn/sách và hỏi đúng sai
      (ví dụ: "Thầy em bảo rằng...", "Bạn em nói...", "Sách viết là...")
    - "no_final_answer": tin nhắn chỉ nhắc lại đề bài hoặc hỏi cách làm, không có kết luận riêng
+   - "intermediate_step": ĐANG TRONG HỘI THOẠI SOCRATIC (xem cờ bên dưới) và học sinh
+     chỉ đang trả lời câu hỏi gợi mở của thầy cho MỘT BƯỚC, chưa kết luận cả bài.
+     Dấu hiệu: nội dung tin nhắn khớp đúng bước thầy vừa hỏi (một phép đạo hàm trung gian,
+     một cách đặt u/dv, một nghiệm của bước phụ...) chứ không phải đáp số của đề gốc.
+     Ví dụ: đề hỏi GTLN của y=x·e^(-x) trên [0;2], thầy vừa hỏi "y' bằng bao nhiêu?",
+     học sinh đáp "y' = e^(-x) - x·e^(-x)" → đây là BƯỚC TRUNG GIAN, không phải bài nộp.
    - "no_problem_found": không xác định được đề bài gốc để đối chiếu
 
 2. Nếu gradable=true:
@@ -60,6 +66,10 @@ Ví dụ:
 - "Em tính được ∫x²dx = x³/3 + C, đúng không ạ?" → gradable=true, task_kind="antiderivative",
   problem_expr="x**2", candidate_expr="x**3/3"
 - "Bài này giải sao ạ?" → gradable=false, abstain_reason="no_final_answer"
+- (đang Socratic, thầy vừa hỏi "y' bằng bao nhiêu?") "À em hiểu rồi, y' = e^(-x) - x·e^(-x)"
+  → gradable=false, abstain_reason="intermediate_step"
+- (đang Socratic, nhưng học sinh kết luận cả bài) "Vậy GTLN là 1/e tại x=1 ạ"
+  → gradable=true (đây là đáp số của đề gốc, không phải bước trung gian)
 """
 
 ABSTAIN_FALLBACK = GradingExtraction(
@@ -87,8 +97,15 @@ class GradingExtractor:
         message: str,
         original_problem: str | None = None,
         chat_history: list[dict] | None = None,
+        in_socratic_dialogue: bool = False,
     ) -> GradingExtraction:
         parts = []
+        if in_socratic_dialogue:
+            parts.append(
+                "CỜ NGỮ CẢNH: đang trong HỘI THOẠI SOCRATIC — thầy đang dẫn dắt học sinh "
+                "theo từng bước và vừa đặt một câu hỏi gợi mở. Hãy cân nhắc kỹ "
+                'abstain_reason="intermediate_step" trước khi coi tin nhắn là bài nộp.'
+            )
         if original_problem and original_problem.strip() != message.strip():
             parts.append(f"ĐỀ BÀI GỐC (từ ngữ cảnh hội thoại):\n{original_problem}")
         if chat_history:

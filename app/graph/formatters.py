@@ -81,9 +81,26 @@ HEDGED_NOTE = (
     "hồ sơ năng lực của em chưa được cập nhật từ câu này.*"
 )
 
+# Thay cho "Lời giải đúng" khi em đang học ở chế độ Socratic và làm sai:
+# chỉ ra chỗ vướng nhưng để em tự sửa.
+RETRY_NUDGE = (
+    "Thầy chưa đưa lời giải vội — em đang học theo cách tự tìm ra đáp án mà. "
+    "Em xem lại đúng chỗ thầy vừa nhận xét rồi thử lại giúp thầy nhé; "
+    "nếu vẫn vướng, em cứ nói \"em chưa hiểu\" là thầy gỡ cùng em từng bước."
+)
 
-def format_assessment(assessment: PedagogyAssessment, hedged: bool = False) -> str:
-    """Format assessment result into readable text (port từ _format_assessment)."""
+
+def format_assessment(
+    assessment: PedagogyAssessment,
+    hedged: bool = False,
+    reveal_solution: bool = True,
+) -> str:
+    """Format assessment result into readable text (port từ _format_assessment).
+
+    ``reveal_solution=False`` (chế độ Socratic, bài làm sai) giữ kín lời giải
+    đúng — em cần cơ hội tự sửa, đưa đáp án ở đây là phá chính hợp đồng
+    Socratic mà em đang chọn.
+    """
     emoji = "✅" if assessment.is_correct else "❌"
     score = assessment.score
 
@@ -101,7 +118,10 @@ def format_assessment(assessment: PedagogyAssessment, hedged: bool = False) -> s
         error_type = assessment.error_type
         lines.append(f"**Loại lỗi:** {error_labels.get(error_type, error_type)}\n")
 
-    lines.append(f"**Lời giải đúng:**\n{assessment.correct_solution}")
+    if reveal_solution:
+        lines.append(f"**Lời giải đúng:**\n{assessment.correct_solution}")
+    else:
+        lines.append(RETRY_NUDGE)
 
     text = "\n".join(lines)
     if hedged:

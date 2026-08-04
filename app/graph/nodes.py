@@ -77,6 +77,21 @@ CLASSIFIER_SYSTEM_PROMPT = """Phân loại ý định của học sinh thành m�
 - "off_topic": Câu hỏi/yêu cầu KHÔNG liên quan đến Toán học lẫn việc học (ví dụ: tư vấn tình cảm, hỏi thời tiết,
   chuyện phiếm, nhờ dạy môn khác, yêu cầu làm việc khác ngoài Toán). Chào hỏi → "greeting"; tâm sự về việc học → "motivation".
 
+QUY TẮC QUAN TRỌNG về TIN NHẮN TIẾP NỐI (đọc kỹ LỊCH SỬ HỘI THOẠI ở trên):
+Tin nhắn ngắn tách khỏi ngữ cảnh thường vô nghĩa. Nếu lịch sử cho thấy hai thầy trò
+ĐANG DỞ một bài Toán, thì các tin nhắn sau đây thuộc về bài đó — KHÔNG phải chào hỏi,
+KHÔNG phải tâm sự, KHÔNG phải lạc đề:
+- Học sinh báo bí ở bước đang làm ("em không biết làm ạ", "em chịu rồi", "vẫn không hiểu",
+  "bó tay thầy ơi") → intent="explain" (thầy sẽ gỡ tiếp bước đang vướng, KHÔNG phải an ủi suông).
+- Học sinh phản biện / không đồng ý với thầy ("thầy sai rồi", "em không đồng ý",
+  "sách em ghi khác mà", "em vẫn nghĩ là ...") → intent="explain" (đây là tranh luận Toán học
+  cần được giải thích tới nơi, TUYỆT ĐỐI KHÔNG phải "off_topic").
+- Học sinh trả lời câu hỏi gợi mở của thầy bằng một kết quả ngắn ("bằng 2 ạ", "là 3x^2",
+  "m = 2") → intent="assess", is_answer_submission=true.
+- Học sinh xin quay lại bài cũ ("quay lại bài lúc nãy", "làm tiếp thế nào ạ") → intent="explain".
+Chỉ dùng "greeting"/"motivation"/"off_topic" khi tin nhắn THỰC SỰ rời khỏi bài Toán đang làm
+(chào hỏi lúc mở đầu, tâm sự về chuyện học nói chung, hỏi chuyện ngoài Toán).
+
 QUY TẮC QUAN TRỌNG về is_answer_submission:
 - is_answer_submission = true CHỈ KHI tin nhắn chứa lời giải hoặc đáp án do CHÍNH học sinh làm ra
   (thường ở ngôi thứ nhất: "em tính được...", "em giải ra...", "đáp án của em là...").
@@ -97,6 +112,12 @@ Ví dụ phân loại:
 - "Em bị mất gốc toán, thầy giúp em được không?" → intent="greeting"
 - "Em nản quá, chắc trượt tốt nghiệp mất thầy ơi" → intent="motivation"
 - "Thầy ơi dạy em tiếng Anh với" → intent="off_topic"
+- (đang dở bài tích phân) "Em không biết làm ạ" → intent="explain"
+  (báo bí giữa bài, KHÔNG phải greeting)
+- (thầy vừa nói đạo hàm sin(2x) là 2cos(2x)) "Thầy sai rồi, em không đồng ý" → intent="explain"
+  (phản biện Toán học, KHÔNG phải off_topic)
+- (thầy vừa hỏi "nghiệm của 2x+4=0 là bao nhiêu?") "Bằng -2 ạ"
+  → intent="assess", is_answer_submission=true
 
 Đồng thời xác định:
 - skill_ids / skill_id: các kỹ năng Toán 12 liên quan
@@ -118,6 +139,11 @@ def route_intent(state: TutorState) -> str:
     classification = state.get("classification")
     if intent == "assess" and classification and classification.is_answer_submission:
         return "grade_extract"
+    # Học sinh bí / phản biện giữa bài mà bị gán nhãn rời bài → kéo về teach,
+    # nơi có ràng buộc Socratic và chỉ thị worked micro-step (F-01).
+    if should_stay_on_problem(state):
+        logger.info("Guard: intent=%s giữa bài đang dở → teach", intent)
+        return "teach"
     if intent in ("greeting", "motivation"):
         return "social"
     if intent in ("off_topic", "plan", "quiz", "review", "diagnostic", "visualize"):
@@ -215,6 +241,70 @@ def build_stuck_directive(stuck_count: int) -> Optional[str]:
     if stuck_count < STUCK_THRESHOLD:
         return None
     return STUCK_DIRECTIVE.format(n=stuck_count)
+
+
+# ── Ngữ cảnh cho classifier ──────────────────────────────────────────────
+# Classifier trước đây chỉ thấy tin nhắn hiện tại nên đoán bừa các tin nhắn
+# tiếp nối ("em không biết làm", "thầy sai rồi", "bằng 2 ạ") với confidence
+# 0.93-0.98 → route sang social/off_topic, rơi khỏi luồng dạy.
+CLASSIFIER_HISTORY_TURNS = 4
+_CLASSIFIER_HISTORY_CHARS = 400
+
+_THINKING_RE = re.compile(r"<thinking>.*?</thinking>", flags=re.DOTALL)
+
+
+def _history_messages_for_classifier(chat_history: Optional[list[dict]]) -> list:
+    """Vài lượt gần nhất, dạng message LangChain, cho classifier đọc ngữ cảnh.
+
+    Bỏ khối <thinking> của assistant (log kiểm chứng nội bộ, chỉ gây nhiễu) và
+    cắt ngắn từng lượt — classifier chỉ cần biết hai thầy trò đang làm bài gì.
+    """
+    messages = []
+    for turn in (chat_history or [])[-CLASSIFIER_HISTORY_TURNS:]:
+        content = _THINKING_RE.sub("", turn.get("content") or "").strip()
+        if not content:
+            continue
+        content = content[:_CLASSIFIER_HISTORY_CHARS]
+        if turn.get("role") == "user":
+            messages.append(HumanMessage(content=content))
+        elif turn.get("role") == "assistant":
+            messages.append(AIMessage(content=content))
+    return messages
+
+
+# ── Giữ học sinh ở lại bài đang dở ───────────────────────────────────────
+_CHALLENGE_PATTERNS = (
+    "thầy sai", "thay sai", "sai rồi", "sai roi", "không đồng ý", "khong dong y",
+    "em không nghĩ vậy", "em nghĩ khác", "em vẫn nghĩ", "van nghi",
+    "sách em ghi", "sach em ghi", "sách ghi", "cô em bảo", "thầy em bảo",
+    "không đúng", "khong dung", "em phản đối",
+)
+
+_STAY_ON_PROBLEM_INTENTS = frozenset({"greeting", "motivation", "off_topic"})
+
+
+def _is_challenge_message(text: str) -> bool:
+    """True nếu học sinh đang phản biện / không đồng ý với thầy."""
+    if not text:
+        return False
+    low = text.lower()
+    return any(p in low for p in _CHALLENGE_PATTERNS)
+
+
+def should_stay_on_problem(state: TutorState) -> bool:
+    """True khi intent 'rời bài' nhưng học sinh thực ra đang bí/phản biện giữa bài.
+
+    Guard hẹp có chủ ý: chỉ cứu hai loại tin nhắn tiếp nối đã biết là hay bị
+    phân loại nhầm, và chỉ khi session còn một bài đang dở. Câu lạc đề thật
+    ("tối nay đá bóng đội nào thắng") vẫn đi đúng vào off_topic. Pure function.
+    """
+    if state.get("intent") not in _STAY_ON_PROBLEM_INTENTS:
+        return False
+    snapshot = state.get("session_state")
+    if snapshot is None or not snapshot.current_problem:
+        return False
+    message = state.get("message") or ""
+    return _is_stuck_message(message) or _is_challenge_message(message)
 
 
 # ── F-02: đại số nền không được gắn nhãn kỹ năng giải tích ────────────────
@@ -340,6 +430,7 @@ class TutorNodes:
         try:
             output = await self.classifier_llm.ainvoke([
                 SystemMessage(content=system_prompt),
+                *_history_messages_for_classifier(state.get("chat_history")),
                 HumanMessage(content=f"Tin nhắn học sinh: {message}"),
             ])
             raw = output.get("raw")
@@ -723,7 +814,12 @@ Examples of valid replies:
         chat_history = state.get("chat_history") or []
         current_mastery = state.get("current_mastery", 0.1)
 
-        mode = "answer" if intent == "answer" else state.get("mode", "socratic")
+        # intent="answer" ("cho em đáp án luôn") chỉ được đổi mode khi học sinh
+        # để chế độ "auto". Em đã tự chọn Socratic/Exam thì lựa chọn đó thắng —
+        # không thể xin đáp án để lách chính chế độ mình vừa bật.
+        mode = state.get("mode", "socratic")
+        if intent == "answer" and state.get("requested_mode", "auto") == "auto":
+            mode = "answer"
 
         # F-01: học sinh bí lặp lại cùng một bước → ép worked micro-step.
         # Chỉ áp cho socratic (answer/exam vốn đã đưa lời giải đầy đủ).
@@ -740,7 +836,7 @@ Examples of valid replies:
 
         # Nhánh explain mặc định giữ check từ khóa vẽ đồ thị (port từ else-branch cũ)
         vis_data = None
-        if intent != "answer":
+        if mode != "answer":
             graph_keywords = ["đồ thị", "vẽ", "biểu đồ", "minh họa", "hình ảnh"]
             if any(kw in message.lower() for kw in graph_keywords):
                 vis_data = await self._extract_and_visualize(message, chat_history)
@@ -801,7 +897,7 @@ Examples of valid replies:
             "mastery_level": round(current_mastery, 3),
             "mode_used": mode,
         }
-        if intent != "answer":
+        if mode != "answer":
             result["visualization"] = vis_data
 
         return {
@@ -826,6 +922,11 @@ Examples of valid replies:
             message=message,
             original_problem=original_problem,
             chat_history=chat_history,
+            # Socratic + bài đang treo chờ em trả lời → nhiều khả năng tin nhắn
+            # là bước trung gian chứ không phải bài nộp.
+            in_socratic_dialogue=(
+                state.get("mode") == "socratic" and snapshot.awaiting_answer
+            ),
         )
         return {"extraction": extraction, "abstained": not extraction.gradable}
 
@@ -840,7 +941,7 @@ Bài toán yêu cầu các kỹ năng: {skill_names_list}
 
 Công thức áp dụng:
 {formulas_list}
-{cas_block}
+{cas_block}{socratic_block}
 QUY TRÌNH CHẤM (BẮT BUỘC theo thứ tự):
 1. Tự giải đề bài để có đáp án chuẩn.
 2. Đối chiếu TỪNG KẾT LUẬN trong bài làm của học sinh với đáp án chuẩn.
@@ -864,6 +965,16 @@ Nhận xét của bạn BẮT BUỘC phải nhất quán với kết luận này
 ({cas_details})
 """
 
+    # Học sinh đang ở chế độ Socratic: feedback là kênh duy nhất còn hiển thị khi
+    # bài làm sai (khối "Lời giải đúng" đã bị ẩn), nên chính nó không được lộ đáp án.
+    SOCRATIC_FEEDBACK_BLOCK = """
+CHẾ ĐỘ SOCRATIC — RÀNG BUỘC BỔ SUNG CHO feedback (ưu tiên cao):
+Học sinh đang tự tìm lời giải. Nếu bài làm SAI, trường "feedback" TUYỆT ĐỐI KHÔNG
+được chứa đáp án đúng (không nêu con số, biểu thức kết quả, hay giá trị đúng của đề).
+Chỉ được nói em sai ở BƯỚC NÀO và sai vì lý do gì, để em tự tính lại.
+Vẫn điền "correct_solution" đầy đủ như bình thường — hệ thống tự quyết định có hiện hay không.
+"""
+
     async def grade_feedback(self, state: TutorState, config: RunnableConfig) -> dict:
         extraction = state.get("extraction") or GradingExtraction()
         verification = state.get("verification")
@@ -882,6 +993,9 @@ Nhận xét của bạn BẮT BUỘC phải nhất quán với kết luận này
             skill_names_list=format_skill_names(skill_ids),
             formulas_list=format_formulas(state.get("formula_ids")),
             cas_block=cas_block,
+            socratic_block=(
+                self.SOCRATIC_FEEDBACK_BLOCK if state.get("mode") == "socratic" else ""
+            ),
         )
 
         question = extraction.problem_statement or find_original_question(
@@ -1001,7 +1115,14 @@ Nhận xét của bạn BẮT BUỘC phải nhất quán với kết luận này
             and assessment is not None
         )
         display_assessment = reconcile_assessment(assessment, verification)
-        response_text = formatters.format_assessment(display_assessment, hedged=hedged)
+        # Socratic + em làm SAI → chấm và chỉ chỗ vướng, nhưng giữ kín lời giải
+        # để em còn cơ hội tự sửa. Em làm ĐÚNG thì hiện bình thường (em xong bài rồi).
+        reveal_solution = not (
+            state.get("mode") == "socratic" and not display_assessment.is_correct
+        )
+        response_text = formatters.format_assessment(
+            display_assessment, hedged=hedged, reveal_solution=reveal_solution
+        )
 
         skill_info = SKILLS.get(skill_id, {})
         return {

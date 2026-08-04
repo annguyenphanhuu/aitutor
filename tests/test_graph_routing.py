@@ -14,7 +14,15 @@ from app.agents.contracts import (
     PedagogyAssessment,
     SkillVerdict,
 )
-from app.graph.nodes import find_original_question, route_gradable, route_intent
+from app.graph.nodes import (
+    _history_messages_for_classifier,
+    _is_challenge_message,
+    find_original_question,
+    route_gradable,
+    route_intent,
+    should_stay_on_problem,
+)
+from app.graph.state import SessionSnapshot
 
 
 # ── Pure routing functions ──────────────────────────────────────────────
@@ -54,6 +62,116 @@ class TestRouteIntent:
 
     def test_missing_intent_defaults_to_teach(self):
         assert route_intent({}) == "teach"
+
+
+# ── Guard: giữ học sinh ở lại bài đang dở ───────────────────────────────
+
+
+def _pending(intent, message):
+    """State có một bài đang dở trong session."""
+    return {
+        "intent": intent,
+        "message": message,
+        "classification": IntentClassification(intent=intent),
+        "session_state": SessionSnapshot(
+            current_problem="Tính tích phân từ 0 đến 1 của x*e^x dx",
+            awaiting_answer=True,
+        ),
+    }
+
+
+class TestStayOnProblemGuard:
+    @pytest.mark.parametrize("intent", ["greeting", "motivation", "off_topic"])
+    def test_stuck_message_mid_problem_goes_to_teach(self, intent):
+        """Lỗi gốc: 'em không biết làm ạ' → greeting → social xổ trọn đáp án."""
+        assert route_intent(_pending(intent, "Em không biết làm ạ")) == "teach"
+
+    def test_challenge_message_mid_problem_goes_to_teach(self):
+        """Lỗi gốc: 'thầy sai rồi' → off_topic → canned text bỏ rơi tranh luận."""
+        assert route_intent(_pending("off_topic", "Thầy sai rồi, em không đồng ý")) == "teach"
+
+    def test_real_off_topic_mid_problem_still_off_topic(self):
+        # Guard hẹp: câu lạc đề thật vẫn phải vào off_topic dù đang dở bài
+        state = _pending("off_topic", "Thầy ơi tối nay đá bóng đội nào thắng ạ?")
+        assert route_intent(state) == "off_topic"
+
+    def test_real_greeting_mid_problem_still_social(self):
+        assert route_intent(_pending("greeting", "Chào thầy ạ")) == "social"
+
+    def test_stuck_message_without_pending_problem_stays_social(self):
+        # Chưa có bài nào đang dở → 'em chịu' đúng là tâm sự, không phải bí bài
+        state = {
+            "intent": "motivation",
+            "message": "Em chịu rồi thầy ơi",
+            "classification": IntentClassification(intent="motivation"),
+            "session_state": SessionSnapshot(),
+        }
+        assert route_intent(state) == "social"
+
+    def test_no_session_state_stays_social(self):
+        state = {
+            "intent": "greeting",
+            "message": "Em không biết làm ạ",
+            "classification": IntentClassification(intent="greeting"),
+        }
+        assert should_stay_on_problem(state) is False
+        assert route_intent(state) == "social"
+
+    def test_explain_intent_unaffected(self):
+        assert should_stay_on_problem(_pending("explain", "Em không biết làm ạ")) is False
+
+    @pytest.mark.parametrize("text", [
+        "Thầy sai rồi", "em không đồng ý", "Sách em ghi khác mà", "em vẫn nghĩ là cos(2x)",
+    ])
+    def test_challenge_patterns(self, text):
+        assert _is_challenge_message(text) is True
+
+    @pytest.mark.parametrize("text", ["", "Em cảm ơn thầy", "Đáp án là 2"])
+    def test_non_challenge_messages(self, text):
+        assert _is_challenge_message(text) is False
+
+
+# ── Ngữ cảnh truyền cho classifier ──────────────────────────────────────
+
+
+class TestClassifierHistoryMessages:
+    def test_empty_history(self):
+        assert _history_messages_for_classifier(None) == []
+        assert _history_messages_for_classifier([]) == []
+
+    def test_keeps_roles_in_order(self):
+        msgs = _history_messages_for_classifier([
+            {"role": "user", "content": "Tính ∫x·e^x dx"},
+            {"role": "assistant", "content": "Em đặt u là phần nào?"},
+        ])
+        assert [m.type for m in msgs] == ["human", "ai"]
+        assert msgs[0].content == "Tính ∫x·e^x dx"
+
+    def test_keeps_only_last_turns(self):
+        history = [{"role": "user", "content": f"m{i}"} for i in range(10)]
+        msgs = _history_messages_for_classifier(history)
+        assert len(msgs) == 4
+        assert msgs[-1].content == "m9"
+
+    def test_strips_thinking_block(self):
+        msgs = _history_messages_for_classifier([
+            {"role": "assistant", "content": "<thinking>log nội bộ</thinking>Câu hỏi của thầy"},
+        ])
+        assert msgs[0].content == "Câu hỏi của thầy"
+
+    def test_drops_empty_after_strip(self):
+        msgs = _history_messages_for_classifier([
+            {"role": "assistant", "content": "<thinking>chỉ có log</thinking>"},
+            {"role": "user", "content": "em không biết"},
+        ])
+        assert len(msgs) == 1
+        assert msgs[0].type == "human"
+
+    def test_truncates_long_turn(self):
+        msgs = _history_messages_for_classifier([
+            {"role": "user", "content": "x" * 5000},
+        ])
+        assert len(msgs[0].content) == 400
 
 
 class TestRouteGradable:
